@@ -1,0 +1,26 @@
+
+{
+  "name": "@ui/playground",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0",
+    "@ui/core": "workspace:*",
+    "@ui/icons": "workspace:*",
+    "@ui/utils": "workspace:*"
+  },
+  "devDependencies": {
+    "vite": "^4.4.0",
+    "@vitejs/plugin-react": "^4.1.0",
+    "typescript": "^5.0.0",
+    "tailwindcss": "^3.3.2",
+    "postcss": "^8.4.21",
+    "autoprefixer": "^10.4.14"
+  }
+}

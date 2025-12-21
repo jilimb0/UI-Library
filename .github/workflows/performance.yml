@@ -1,0 +1,15 @@
+
+name: Performance Tests
+
+on: [push]
+
+jobs:
+  perf:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install dependencies
+      run: pnpm install
+    - name: Run performance tests
+      run: pnpm test:performance

@@ -1,0 +1,30 @@
+
+.button {
+  @apply inline-flex items-center justify-center rounded-md px-4 py-2 font-medium shadow hover:shadow-md;
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  border: none;
+  cursor: pointer;
+}
+
+.card {
+  @apply rounded-lg border border-gray-200 bg-white shadow p-6;
+}
+
+.input {
+  @apply w-full rounded border border-gray-300 px-3 py-2 text-sm;
+}
+
+.badge {
+  @apply inline-block rounded-full bg-primary px-3 py-1 text-sm text-white;
+}
+
+.modal {
+  @apply fixed inset-0 flex items-center justify-center bg-black bg-opacity-50;
+}
+
+.table {
+  @apply min-w-full divide-y divide-gray-200;
+}
+
+/* Other component styles can be added here */

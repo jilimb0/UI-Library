@@ -1,0 +1,24 @@
+
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install dependencies
+      run: pnpm install
+    - name: Run tests
+      run: pnpm test
+    - name: Build packages
+      run: pnpm build
+    - name: Publish to npm
+      run: pnpm release
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

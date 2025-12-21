@@ -1,0 +1,58 @@
+
+name: Feature Request
+description: Suggest a new feature for the UI library
+title: "[Feature]: "
+labels: ["enhancement", "needs-discussion"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a new feature! Please provide detailed info.
+
+  - type: input
+    id: feature-type
+    attributes:
+      label: Feature Type
+      description: Type of feature (new component, enhancement, etc.)
+      placeholder: "New component, enhancement etc."
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: What problem does it solve?
+      placeholder: Describe the problem.
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: How should it work?
+      placeholder: Describe your solution.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Other solutions you considered
+      placeholder: Describe alternatives.
+    validations:
+      required: false
+
+  - type: textarea
+    id: examples
+    attributes:
+      label: Code Examples
+      description: Provide usage examples if possible
+      placeholder: |
+        ```tsx
+        <NewComponent prop="value" />
+        ```
+    validations:
+      required: false

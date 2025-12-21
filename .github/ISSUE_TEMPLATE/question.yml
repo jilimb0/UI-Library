@@ -1,0 +1,58 @@
+
+name: Question
+description: Ask a question about the UI library
+title: "[Question]: "
+labels: ["question", "documentation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have a question? We're here to help!
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Question Category
+      description: Select question category
+      options:
+        - Usage/Implementation
+        - Styling/Theming
+        - TypeScript/Types
+        - Accessibility
+        - Performance
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Your Question
+      description: Please describe your question
+      placeholder: What would you like to know?
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: Add any relevant context or code snippets
+      placeholder: |
+        - What are you trying to achieve?
+        - What have you tried?
+    validations:
+      required: false
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Your environment details if relevant
+      placeholder: |
+        - Library Version: 1.0.0
+        - React Version: 18.0.0
+        - Framework: Next.js
+    validations:
+      required: false
