@@ -21,6 +21,7 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(({
       ref={ref}
       role="dialog"
       aria-modal="true"
+      data-testid="modal-overlay"
       className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
       {...props}
     >

@@ -1,6 +1,5 @@
-
 export * from './Icon';
-export * from './types';
+export type { IconName } from './Icon';
 
 // Action icons
 export * from './icons/action/SaveIcon';

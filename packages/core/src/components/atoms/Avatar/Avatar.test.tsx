@@ -1,19 +1,19 @@
 
-import {{ render, screen }} from '@testing-library/react';
-import {{ axe, toHaveNoViolations }} from 'jest-axe';
-import {{ Avatar }} from './{ComponentName}';
+import { render, screen } from '@testing-library/react';
+import { axe, toHaveNoViolations } from 'jest-axe';
+import { Avatar } from './Avatar';
 
 expect.extend(toHaveNoViolations);
 
-describe('{ComponentName} component', () => {{
-  it('renders without crashing', () => {{
-    render(<Avatar>Example</Avatar>);
-    expect(screen.getByText('Example')).toBeInTheDocument();
-  }});
+describe('Avatar component', () => {
+  it('renders without crashing', () => {
+    render(<Avatar />);
+    expect(screen.getByRole('img')).toBeInTheDocument();
+  });
 
-  it('has no accessibility violations', async () => {{
-    const {{ container }} = render(<Avatar>Example</Avatar>);
-    const {{ results }} = await axe(container);
+  it('has no accessibility violations', async () => {
+    const { container } = render(<Avatar />);
+    const results = await axe(container);
     expect(results).toHaveNoViolations();
-  }});
-}});
+  });
+});

@@ -13,7 +13,7 @@ const Icon = React.forwardRef<SVGSVGElement, IconProps>(({
 }, ref) => {
   const Component = Icons[name];
   if (!Component) return null;
-  return <Component ref={ref} {...props} />;
+  return <Component ref={ref} data-testid="icon-svg" {...props} />;
 });
 
 Icon.displayName = 'Icon';

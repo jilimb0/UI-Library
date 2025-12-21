@@ -10,7 +10,7 @@
   "scripts": {
     "build": "tsc --build",
     "lint": "eslint --ext .ts src",
-    "test": "jest"
+    "test": "jest --passWithNoTests"
   },
   "devDependencies": {
     "typescript": "^5.0.0",

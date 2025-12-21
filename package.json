@@ -17,6 +17,12 @@
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.0",
+    "@testing-library/jest-dom": "^6.0.0",
+    "@types/jest": "^30.0.0",
+    "@types/jest-axe": "^3.5.9",
     "turbo": "^1.13.0"
+  },
+  "dependencies": {
+    "date-fns": "^4.1.0"
   }
 }

@@ -1,19 +1,19 @@
+import { render, screen } from "@testing-library/react"
+import { axe, toHaveNoViolations } from "jest-axe"
+import { Accordion } from "./Accordion"
+import React from "react"
 
-import {{ render, screen }} from '@testing-library/react';
-import {{ axe, toHaveNoViolations }} from 'jest-axe';
-import {{ Accordion }} from './{ComponentName}';
+expect.extend(toHaveNoViolations)
 
-expect.extend(toHaveNoViolations);
+describe("Accordion component", () => {
+  it("renders without crashing", () => {
+    render(<Accordion>Example</Accordion>)
+    expect(screen.getByText("Example")).toBeInTheDocument()
+  })
 
-describe('{ComponentName} component', () => {{
-  it('renders without crashing', () => {{
-    render(<Accordion>Example</Accordion>);
-    expect(screen.getByText('Example')).toBeInTheDocument();
-  }});
-
-  it('has no accessibility violations', async () => {{
-    const {{ container }} = render(<Accordion>Example</Accordion>);
-    const {{ results }} = await axe(container);
-    expect(results).toHaveNoViolations();
-  }});
-}});
+  it("has no accessibility violations", async () => {
+    const { container } = render(<Accordion>Example</Accordion>)
+    const results = await axe(container)
+    expect(results).toHaveNoViolations()
+  })
+})

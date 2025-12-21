@@ -1,19 +1,19 @@
 
-import {{ render, screen }} from '@testing-library/react';
-import {{ axe, toHaveNoViolations }} from 'jest-axe';
-import {{ Table }} from './{ComponentName}';
+import { render, screen } from '@testing-library/react';
+import { axe, toHaveNoViolations } from 'jest-axe';
+import { Table } from './Table';
 
 expect.extend(toHaveNoViolations);
 
-describe('{ComponentName} component', () => {{
-  it('renders without crashing', () => {{
+describe('Table component', () => {
+  it('renders without crashing', () => {
     render(<Table>Example</Table>);
     expect(screen.getByText('Example')).toBeInTheDocument();
-  }});
+  });
 
-  it('has no accessibility violations', async () => {{
-    const {{ container }} = render(<Table>Example</Table>);
-    const {{ results }} = await axe(container);
+  it('has no accessibility violations', async () => {
+    const { container } = render(<Table>Example</Table>);
+    const results = await axe(container);
     expect(results).toHaveNoViolations();
-  }});
-}});
+  });
+});

@@ -1,17 +1,26 @@
+import { render } from "@testing-library/react"
+import React from "react"
+import DataTable from "./DataTable"
 
-describe('DataTable Performance', () => {
-  it('renders large datasets efficiently', () => {
-    const startTime = performance.now();
+const mockColumns = [
+  { key: "id", title: "ID" },
+  { key: "name", title: "Name" },
+  { key: "email", title: "Email" },
+]
+
+describe("DataTable Performance", () => {
+  it("renders large datasets efficiently", () => {
+    const startTime = performance.now()
 
     const largeData = Array.from({ length: 1000 }, (_, i) => ({
       id: i,
       name: `User ${i}`,
-      email: `user${i}@example.com`
-    }));
+      email: `user${i}@example.com`,
+    }))
 
-    render(<DataTable data={largeData} columns={mockColumns} />);
+    render(<DataTable data={largeData} columns={mockColumns} />)
 
-    const endTime = performance.now();
-    expect(endTime - startTime).toBeLessThan(100); // < 100ms render time
-  });
-});
+    const endTime = performance.now()
+    expect(endTime - startTime).toBeLessThan(100) // < 100ms render time
+  })
+})

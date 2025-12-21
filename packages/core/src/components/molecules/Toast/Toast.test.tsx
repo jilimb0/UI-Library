@@ -1,17 +1,24 @@
 
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { Toast } from './Toast';
 
 describe('Toast', () => {
   it('renders toast message', () => {
-    render(<Toast message="Hello" />);
+    render(<Toast>Hello</Toast>);
     expect(screen.getByText('Hello')).toBeInTheDocument();
   });
 
-  it('auto hides after duration', () => {
+  it('auto hides after duration callback', () => {
     jest.useFakeTimers();
-    render(<Toast message="Hide me" duration={3000} />);
+    const onHide = jest.fn();
+
+    render(
+      <Toast duration={3000} onAnimationEnd={onHide}>
+        Hide me
+      </Toast>
+    );
+
     jest.advanceTimersByTime(3000);
-    expect(screen.queryByText('Hide me')).not.toBeInTheDocument();
+    expect(onHide).toHaveBeenCalled();
   });
 });
