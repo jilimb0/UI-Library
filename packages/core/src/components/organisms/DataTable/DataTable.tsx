@@ -16,7 +16,7 @@ interface DataTableProps<T> {
   pageSize?: number;
 }
 
-function DataTable<T>({ data, columns, pageSize = 10 }: DataTableProps<T>) {
+export function DataTable<T>({ data, columns, pageSize = 10 }: DataTableProps<T>) {
   const [sortColumn, setSortColumn] = useState<string | null>(null);
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
   const [currentPage, setCurrentPage] = useState(1);
@@ -107,5 +107,3 @@ function DataTable<T>({ data, columns, pageSize = 10 }: DataTableProps<T>) {
     </div>
   );
 }
-
-export default DataTable;

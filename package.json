@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.0",
+    "@storybook/react": "^7.5.3",
     "@testing-library/jest-dom": "^6.0.0",
     "@types/jest": "^30.0.0",
     "@types/jest-axe": "^3.5.9",

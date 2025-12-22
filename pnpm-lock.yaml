@@ -15,6 +15,9 @@ importers:
       '@changesets/cli':
         specifier: ^2.27.0
         version: 2.29.8(@types/node@25.0.3)
+      '@storybook/react':
+        specifier: ^7.5.3
+        version: 7.5.3(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3)
       '@testing-library/jest-dom':
         specifier: ^6.0.0
         version: 6.9.1
@@ -9677,6 +9680,11 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
+  '@storybook/react-dom-shim@7.5.3(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
+    dependencies:
+      react: 19.2.3
+      react-dom: 19.2.3(react@19.2.3)
+
   '@storybook/react-vite@7.5.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@3.29.5)(typescript@5.9.3)(vite@4.5.14(@types/node@25.0.3)(terser@5.44.1))':
     dependencies:
       '@joshwooding/vite-plugin-react-docgen-typescript': 0.3.0(typescript@5.9.3)(vite@4.5.14(@types/node@25.0.3)(terser@5.44.1))
@@ -9719,6 +9727,37 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       react-element-to-jsx-string: 15.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      ts-dedent: 2.2.0
+      type-fest: 2.19.0
+      util-deprecate: 1.0.2
+    optionalDependencies:
+      typescript: 5.9.3
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
+
+  '@storybook/react@7.5.3(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3)':
+    dependencies:
+      '@storybook/client-logger': 7.5.3
+      '@storybook/core-client': 7.5.3
+      '@storybook/docs-tools': 7.5.3
+      '@storybook/global': 5.0.0
+      '@storybook/preview-api': 7.5.3
+      '@storybook/react-dom-shim': 7.5.3(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@storybook/types': 7.5.3
+      '@types/escodegen': 0.0.6
+      '@types/estree': 0.0.51
+      '@types/node': 18.19.130
+      acorn: 7.4.1
+      acorn-jsx: 5.3.2(acorn@7.4.1)
+      acorn-walk: 7.2.0
+      escodegen: 2.1.0
+      html-tags: 3.3.1
+      lodash: 4.17.21
+      prop-types: 15.8.1
+      react: 19.2.3
+      react-dom: 19.2.3(react@19.2.3)
+      react-element-to-jsx-string: 15.0.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       ts-dedent: 2.2.0
       type-fest: 2.19.0
       util-deprecate: 1.0.2
@@ -13552,6 +13591,14 @@ snapshots:
       is-plain-object: 5.0.0
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
+      react-is: 18.1.0
+
+  react-element-to-jsx-string@15.0.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3):
+    dependencies:
+      '@base2/pretty-print-object': 1.0.1
+      is-plain-object: 5.0.0
+      react: 19.2.3
+      react-dom: 19.2.3(react@19.2.3)
       react-is: 18.1.0
 
   react-inspector@6.0.2(react@18.3.1):

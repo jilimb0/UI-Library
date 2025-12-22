@@ -18,7 +18,7 @@ interface DatePickerProps {
   timezone?: string
 }
 
-const DatePicker: React.FC<DatePickerProps> = ({
+export const DatePicker: React.FC<DatePickerProps> = ({
   selectedDate,
   onChange,
   timezone,
@@ -84,4 +84,3 @@ const DatePicker: React.FC<DatePickerProps> = ({
   )
 }
 
-export default DatePicker

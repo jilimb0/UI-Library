@@ -34,14 +34,35 @@ export interface InputProps
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, size, variant, ...props }, ref) => {
+  (
+    { className, type = "text", size, variant, label, description, ...props },
+    ref
+  ) => {
+    const labelId = label
+      ? `input-label-${Math.random().toString(36).substr(2, 9)}`
+      : undefined
+    const descriptionId = description
+      ? `input-desc-${Math.random().toString(36).substr(2, 9)}`
+      : undefined
+
     return (
-      <input
-        type={type}
-        className={cn(inputVariants({ size, variant }), className)}
-        ref={ref}
-        {...props}
-      />
+      <div>
+        {label && (
+          <label id={labelId} htmlFor="input">
+            {label}
+          </label>
+        )}
+        <input
+          id="input"
+          type={type}
+          className={cn(inputVariants({ size, variant }), className)}
+          ref={ref}
+          aria-labelledby={labelId}
+          aria-describedby={descriptionId}
+          {...props}
+        />
+        {description && <div id={descriptionId}>{description}</div>}
+      </div>
     )
   }
 )

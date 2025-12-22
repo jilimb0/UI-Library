@@ -13,7 +13,7 @@ const alertVariants = {
   error: 'bg-red-100 text-red-800',
 };
 
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(({ variant = 'default', className, ...props }, ref) => {
+export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(({ variant = 'default', className, ...props }, ref) => {
   return (
     <div ref={ref} className={cn('rounded-md p-4', alertVariants[variant], className)} {...props} />
   );
@@ -21,4 +21,4 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(({ variant = 'default
 
 Alert.displayName = 'Alert';
 
-export { Alert };
+

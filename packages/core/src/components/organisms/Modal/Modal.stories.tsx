@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { Modal } from './Modal';
 import { Button } from '../../atoms/Button';
+import React from 'react';
 
 const meta: Meta<typeof Modal> = {
   title: 'Components/Organisms/Modal',
@@ -45,7 +46,7 @@ export const WithContent: Story = {
       <h2 className="text-xl font-bold mb-4">Confirm Action</h2>
       <p className="mb-4">Are you sure you want to proceed with this action?</p>
       <div className="flex gap-2">
-        <Button variant="primary">Confirm</Button>
+        <Button variant="default">Confirm</Button>
         <Button variant="secondary">Cancel</Button>
       </div>
     </ModalWrapper>

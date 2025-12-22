@@ -3,6 +3,7 @@ import { axe } from "jest-axe"
 import userEvent from "@testing-library/user-event"
 import { Select } from "./Select"
 import React from "react"
+import "@testing-library/jest-dom"
 
 describe("Select Accessibility", () => {
   it("should have proper ARIA attributes", () => {

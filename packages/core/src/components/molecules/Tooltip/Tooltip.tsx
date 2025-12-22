@@ -5,7 +5,7 @@ export interface TooltipProps extends React.HTMLAttributes<HTMLDivElement> {
   content: string | undefined
 }
 
-const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
+export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
   ({ content, className, children, ...props }, ref) => {
     return (
       <div
@@ -24,4 +24,4 @@ const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
 
 Tooltip.displayName = "Tooltip"
 
-export default Tooltip
+
