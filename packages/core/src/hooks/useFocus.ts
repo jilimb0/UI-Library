@@ -1,21 +1,20 @@
+import { useEffect, useRef, RefObject } from "react";
 
-import { useEffect, useRef } from 'react';
-
-export function useFocus() {
-  const ref = useRef<HTMLElement>(null);
+export function useFocus<T extends HTMLElement>(): RefObject<T> {
+  const ref = useRef<T>(null);
 
   useEffect(() => {
     if (!ref.current) return;
 
     const handleFocus = () => {
-      console.log('Element focused');
+      console.log("Element focused");
     };
 
     const element = ref.current;
-    element.addEventListener('focus', handleFocus);
+    element.addEventListener("focus", handleFocus);
 
     return () => {
-      element.removeEventListener('focus', handleFocus);
+      element.removeEventListener("focus", handleFocus);
     };
   }, []);
 

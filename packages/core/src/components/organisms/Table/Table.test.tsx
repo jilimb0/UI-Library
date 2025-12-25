@@ -7,12 +7,28 @@ expect.extend(toHaveNoViolations);
 
 describe('Table component', () => {
   it('renders without crashing', () => {
-    render(<Table>Example</Table>);
+    render(
+      <Table>
+        <tbody>
+          <tr>
+            <td>Example</td>
+          </tr>
+        </tbody>
+      </Table>
+    );
     expect(screen.getByText('Example')).toBeInTheDocument();
   });
 
   it('has no accessibility violations', async () => {
-    const { container } = render(<Table>Example</Table>);
+    const { container } = render(
+      <Table>
+        <tbody>
+          <tr>
+            <td>Example</td>
+          </tr>
+        </tbody>
+      </Table>
+    );
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

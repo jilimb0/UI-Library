@@ -1,4 +1,4 @@
-import * as React from "react"
+import React, { useId } from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "../../../utils/cn"
 
@@ -18,26 +18,79 @@ const selectVariants = cva(
   }
 )
 
+type Option = { value: string; label: string }
+
 export interface SelectProps
-  extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "size">,
+  extends
+    Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "size">,
     VariantProps<typeof selectVariants> {
   size?: "default" | "sm" | "lg"
   label?: string
   description?: string
+  options?: Option[]
+  error?: boolean
+  errorMessage?: string
 }
 
-const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
-  ({ className, size, ...props }, ref) => {
+export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
+  (
+    {
+      size,
+      label,
+      description,
+      options,
+      error,
+      errorMessage,
+      className,
+      id,
+      onChange,
+      ...props
+    },
+    ref
+  ) => {
+    const internalId = useId()
+    const selectId = id ?? internalId
+    const labelId = `${selectId}-label`
+    const descriptionId = `${selectId}-description`
+
+    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+      onChange?.(e)
+    }
+
     return (
-      <select
-        className={cn(selectVariants({ size, className }))}
-        ref={ref}
-        {...props}
-      />
+      <div className="flex flex-col space-y-1">
+        {label && (
+          <label
+            id={labelId}
+            htmlFor={selectId}
+            className="text-sm font-medium"
+          >
+            {label}
+          </label>
+        )}
+        <select
+          id={selectId}
+          aria-labelledby={label ? labelId : undefined}
+          aria-describedby={
+            description || (error && errorMessage) ? descriptionId : undefined
+          }
+          className={cn(selectVariants({ size, className }))}
+          ref={ref}
+          onChange={handleChange}
+          {...props}
+        >
+          {options?.map((opt) => (
+            <option key={opt.value} value={opt.value}>
+              {opt.label}
+            </option>
+          ))}
+        </select>
+        {(description || (error && errorMessage)) && (
+          <p id={descriptionId} className="text-xs text-muted-foreground">
+            {error && errorMessage ? errorMessage : description}
+          </p>
+        )}
+      </div>
     )
   }
 )
-
-Select.displayName = "Select"
-
-export { Select, selectVariants }

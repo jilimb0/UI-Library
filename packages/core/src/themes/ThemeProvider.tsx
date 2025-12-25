@@ -1,31 +1,42 @@
-
-import * as React from 'react';
+import {
+  useContext,
+  createContext,
+  useState,
+  useEffect,
+  FC,
+  ReactNode,
+} from "react"
 
 interface ThemeContextValue {
-  theme: string;
-  setTheme: (theme: string) => void;
+  theme: string
+  setTheme: (theme: string) => void
 }
 
-const ThemeContext = React.createContext<ThemeContextValue | undefined>(undefined);
+const ThemeContext = createContext<ThemeContextValue | undefined>(undefined)
 
-export const ThemeProvider: React.FC<{ defaultTheme?: string; children: React.ReactNode }> = ({ defaultTheme = 'light', children }) => {
-  const [theme, setTheme] = React.useState(defaultTheme);
+const ThemeProvider: FC<{
+  defaultTheme?: string
+  children: ReactNode
+}> = ({ defaultTheme = "light", children }) => {
+  const [theme, setTheme] = useState(defaultTheme)
 
-  React.useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme)
+  }, [theme])
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
       {children}
     </ThemeContext.Provider>
-  );
-};
+  )
+}
 
 export const useTheme = () => {
-  const context = React.useContext(ThemeContext);
+  const context = useContext(ThemeContext)
   if (!context) {
-    throw new Error('useTheme must be used within a ThemeProvider');
+    throw new Error("useTheme must be used within a ThemeProvider")
   }
-  return context;
-};
+  return context
+}
+
+export default ThemeProvider

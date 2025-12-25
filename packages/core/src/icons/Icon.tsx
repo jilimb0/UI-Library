@@ -1,9 +1,9 @@
 import React from 'react';
-import * as ActionIcons from './icons/action';
-import * as InterfaceIcons from './icons/interface';
-import * as NavigationIcons from './icons/navigation';
-import * as SocialIcons from './icons/social';
-import * as StatusIcons from './icons/status';
+import * as ActionIcons from './action';
+import * as InterfaceIcons from './interface';
+import * as NavigationIcons from './navigation';
+import * as SocialIcons from './social';
+import * as StatusIcons from './status';
 
 const Icons = {
   ...ActionIcons,

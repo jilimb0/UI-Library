@@ -1,9 +1,11 @@
-import React, { forwardRef } from "react"
+import React, { forwardRef, useId } from "react"
 import { cn } from "../../../utils/cn"
-import { CheckIcon } from "@ui/icons"
+import { CheckIcon } from "@/icons/dist/src"
 
-export interface CheckboxProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type" | "size"> {
+export interface CheckboxProps extends Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  "type" | "size"
+> {
   label?: string
   description?: string
   error?: boolean
@@ -28,10 +30,13 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     },
     ref
   ) => {
+    const id = useId()
+
     return (
       <div className="flex items-start space-x-2">
         <div className="relative">
           <input
+            id={id}
             type="checkbox"
             ref={ref}
             className={cn(
@@ -53,23 +58,22 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             )}
             {...props}
           />
-          {/* Checkmark icon */}
-          <CheckIcon
-            className={cn(
-              "absolute inset-0 w-full h-full text-white opacity-0 peer-checked:opacity-100 pointer-events-none",
-              {
+
+          <span className="pointer-events-none absolute inset-0 flex items-center justify-center">
+            <CheckIcon
+              className={cn("text-white opacity-0 peer-checked:opacity-100", {
                 "w-3 h-3": size === "sm",
                 "w-4 h-4": size === "md",
                 "w-5 h-5": size === "lg",
-              }
-            )}
-          />
+              })}
+            />
+          </span>
         </div>
 
-        {(label || description) && (
+        {(label || description || (error && errorMessage)) && (
           <div className="flex-1">
             {label && (
-              <label className="text-sm font-medium text-gray-900">
+              <label htmlFor={id} className="text-sm font-medium text-gray-900">
                 {label}
               </label>
             )}
@@ -77,7 +81,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
               <p className="text-sm text-gray-600">{description}</p>
             )}
             {error && errorMessage && (
-              <p className="text-sm text-red-600 mt-1">{errorMessage}</p>
+              <p className="mt-1 text-sm text-red-600">{errorMessage}</p>
             )}
           </div>
         )}

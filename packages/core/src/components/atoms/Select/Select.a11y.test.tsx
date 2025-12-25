@@ -1,9 +1,13 @@
 import { render, screen } from "@testing-library/react"
-import { axe } from "jest-axe"
 import userEvent from "@testing-library/user-event"
 import { Select } from "./Select"
 import React from "react"
 import "@testing-library/jest-dom"
+
+const options = [
+  { value: "1", label: "Option 1" },
+  { value: "2", label: "Option 2" },
+]
 
 describe("Select Accessibility", () => {
   it("should have proper ARIA attributes", () => {
@@ -12,6 +16,7 @@ describe("Select Accessibility", () => {
         label="Test"
         description="Description"
         aria-labelledby="test-label"
+        options={options}
       />
     )
 
@@ -24,13 +29,13 @@ describe("Select Accessibility", () => {
     const user = userEvent.setup()
     const onChange = jest.fn()
 
-    render(<Select label="Test" onChange={onChange} />)
+    render(<Select label="Test" onChange={onChange} options={options} />)
 
     const select = screen.getByRole("combobox")
     await user.tab()
     expect(select).toHaveFocus()
 
-    await user.keyboard(" ")
+    await user.selectOptions(screen.getByRole("combobox"), "2")
     expect(onChange).toHaveBeenCalled()
   })
 })

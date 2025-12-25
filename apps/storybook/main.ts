@@ -38,12 +38,11 @@ const config: StorybookConfig = {
       resolve: {
         alias: {
           '@ui/core': path.resolve(__dirname, '../../packages/core/src'),
-          '@ui/icons': path.resolve(__dirname, '../../packages/icons/src'),
         },
         conditions: ['development', 'import', 'module', 'browser', 'default']
       },
       optimizeDeps: {
-        include: ['@ui/icons', '@ui/core']
+        include: ['@ui/core']
       }
     });
   }

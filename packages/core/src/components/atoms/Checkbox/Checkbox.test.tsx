@@ -2,6 +2,7 @@ import { render, screen, fireEvent } from "@testing-library/react"
 import { axe, toHaveNoViolations } from "jest-axe"
 import { Checkbox } from "./Checkbox"
 import React from "react"
+import "@testing-library/jest-dom"
 
 expect.extend(toHaveNoViolations)
 

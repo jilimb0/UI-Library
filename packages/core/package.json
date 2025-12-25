@@ -26,6 +26,10 @@
     "lint:fix": "eslint --ext .ts,.tsx src --fix",
     "type-check": "tsc --noEmit",
     "test": "jest",
+    "test:animations": "jest src/animations",
+    "test:atoms": "jest src/components/atoms",
+    "test:molecules": "jest src/components/molecules",
+    "test:organisms": "jest src/components/organisms",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "clean": "rm -rf dist"

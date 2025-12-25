@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Button, Card, Input, Textarea, Alert } from '@ui/core';
-import { SaveIcon } from '@ui/icons';
+import { SaveIcon } from '@ui/core/src/icons';
 
 export function App() {
   const [inputValue, setInputValue] = useState('');

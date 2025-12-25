@@ -9,7 +9,9 @@ expect.extend(toHaveNoViolations)
 describe("Tooltip", () => {
   it("renders without crashing", () => {
     render(<Tooltip content="Example">Example</Tooltip>)
-    expect(screen.getByText("Example", { selector: "[data-tooltip-trigger]" })).toBeInTheDocument()
+    expect(
+      screen.getByText("Example", { selector: "[data-tooltip-trigger]" })
+    ).toBeInTheDocument()
   })
 
   it("has no accessibility violations", async () => {

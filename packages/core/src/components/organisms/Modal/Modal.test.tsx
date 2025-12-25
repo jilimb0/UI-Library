@@ -1,6 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react"
 import { Modal } from "./Modal"
 import React from "react"
+import "@testing-library/jest-dom"
 
 describe("Modal", () => {
   it("renders children content", () => {
@@ -21,5 +22,17 @@ describe("Modal", () => {
     )
     fireEvent.click(screen.getByTestId("modal-overlay"))
     expect(onClose).toHaveBeenCalledTimes(1)
+  })
+
+  it("should trap focus", () => {
+    render(
+      <Modal isOpen onClose={() => {}}>
+        <button>First</button>
+        <button>Last</button>
+      </Modal>
+    )
+    expect(screen.getByText("First")).toHaveFocus()
+    fireEvent.keyDown(document, { key: "Tab" })
+    expect(screen.getByText("Last")).toHaveFocus()
   })
 })

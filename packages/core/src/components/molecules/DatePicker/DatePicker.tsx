@@ -18,7 +18,7 @@ interface DatePickerProps {
   timezone?: string
 }
 
-export const DatePicker: React.FC<DatePickerProps> = ({
+const DatePicker: React.FC<DatePickerProps> = ({
   selectedDate,
   onChange,
   timezone,
@@ -31,7 +31,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   const endDate = endOfWeek(endMonth)
 
   const dateFormat = "d"
-  const rows: JSX.Element[][] = []
+  const rows: JSX.Element[] = []
   let days: JSX.Element[] = []
   let day = startDate
 
@@ -84,3 +84,4 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   )
 }
 
+export default DatePicker

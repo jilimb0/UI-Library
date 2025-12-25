@@ -1,6 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react"
 import { Select } from "./Select"
 import React from "react"
+import "@testing-library/jest-dom"
 
 const options = [
   { value: "1", label: "Option 1" },
@@ -19,6 +20,8 @@ describe("Select", () => {
     render(<Select options={options} onChange={onChange} />)
 
     fireEvent.change(screen.getByRole("combobox"), { target: { value: "2" } })
-    expect(onChange).toHaveBeenCalledWith("2")
+    expect(onChange).toHaveBeenCalledTimes(1)
+    const event = onChange.mock.calls[0][0]
+    expect(event.target.value).toBe("2")
   })
 })

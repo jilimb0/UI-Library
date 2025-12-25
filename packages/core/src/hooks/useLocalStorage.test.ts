@@ -1,10 +1,16 @@
-
 import { renderHook, act } from '@testing-library/react';
 import { useLocalStorage } from './useLocalStorage';
 
 describe('useLocalStorage', () => {
+  const originalError = console.error;
+
   beforeEach(() => {
     localStorage.clear();
+    console.error = jest.fn();
+  });
+
+  afterEach(() => {
+    console.error = originalError;
   });
 
   it('should return initial value when localStorage is empty', () => {
@@ -38,5 +44,6 @@ describe('useLocalStorage', () => {
 
     const { result } = renderHook(() => useLocalStorage('test-key', 'fallback'));
     expect(result.current[0]).toBe('fallback');
+    expect(console.error).toHaveBeenCalled();
   });
 });

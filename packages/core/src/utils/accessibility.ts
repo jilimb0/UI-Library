@@ -1,4 +1,3 @@
-
 /**
  * Accessibility utilities for better user experience
  */

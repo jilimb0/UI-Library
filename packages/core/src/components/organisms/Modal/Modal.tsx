@@ -14,6 +14,18 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(({
   children,
   ...props
 }, ref) => {
+  const containerRef = React.useRef<HTMLDivElement | null>(null);
+
+  React.useEffect(() => {
+    if (!isOpen || !containerRef.current) return;
+
+    const focusable = containerRef.current.querySelectorAll<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    const last = focusable[focusable.length - 1];
+    last?.focus();
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   return createPortal(
@@ -23,9 +35,15 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(({
       aria-modal="true"
       data-testid="modal-overlay"
       className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          onClose();
+        }
+        props.onClick?.(e);
+      }}
       {...props}
     >
-      <div className="bg-white rounded-lg p-6 shadow-lg">
+      <div ref={containerRef} className="bg-white rounded-lg p-6 shadow-lg">
         {children}
         <button onClick={onClose} className="mt-4 px-4 py-2 bg-red-500 text-white rounded">
           Close

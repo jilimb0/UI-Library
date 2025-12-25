@@ -3,9 +3,9 @@ import React from "react"
 import DataTable from "./DataTable"
 
 const mockColumns = [
-  { key: "id", title: "ID" },
-  { key: "name", title: "Name" },
-  { key: "email", title: "Email" },
+  { key: "id", header: "ID" },
+  { key: "name", header: "Name" },
+  { key: "email", header: "Email" },
 ]
 
 describe("DataTable Performance", () => {

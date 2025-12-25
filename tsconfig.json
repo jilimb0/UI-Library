@@ -17,7 +17,6 @@
     "baseUrl": ".",
     "paths": {
       "@ui/core": ["packages/core/src"],
-      "@ui/icons": ["packages/icons/src"],
       "@ui/utils": ["packages/utils/src"],
       "@ui/tokens": ["packages/tokens/src"]
     }

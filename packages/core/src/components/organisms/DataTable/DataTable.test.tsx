@@ -1,6 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react"
 import DataTable from "./DataTable"
 import React from "react"
+import "@testing-library/jest-dom"
 
 const mockData = [
   { id: 1, name: "John Doe", email: "john@example.com" },
@@ -11,6 +12,12 @@ const mockColumns = [
   { key: "name", header: "Name", sortable: true },
   { key: "email", header: "Email", sortable: true },
 ]
+
+const largeData = Array.from({ length: 25 }, (_, i) => ({
+  id: i,
+  name: `User ${i}`,
+  email: `user${i}@example.com`,
+}))
 
 describe("DataTable", () => {
   it("renders data in table format", () => {
@@ -30,15 +37,22 @@ describe("DataTable", () => {
   })
 
   it("supports pagination", () => {
-    const largeData = Array.from({ length: 25 }, (_, i) => ({
-      id: i,
-      name: `User ${i}`,
-      email: `user${i}@example.com`,
-    }))
-
     render(<DataTable data={largeData} columns={mockColumns} pageSize={10} />)
 
     expect(screen.getByText("Page 1 of 3")).toBeInTheDocument()
     expect(screen.getByRole("button", { name: "Next" })).toBeInTheDocument()
+  })
+
+  it("should handle sorting", () => {
+    render(<DataTable data={mockData} columns={mockColumns} />)
+    fireEvent.click(screen.getByText("Name"))
+    expect(screen.getByText("John")).toBeInTheDocument()
+  })
+
+  it("should handle pagination", () => {
+    render(<DataTable data={largeData} columns={mockColumns} pageSize={10} />)
+    expect(screen.getByText("Page 1 of 3")).toBeInTheDocument()
+    fireEvent.click(screen.getByText("Next"))
+    expect(screen.getByText("Page 2 of 3")).toBeInTheDocument()
   })
 })

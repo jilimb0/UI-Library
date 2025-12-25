@@ -1,4 +1,3 @@
+export { default as ThemeProvider, useTheme } from "./ThemeProvider"
 
-export * from './ThemeProvider';
-export * from './useTheme';
-export * from './themes';
+export * from "./themes"

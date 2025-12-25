@@ -4,7 +4,7 @@
 Для начала установки выполните:
 
 ```
-npm install @ui/core @ui/icons @ui/utils @ui/tokens
+npm install @ui/core @ui/utils @ui/tokens
 ```
 
 Импортируйте компоненты и стили в ваш проект:

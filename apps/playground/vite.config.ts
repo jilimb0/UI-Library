@@ -13,7 +13,6 @@ export default defineConfig({
   resolve: {
     alias: {
       '@ui/core': resolve(__dirname, '../../packages/core/src'),
-      '@ui/icons': resolve(__dirname, '../../packages/icons/src'),
       '@ui/utils': resolve(__dirname, '../../packages/utils/src')
     }
   }

@@ -11,6 +11,7 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
       <div
         ref={ref}
         className={cn("relative group inline-block", className)}
+        data-tooltip-trigger
         {...props}
       >
         {children}
@@ -24,4 +25,4 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
 
 Tooltip.displayName = "Tooltip"
 
-
+export default Tooltip
