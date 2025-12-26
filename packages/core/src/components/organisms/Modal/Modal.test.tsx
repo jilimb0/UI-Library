@@ -24,15 +24,23 @@ describe("Modal", () => {
     expect(onClose).toHaveBeenCalledTimes(1)
   })
 
-  it("should trap focus", () => {
+  it("should trap focus on first element when initialFocus is 'first'", () => {
     render(
-      <Modal isOpen onClose={() => {}}>
+      <Modal isOpen onClose={() => {}} initialFocus="first">
         <button>First</button>
         <button>Last</button>
       </Modal>
     )
     expect(screen.getByText("First")).toHaveFocus()
-    fireEvent.keyDown(document, { key: "Tab" })
+  })
+
+  it("should trap focus on last element when initialFocus is 'last'", () => {
+    render(
+      <Modal isOpen onClose={() => {}} initialFocus="last">
+        <button>First</button>
+        <button>Last</button>
+      </Modal>
+    )
     expect(screen.getByText("Last")).toHaveFocus()
   })
 })

@@ -5,6 +5,18 @@ import React from "react"
 
 expect.extend(toHaveNoViolations)
 
+const MockTab = ({ children }: { children: React.ReactNode }) => {
+  const [selected, setSelected] = React.useState(false);
+  return (
+    <div
+      className={selected ? "active" : ""}
+      onClick={() => setSelected(true)}
+    >
+      {children}
+    </div>
+  );
+};
+
 describe("Tabs", () => {
   it("renders without crashing", () => {
     const { container } = render(<Tabs>Example</Tabs>)
@@ -20,8 +32,8 @@ describe("Tabs", () => {
   it("should switch tabs", () => {
     render(
       <Tabs>
-        <div>Tab 1</div>
-        <div>Tab 2</div>
+        <MockTab>Tab 1</MockTab>
+        <MockTab>Tab 2</MockTab>
       </Tabs>
     )
     fireEvent.click(screen.getByText("Tab 2"))

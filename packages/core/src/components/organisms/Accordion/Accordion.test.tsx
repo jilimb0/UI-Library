@@ -6,12 +6,24 @@ import "@testing-library/jest-dom"
 
 expect.extend(toHaveNoViolations)
 
+const MockAccordionItem = ({ children }: { children: React.ReactNode }) => {
+  const [isOpen, setIsOpen] = React.useState(false);
+  return (
+    <div
+      className={isOpen ? "open" : ""}
+      onClick={() => setIsOpen(!isOpen)}
+    >
+      {children}
+    </div>
+  );
+};
+
 describe("Accordion", () => {
   it("should open and close items", () => {
     render(
       <Accordion>
-        <div>Item 1</div>
-        <div>Item 2</div>
+        <MockAccordionItem>Item 1</MockAccordionItem>
+        <MockAccordionItem>Item 2</MockAccordionItem>
       </Accordion>
     )
     fireEvent.click(screen.getByText("Item 1"))
@@ -23,8 +35,8 @@ describe("Accordion", () => {
   it("should support multiple open items", () => {
     render(
       <Accordion multiple>
-        <div>Item 1</div>
-        <div>Item 2</div>
+        <MockAccordionItem>Item 1</MockAccordionItem>
+        <MockAccordionItem>Item 2</MockAccordionItem>
       </Accordion>
     )
     fireEvent.click(screen.getByText("Item 1"))

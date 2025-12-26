@@ -46,7 +46,7 @@ describe("DataTable", () => {
   it("should handle sorting", () => {
     render(<DataTable data={mockData} columns={mockColumns} />)
     fireEvent.click(screen.getByText("Name"))
-    expect(screen.getByText("John")).toBeInTheDocument()
+    expect(screen.getByText("John Doe")).toBeInTheDocument()
   })
 
   it("should handle pagination", () => {

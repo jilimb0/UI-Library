@@ -13,6 +13,6 @@
       "@ui/tokens": ["../tokens/src"],
     }
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "../../public/icons"],
   "exclude": ["src/**/*.test.*", "src/**/*.stories.*", "dist"]
 }
