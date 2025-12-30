@@ -1,18 +1,19 @@
-
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { resolve } from 'path';
+import path from 'path';
 
 export default defineConfig({
-  plugins: [react()],
-  root: 'src',
-  build: {
-    outDir: '../../dist/docs',
-    sourcemap: true
-  },
+  plugins: [react()], 
   resolve: {
     alias: {
-      '@ui/docs': resolve(__dirname, 'src'),
+      '@ui/core': path.resolve(__dirname, '../../packages/core/src'),
+      '@ui/utils': path.resolve(__dirname, '../../packages/utils/src'),
+      '@ui/tokens': path.resolve(__dirname, '../../packages/tokens/src'),
+      '@': path.resolve(__dirname, './src'),
     }
+  },
+  server: {
+    port: 3001,
+    open: true
   }
 });

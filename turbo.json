@@ -17,6 +17,10 @@
     "storybook": {
       "cache": false,
       "persistent": true
+    },
+    "typecheck": {
+      "dependsOn": ["^build"],
+      "outputs": [".tsbuildinfo"]
     }
   }
 }
