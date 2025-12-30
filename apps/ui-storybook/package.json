@@ -1,10 +1,10 @@
 {
-  "name": "storybook",
+  "name": "ui-storybook",
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "storybook": "pnpm exec storybook dev -p 6006",
-    "build-storybook": "pnpm exec storybook build"
+    "storybook": "pnpm exec ui-storybook dev -p 6006",
+    "build-storybook": "pnpm exec ui-storybook build"
   },
   "dependencies": {
     "@ui/core": "workspace:*"
