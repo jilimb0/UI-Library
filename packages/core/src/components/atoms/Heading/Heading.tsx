@@ -1,25 +1,21 @@
+import { forwardRef, HTMLAttributes } from "react"
 
-import * as React from 'react';
-
-export interface HeadingProps extends React.HTMLAttributes<HTMLHeadingElement> {
-  level?: 1 | 2 | 3 | 4 | 5 | 6;
+export interface HeadingProps extends HTMLAttributes<HTMLHeadingElement> {
+  level?: 1 | 2 | 3 | 4 | 5 | 6
 }
 
-const Heading = React.forwardRef<HTMLHeadingElement, HeadingProps>(({
-  level = 1,
-  className,
-  children,
-  ...props
-}, ref) => {
-  const Tag = `h${level}` as keyof JSX.IntrinsicElements;
+const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(
+  ({ level = 1, className, children, ...props }, ref) => {
+    const Tag = `h${level}` as `h${1 | 2 | 3 | 4 | 5 | 6}`
 
-  return (
-    <Tag ref={ref} className={className} {...props}>
-      {children}
-    </Tag>
-  );
-});
+    return (
+      <Tag ref={ref} className={className} {...props}>
+        {children}
+      </Tag>
+    )
+  }
+)
 
-Heading.displayName = 'Heading';
+Heading.displayName = "Heading"
 
-export { Heading };
+export { Heading }

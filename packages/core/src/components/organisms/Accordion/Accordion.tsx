@@ -1,45 +1,53 @@
-import * as React from 'react';
+import {
+  Children,
+  cloneElement,
+  forwardRef,
+  isValidElement,
+  ReactNode,
+  useState,
+} from "react"
 
 export interface AccordionProps {
-  multiple?: boolean;
-  children: React.ReactNode;
+  multiple?: boolean
+  children: ReactNode
+  className?: string
 }
 
-export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(({
-  multiple = false,
-  children,
-  ...props
-}, ref) => {
-  const [openItems, setOpenItems] = React.useState<number[]>([]);
+export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
+  ({ multiple = false, children, className, ...props }, ref) => {
+    const [openItems, setOpenItems] = useState<number[]>([])
 
-  const toggleItem = (index: number) => {
-    if (multiple) {
-      if (openItems.includes(index)) {
-        setOpenItems(openItems.filter(i => i !== index));
+    const toggleItem = (index: number) => {
+      if (multiple) {
+        if (openItems.includes(index)) {
+          setOpenItems(openItems.filter((i) => i !== index))
+        } else {
+          setOpenItems([...openItems, index])
+        }
       } else {
-        setOpenItems([...openItems, index]);
-      }
-    } else {
-      if (openItems[0] === index) {
-        setOpenItems([]);
-      } else {
-        setOpenItems([index]);
+        if (openItems[0] === index) {
+          setOpenItems([])
+        } else {
+          setOpenItems([index])
+        }
       }
     }
-  };
 
-  return (
-    <div ref={ref} {...props}>
-      {React.Children.map(children, (child, index) => {
-        if (!React.isValidElement(child)) return null;
-        return React.cloneElement(child, {
-          isOpen: openItems.includes(index),
-          onToggle: () => toggleItem(index),
-        });
-      })}
-    </div>
-  );
-});
-Accordion.displayName = 'Accordion';
+    return (
+      <div ref={ref} className={className} data-testid="accordion" {...props}>
+        {Children.map(children, (child, index) => {
+          if (!isValidElement(child)) return null
+          // Проверяем, что дочерний элемент — React-компонент, а не DOM-элемент
+          if (typeof child.type === "string") return child
+          return cloneElement(child, {
+            isOpen: openItems.includes(index),
+            onToggle: () => toggleItem(index),
+          })
+        })}
+      </div>
+    )
+  }
+)
+Accordion.displayName = "Accordion"
 
-export default Accordion;
+export default Accordion

@@ -1,8 +1,8 @@
-import React, { useId } from "react"
+import { ChangeEvent, forwardRef, SelectHTMLAttributes, useId } from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "../../../utils/cn"
 
-const selectVariants = cva(
+export const selectVariants = cva(
   "flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
   {
     variants: {
@@ -21,8 +21,7 @@ const selectVariants = cva(
 type Option = { value: string; label: string }
 
 export interface SelectProps
-  extends
-    Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "size">,
+  extends Omit<SelectHTMLAttributes<HTMLSelectElement>, "size">,
     VariantProps<typeof selectVariants> {
   size?: "default" | "sm" | "lg"
   label?: string
@@ -32,7 +31,7 @@ export interface SelectProps
   errorMessage?: string
 }
 
-export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
+export const Select = forwardRef<HTMLSelectElement, SelectProps>(
   (
     {
       size,
@@ -53,7 +52,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
     const labelId = `${selectId}-label`
     const descriptionId = `${selectId}-description`
 
-    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
       onChange?.(e)
     }
 

@@ -1,6 +1,6 @@
 {
   "name": "@ui/core",
-  "version": "1.0.0",
+  "version": "0.1.5",
   "description": "Enterprise React UI component library",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -22,14 +22,16 @@
   "scripts": {
     "build": "vite build && rollup -c rollup.config.js",
     "dev": "vite",
-    "lint": "eslint --ext .ts,.tsx src",
-    "lint:fix": "eslint --ext .ts,.tsx src --fix",
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix",
     "type-check": "tsc --noEmit",
     "test": "jest",
     "test:animations": "jest src/animations",
     "test:atoms": "jest src/components/atoms",
     "test:molecules": "jest src/components/molecules",
     "test:organisms": "jest src/components/organisms",
+    "test:hooks": "jest src/hooks",
+    "test:utils": "jest src/utils",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "clean": "rm -rf dist"
@@ -67,6 +69,7 @@
     "@testing-library/jest-dom": "^6.0.0",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.5.0",
+    "@types/jest": "^30.0.0",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
@@ -82,6 +85,7 @@
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-terser": "^7.0.2",
+    "ts-jest": "^29.4.6",
     "typescript": "^5.0.0",
     "vite": "^4.4.0",
     "vite-plugin-dts": "^3.6.0"

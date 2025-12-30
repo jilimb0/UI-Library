@@ -1,16 +1,13 @@
-
-import React, { useState } from 'react';
-import { Form, Field, Input, Textarea, Button } from '@ui/core';
+import { useState, FormEvent } from "react"
+import { Form, Field, Input, TextArea, Button } from "@ui/core"
 
 export function FormsPage() {
-  const [name, setName] = useState('');
-  const [message, setMessage] = useState('');
+  const [name, setName] = useState("")
+  const [message, setMessage] = useState("")
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    alert(`Name: ${name}
-Message: ${message}`);
-  };
+  const handleSubmit = (data: Record<string, any>) => {
+    alert(`Name: ${data.name}, Message: ${data.message}`)
+  }
 
   return (
     <div style={{ padding: 20 }}>
@@ -20,10 +17,13 @@ Message: ${message}`);
           <Input value={name} onChange={(e) => setName(e.target.value)} />
         </Field>
         <Field label="Message">
-          <Textarea value={message} onChange={(e) => setMessage(e.target.value)} />
+          <TextArea
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
         </Field>
         <Button type="submit">Submit</Button>
       </Form>
     </div>
-  );
+  )
 }

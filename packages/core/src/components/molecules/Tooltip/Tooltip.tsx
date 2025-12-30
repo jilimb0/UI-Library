@@ -1,11 +1,11 @@
-import * as React from "react"
+import { forwardRef, HTMLAttributes } from "react"
 import { cn } from "../../../utils/cn"
 
-export interface TooltipProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface TooltipProps extends HTMLAttributes<HTMLDivElement> {
   content: string | undefined
 }
 
-export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
+export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
   ({ content, className, children, ...props }, ref) => {
     return (
       <div

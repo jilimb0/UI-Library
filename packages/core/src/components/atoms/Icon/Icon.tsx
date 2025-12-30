@@ -1,21 +1,28 @@
+import { LucideProps, LucideIcon } from "lucide-react"
+import * as Icons from "lucide-react"
+import { forwardRef, ComponentPropsWithRef } from "react"
 
-import * as React from 'react';
-import { LucideProps } from 'lucide-react';
-import * as Icons from 'lucide-react';
+type IconName = keyof typeof Icons
 
-export interface IconProps extends LucideProps {
-  name: keyof typeof Icons;
+export interface IconProps extends Omit<LucideProps, "ref"> {
+  name: IconName
 }
 
-const Icon = React.forwardRef<SVGSVGElement, IconProps>(({
-  name,
-  ...props
-}, ref) => {
-  const Component = Icons[name];
-  if (!Component) return null;
-  return <Component ref={ref} data-testid="icon-svg" {...props} />;
-});
+const Icon = forwardRef<SVGSVGElement, IconProps>(({ name, ...props }, ref) => {
+  // Приводим к типу LucideIcon
+  const LucideIcon = Icons[name as IconName] as LucideIcon
 
-Icon.displayName = 'Icon';
+  if (!LucideIcon) return null
 
-export { Icon };
+  return (
+    <LucideIcon
+      ref={ref}
+      data-testid="icon-svg"
+      {...(props as ComponentPropsWithRef<"svg">)}
+    />
+  )
+})
+
+Icon.displayName = "Icon"
+
+export { Icon }

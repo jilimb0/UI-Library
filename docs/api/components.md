@@ -4,7 +4,7 @@
 
 ## Button
 - Props:
-  - `onClick`: (event: React.MouseEvent) => void - Обработчик клика
+  - `onClick`: (event: MouseEvent) => void - Обработчик клика
   - `disabled`: boolean - Отключение кнопки
   - `variant`: 'primary' | 'secondary' | 'tertiary' - Вариант оформления
   - `size`: 'sm' | 'md' | 'lg' - Размер кнопки
@@ -14,7 +14,7 @@
   - `isOpen`: boolean - Открыто ли модальное окно
   - `onClose`: () => void - Обработчик закрытия
   - `title`: string - Заголовок окна
-  - `children`: React.ReactNode - Содержимое модального окна
+  - `children`: ReactNode - Содержимое модального окна
 
 ## Input
 - Props:

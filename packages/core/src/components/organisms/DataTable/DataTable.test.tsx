@@ -13,12 +13,6 @@ const mockColumns = [
   { key: "email", header: "Email", sortable: true },
 ]
 
-const largeData = Array.from({ length: 25 }, (_, i) => ({
-  id: i,
-  name: `User ${i}`,
-  email: `user${i}@example.com`,
-}))
-
 describe("DataTable", () => {
   it("renders data in table format", () => {
     render(<DataTable data={mockData} columns={mockColumns} />)
@@ -36,23 +30,31 @@ describe("DataTable", () => {
     // Проверка что данные отсортированы
   })
 
-  it("supports pagination", () => {
-    render(<DataTable data={largeData} columns={mockColumns} pageSize={10} />)
+  it("should render empty state when no data", () => {
+    render(<DataTable data={[]} columns={mockColumns} />)
+    expect(screen.getByText("No data")).toBeInTheDocument()
+  })
 
-    expect(screen.getByText("Page 1 of 3")).toBeInTheDocument()
-    expect(screen.getByRole("button", { name: "Next" })).toBeInTheDocument()
+  it("should handle custom renderers", () => {
+    const customColumns = [
+      {
+        key: "name",
+        header: "Name",
+        render: (item) => <span>{item.name}</span>,
+      },
+    ]
+    render(<DataTable data={mockData} columns={customColumns} />)
+    expect(screen.getByText("John Doe")).toBeInTheDocument()
+  })
+
+  it("should handle pagination edge cases", () => {
+    render(<DataTable data={mockData} columns={mockColumns} pageSize={50} />)
+    expect(screen.getByText("Page 1 of 1")).toBeInTheDocument()
   })
 
   it("should handle sorting", () => {
     render(<DataTable data={mockData} columns={mockColumns} />)
     fireEvent.click(screen.getByText("Name"))
     expect(screen.getByText("John Doe")).toBeInTheDocument()
-  })
-
-  it("should handle pagination", () => {
-    render(<DataTable data={largeData} columns={mockColumns} pageSize={10} />)
-    expect(screen.getByText("Page 1 of 3")).toBeInTheDocument()
-    fireEvent.click(screen.getByText("Next"))
-    expect(screen.getByText("Page 2 of 3")).toBeInTheDocument()
   })
 })

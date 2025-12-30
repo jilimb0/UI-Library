@@ -10,8 +10,9 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
-      "@ui/tokens": ["../tokens/src"],
-    }
+      "@ui/tokens": ["../tokens/src"]
+    },
+    "types": []
   },
   "include": ["src/**/*", "../../public/icons"],
   "exclude": ["src/**/*.test.*", "src/**/*.stories.*", "dist"]

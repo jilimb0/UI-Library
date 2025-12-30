@@ -1,20 +1,20 @@
-import React, { RefObject } from "react";
-import { useClickOutside } from "./useClickOutside";
+import { FC, RefObject } from "react"
+import { useClickOutside } from "./useClickOutside"
 
 type TestComponentProps = {
-  callback: (event: MouseEvent) => void;
-};
+  callback: (event: MouseEvent) => void
+}
 
-const TestComponent: React.FC<TestComponentProps> = ({ callback }) => {
-  const ref = { current: null } as RefObject<HTMLDivElement>;
+const TestComponent: FC<TestComponentProps> = ({ callback }) => {
+  const ref = { current: null } as RefObject<HTMLDivElement>
 
-  useClickOutside(ref, callback);
+  useClickOutside(ref, callback)
 
   return (
     <div ref={ref} data-testid="test-div">
       Test
     </div>
-  );
-};
+  )
+}
 
-export default TestComponent;
+export default TestComponent

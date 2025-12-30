@@ -1,35 +1,41 @@
+import { cn } from "../../../utils/cn"
+import { forwardRef, ImgHTMLAttributes, ReactNode, useState } from "react"
 
-import * as React from 'react';
-import { cn } from '../../../utils/cn';
-
-export interface AvatarProps extends React.ImgHTMLAttributes<HTMLImageElement> {
-  fallback?: React.ReactNode;
-  size?: 'sm' | 'md' | 'lg';
+export interface AvatarProps extends ImgHTMLAttributes<HTMLImageElement> {
+  fallback?: ReactNode
+  size?: "sm" | "md" | "lg"
 }
 
 const sizeClasses = {
-  sm: 'h-6 w-6',
-  md: 'h-10 w-10',
-  lg: 'h-16 w-16',
-};
+  sm: "h-6 w-6",
+  md: "h-10 w-10",
+  lg: "h-16 w-16",
+}
 
-const Avatar = React.forwardRef<HTMLImageElement, AvatarProps>(
-  ({ fallback, size = 'md', className, ...props }, ref) => {
-    const [isError, setIsError] = React.useState(false);
+const Avatar = forwardRef<HTMLImageElement, AvatarProps>(
+  ({ fallback, size = "md", className, ...props }, ref) => {
+    const [isError, setIsError] = useState(false)
     return (
       <div
         className={cn(
-          'relative overflow-hidden rounded-full bg-gray-100',
+          "relative overflow-hidden rounded-full bg-gray-100",
           sizeClasses[size],
           className
         )}
       >
-        {!isError && <img ref={ref} {...props} alt={props.alt || ''} onError={() => setIsError(true)} />}
+        {!isError && (
+          <img
+            ref={ref}
+            {...props}
+            alt={props.alt || ""}
+            onError={() => setIsError(true)}
+          />
+        )}
         {isError && fallback}
       </div>
-    );
+    )
   }
-);
-Avatar.displayName = 'Avatar';
+)
+Avatar.displayName = "Avatar"
 
-export { Avatar };
+export { Avatar }

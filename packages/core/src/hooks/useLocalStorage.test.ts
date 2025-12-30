@@ -1,4 +1,74 @@
-import { renderHook, act } from '@testing-library/react';
+  it('should handle serialization errors gracefully', () => {
+    const { result } = renderHook(() => useLocalStorage('test-key', 'initial'));
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    jest.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+      throw new Error('Serialization error');
+    });
+
+    act(() => {
+      result.current[1]('updated');
+    });
+
+    expect(consoleErrorSpy).toHaveBeenCalled();
+    jest.spyOn(Storage.prototype, 'setItem').mockRestore();
+    consoleErrorSpy.mockRestore();
+  });  it('should handle serialization errors gracefully', () => {
+    const { result } = renderHook(() => useLocalStorage('test-key', 'initial'));
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    jest.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+      throw new Error('Serialization error');
+    });
+
+    act(() => {
+      result.current[1]('updated');
+    });
+
+    expect(consoleErrorSpy).toHaveBeenCalled();
+    jest.spyOn(Storage.prototype, 'setItem').mockRestore();
+    consoleErrorSpy.mockRestore();
+  });  it('should handle serialization errors gracefully', () => {
+    const { result } = renderHook(() => useLocalStorage('test-key', 'initial'));
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    jest.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+      throw new Error('Serialization error');
+    });
+
+    act(() => {
+      result.current[1]('updated');
+    });
+
+    expect(consoleErrorSpy).toHaveBeenCalled();
+    jest.spyOn(Storage.prototype, 'setItem').mockRestore();
+    consoleErrorSpy.mockRestore();
+  });  it('should handle serialization errors gracefully', () => {
+    const { result } = renderHook(() => useLocalStorage('test-key', 'initial'));
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    jest.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+      throw new Error('Serialization error');
+    });
+
+    act(() => {
+      result.current[1]('updated');
+    });
+
+    expect(consoleErrorSpy).toHaveBeenCalled();
+    jest.spyOn(Storage.prototype, 'setItem').mockRestore();
+    consoleErrorSpy.mockRestore();
+  });  it('should handle serialization errors gracefully', () => {
+    const { result } = renderHook(() => useLocalStorage('test-key', 'initial'));
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    jest.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+      throw new Error('Serialization error');
+    });
+
+    act(() => {
+      result.current[1]('updated');
+    });
+
+    expect(consoleErrorSpy).toHaveBeenCalled();
+    jest.spyOn(Storage.prototype, 'setItem').mockRestore();
+    consoleErrorSpy.mockRestore();
+  });import { renderHook, act } from '@testing-library/react';
 import { useLocalStorage } from './useLocalStorage';
 
 describe('useLocalStorage', () => {

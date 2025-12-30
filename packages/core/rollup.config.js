@@ -1,43 +1,43 @@
+const typescript = require("@rollup/plugin-typescript")
+const peerDepsExternal = require("rollup-plugin-peer-deps-external")
+const resolve = require("@rollup/plugin-node-resolve")
+const commonjs = require("@rollup/plugin-commonjs")
+const { terser } = require("rollup-plugin-terser")
+const postcss = require("rollup-plugin-postcss")
 
-import typescript from '@rollup/plugin-typescript';
-import peerDepsExternal from 'rollup-plugin-peer-deps-external';
-import resolve from '@rollup/plugin-node-resolve';
-import commonjs from '@rollup/plugin-commonjs';
-import { terser } from 'rollup-plugin-terser';
-import postcss from 'rollup-plugin-postcss';
-
-export default {
-  input: 'src/index.ts',
+module.exports = {
+  input: "src/index.ts",
   output: [
     {
-      file: 'dist/index.cjs.js',
-      format: 'cjs',
+      file: "dist/index.cjs.js",
+      format: "cjs",
       sourcemap: true,
     },
     {
-      file: 'dist/index.esm.js',
-      format: 'esm',
+      file: "dist/index.esm.js",
+      format: "esm",
       sourcemap: true,
     },
   ],
   plugins: [
     peerDepsExternal(),
-    resolve({ 
+    resolve({
       browser: true,
-      preferBuiltins: false 
+      preferBuiltins: false,
     }),
     commonjs(),
     postcss({
-      extract: 'styles.css',
+      extract: "styles.css",
       minimize: true,
       sourceMap: true,
     }),
-    typescript({ 
-      tsconfig: './tsconfig.json',
+    typescript({
+      tsconfig: "./tsconfig.json",
       declaration: true,
-      declarationDir: 'dist/types',
+      declarationDir: "dist/types",
       sourceMap: true,
-      exclude: ['**/*.test.*', '**/*.stories.*']
+      exclude: ["**/*.test.*", "**/*.stories.*"],
+      outputToFilesystem: false,
     }),
     terser({
       compress: {
@@ -45,5 +45,5 @@ export default {
       },
     }),
   ],
-  external: ['react', 'react-dom', 'react/jsx-runtime'],
-};
+  external: ["react", "react-dom", "react/jsx-runtime"],
+}

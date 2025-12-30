@@ -1,21 +1,25 @@
 import { render, screen, fireEvent } from "@testing-library/react"
 import { axe, toHaveNoViolations } from "jest-axe"
 import { Tabs } from "./Tabs"
-import React from "react"
+import React, { ReactNode } from "react"
 
 expect.extend(toHaveNoViolations)
 
-const MockTab = ({ children }: { children: React.ReactNode }) => {
-  const [selected, setSelected] = React.useState(false);
+const MockTab = ({
+  children,
+  selected = false,
+  onSelect,
+}: {
+  children: ReactNode
+  selected?: boolean
+  onSelect?: () => void
+}) => {
   return (
-    <div
-      className={selected ? "active" : ""}
-      onClick={() => setSelected(true)}
-    >
+    <button className={selected ? "active" : ""} onClick={onSelect}>
       {children}
-    </div>
-  );
-};
+    </button>
+  )
+}
 
 describe("Tabs", () => {
   it("renders without crashing", () => {
@@ -38,5 +42,27 @@ describe("Tabs", () => {
     )
     fireEvent.click(screen.getByText("Tab 2"))
     expect(screen.getByText("Tab 2")).toHaveClass("active")
+  })
+
+  it("should handle defaultIndex", () => {
+    render(
+      <Tabs defaultIndex={1}>
+        <MockTab>Tab 1</MockTab>
+        <MockTab>Tab 2</MockTab>
+      </Tabs>
+    )
+    expect(screen.getByText("Tab 2")).toHaveClass("active")
+  })
+
+  it("should call onChange when tab is selected", () => {
+    const onChange = jest.fn()
+    render(
+      <Tabs onChange={onChange}>
+        <MockTab>Tab 1</MockTab>
+        <MockTab>Tab 2</MockTab>
+      </Tabs>
+    )
+    fireEvent.click(screen.getByText("Tab 2"))
+    expect(onChange).toHaveBeenCalledWith(1)
   })
 })

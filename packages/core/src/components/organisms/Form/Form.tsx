@@ -1,21 +1,31 @@
+import { FormEvent, FormHTMLAttributes, forwardRef } from "react"
 
-import * as React from 'react';
-
-export interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
-  onSubmit: (data: Record<string, any>) => void;
+export interface FormProps extends FormHTMLAttributes<HTMLFormElement> {
+  onSubmit: (data: Record<string, any>) => void
 }
 
-export const Form = React.forwardRef<HTMLFormElement, FormProps>(({ onSubmit, children, ...props }, ref) => {
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    // TODO: collect data and validate before calling onSubmit
-    onSubmit({});
-  };
+export const Form = forwardRef<HTMLFormElement, FormProps>(
+  ({ onSubmit, children, ...props }, ref) => {
+    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault()
 
-  return (
-    <form ref={ref} onSubmit={handleSubmit} {...props}>
-      {children}
-    </form>
-  );
-});
-Form.displayName = 'Form';
+      const formData = new FormData(event.currentTarget)
+      const data: Record<string, any> = Object.fromEntries(formData)
+
+      onSubmit(data)
+    }
+
+    return (
+      <form
+        ref={ref}
+        onSubmit={handleSubmit}
+        role="form"
+        data-testid="form"
+        {...props}
+      >
+        {children}
+      </form>
+    )
+  }
+)
+Form.displayName = "Form"

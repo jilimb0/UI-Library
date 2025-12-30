@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import { FC, useState } from "react"
 import {
   format,
   addMonths,
@@ -18,10 +18,10 @@ interface DatePickerProps {
   timezone?: string
 }
 
-const DatePicker: React.FC<DatePickerProps> = ({
+const DatePicker: FC<DatePickerProps> = ({
   selectedDate,
   onChange,
-  timezone,
+  // timezone,
 }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date())
 

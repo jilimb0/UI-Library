@@ -1,4 +1,3 @@
-
 export * from './string/capitalize';
 export * from './string/slugify';
 export * from './string/truncate';

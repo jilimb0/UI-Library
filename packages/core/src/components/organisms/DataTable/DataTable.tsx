@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react"
+import { useState, useMemo, ReactNode } from "react"
 
 interface Column<T> {
   key: string
@@ -6,7 +6,7 @@ interface Column<T> {
   width?: number | string
   sortable?: boolean
   filterable?: boolean
-  render?: (item: T) => React.ReactNode
+  render?: (item: T) => ReactNode
 }
 
 interface DataTableProps<T> {
@@ -19,6 +19,8 @@ function DataTable<T>({ data, columns, pageSize = 10 }: DataTableProps<T>) {
   const [sortColumn, setSortColumn] = useState<string | null>(null)
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc")
   const [currentPage, setCurrentPage] = useState(1)
+
+  if (data.length === 0) return <div>No data</div>
 
   const sortedData = useMemo(() => {
     if (!sortColumn) return data

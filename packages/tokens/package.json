@@ -1,12 +1,13 @@
-
 {
   "name": "@ui/tokens",
-  "version": "1.0.0",
+  "version": "0.1.5",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
   "sideEffects": false,
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc --build",
     "lint": "eslint --ext .ts src",

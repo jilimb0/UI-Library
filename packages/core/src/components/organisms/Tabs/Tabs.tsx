@@ -1,35 +1,39 @@
-import * as React from 'react';
+import {
+  Children,
+  cloneElement,
+  forwardRef,
+  isValidElement,
+  ReactNode,
+  useState,
+} from "react"
 
 export interface TabsProps {
-  children: React.ReactNode;
-  defaultIndex?: number;
-  onChange?: (index: number) => void;
+  children: ReactNode
+  defaultIndex?: number
+  onChange?: (index: number) => void
 }
 
-export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(({
-  children,
-  defaultIndex = 0,
-  onChange,
-  ...props
-}, ref) => {
-  const [selectedIndex, setSelectedIndex] = React.useState(defaultIndex);
+export const Tabs = forwardRef<HTMLDivElement, TabsProps>(
+  ({ children, defaultIndex = 0, onChange, ...props }, ref) => {
+    const [selectedIndex, setSelectedIndex] = useState(defaultIndex)
 
-  const handleSelect = (index: number) => {
-    setSelectedIndex(index);
-    onChange?.(index);
-  };
+    const handleSelect = (index: number) => {
+      setSelectedIndex(index)
+      onChange?.(index)
+    }
 
-  return (
-    <div ref={ref} {...props}>
-      {React.Children.map(children, (child, index) => {
-        if (!React.isValidElement(child)) return null;
-        return React.cloneElement(child, {
-          selected: selectedIndex === index,
-          onSelect: () => handleSelect(index),
-        });
-      })}
-    </div>
-  );
-});
+    return (
+      <div ref={ref} {...props}>
+        {Children.map(children, (child, index) => {
+          if (!isValidElement(child)) return null
+          return cloneElement(child, {
+            selected: selectedIndex === index,
+            onSelect: () => handleSelect(index),
+          })
+        })}
+      </div>
+    )
+  }
+)
 
-Tabs.displayName = 'Tabs';
+Tabs.displayName = "Tabs"

@@ -1,7 +1,7 @@
+import { motion } from "framer-motion"
+import { PropsWithChildren } from "react"
 
-import { motion } from 'framer-motion';
-
-export function FadeIn({ children, ...props }: React.PropsWithChildren<any>) {
+export function FadeIn({ children, ...props }: PropsWithChildren<any>) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -12,5 +12,5 @@ export function FadeIn({ children, ...props }: React.PropsWithChildren<any>) {
     >
       {children}
     </motion.div>
-  );
+  )
 }

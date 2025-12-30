@@ -1,10 +1,8 @@
-import React, { forwardRef, useId } from "react"
+import { forwardRef, InputHTMLAttributes, useId } from "react"
 import { cn } from "../../../utils/cn"
 
-export interface CheckboxProps extends Omit<
-  React.InputHTMLAttributes<HTMLInputElement>,
-  "type" | "size"
-> {
+export interface CheckboxProps
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "size"> {
   label?: string
   description?: string
   error?: boolean
@@ -22,7 +20,6 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
       description,
       error,
       errorMessage,
-      indeterminate,
       size = "md",
       variant = "default",
       ...props
