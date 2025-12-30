@@ -27,8 +27,8 @@ export type BadgeVariant = VariantProps<typeof badgeVariants>["variant"]
 // Select component props types
 export type SelectSize = VariantProps<typeof selectVariants>["size"]
 
-// Textarea component props types
-export type TextareaVariant = VariantProps<typeof textareaVariants>["variant"]
-export type TextareaSize = VariantProps<typeof textareaVariants>["size"]
+// TextArea component props types
+export type TextAreaVariant = VariantProps<typeof textareaVariants>["variant"]
+export type TextAreaSize = VariantProps<typeof textareaVariants>["size"]
 
 // Add more component-specific types here as needed

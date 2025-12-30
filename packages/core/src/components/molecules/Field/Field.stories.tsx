@@ -1,49 +1,49 @@
-
-import type { Meta, StoryObj } from '@storybook/react';
-import { Field } from './Field';
-import { Input } from '../../atoms/Input';
-import { Textarea } from '../../atoms/Textarea';
+import type { Meta, StoryObj } from "@storybook/react"
+import { Field } from "./Field"
+import { Input } from "../../atoms/Input"
+import { TextArea } from "../../atoms/TextArea"
+import React from "react"
 
 const meta: Meta<typeof Field> = {
-  title: 'Components/Molecules/Field',
+  title: "Components/Molecules/Field",
   component: Field,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
-  tags: ['autodocs'],
-};
+  tags: ["autodocs"],
+}
 
-export default meta;
+export default meta
 
-type Story = StoryObj<typeof Field>;
+type Story = StoryObj<typeof Field>
 
 export const Default: Story = {
   args: {
-    label: 'Email Address',
+    label: "Email Address",
     children: <Input type="email" placeholder="Enter your email" />,
   },
-};
+}
 
 export const WithDescription: Story = {
   args: {
-    label: 'Password',
-    description: 'Must be at least 8 characters long',
+    label: "Password",
+    description: "Must be at least 8 characters long",
     children: <Input type="password" placeholder="Enter your password" />,
   },
-};
+}
 
 export const WithError: Story = {
   args: {
-    label: 'Email Address',
-    error: 'Email is required',
+    label: "Email Address",
+    error: "Email is required",
     children: <Input type="email" placeholder="Enter your email" />,
   },
-};
+}
 
 export const WithTextarea: Story = {
   args: {
-    label: 'Message',
-    description: 'Enter your message here',
-    children: <Textarea placeholder="Type your message..." rows={4} />,
+    label: "Message",
+    description: "Enter your message here",
+    children: <TextArea placeholder="Type your message..." rows={4} />,
   },
-};
+}
