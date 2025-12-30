@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { Field } from "./Field"
-import { Input } from "../../atoms/Input"
-import { TextArea } from "../../atoms/TextArea"
+import { TextArea, Input } from "../../atoms"
 import React from "react"
 
 const meta: Meta<typeof Field> = {
