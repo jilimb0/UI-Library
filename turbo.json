@@ -9,7 +9,10 @@
       "dependsOn": ["^build"],
       "outputs": ["coverage/**"]
     },
-    "lint": {},
+    "lint": {
+      "cache": false,
+      "outputs": []
+    },
     "dev": {
       "cache": false,
       "persistent": true
@@ -20,7 +23,8 @@
     },
     "typecheck": {
       "dependsOn": ["^build"],
-      "outputs": [".tsbuildinfo"]
+      "outputs": [".next/cache/**", ".tsbuildinfo"]
     }
   }
 }
+
