@@ -1,4 +1,4 @@
-import { useState, FormEvent } from "react"
+import { useState } from "react"
 import { Form, Field, Input, TextArea, Button } from "@ui/core"
 
 export function FormsPage() {
