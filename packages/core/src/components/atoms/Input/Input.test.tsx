@@ -1,21 +1,23 @@
-import { render, screen, fireEvent } from "@testing-library/react"
-import { Input } from "./Input"
-import React from "react"
-import "@testing-library/jest-dom"
+import { describe, it, expect, vi } from 'vitest';
 
-describe("Input", () => {
-  it("renders input element", () => {
-    render(<Input />)
-    expect(screen.getByRole("textbox")).toBeInTheDocument()
-  })
+import { render, screen, fireEvent } from '@testing-library/react';
+import { Input } from './Input';
+import React from 'react';
+import '@testing-library/jest-dom';
 
-  it("handles value changes", () => {
-    const onChange = jest.fn()
-    render(<Input onChange={onChange} />)
+describe('Input', () => {
+  it('renders input element', () => {
+    render(<Input />);
+    expect(screen.getByRole('textbox')).toBeInTheDocument();
+  });
 
-    const input = screen.getByRole("textbox")
-    fireEvent.change(input, { target: { value: "test" } })
+  it('handles value changes', () => {
+    const onChange = vi.fn();
+    render(<Input onChange={onChange} />);
 
-    expect(onChange).toHaveBeenCalled()
-  })
-})
+    const input = screen.getByRole('textbox');
+    fireEvent.change(input, { target: { value: 'test' } });
+
+    expect(onChange).toHaveBeenCalled();
+  });
+});

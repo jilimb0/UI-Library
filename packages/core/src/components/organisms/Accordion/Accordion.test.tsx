@@ -1,10 +1,10 @@
+import { describe, it, expect, vi } from "vitest";
+
 import { render, screen, fireEvent } from "@testing-library/react"
-import { toHaveNoViolations } from "jest-axe"
 import { Accordion } from "./Accordion"
 import "@testing-library/jest-dom"
 import React, { ReactNode } from "react"
 
-expect.extend(toHaveNoViolations)
 
 const MockAccordionItem = ({
   children,

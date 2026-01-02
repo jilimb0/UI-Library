@@ -1,28 +1,30 @@
-import { render, screen } from "@testing-library/react"
-import userEvent from "@testing-library/user-event"
-import { Button } from "./Button"
-import React from "react"
-import "@testing-library/jest-dom"
+import { describe, it, expect, vi } from 'vitest';
 
-describe("Button Accessibility", () => {
-  it("should have proper ARIA attributes", () => {
-    render(<Button aria-label="Custom label">Icon only</Button>)
-    expect(screen.getByRole("button")).toHaveAttribute(
-      "aria-label",
-      "Custom label"
-    )
-  })
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { Button } from './Button';
+import React from 'react';
+import '@testing-library/jest-dom';
 
-  it("should support keyboard navigation", async () => {
-    const user = userEvent.setup()
-    const onClick = jest.fn()
+describe('Button Accessibility', () => {
+  it('should have proper ARIA attributes', () => {
+    render(<Button aria-label="Custom label">Icon only</Button>);
+    expect(screen.getByRole('button')).toHaveAttribute(
+      'aria-label',
+      'Custom label'
+    );
+  });
 
-    render(<Button onClick={onClick}>Test</Button>)
+  it('should support keyboard navigation', async () => {
+    const user = userEvent.setup();
+    const onClick = vi.fn();
 
-    await user.tab()
-    expect(screen.getByRole("button")).toHaveFocus()
+    render(<Button onClick={onClick}>Test</Button>);
 
-    await user.keyboard("{Enter}")
-    expect(onClick).toHaveBeenCalled()
-  })
-})
+    await user.tab();
+    expect(screen.getByRole('button')).toHaveFocus();
+
+    await user.keyboard('{Enter}');
+    expect(onClick).toHaveBeenCalled();
+  });
+});

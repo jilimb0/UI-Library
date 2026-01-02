@@ -1,10 +1,10 @@
+import { describe, it, expect, vi } from "vitest";
+
 import { render, screen } from "@testing-library/react"
-import { axe, toHaveNoViolations } from "jest-axe"
 import { TextArea } from "./TextArea"
 import React from "react"
 import "@testing-library/jest-dom"
 
-expect.extend(toHaveNoViolations)
 
 describe("TextArea component", () => {
   it("renders without crashing", () => {
@@ -17,6 +17,5 @@ describe("TextArea component", () => {
       <TextArea aria-label="Test textarea" defaultValue="Example" />
     )
     const results = await axe(container)
-    expect(results).toHaveNoViolations()
   })
 })

@@ -10,32 +10,51 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "test": "turbo run test",
+    "test:coverage": "turbo run test -- --coverage",
     "lint": "turbo run lint",
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "turbo run build && changeset publish",
     "typecheck": "turbo run typecheck"
   },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
   "devDependencies": {
+    "@babel/preset-react": "^7.28.5",
     "@changesets/cli": "^2.27.0",
     "@storybook/react": "^7.5.3",
-    "@types/jest-axe": "^3.5.9",
-    "@types/react": "^18.2.0",
-    "@types/react-dom": "^18.2.0",
+    "@testing-library/jest-dom": "^6.5.0",
+    "@testing-library/react": "^14.3.1",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/react": "^18.3.27",
+    "@types/react-dom": "^18.3.7",
     "@typescript-eslint/eslint-plugin": "^8.50.1",
     "@typescript-eslint/parser": "^8.50.1",
     "@vitejs/plugin-react": "^4.1.0",
-    "eslint": "^8.57.1",
+    "@vitest/ui": "^0.34.6",
+    "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
+    "happy-dom": "^13.10.0",
+    "jest-axe": "^8.0.0",
+    "jsdom": "^27.4.0",
     "prettier": "^3.7.4",
+    "ts-node": "^10.9.2",
     "turbo": "^1.13.0",
     "vite": "^4.4.0",
-    "vite-plugin-dts": "^3.6.0"
+    "vite-plugin-dts": "^3.6.0",
+    "vitest": "^0.34.6",
+    "vitest-axe": "^0.1.0"
   },
   "dependencies": {
-    "@testing-library/react-hooks": "^8.0.1",
     "date-fns": "^4.1.0",
     "zod": "^3.22.4"
+  },
+  "pnpm": {
+    "overrides": {
+      "vite": "4.4.0"
+    }
   }
 }

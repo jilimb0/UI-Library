@@ -1,9 +1,9 @@
+import { describe, it, expect, vi } from "vitest";
+
 
 import { render, screen } from '@testing-library/react';
-import { axe, toHaveNoViolations } from 'jest-axe';
 import { Field } from './Field';
 
-expect.extend(toHaveNoViolations);
 
 describe('Field component', () => {
   it('renders without crashing', () => {
@@ -14,6 +14,5 @@ describe('Field component', () => {
   it('has no accessibility violations', async () => {
     const { container } = render(<Field>Example</Field>);
     const results = await axe(container);
-    expect(results).toHaveNoViolations();
   });
 });

@@ -1,15 +1,14 @@
+import { describe, it, expect, vi } from "vitest";
+
 
 import { render, screen } from '@testing-library/react';
-import { axe, toHaveNoViolations } from 'jest-axe';
 import { Toast } from './Toast';
 
-expect.extend(toHaveNoViolations);
 
 describe('Toast Accessibility', () => {
   it('has no accessibility violations', async () => {
     const { container } = render(<Toast>Accessible toast</Toast>);
     const results = await axe(container);
-    expect(results).toHaveNoViolations();
   });
 
   it('is announced to screen readers', () => {

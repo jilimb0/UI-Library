@@ -21,7 +21,13 @@
       "@ui/tokens": ["packages/tokens/src"]
     }
   },
-  "include": [],
+  "include": [
+    "packages/core/src",
+    "packages/utils/src",
+    "packages/tokens/src",
+    "apps/**/*",
+    "vitest.config.ts",
+    "vitest.setup.ts"
+  ],
   "exclude": ["node_modules", "dist"]
 }
-

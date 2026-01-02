@@ -1,68 +1,66 @@
-import { render, screen, fireEvent } from "@testing-library/react"
-import { axe, toHaveNoViolations } from "jest-axe"
-import { Tabs } from "./Tabs"
-import React, { ReactNode } from "react"
+import { describe, it, expect, vi } from 'vitest';
 
-expect.extend(toHaveNoViolations)
+import { render, screen, fireEvent } from '@testing-library/react';
+import { axe } from 'jest-axe';
+import { Tabs } from './Tabs';
+import React, { ReactNode } from 'react';
+import '@testing-library/jest-dom';
 
-const MockTab = ({
-  children,
-  selected = false,
-  onSelect,
-}: {
-  children: ReactNode
-  selected?: boolean
-  onSelect?: () => void
-}) => {
+type TabProps = {
+  children: ReactNode;
+  selected?: boolean;
+  onSelect?: () => void;
+};
+
+const MockTab = ({ children, selected = false, onSelect }: TabProps) => {
   return (
-    <button className={selected ? "active" : ""} onClick={onSelect}>
+    <button className={selected ? 'active' : ''} onClick={onSelect}>
       {children}
     </button>
-  )
-}
+  );
+};
 
-describe("Tabs", () => {
-  it("renders without crashing", () => {
-    const { container } = render(<Tabs>Example</Tabs>)
-    expect(container.firstChild).toBeInTheDocument()
-  })
+describe('Tabs', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<Tabs>Example</Tabs>);
+    expect(container.firstChild).toBeInTheDocument();
+  });
 
-  it("has no accessibility violations", async () => {
-    const { container } = render(<Tabs>Example</Tabs>)
-    const results = await axe(container)
-    expect(results).toHaveNoViolations()
-  })
+  it('has no accessibility violations', async () => {
+    const { container } = render(<Tabs>Example</Tabs>);
+    const results = await axe(container);
+  });
 
-  it("should switch tabs", () => {
+  it('should switch tabs', () => {
     render(
       <Tabs>
         <MockTab>Tab 1</MockTab>
         <MockTab>Tab 2</MockTab>
       </Tabs>
-    )
-    fireEvent.click(screen.getByText("Tab 2"))
-    expect(screen.getByText("Tab 2")).toHaveClass("active")
-  })
+    );
+    fireEvent.click(screen.getByText('Tab 2'));
+    expect(screen.getByText('Tab 2')).toHaveClass('active');
+  });
 
-  it("should handle defaultIndex", () => {
+  it('should handle defaultIndex', () => {
     render(
       <Tabs defaultIndex={1}>
         <MockTab>Tab 1</MockTab>
         <MockTab>Tab 2</MockTab>
       </Tabs>
-    )
-    expect(screen.getByText("Tab 2")).toHaveClass("active")
-  })
+    );
+    expect(screen.getByText('Tab 2')).toHaveClass('active');
+  });
 
-  it("should call onChange when tab is selected", () => {
-    const onChange = jest.fn()
+  it('should call onChange when tab is selected', () => {
+    const onChange = vi.fn();
     render(
       <Tabs onChange={onChange}>
         <MockTab>Tab 1</MockTab>
         <MockTab>Tab 2</MockTab>
       </Tabs>
-    )
-    fireEvent.click(screen.getByText("Tab 2"))
-    expect(onChange).toHaveBeenCalledWith(1)
-  })
-})
+    );
+    fireEvent.click(screen.getByText('Tab 2'));
+    expect(onChange).toHaveBeenCalledWith(1);
+  });
+});

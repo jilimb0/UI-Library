@@ -1,29 +1,31 @@
-import { render, screen } from "@testing-library/react"
-import userEvent from "@testing-library/user-event"
-import { Input } from "./Input"
-import React from "react"
-import "@testing-library/jest-dom"
+import { describe, it, expect, vi } from 'vitest';
 
-describe("Input Accessibility", () => {
-  it("should have proper ARIA attributes", () => {
-    render(<Input label="Test" description="Description" />)
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { Input } from './Input';
+import React from 'react';
+import '@testing-library/jest-dom';
 
-    const input = screen.getByRole("textbox")
-    expect(input).toHaveAttribute("aria-labelledby")
-    expect(input).toHaveAttribute("aria-describedby")
-  })
+describe('Input Accessibility', () => {
+  it('should have proper ARIA attributes', () => {
+    render(<Input label="Test" description="Description" />);
 
-  it("should support keyboard navigation", async () => {
-    const user = userEvent.setup()
-    const onChange = jest.fn()
+    const input = screen.getByRole('textbox');
+    expect(input).toHaveAttribute('aria-labelledby');
+    expect(input).toHaveAttribute('aria-describedby');
+  });
 
-    render(<Input label="Test" onChange={onChange} />)
+  it('should support keyboard navigation', async () => {
+    const user = userEvent.setup();
+    const onChange = vi.fn();
 
-    const input = screen.getByRole("textbox")
-    await user.tab()
-    expect(input).toHaveFocus()
+    render(<Input label="Test" onChange={onChange} />);
 
-    await user.keyboard(" ")
-    expect(onChange).toHaveBeenCalled()
-  })
-})
+    const input = screen.getByRole('textbox');
+    await user.tab();
+    expect(input).toHaveFocus();
+
+    await user.keyboard(' ');
+    expect(onChange).toHaveBeenCalled();
+  });
+});

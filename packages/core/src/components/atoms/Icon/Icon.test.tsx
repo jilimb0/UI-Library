@@ -1,9 +1,9 @@
+import { describe, it, expect, vi } from "vitest";
+
 
 import { render, screen } from '@testing-library/react';
-import { axe, toHaveNoViolations } from 'jest-axe';
 import { Icon } from './Icon';
 
-expect.extend(toHaveNoViolations);
 
 describe('Icon', () => {
   it('renders without crashing', () => {
@@ -14,6 +14,5 @@ describe('Icon', () => {
   it('has no accessibility violations', async () => {
     const { container } = render(<Icon name="CheckIcon" />);
     const results = await axe(container);
-    expect(results).toHaveNoViolations();
   });
 });

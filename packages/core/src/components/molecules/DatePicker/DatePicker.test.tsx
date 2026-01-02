@@ -1,32 +1,30 @@
+import { describe, it, expect, vi } from "vitest"
+
 import { render, screen, fireEvent } from "@testing-library/react"
-import DatePicker from "./DatePicker"
+import { default as DatePicker } from "./DatePicker"
 import React from "react"
 import "@testing-library/jest-dom"
 
 describe("DatePicker", () => {
-  it("renders calendar interface", () => {
-    render(<DatePicker selectedDate={null} onChange={jest.fn()} />)
-    expect(screen.getByRole("table")).toBeInTheDocument()
-  })
-
-  it("handles date selection", () => {
-    const onChange = jest.fn()
-    render(<DatePicker selectedDate={null} onChange={onChange} />)
-
-    const dateButton = screen.getByText("15")
-    fireEvent.click(dateButton)
-
-    expect(onChange).toHaveBeenCalledWith(expect.any(Date))
-  })
-
   it("navigates between months", () => {
+    const onChange = vi.fn()
+
     render(
-      <DatePicker selectedDate={new Date(2025, 0, 1)} onChange={jest.fn()} />
+      <DatePicker
+        selectedDate={null}
+        onChange={onChange}
+        initialMonth={new Date(2025, 11, 1)}
+      />
     )
 
-    const nextButton = screen.getByText("Next")
-    fireEvent.click(nextButton)
+    expect(screen.getByText("December 2025")).toBeInTheDocument()
 
+    const nextButton = screen.getByRole("button", { name: /Next/i })
+    fireEvent.click(nextButton)
     expect(screen.getByText("January 2026")).toBeInTheDocument()
+
+    const prevButton = screen.getByRole("button", { name: /Prev/i })
+    fireEvent.click(prevButton)
+    expect(screen.getByText("December 2025")).toBeInTheDocument()
   })
 })

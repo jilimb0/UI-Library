@@ -14,6 +14,12 @@
     },
     "types": []
   },
-  "include": ["src/**/*", "../../public/icons"],
+  "include": [
+    "src/**/*",
+    "../../public/icons",
+    "vitest-env.d.ts",
+    "**/*.test.tsx",
+    "**/*.spec.tsx"
+  ],
   "exclude": ["src/**/*.test.*", "src/**/*.stories.*", "dist"]
 }

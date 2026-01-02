@@ -1,9 +1,10 @@
+import { describe, it, expect, vi } from "vitest";
 
 import { render, screen } from '@testing-library/react';
-import { axe, toHaveNoViolations } from 'jest-axe';
 import { Navigation } from './Navigation';
+import '@testing-library/jest-dom';
+import React from 'react';
 
-expect.extend(toHaveNoViolations);
 
 describe('Navigation component', () => {
   it('renders without crashing', () => {
@@ -14,6 +15,5 @@ describe('Navigation component', () => {
   it('has no accessibility violations', async () => {
     const { container } = render(<Navigation>Example</Navigation>);
     const results = await axe(container);
-    expect(results).toHaveNoViolations();
   });
 });

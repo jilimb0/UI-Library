@@ -1,10 +1,12 @@
-import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
-import TestComponent from "./TestComponent";
+import { describe, it, expect, vi } from 'vitest';
 
-describe("useClickOutside", () => {
-  it("should call callback on outside click", () => {
-    const callback = jest.fn();
+import React from 'react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import TestComponent from './TestComponent';
+
+describe('useClickOutside', () => {
+  it('should call callback on outside click', () => {
+    const callback = vi.fn();
 
     render(<TestComponent callback={callback} />);
 
@@ -13,12 +15,12 @@ describe("useClickOutside", () => {
     expect(callback).toHaveBeenCalled();
   });
 
-  it("should not call callback on inside click", () => {
-    const callback = jest.fn();
+  it('should not call callback on inside click', () => {
+    const callback = vi.fn();
 
     render(<TestComponent callback={callback} />);
 
-    fireEvent.mouseDown(screen.getByTestId("test-div"));
+    fireEvent.mouseDown(screen.getByTestId('test-div'));
 
     expect(callback).not.toHaveBeenCalled();
   });

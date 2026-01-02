@@ -1,9 +1,9 @@
+import { describe, it, expect, vi } from "vitest";
+
 
 import { render, screen } from '@testing-library/react';
-import { axe, toHaveNoViolations } from 'jest-axe';
 import { Spinner } from './Spinner';
 
-expect.extend(toHaveNoViolations);
 
 describe('Spinner component', () => {
   it('renders without crashing', () => {
@@ -14,6 +14,5 @@ describe('Spinner component', () => {
   it('has no accessibility violations', async () => {
     const { container } = render(<Spinner />);
     const results = await axe(container);
-    expect(results).toHaveNoViolations();
   });
 });

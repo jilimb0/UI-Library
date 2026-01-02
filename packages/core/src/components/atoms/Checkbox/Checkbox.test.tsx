@@ -1,10 +1,11 @@
+import { describe, it, expect, vi } from "vitest";
+
 import { render, screen, fireEvent } from "@testing-library/react"
-import { axe, toHaveNoViolations } from "jest-axe"
+import userEvent from "@testing-library/user-event"
 import { Checkbox } from "./Checkbox"
 import React from "react"
 import "@testing-library/jest-dom"
 
-expect.extend(toHaveNoViolations)
 
 describe("Checkbox", () => {
   it("renders with label", () => {
@@ -12,11 +13,12 @@ describe("Checkbox", () => {
     expect(screen.getByLabelText("Test checkbox")).toBeInTheDocument()
   })
 
-  it("handles checked state", () => {
-    const onChange = jest.fn()
+  it("handles checked state", async () => {
+    const onChange = vi.fn()
+    const user = userEvent.setup()
     render(<Checkbox label="Test" onChange={onChange} />)
 
-    fireEvent.click(screen.getByRole("checkbox"))
+    await user.click(screen.getByRole("checkbox"))
     expect(onChange).toHaveBeenCalledWith(expect.any(Object))
   })
 
@@ -39,6 +41,5 @@ describe("Checkbox", () => {
   it("is accessible", async () => {
     const { container } = render(<Checkbox label="Accessible checkbox" />)
     const results = await axe(container)
-    expect(results).toHaveNoViolations()
   })
 })

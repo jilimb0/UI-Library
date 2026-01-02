@@ -16,14 +16,16 @@ interface DatePickerProps {
   selectedDate: Date | null
   onChange: (date: Date) => void
   timezone?: string
+  initialMonth?: Date
 }
 
 const DatePicker: FC<DatePickerProps> = ({
   selectedDate,
   onChange,
   // timezone,
+  initialMonth,
 }) => {
-  const [currentMonth, setCurrentMonth] = useState(new Date())
+  const [currentMonth, setCurrentMonth] = useState(initialMonth ?? new Date())
 
   const startMonth = startOfMonth(currentMonth)
   const endMonth = endOfMonth(currentMonth)

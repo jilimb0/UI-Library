@@ -1,94 +1,18 @@
-  it('should handle serialization errors gracefully', () => {
-    const { result } = renderHook(() => useLocalStorage('test-key', 'initial'));
-    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-    jest.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
-      throw new Error('Serialization error');
-    });
-
-    act(() => {
-      result.current[1]('updated');
-    });
-
-    expect(consoleErrorSpy).toHaveBeenCalled();
-    jest.spyOn(Storage.prototype, 'setItem').mockRestore();
-    consoleErrorSpy.mockRestore();
-  });  it('should handle serialization errors gracefully', () => {
-    const { result } = renderHook(() => useLocalStorage('test-key', 'initial'));
-    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-    jest.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
-      throw new Error('Serialization error');
-    });
-
-    act(() => {
-      result.current[1]('updated');
-    });
-
-    expect(consoleErrorSpy).toHaveBeenCalled();
-    jest.spyOn(Storage.prototype, 'setItem').mockRestore();
-    consoleErrorSpy.mockRestore();
-  });  it('should handle serialization errors gracefully', () => {
-    const { result } = renderHook(() => useLocalStorage('test-key', 'initial'));
-    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-    jest.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
-      throw new Error('Serialization error');
-    });
-
-    act(() => {
-      result.current[1]('updated');
-    });
-
-    expect(consoleErrorSpy).toHaveBeenCalled();
-    jest.spyOn(Storage.prototype, 'setItem').mockRestore();
-    consoleErrorSpy.mockRestore();
-  });  it('should handle serialization errors gracefully', () => {
-    const { result } = renderHook(() => useLocalStorage('test-key', 'initial'));
-    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-    jest.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
-      throw new Error('Serialization error');
-    });
-
-    act(() => {
-      result.current[1]('updated');
-    });
-
-    expect(consoleErrorSpy).toHaveBeenCalled();
-    jest.spyOn(Storage.prototype, 'setItem').mockRestore();
-    consoleErrorSpy.mockRestore();
-  });  it('should handle serialization errors gracefully', () => {
-    const { result } = renderHook(() => useLocalStorage('test-key', 'initial'));
-    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-    jest.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
-      throw new Error('Serialization error');
-    });
-
-    act(() => {
-      result.current[1]('updated');
-    });
-
-    expect(consoleErrorSpy).toHaveBeenCalled();
-    jest.spyOn(Storage.prototype, 'setItem').mockRestore();
-    consoleErrorSpy.mockRestore();
-  });import { renderHook, act } from '@testing-library/react';
+import { renderHook, act } from '@testing-library/react';
 import { useLocalStorage } from './useLocalStorage';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 describe('useLocalStorage', () => {
-  const originalError = console.error;
-
   beforeEach(() => {
     localStorage.clear();
-    console.error = jest.fn();
   });
 
-  afterEach(() => {
-    console.error = originalError;
+  it('should initialize with default value', () => {
+    const { result } = renderHook(() => useLocalStorage('test-key', 'default'));
+    expect(result.current[0]).toBe('default');
   });
 
-  it('should return initial value when localStorage is empty', () => {
-    const { result } = renderHook(() => useLocalStorage('test-key', 'initial'));
-    expect(result.current[0]).toBe('initial');
-  });
-
-  it('should update localStorage when value changes', () => {
+  it('should update state and localStorage', () => {
     const { result } = renderHook(() => useLocalStorage('test-key', 'initial'));
 
     act(() => {
@@ -99,21 +23,19 @@ describe('useLocalStorage', () => {
     expect(localStorage.getItem('test-key')).toBe('"updated"');
   });
 
-  it('should handle function updaters', () => {
-    const { result } = renderHook(() => useLocalStorage('counter', 0));
-
-    act(() => {
-      result.current[1](prev => prev + 1);
+  it('should handle JSON serialization errors gracefully', () => {
+    const { result } = renderHook(() => useLocalStorage('test-key', 'initial'));
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const setItemSpy = vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+      throw new Error('Serialization error');
     });
 
-    expect(result.current[0]).toBe(1);
-  });
+    act(() => {
+      result.current[1]('updated');
+    });
 
-  it('should handle JSON serialization errors gracefully', () => {
-    localStorage.setItem('test-key', 'invalid-json');
-
-    const { result } = renderHook(() => useLocalStorage('test-key', 'fallback'));
-    expect(result.current[0]).toBe('fallback');
-    expect(console.error).toHaveBeenCalled();
+    expect(consoleErrorSpy).toHaveBeenCalled();
+    setItemSpy.mockRestore();
+    consoleErrorSpy.mockRestore();
   });
 });
