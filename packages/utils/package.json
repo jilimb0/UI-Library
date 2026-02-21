@@ -10,7 +10,8 @@
   ],
   "scripts": {
     "build": "pnpm tsc --build",
-    "lint": "eslint src --ext .ts",
+    "lint": "eslint \"src/**/*.ts\"",
+    "lint:fix": "eslint \"src/**/*.ts\" --fix",
     "test": "echo \"@ui/utils: no tests\"",
     "test:coverage": "echo \"@ui/utils: no tests\""
   },

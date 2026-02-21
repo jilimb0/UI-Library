@@ -1,5 +1,5 @@
-import { motion } from "framer-motion"
-import { PropsWithChildren } from "react"
+import { motion } from 'framer-motion';
+import { PropsWithChildren } from 'react';
 
 export function Bounce({ children, ...props }: PropsWithChildren<any>) {
   return (
@@ -10,5 +10,5 @@ export function Bounce({ children, ...props }: PropsWithChildren<any>) {
     >
       {children}
     </motion.div>
-  )
+  );
 }

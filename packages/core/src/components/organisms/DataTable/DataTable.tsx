@@ -1,60 +1,60 @@
-import { useState, useMemo, ReactNode } from "react"
+import { useState, useMemo, ReactNode } from 'react';
 
 interface Column<T> {
-  key: string
-  header: string
-  width?: number | string
-  sortable?: boolean
-  filterable?: boolean
-  render?: (item: T) => ReactNode
+  key: string;
+  header: string;
+  width?: number | string;
+  sortable?: boolean;
+  filterable?: boolean;
+  render?: (item: T) => ReactNode;
 }
 
 interface DataTableProps<T> {
-  data: T[]
-  columns: Column<T>[]
-  pageSize?: number
+  data: T[];
+  columns: Column<T>[];
+  pageSize?: number;
 }
 
 function DataTable<T>({ data, columns, pageSize = 10 }: DataTableProps<T>) {
-  const [sortColumn, setSortColumn] = useState<string | null>(null)
-  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc")
-  const [currentPage, setCurrentPage] = useState(1)
+  const [sortColumn, setSortColumn] = useState<string | null>(null);
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+  const [currentPage, setCurrentPage] = useState(1);
 
-  if (data.length === 0) return <div>No data</div>
+  if (data.length === 0) return <div>No data</div>;
 
   const sortedData = useMemo(() => {
-    if (!sortColumn) return data
+    if (!sortColumn) return data;
 
     const sorted = [...data].sort((a, b) => {
-      const aValue = a[sortColumn as keyof T]
-      const bValue = b[sortColumn as keyof T]
+      const aValue = a[sortColumn as keyof T];
+      const bValue = b[sortColumn as keyof T];
 
-      if (aValue == null) return 1
-      if (bValue == null) return -1
+      if (aValue == null) return 1;
+      if (bValue == null) return -1;
 
-      if (aValue > bValue) return sortDirection === "asc" ? 1 : -1
-      if (aValue < bValue) return sortDirection === "asc" ? -1 : 1
-      return 0
-    })
+      if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1;
+      if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1;
+      return 0;
+    });
 
-    return sorted
-  }, [data, sortColumn, sortDirection])
+    return sorted;
+  }, [data, sortColumn, sortDirection]);
 
-  const totalPages = Math.ceil(sortedData.length / pageSize)
+  const totalPages = Math.ceil(sortedData.length / pageSize);
 
   const displayedData = useMemo(() => {
-    const start = (currentPage - 1) * pageSize
-    return sortedData.slice(start, start + pageSize)
-  }, [sortedData, currentPage, pageSize])
+    const start = (currentPage - 1) * pageSize;
+    return sortedData.slice(start, start + pageSize);
+  }, [sortedData, currentPage, pageSize]);
 
   const handleSort = (colKey: string) => {
     if (sortColumn === colKey) {
-      setSortDirection((direction) => (direction === "asc" ? "desc" : "asc"))
+      setSortDirection((direction) => (direction === 'asc' ? 'desc' : 'asc'));
     } else {
-      setSortColumn(colKey)
-      setSortDirection("asc")
+      setSortColumn(colKey);
+      setSortDirection('asc');
     }
-  }
+  };
 
   return (
     <div className="overflow-x-auto">
@@ -70,9 +70,9 @@ function DataTable<T>({ data, columns, pageSize = 10 }: DataTableProps<T>) {
               >
                 {col.header}
                 {sortColumn === col.key
-                  ? sortDirection === "asc"
-                    ? " ▲"
-                    : " ▼"
+                  ? sortDirection === 'asc'
+                    ? ' ▲'
+                    : ' ▼'
                   : null}
               </th>
             ))}
@@ -114,7 +114,7 @@ function DataTable<T>({ data, columns, pageSize = 10 }: DataTableProps<T>) {
         </button>
       </div>
     </div>
-  )
+  );
 }
 
-export default DataTable
+export default DataTable;

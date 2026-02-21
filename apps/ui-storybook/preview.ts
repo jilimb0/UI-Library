@@ -1,5 +1,4 @@
 
-import React from 'react';
 import type { Preview } from '@storybook/react';
 import { ThemeProvider } from '@ui/core';
 import '../../packages/core/src/styles/globals.css';

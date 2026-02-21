@@ -1,38 +1,38 @@
-import { useState, useRef, useEffect, FC } from "react"
+import { useState, useRef, useEffect, FC } from 'react';
 
 interface DropdownItem {
-  id: number | string
-  label: string
-  value: string
+  id: number | string;
+  label: string;
+  value: string;
 }
 
 interface DropdownProps {
-  items: DropdownItem[]
-  onChange?: (value: string) => void
-  placeholder?: string
-  disabled?: boolean
+  items: DropdownItem[];
+  onChange?: (value: string) => void;
+  placeholder?: string;
+  disabled?: boolean;
 }
 
 export const Dropdown: FC<DropdownProps> = ({
   items,
   onChange,
-  placeholder = "Select...",
+  placeholder = 'Select...',
   disabled = false,
 }) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const [selected, setSelected] = useState<DropdownItem | null>(null)
-  const buttonRef = useRef<HTMLButtonElement>(null)
-  const menuRef = useRef<HTMLUListElement>(null)
+  const [isOpen, setIsOpen] = useState(false);
+  const [selected, setSelected] = useState<DropdownItem | null>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLUListElement>(null);
 
   const toggleDropdown = () => {
-    if (!disabled) setIsOpen((prev) => !prev)
-  }
+    if (!disabled) setIsOpen((prev) => !prev);
+  };
 
   const handleSelect = (item: DropdownItem) => {
-    setSelected(item)
-    setIsOpen(false)
-    if (onChange) onChange(item.value)
-  }
+    setSelected(item);
+    setIsOpen(false);
+    if (onChange) onChange(item.value);
+  };
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -43,64 +43,64 @@ export const Dropdown: FC<DropdownProps> = ({
         buttonRef.current &&
         !buttonRef.current.contains(event.target as Node)
       ) {
-        setIsOpen(false)
+        setIsOpen(false);
       }
     }
 
-    document.addEventListener("mousedown", onClickOutside)
+    document.addEventListener('mousedown', onClickOutside);
     return () => {
-      document.removeEventListener("mousedown", onClickOutside)
-    }
-  }, [])
+      document.removeEventListener('mousedown', onClickOutside);
+    };
+  }, []);
 
   // Keyboard navigation
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
-      if (!isOpen) return
-      if (!menuRef.current) return
+      if (!isOpen) return;
+      if (!menuRef.current) return;
 
-      const itemsArray = Array.from(menuRef.current.querySelectorAll("li"))
+      const itemsArray = Array.from(menuRef.current.querySelectorAll('li'));
       const currentIndex = itemsArray.findIndex(
         (el) => el === document.activeElement
-      )
+      );
 
       switch (event.key) {
-        case "ArrowDown": {
-          event.preventDefault()
-          const nextIndex = (currentIndex + 1) % itemsArray.length
-          ;(itemsArray[nextIndex] as HTMLElement).focus()
-          break
+        case 'ArrowDown': {
+          event.preventDefault();
+          const nextIndex = (currentIndex + 1) % itemsArray.length;
+          (itemsArray[nextIndex] as HTMLElement).focus();
+          break;
         }
-        case "ArrowUp": {
-          event.preventDefault()
+        case 'ArrowUp': {
+          event.preventDefault();
           const prevIndex =
-            (currentIndex - 1 + itemsArray.length) % itemsArray.length
-          ;(itemsArray[prevIndex] as HTMLElement).focus()
-          break
+            (currentIndex - 1 + itemsArray.length) % itemsArray.length;
+          (itemsArray[prevIndex] as HTMLElement).focus();
+          break;
         }
-        case "Escape": {
-          event.preventDefault()
-          setIsOpen(false)
-          buttonRef.current?.focus()
-          break
+        case 'Escape': {
+          event.preventDefault();
+          setIsOpen(false);
+          buttonRef.current?.focus();
+          break;
         }
-        case "Enter": {
-          event.preventDefault()
+        case 'Enter': {
+          event.preventDefault();
           if (document.activeElement) {
-            ;(document.activeElement as HTMLElement).click()
+            (document.activeElement as HTMLElement).click();
           }
-          setIsOpen(false)
-          buttonRef.current?.focus()
-          break
+          setIsOpen(false);
+          buttonRef.current?.focus();
+          break;
         }
       }
     }
 
-    document.addEventListener("keydown", onKeyDown)
+    document.addEventListener('keydown', onKeyDown);
     return () => {
-      document.removeEventListener("keydown", onKeyDown)
-    }
-  }, [isOpen])
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [isOpen]);
 
   return (
     <div className="relative inline-block text-left">
@@ -109,7 +109,7 @@ export const Dropdown: FC<DropdownProps> = ({
         ref={buttonRef}
         disabled={disabled}
         className={`inline-flex justify-between items-center w-48 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
-          disabled ? "cursor-not-allowed bg-gray-100" : "cursor-pointer"
+          disabled ? 'cursor-not-allowed bg-gray-100' : 'cursor-pointer'
         }`}
         aria-haspopup="true"
         aria-expanded={isOpen}
@@ -147,8 +147,8 @@ export const Dropdown: FC<DropdownProps> = ({
               className="cursor-pointer px-4 py-2 hover:bg-blue-600 hover:text-white focus:bg-blue-600 focus:text-white"
               onClick={() => handleSelect(item)}
               onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  handleSelect(item)
+                if (e.key === 'Enter') {
+                  handleSelect(item);
                 }
               }}
             >
@@ -158,7 +158,7 @@ export const Dropdown: FC<DropdownProps> = ({
         </ul>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default Dropdown
+export default Dropdown;

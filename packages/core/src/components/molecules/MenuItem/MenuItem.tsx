@@ -1,8 +1,8 @@
-import { forwardRef, HTMLAttributes } from "react"
-import { cn } from "../../../utils/cn"
+import { forwardRef, HTMLAttributes } from 'react';
+import { cn } from '../../../utils/cn';
 
 export interface MenuItemProps extends HTMLAttributes<HTMLDivElement> {
-  active?: boolean
+  active?: boolean;
 }
 
 const MenuItem = forwardRef<HTMLDivElement, MenuItemProps>(
@@ -11,18 +11,18 @@ const MenuItem = forwardRef<HTMLDivElement, MenuItemProps>(
       <div
         ref={ref}
         className={cn(
-          "cursor-pointer rounded-md px-3 py-2 text-sm font-medium",
-          active ? "bg-primary text-white" : "text-gray-700 hover:bg-gray-100",
+          'cursor-pointer rounded-md px-3 py-2 text-sm font-medium',
+          active ? 'bg-primary text-white' : 'text-gray-700 hover:bg-gray-100',
           className
         )}
         {...props}
       >
         {children}
       </div>
-    )
+    );
   }
-)
+);
 
-MenuItem.displayName = "MenuItem"
+MenuItem.displayName = 'MenuItem';
 
-export { MenuItem }
+export { MenuItem };

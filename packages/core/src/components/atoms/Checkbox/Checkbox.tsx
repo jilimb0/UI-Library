@@ -1,15 +1,17 @@
-import { forwardRef, InputHTMLAttributes, useId } from "react"
-import { cn } from "../../../utils/cn"
+import { forwardRef, InputHTMLAttributes, useId } from 'react';
+import { cn } from '../../../utils/cn';
 
-export interface CheckboxProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "size"> {
-  label?: string
-  description?: string
-  error?: boolean
-  errorMessage?: string
-  indeterminate?: boolean
-  size?: "sm" | "md" | "lg"
-  variant?: "default" | "success" | "warning" | "danger"
+export interface CheckboxProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  'type' | 'size'
+> {
+  label?: string;
+  description?: string;
+  error?: boolean;
+  errorMessage?: string;
+  indeterminate?: boolean;
+  size?: 'sm' | 'md' | 'lg';
+  variant?: 'default' | 'success' | 'warning' | 'danger';
 }
 
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
@@ -20,15 +22,15 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
       description,
       error,
       errorMessage,
-      size = "md",
-      variant = "default",
+      size = 'md',
+      variant = 'default',
       ...props
     },
     ref
   ) => {
-    const id = useId()
-    const labelId = `${id}-label`
-    const descriptionId = `${id}-description`
+    const id = useId();
+    const labelId = `${id}-label`;
+    const descriptionId = `${id}-description`;
 
     return (
       <div className="flex items-start space-x-2">
@@ -39,20 +41,20 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             type="checkbox"
             ref={ref}
             className={cn(
-              "peer appearance-none border rounded focus:ring-2 focus:ring-offset-2",
+              'peer appearance-none border rounded focus:ring-2 focus:ring-offset-2',
               {
-                "h-4 w-4": size === "sm",
-                "h-5 w-5": size === "md",
-                "h-6 w-6": size === "lg",
+                'h-4 w-4': size === 'sm',
+                'h-5 w-5': size === 'md',
+                'h-6 w-6': size === 'lg',
               },
               {
-                "border-gray-300 focus:ring-blue-500": variant === "default",
-                "border-green-300 focus:ring-green-500": variant === "success",
-                "border-yellow-300 focus:ring-yellow-500":
-                  variant === "warning",
-                "border-red-300 focus:ring-red-500": variant === "danger",
+                'border-gray-300 focus:ring-blue-500': variant === 'default',
+                'border-green-300 focus:ring-green-500': variant === 'success',
+                'border-yellow-300 focus:ring-yellow-500':
+                  variant === 'warning',
+                'border-red-300 focus:ring-red-500': variant === 'danger',
               },
-              error && "border-red-500",
+              error && 'border-red-500',
               className
             )}
             aria-describedby={
@@ -90,8 +92,8 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
           </div>
         )}
       </div>
-    )
+    );
   }
-)
+);
 
-Checkbox.displayName = "Checkbox"
+Checkbox.displayName = 'Checkbox';

@@ -3,7 +3,6 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { Toast } from './Toast';
 import '@testing-library/jest-dom';
-import React from 'react';
 
 describe('Toast', () => {
   it('renders toast message', () => {

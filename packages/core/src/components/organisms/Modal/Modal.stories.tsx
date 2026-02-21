@@ -1,9 +1,7 @@
-
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
-import { Modal } from './Modal';
+import { default as Modal } from './Modal';
 import { Button } from '../../atoms/Button';
-import React from 'react';
 
 const meta: Meta<typeof Modal> = {
   title: 'Components/Organisms/Modal',
@@ -18,9 +16,13 @@ export default meta;
 
 type Story = StoryObj<typeof Modal>;
 
-const ModalWrapper = ({ isOpen: initialOpen = false, children, ...args }: any) => {
+const ModalWrapper = ({
+  isOpen: initialOpen = false,
+  children,
+  ...args
+}: any) => {
   const [isOpen, setIsOpen] = useState(initialOpen);
-  
+
   return (
     <>
       <Button onClick={() => setIsOpen(true)}>Open Modal</Button>

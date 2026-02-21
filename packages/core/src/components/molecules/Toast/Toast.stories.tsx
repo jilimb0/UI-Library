@@ -1,4 +1,3 @@
-
 import type { Meta, StoryObj } from '@storybook/react';
 import { Toast } from './Toast';
 
@@ -30,7 +29,8 @@ export const Default: Story = {
 
 export const LongMessage: Story = {
   args: {
-    children: 'This is a longer toast message that contains more information about what happened.',
+    children:
+      'This is a longer toast message that contains more information about what happened.',
     duration: 5000,
   },
 };

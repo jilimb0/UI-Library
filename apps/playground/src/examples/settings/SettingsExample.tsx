@@ -1,5 +1,3 @@
-
-import React from 'react';
 import { Card, Form, Field, Input, Button } from '@ui/core';
 
 export function SettingsExample() {

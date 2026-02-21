@@ -1,71 +1,71 @@
-import { forwardRef, HTMLAttributes, ReactNode, useEffect } from "react"
-import { createPortal } from "react-dom"
-import { useFocus } from "../../../hooks/index"
+import { forwardRef, HTMLAttributes, ReactNode, useEffect } from 'react';
+import { createPortal } from 'react-dom';
+import { useFocus } from '../../../hooks/index';
 
 interface ModalProps extends HTMLAttributes<HTMLDivElement> {
-  isOpen: boolean
-  onClose: () => void
-  initialFocus?: "first" | "last"
-  children: ReactNode
+  isOpen: boolean;
+  onClose: () => void;
+  initialFocus?: 'first' | 'last';
+  children: ReactNode;
 }
 
 const Modal = forwardRef<HTMLDivElement, ModalProps>(
-  ({ isOpen, onClose, initialFocus = "first", children, ...props }, ref) => {
+  ({ isOpen, onClose, initialFocus = 'first', children, ...props }, ref) => {
     // вместо useRef — используем useFocus
-    const containerRef = useFocus<HTMLDivElement>()
+    const containerRef = useFocus<HTMLDivElement>();
 
     const getFocusable = () => {
-      if (!containerRef.current) return []
+      if (!containerRef.current) return [];
       return Array.from(
         containerRef.current.querySelectorAll<HTMLElement>(
           'button:not([data-modal-close]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
         )
-      )
-    }
+      );
+    };
 
     useEffect(() => {
-      if (!isOpen || !containerRef.current) return
+      if (!isOpen || !containerRef.current) return;
 
-      const focusable = getFocusable()
-      if (!focusable.length) return
+      const focusable = getFocusable();
+      if (!focusable.length) return;
 
-      const first = focusable[0]
-      const last = focusable[focusable.length - 1]
-      const target = initialFocus === "last" ? last : first
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const target = initialFocus === 'last' ? last : first;
 
       // выставляем начальный фокус
-      target.focus()
+      target.focus();
 
       const handleKeyDown = (e: KeyboardEvent) => {
-        if (e.key !== "Tab") return
+        if (e.key !== 'Tab') return;
 
-        const currentFocusable = getFocusable()
-        if (currentFocusable.length <= 1) return
+        const currentFocusable = getFocusable();
+        if (currentFocusable.length <= 1) return;
 
-        const firstEl = currentFocusable[0]
-        const lastEl = currentFocusable[currentFocusable.length - 1]
-        const active = document.activeElement as HTMLElement
+        const firstEl = currentFocusable[0];
+        const lastEl = currentFocusable[currentFocusable.length - 1];
+        const active = document.activeElement as HTMLElement;
 
         // Shift+Tab на первом → последний
         if (e.shiftKey && active === firstEl) {
-          e.preventDefault()
-          lastEl.focus()
-          return
+          e.preventDefault();
+          lastEl.focus();
+          return;
         }
 
         // Tab на последнем → первый
         if (!e.shiftKey && active === lastEl) {
-          e.preventDefault()
-          firstEl.focus()
-          return
+          e.preventDefault();
+          firstEl.focus();
+          return;
         }
-      }
+      };
 
-      document.addEventListener("keydown", handleKeyDown)
-      return () => document.removeEventListener("keydown", handleKeyDown)
-    }, [isOpen, initialFocus])
+      document.addEventListener('keydown', handleKeyDown);
+      return () => document.removeEventListener('keydown', handleKeyDown);
+    }, [isOpen, initialFocus]);
 
-    if (!isOpen) return null
+    if (!isOpen) return null;
 
     return createPortal(
       <div
@@ -76,9 +76,9 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
         className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
         onClick={(e) => {
           if (e.target === e.currentTarget) {
-            onClose()
+            onClose();
           }
-          props.onClick?.(e)
+          props.onClick?.(e);
         }}
         {...props}
       >
@@ -98,10 +98,10 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
         </div>
       </div>,
       document.body
-    )
+    );
   }
-)
+);
 
-Modal.displayName = "Modal"
+Modal.displayName = 'Modal';
 
-export default Modal
+export default Modal;

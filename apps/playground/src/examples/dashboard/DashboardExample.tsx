@@ -1,5 +1,3 @@
-
-import React from 'react';
 import { Card, Table, Button } from '@ui/core';
 
 const data = [
@@ -12,7 +10,9 @@ export function DashboardExample() {
     <Card>
       <h2>Dashboard</h2>
       <Table data={data} columns={['id', 'name', 'price']} />
-      <Button onClick={() => alert('View details clicked')}>View Details</Button>
+      <Button onClick={() => alert('View details clicked')}>
+        View Details
+      </Button>
     </Card>
   );
 }

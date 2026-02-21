@@ -16,8 +16,10 @@ export default meta;
 type Story = StoryObj<typeof DatePicker>;
 
 const DatePickerWrapper = (args: any) => {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(args.selectedDate || null);
-  
+  const [selectedDate, setSelectedDate] = useState<Date | null>(
+    args.selectedDate || null
+  );
+
   return (
     <DatePicker
       {...args}

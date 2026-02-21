@@ -25,10 +25,14 @@ describe('useLocalStorage', () => {
 
   it('should handle JSON serialization errors gracefully', () => {
     const { result } = renderHook(() => useLocalStorage('test-key', 'initial'));
-    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-    const setItemSpy = vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
-      throw new Error('Serialization error');
-    });
+    const consoleErrorSpy = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => {});
+    const setItemSpy = vi
+      .spyOn(Storage.prototype, 'setItem')
+      .mockImplementation(() => {
+        throw new Error('Serialization error');
+      });
 
     act(() => {
       result.current[1]('updated');

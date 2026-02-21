@@ -1,16 +1,15 @@
-import { describe, it, expect, vi } from "vitest"
+import { describe, it, expect, vi } from 'vitest';
 
-import { render, screen } from "@testing-library/react"
-import { default as DatePicker } from "./DatePicker"
-import userEvent from "@testing-library/user-event"
-import React from "react"
-import "@testing-library/jest-dom"
+import { render, screen } from '@testing-library/react';
+import { default as DatePicker } from './DatePicker';
+import userEvent from '@testing-library/user-event';
+import '@testing-library/jest-dom';
 
-const DEFAULT_MONTH = new Date(2025, 11, 1) // December 2025
+const DEFAULT_MONTH = new Date(2025, 11, 1); // December 2025
 
 // Helper to render DatePicker with mock callback
 const renderDatePicker = (props = {}) => {
-  const onChange = vi.fn()
+  const onChange = vi.fn();
   render(
     <DatePicker
       selectedDate={null}
@@ -18,64 +17,64 @@ const renderDatePicker = (props = {}) => {
       initialMonth={DEFAULT_MONTH}
       {...props}
     />
-  )
-  return { onChange }
-}
+  );
+  return { onChange };
+};
 
-describe("DatePicker Integration Tests", () => {
-  it("renders calendar with correct month header", () => {
-    renderDatePicker()
-    expect(screen.getByText("December 2025")).toBeInTheDocument()
-    expect(screen.getByRole("button", { name: /Prev/i })).toBeInTheDocument()
-    expect(screen.getByRole("button", { name: /Next/i })).toBeInTheDocument()
-  })
+describe('DatePicker Integration Tests', () => {
+  it('renders calendar with correct month header', () => {
+    renderDatePicker();
+    expect(screen.getByText('December 2025')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Prev/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Next/i })).toBeInTheDocument();
+  });
 
-  it("renders days of week headers", () => {
-    renderDatePicker()
-    const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+  it('renders days of week headers', () => {
+    renderDatePicker();
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     days.forEach((day) => {
-      expect(screen.getByText(day)).toBeInTheDocument()
-    })
-  })
+      expect(screen.getByText(day)).toBeInTheDocument();
+    });
+  });
 
-  it("navigates to previous month", async () => {
-    const user = userEvent.setup()
-    renderDatePicker()
+  it('navigates to previous month', async () => {
+    const user = userEvent.setup();
+    renderDatePicker();
 
-    const prevButton = screen.getByRole("button", { name: /Prev/i })
-    await user.click(prevButton)
+    const prevButton = screen.getByRole('button', { name: /Prev/i });
+    await user.click(prevButton);
 
-    expect(screen.getByText("November 2025")).toBeInTheDocument()
-  })
+    expect(screen.getByText('November 2025')).toBeInTheDocument();
+  });
 
-  it("navigates to next month", async () => {
-    const user = userEvent.setup()
-    renderDatePicker()
+  it('navigates to next month', async () => {
+    const user = userEvent.setup();
+    renderDatePicker();
 
-    const nextButton = screen.getByRole("button", { name: /Next/i })
-    await user.click(nextButton)
+    const nextButton = screen.getByRole('button', { name: /Next/i });
+    await user.click(nextButton);
 
-    expect(screen.getByText("January 2026")).toBeInTheDocument()
-  })
+    expect(screen.getByText('January 2026')).toBeInTheDocument();
+  });
 
-  it("selects date cell and calls onChange callback", async () => {
-    const user = userEvent.setup()
-    const { onChange } = renderDatePicker()
+  it('selects date cell and calls onChange callback', async () => {
+    const user = userEvent.setup();
+    const { onChange } = renderDatePicker();
 
-    const dateCells = screen.getAllByRole("cell")
+    const dateCells = screen.getAllByRole('cell');
 
     // Pick a day that is guaranteed to be in the current month
     const day15 = dateCells.find(
       (cell) =>
-        cell.textContent === "15" &&
-        !(cell.className || "").includes("text-gray-400")
-    )
+        cell.textContent === '15' &&
+        !(cell.className || '').includes('text-gray-400')
+    );
 
-    expect(day15).toBeDefined()
+    expect(day15).toBeDefined();
 
-    await user.click(day15!)
+    await user.click(day15!);
 
-    expect(onChange).toHaveBeenCalledTimes(1)
-    expect(onChange).toHaveBeenCalledWith(expect.any(Date))
-  })
-})
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith(expect.any(Date));
+  });
+});

@@ -1,4 +1,3 @@
-
 import type { Meta, StoryObj } from '@storybook/react';
 import { Tooltip } from './Tooltip';
 import { Button } from '../../atoms/Button';
@@ -32,7 +31,8 @@ export const WithText: Story = {
 
 export const WithLongText: Story = {
   args: {
-    content: 'This is a longer tooltip message that provides more detailed information about the element.',
+    content:
+      'This is a longer tooltip message that provides more detailed information about the element.',
     children: <Button variant="secondary">Learn More</Button>,
   },
 };

@@ -1,4 +1,3 @@
-
 import type { Meta, StoryObj } from '@storybook/react';
 import DataTable from './DataTable';
 
@@ -24,11 +23,41 @@ interface User {
 }
 
 const sampleData: User[] = [
-  { id: 1, name: 'John Doe', email: 'john@example.com', role: 'Admin', status: 'Active' },
-  { id: 2, name: 'Jane Smith', email: 'jane@example.com', role: 'User', status: 'Active' },
-  { id: 3, name: 'Bob Johnson', email: 'bob@example.com', role: 'User', status: 'Inactive' },
-  { id: 4, name: 'Alice Williams', email: 'alice@example.com', role: 'Moderator', status: 'Active' },
-  { id: 5, name: 'Charlie Brown', email: 'charlie@example.com', role: 'User', status: 'Active' },
+  {
+    id: 1,
+    name: 'John Doe',
+    email: 'john@example.com',
+    role: 'Admin',
+    status: 'Active',
+  },
+  {
+    id: 2,
+    name: 'Jane Smith',
+    email: 'jane@example.com',
+    role: 'User',
+    status: 'Active',
+  },
+  {
+    id: 3,
+    name: 'Bob Johnson',
+    email: 'bob@example.com',
+    role: 'User',
+    status: 'Inactive',
+  },
+  {
+    id: 4,
+    name: 'Alice Williams',
+    email: 'alice@example.com',
+    role: 'Moderator',
+    status: 'Active',
+  },
+  {
+    id: 5,
+    name: 'Charlie Brown',
+    email: 'charlie@example.com',
+    role: 'User',
+    status: 'Active',
+  },
 ];
 
 const columns = [
@@ -52,7 +81,9 @@ const columns = [
     header: 'Status',
     sortable: true,
     render: (item: User) => (
-      <span className={item.status === 'Active' ? 'text-green-600' : 'text-red-600'}>
+      <span
+        className={item.status === 'Active' ? 'text-green-600' : 'text-red-600'}
+      >
         {item.status}
       </span>
     ),
@@ -97,7 +128,9 @@ export const WithCustomRender: Story = {
         header: 'Role',
         sortable: true,
         render: (item: User) => (
-          <span className="px-2 py-1 bg-gray-100 rounded text-sm">{item.role}</span>
+          <span className="px-2 py-1 bg-gray-100 rounded text-sm">
+            {item.role}
+          </span>
         ),
       },
       {
@@ -105,11 +138,13 @@ export const WithCustomRender: Story = {
         header: 'Status',
         sortable: true,
         render: (item: User) => (
-          <span className={`px-2 py-1 rounded text-sm ${
-            item.status === 'Active' 
-              ? 'bg-green-100 text-green-800' 
-              : 'bg-red-100 text-red-800'
-          }`}>
+          <span
+            className={`px-2 py-1 rounded text-sm ${
+              item.status === 'Active'
+                ? 'bg-green-100 text-green-800'
+                : 'bg-red-100 text-red-800'
+            }`}
+          >
             {item.status}
           </span>
         ),
@@ -132,4 +167,3 @@ export const LargeDataset: Story = {
     pageSize: 10,
   },
 };
-

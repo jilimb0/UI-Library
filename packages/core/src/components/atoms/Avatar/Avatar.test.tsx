@@ -1,9 +1,8 @@
-import { describe, it, expect, vi } from "vitest";
-
+import { describe, it, expect } from 'vitest';
 
 import { render, screen } from '@testing-library/react';
 import { Avatar } from './Avatar';
-
+import { axe } from 'jest-axe';
 
 describe('Avatar component', () => {
   it('renders without crashing', () => {
@@ -14,5 +13,6 @@ describe('Avatar component', () => {
   it('has no accessibility violations', async () => {
     const { container } = render(<Avatar />);
     const results = await axe(container);
+    expect(results).toHaveNoViolations();
   });
 });

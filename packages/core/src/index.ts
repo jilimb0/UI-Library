@@ -1,4 +1,3 @@
-
 // Главный экспорт компонентов и утилит
 export * from './components';
 export * from './utils';

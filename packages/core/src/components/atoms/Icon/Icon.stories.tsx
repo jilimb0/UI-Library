@@ -1,4 +1,3 @@
-
 import type { Meta, StoryObj } from '@storybook/react';
 import { Icon } from './Icon';
 
@@ -12,7 +11,16 @@ const meta: Meta<typeof Icon> = {
   argTypes: {
     name: {
       control: { type: 'select' },
-      options: ['Home', 'User', 'Settings', 'Search', 'Heart', 'Star', 'Bell', 'Mail'],
+      options: [
+        'Home',
+        'User',
+        'Settings',
+        'Search',
+        'Heart',
+        'Star',
+        'Bell',
+        'Mail',
+      ],
     },
     size: {
       control: { type: 'number' },

@@ -1,9 +1,8 @@
-import { describe, it, expect, vi } from "vitest";
-
+import { describe, it, expect } from 'vitest';
 
 import { render, screen } from '@testing-library/react';
 import { Heading } from './Heading';
-
+import { axe } from 'jest-axe';
 
 describe('Heading component', () => {
   it('renders without crashing', () => {
@@ -14,5 +13,6 @@ describe('Heading component', () => {
   it('has no accessibility violations', async () => {
     const { container } = render(<Heading>Example</Heading>);
     const results = await axe(container);
+    expect(results).toHaveNoViolations();
   });
 });

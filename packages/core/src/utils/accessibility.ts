@@ -54,7 +54,7 @@ export function trapFocus(element: HTMLElement): () => void {
 export function getAriaProps(props: Record<string, any>) {
   const ariaProps: Record<string, any> = {};
 
-  Object.keys(props).forEach(key => {
+  Object.keys(props).forEach((key) => {
     if (key.startsWith('aria-') || key.startsWith('data-')) {
       ariaProps[key] = props[key];
     }

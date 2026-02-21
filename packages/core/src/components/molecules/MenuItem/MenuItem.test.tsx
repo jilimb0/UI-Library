@@ -1,9 +1,8 @@
-import { describe, it, expect, vi } from "vitest";
-
+import { describe, it, expect } from 'vitest';
 
 import { render, screen } from '@testing-library/react';
 import { MenuItem } from './MenuItem';
-
+import { axe } from 'jest-axe';
 
 describe('MenuItem component', () => {
   it('renders without crashing', () => {
@@ -14,5 +13,6 @@ describe('MenuItem component', () => {
   it('has no accessibility violations', async () => {
     const { container } = render(<MenuItem>Example</MenuItem>);
     const results = await axe(container);
+    expect(results).toHaveNoViolations();
   });
 });

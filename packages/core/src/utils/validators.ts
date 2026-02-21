@@ -1,4 +1,3 @@
-
 export interface ValidationRule {
   required?: boolean;
   minLength?: number;
@@ -12,7 +11,10 @@ export interface ValidationResult {
   errors: string[];
 }
 
-export function validateField(value: string, rules: ValidationRule): ValidationResult {
+export function validateField(
+  value: string,
+  rules: ValidationRule
+): ValidationResult {
   const errors: string[] = [];
 
   if (rules.required && (!value || value.trim().length === 0)) {
@@ -52,7 +54,7 @@ export const commonValidators = {
     custom: (value: string) => {
       if (!value.includes('@')) return 'Must contain @ symbol';
       return true;
-    }
+    },
   },
   phone: {
     pattern: /^\+?[\d\s\-\(\)]+$/,
@@ -60,5 +62,5 @@ export const commonValidators = {
   },
   url: {
     pattern: /^https?:\/\/.+/,
-  }
+  },
 };

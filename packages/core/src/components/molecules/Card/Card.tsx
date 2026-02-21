@@ -1,5 +1,5 @@
-import { forwardRef, HTMLAttributes } from "react"
-import { cn } from "../../../utils/cn"
+import { forwardRef, HTMLAttributes } from 'react';
+import { cn } from '../../../utils/cn';
 
 export interface CardProps extends HTMLAttributes<HTMLDivElement> {}
 
@@ -9,15 +9,15 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
       <div
         ref={ref}
         className={cn(
-          "rounded-lg border border-gray-200 bg-white shadow-sm",
+          'rounded-lg border border-gray-200 bg-white shadow-sm',
           className
         )}
         {...props}
       />
-    )
+    );
   }
-)
+);
 
-Card.displayName = "Card"
+Card.displayName = 'Card';
 
-export { Card }
+export { Card };

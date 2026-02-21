@@ -1,10 +1,10 @@
-import { forwardRef, HTMLAttributes, ReactNode } from "react"
-import { cn } from "../../../utils/cn"
+import { forwardRef, HTMLAttributes, ReactNode } from 'react';
+import { cn } from '../../../utils/cn';
 
 export interface FieldProps extends HTMLAttributes<HTMLDivElement> {
-  label?: ReactNode
-  error?: ReactNode
-  description?: ReactNode
+  label?: ReactNode;
+  error?: ReactNode;
+  description?: ReactNode;
 }
 
 const Field = forwardRef<HTMLDivElement, FieldProps>(
@@ -12,7 +12,7 @@ const Field = forwardRef<HTMLDivElement, FieldProps>(
     return (
       <div
         ref={ref}
-        className={cn("flex flex-col space-y-1", className)}
+        className={cn('flex flex-col space-y-1', className)}
         {...props}
       >
         {label && (
@@ -24,10 +24,10 @@ const Field = forwardRef<HTMLDivElement, FieldProps>(
         {description && <p className="text-xs text-gray-500">{description}</p>}
         {error && <p className="text-xs text-red-600">{error}</p>}
       </div>
-    )
+    );
   }
-)
+);
 
-Field.displayName = "Field"
+Field.displayName = 'Field';
 
-export { Field }
+export { Field };

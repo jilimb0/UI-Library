@@ -1,5 +1,7 @@
-
-export function formatRelative(date: Date, baseDate: Date = new Date()): string {
+export function formatRelative(
+  date: Date,
+  baseDate: Date = new Date()
+): string {
   const diffMs = baseDate.getTime() - date.getTime();
   const diffSeconds = Math.floor(diffMs / 1000);
   if (diffSeconds < 60) return 'just now';

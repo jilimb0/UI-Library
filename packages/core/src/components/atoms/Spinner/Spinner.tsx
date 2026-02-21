@@ -1,7 +1,7 @@
-import { forwardRef } from "react"
+import { forwardRef } from 'react';
 
 export interface SpinnerProps {
-  size?: number
+  size?: number;
 }
 
 const Spinner = forwardRef<SVGSVGElement, SpinnerProps>(
@@ -32,9 +32,9 @@ const Spinner = forwardRef<SVGSVGElement, SpinnerProps>(
           d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
         />
       </svg>
-    )
+    );
   }
-)
-Spinner.displayName = "Spinner"
+);
+Spinner.displayName = 'Spinner';
 
-export { Spinner }
+export { Spinner };

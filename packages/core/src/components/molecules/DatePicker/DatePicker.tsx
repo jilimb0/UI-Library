@@ -1,4 +1,4 @@
-import { FC, useState } from "react"
+import { FC, useState } from 'react';
 import {
   format,
   addMonths,
@@ -10,13 +10,13 @@ import {
   addDays,
   isSameMonth,
   isSameDay,
-} from "date-fns"
+} from 'date-fns';
 
 interface DatePickerProps {
-  selectedDate: Date | null
-  onChange: (date: Date) => void
-  timezone?: string
-  initialMonth?: Date
+  selectedDate: Date | null;
+  onChange: (date: Date) => void;
+  timezone?: string;
+  initialMonth?: Date;
 }
 
 const DatePicker: FC<DatePickerProps> = ({
@@ -25,40 +25,40 @@ const DatePicker: FC<DatePickerProps> = ({
   // timezone,
   initialMonth,
 }) => {
-  const [currentMonth, setCurrentMonth] = useState(initialMonth ?? new Date())
+  const [currentMonth, setCurrentMonth] = useState(initialMonth ?? new Date());
 
-  const startMonth = startOfMonth(currentMonth)
-  const endMonth = endOfMonth(currentMonth)
-  const startDate = startOfWeek(startMonth)
-  const endDate = endOfWeek(endMonth)
+  const startMonth = startOfMonth(currentMonth);
+  const endMonth = endOfMonth(currentMonth);
+  const startDate = startOfWeek(startMonth);
+  const endDate = endOfWeek(endMonth);
 
-  const dateFormat = "d"
-  const rows: JSX.Element[] = []
-  let days: JSX.Element[] = []
-  let day = startDate
+  const dateFormat = 'd';
+  const rows: JSX.Element[] = [];
+  let days: JSX.Element[] = [];
+  let day = startDate;
 
   while (day <= endDate) {
     for (let i = 0; i < 7; i++) {
-      const cloneDay = day
+      const cloneDay = day;
       days.push(
         <td
           key={cloneDay.toString()}
           className={`${
-            !isSameMonth(cloneDay, currentMonth) ? "text-gray-400" : ""
+            !isSameMonth(cloneDay, currentMonth) ? 'text-gray-400' : ''
           } ${
             isSameDay(cloneDay, selectedDate || new Date())
-              ? "bg-blue-500 text-white"
-              : ""
+              ? 'bg-blue-500 text-white'
+              : ''
           } cursor-pointer p-2 text-center`}
           onClick={() => onChange(cloneDay)}
         >
           {format(cloneDay, dateFormat)}
         </td>
-      )
-      day = addDays(day, 1)
+      );
+      day = addDays(day, 1);
     }
-    rows.push(<tr key={day.toString()}>{days}</tr>)
-    days = []
+    rows.push(<tr key={day.toString()}>{days}</tr>);
+    days = [];
   }
 
   return (
@@ -67,7 +67,7 @@ const DatePicker: FC<DatePickerProps> = ({
         <button onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}>
           Prev
         </button>
-        <span>{format(currentMonth, "MMMM yyyy")}</span>
+        <span>{format(currentMonth, 'MMMM yyyy')}</span>
         <button onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}>
           Next
         </button>
@@ -75,7 +75,7 @@ const DatePicker: FC<DatePickerProps> = ({
       <table className="w-full border-collapse">
         <thead>
           <tr>
-            {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
+            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
               <th key={day}>{day}</th>
             ))}
           </tr>
@@ -83,7 +83,7 @@ const DatePicker: FC<DatePickerProps> = ({
         <tbody>{rows}</tbody>
       </table>
     </div>
-  )
-}
+  );
+};
 
-export default DatePicker
+export default DatePicker;

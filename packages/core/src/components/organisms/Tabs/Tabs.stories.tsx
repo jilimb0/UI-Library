@@ -1,4 +1,3 @@
-
 import type { Meta, StoryObj } from '@storybook/react';
 import { Tabs } from './Tabs';
 import { useState } from 'react';
@@ -30,10 +29,14 @@ const TabButton = ({ selected, onSelect, children }: any) => (
 export const Default: Story = {
   render: (args) => {
     const [selectedIndex, setSelectedIndex] = useState(0);
-    
+
     return (
       <div>
-        <Tabs {...args} defaultIndex={selectedIndex} onChange={setSelectedIndex}>
+        <Tabs
+          {...args}
+          defaultIndex={selectedIndex}
+          onChange={setSelectedIndex}
+        >
           <TabButton>Tab 1</TabButton>
           <TabButton>Tab 2</TabButton>
           <TabButton>Tab 3</TabButton>

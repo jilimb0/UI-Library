@@ -1,8 +1,8 @@
-import { forwardRef, HTMLAttributes } from "react"
-import { cn } from "../../../utils/cn"
+import { forwardRef, HTMLAttributes } from 'react';
+import { cn } from '../../../utils/cn';
 
 export interface TooltipProps extends HTMLAttributes<HTMLDivElement> {
-  content: string | undefined
+  content: string | undefined;
 }
 
 export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
@@ -10,7 +10,7 @@ export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
     return (
       <div
         ref={ref}
-        className={cn("relative group inline-block", className)}
+        className={cn('relative group inline-block', className)}
         data-tooltip-trigger
         {...props}
       >
@@ -19,10 +19,10 @@ export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
           {content}
         </div>
       </div>
-    )
+    );
   }
-)
+);
 
-Tooltip.displayName = "Tooltip"
+Tooltip.displayName = 'Tooltip';
 
-export default Tooltip
+export default Tooltip;

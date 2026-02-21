@@ -1,34 +1,35 @@
-import { ChangeEvent, forwardRef, SelectHTMLAttributes, useId } from "react"
-import { cva, type VariantProps } from "class-variance-authority"
-import { cn } from "../../../utils/cn"
+import { ChangeEvent, forwardRef, SelectHTMLAttributes, useId } from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { cn } from '../../../utils/cn';
 
 export const selectVariants = cva(
-  "flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
+  'flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50',
   {
     variants: {
       size: {
-        default: "h-9",
-        sm: "h-8 px-2 text-xs",
-        lg: "h-10 px-4",
+        default: 'h-9',
+        sm: 'h-8 px-2 text-xs',
+        lg: 'h-10 px-4',
       },
     },
     defaultVariants: {
-      size: "default",
+      size: 'default',
     },
   }
-)
+);
 
-type Option = { value: string; label: string }
+type Option = { value: string; label: string };
 
 export interface SelectProps
-  extends Omit<SelectHTMLAttributes<HTMLSelectElement>, "size">,
+  extends
+    Omit<SelectHTMLAttributes<HTMLSelectElement>, 'size'>,
     VariantProps<typeof selectVariants> {
-  size?: "default" | "sm" | "lg"
-  label?: string
-  description?: string
-  options?: Option[]
-  error?: boolean
-  errorMessage?: string
+  size?: 'default' | 'sm' | 'lg';
+  label?: string;
+  description?: string;
+  options?: Option[];
+  error?: boolean;
+  errorMessage?: string;
 }
 
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(
@@ -47,14 +48,14 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     },
     ref
   ) => {
-    const internalId = useId()
-    const selectId = id ?? internalId
-    const labelId = `${selectId}-label`
-    const descriptionId = `${selectId}-description`
+    const internalId = useId();
+    const selectId = id ?? internalId;
+    const labelId = `${selectId}-label`;
+    const descriptionId = `${selectId}-description`;
 
     const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
-      onChange?.(e)
-    }
+      onChange?.(e);
+    };
 
     return (
       <div className="flex flex-col space-y-1">
@@ -90,6 +91,6 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           </p>
         )}
       </div>
-    )
+    );
   }
-)
+);

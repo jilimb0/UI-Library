@@ -1,4 +1,3 @@
-
 import type { Meta, StoryObj } from '@storybook/react';
 import { Avatar } from './Avatar';
 
@@ -48,12 +47,20 @@ export const WithFallback: Story = {
   args: {
     src: 'invalid-url',
     alt: 'User avatar',
-    fallback: <div className="flex items-center justify-center h-full w-full bg-blue-500 text-white">JD</div>,
+    fallback: (
+      <div className="flex items-center justify-center h-full w-full bg-blue-500 text-white">
+        JD
+      </div>
+    ),
   },
 };
 
 export const FallbackOnly: Story = {
   args: {
-    fallback: <div className="flex items-center justify-center h-full w-full bg-gray-400 text-white">AB</div>,
+    fallback: (
+      <div className="flex items-center justify-center h-full w-full bg-gray-400 text-white">
+        AB
+      </div>
+    ),
   },
 };

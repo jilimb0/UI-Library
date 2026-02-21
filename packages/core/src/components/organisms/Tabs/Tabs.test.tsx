@@ -3,7 +3,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { axe } from 'jest-axe';
 import { Tabs } from './Tabs';
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import '@testing-library/jest-dom';
 
 type TabProps = {
@@ -29,6 +29,7 @@ describe('Tabs', () => {
   it('has no accessibility violations', async () => {
     const { container } = render(<Tabs>Example</Tabs>);
     const results = await axe(container);
+    expect(results).toHaveNoViolations();
   });
 
   it('should switch tabs', () => {

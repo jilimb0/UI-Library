@@ -10,8 +10,8 @@
   ],
   "scripts": {
     "build": "tsc --build",
-    "lint": "eslint --ext .ts src",
-    "test": "echo \"@ui/tokens: no tests\"",
+    "lint": "eslint \"src/**/*.ts\"",
+    "lint:fix": "eslint \"src/**/*.ts\" --fix",
     "test:coverage": "echo \"@ui/tokens: no tests\""
   },
   "devDependencies": {
@@ -19,6 +19,6 @@
     "@typescript-eslint/eslint-plugin": "^8.50.1",
     "@typescript-eslint/parser": "^8.50.1",
     "eslint": "^9.39.2",
-    "typescript": "^5.0.0"
+    "typescript": "^5.3.3"
   }
 }

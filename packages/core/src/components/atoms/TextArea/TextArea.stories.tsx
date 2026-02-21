@@ -1,72 +1,72 @@
-import type { Meta, StoryObj } from "@storybook/react"
-import { TextArea } from "./TextArea"
+import type { Meta, StoryObj } from '@storybook/react';
+import { TextArea } from './TextArea';
 
 const meta: Meta<typeof TextArea> = {
-  title: "Components/Atoms/TextArea",
+  title: 'Components/Atoms/TextArea',
   component: TextArea,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
     size: {
-      control: { type: "select" },
-      options: ["default", "sm", "lg"],
+      control: { type: 'select' },
+      options: ['default', 'sm', 'lg'],
     },
     variant: {
-      control: { type: "select" },
-      options: ["default", "error"],
+      control: { type: 'select' },
+      options: ['default', 'error'],
     },
   },
-}
+};
 
-export default meta
+export default meta;
 
-type Story = StoryObj<typeof TextArea>
+type Story = StoryObj<typeof TextArea>;
 
 export const Default: Story = {
   args: {
-    placeholder: "Enter your message...",
+    placeholder: 'Enter your message...',
     rows: 4,
   },
-}
+};
 
 export const Small: Story = {
   args: {
-    size: "sm",
-    placeholder: "Small textarea",
+    size: 'sm',
+    placeholder: 'Small textarea',
     rows: 3,
   },
-}
+};
 
 export const Large: Story = {
   args: {
-    size: "lg",
-    placeholder: "Large textarea",
+    size: 'lg',
+    placeholder: 'Large textarea',
     rows: 6,
   },
-}
+};
 
 export const WithValue: Story = {
   args: {
-    defaultValue: "This is a pre-filled textarea with some content.",
+    defaultValue: 'This is a pre-filled textarea with some content.',
     rows: 4,
   },
-}
+};
 
 export const Error: Story = {
   args: {
-    variant: "error",
-    placeholder: "Error state",
-    defaultValue: "Invalid input",
+    variant: 'error',
+    placeholder: 'Error state',
+    defaultValue: 'Invalid input',
     rows: 4,
   },
-}
+};
 
 export const Disabled: Story = {
   args: {
     disabled: true,
-    placeholder: "Disabled textarea",
+    placeholder: 'Disabled textarea',
     rows: 4,
   },
-}
+};

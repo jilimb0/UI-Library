@@ -4,7 +4,6 @@ import { render, screen } from '@testing-library/react';
 import { axe } from 'jest-axe';
 import userEvent from '@testing-library/user-event';
 import { Checkbox } from './Checkbox';
-import React from 'react';
 import '@testing-library/jest-dom';
 import 'jest-axe/extend-expect';
 
@@ -40,5 +39,6 @@ describe('Checkbox Accessibility', () => {
     expect(errorMessage).toHaveAttribute('aria-live', 'polite');
 
     const results = await axe(container);
+    expect(results).toHaveNoViolations();
   });
 });

@@ -1,4 +1,3 @@
-
 import type { Meta, StoryObj } from '@storybook/react';
 import { Accordion } from './Accordion';
 import { Heading } from '../../atoms/Heading';
@@ -26,11 +25,7 @@ const AccordionItem = ({ isOpen, onToggle, title, children }: any) => (
       <Heading level={4}>{title}</Heading>
       <span>{isOpen ? '−' : '+'}</span>
     </button>
-    {isOpen && (
-      <div className="p-4 bg-gray-50">
-        {children}
-      </div>
-    )}
+    {isOpen && <div className="p-4 bg-gray-50">{children}</div>}
   </div>
 );
 

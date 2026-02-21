@@ -4,7 +4,6 @@ import { render, screen, waitFor } from '@testing-library/react';
 import Modal from './Modal';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
-import React from 'react';
 
 describe('Modal', () => {
   it('renders children content', () => {

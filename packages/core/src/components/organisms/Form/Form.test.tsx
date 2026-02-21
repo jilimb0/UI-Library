@@ -2,7 +2,6 @@ import { describe, it, expect, vi } from 'vitest';
 
 import { render, screen, fireEvent } from '@testing-library/react';
 import { Form } from './Form';
-import React from 'react';
 
 describe('Form', () => {
   it('renders without crashing', () => {

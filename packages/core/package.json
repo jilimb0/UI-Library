@@ -22,8 +22,8 @@
   "scripts": {
     "build": "tsc --build && vite build",
     "dev": "vite build --watch",
-    "lint": "eslint src --ext .ts,.tsx",
-    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "lint": "eslint \"src/**/*.{ts,tsx}\"",
+    "lint:fix": "eslint \"src/**/*.{ts,tsx}\" --fix",
     "type-check": "tsc --noEmit",
     "test": "vitest run --config ../../vitest.config.ts src",
     "test:animations": "vitest run --config ../../vitest.config.ts src/animations",

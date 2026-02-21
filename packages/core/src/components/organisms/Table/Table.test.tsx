@@ -1,10 +1,9 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect } from 'vitest';
 
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { Table } from './Table';
-import React from 'react';
-
+import { axe } from 'jest-axe';
 
 describe('Table component', () => {
   it('renders without crashing', () => {
@@ -31,5 +30,6 @@ describe('Table component', () => {
       </Table>
     );
     const results = await axe(container);
+    expect(results).toHaveNoViolations();
   });
 });
