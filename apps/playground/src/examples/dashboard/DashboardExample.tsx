@@ -1,4 +1,4 @@
-import { Card, Table, Button } from '@ui/core';
+import { Card, Table, Button } from '@ui-lib/core';
 
 const data = [
   { id: 1, name: 'Product A', price: 100 },
@@ -9,7 +9,24 @@ export function DashboardExample() {
   return (
     <Card>
       <h2>Dashboard</h2>
-      <Table data={data} columns={['id', 'name', 'price']} />
+      <Table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((row) => (
+            <tr key={row.id}>
+              <td>{row.id}</td>
+              <td>{row.name}</td>
+              <td>{row.price}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
       <Button onClick={() => alert('View details clicked')}>
         View Details
       </Button>

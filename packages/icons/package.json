@@ -1,0 +1,21 @@
+{
+  "name": "@ui-lib/icons",
+  "version": "2.0.0",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rollup -c",
+    "build:icons": "node scripts/build-icons.js",
+    "typecheck": "tsc --noEmit",
+    "lint": "echo \"package: no lint\""
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0"
+  },
+  "license": "MIT",
+  "type": "module"
+}

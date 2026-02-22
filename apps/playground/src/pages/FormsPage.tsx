@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Form, Field, Input, TextArea, Button } from "@ui/core"
+import { Form, Field, Input, TextArea, Button } from "@ui-lib/core"
 
 export function FormsPage() {
   const [name, setName] = useState("")

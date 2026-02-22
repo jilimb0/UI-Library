@@ -4,6 +4,7 @@ module.exports = {
   setupFilesAfterEnv: ['<rootDir>/tests/setup/test-utils.tsx'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
+    '^@ui-lib/(.*)$': '<rootDir>/packages/$1/src',
     '^@ui/(.*)$': '<rootDir>/packages/$1/src'
   },
   transform: {

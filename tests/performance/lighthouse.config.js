@@ -1,0 +1,11 @@
+module.exports = {
+  ci: {
+    collect: { numberOfRuns: 1 },
+    assert: {
+      assertions: {
+        'categories:performance': ['warn', { minScore: 0.8 }],
+        'categories:accessibility': ['warn', { minScore: 0.9 }]
+      }
+    }
+  }
+};

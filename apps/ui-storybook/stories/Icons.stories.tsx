@@ -1,7 +1,5 @@
 import type { Meta } from '@storybook/react';
-import { SaveIcon, EditIcon, DeleteIcon } from '@ui/core/src/icons';
-import { ArrowIcon, ChevronIcon } from '@ui/core/src/icons';
-import { FacebookIcon, TwitterIcon } from '@ui/core/src/icons';
+import { Icon } from '@ui-lib/core';
 
 const meta: Meta = {
   title: 'Design Tokens/Icons',
@@ -12,12 +10,12 @@ export default meta;
 
 export const Icons = () => (
   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
-    <SaveIcon style={{ width: 48, height: 48, color: '#007bff' }} />
-    <EditIcon style={{ width: 48, height: 48, color: '#28a745' }} />
-    <DeleteIcon style={{ width: 48, height: 48, color: '#dc3545' }} />
-    <ArrowIcon style={{ width: 48, height: 48, color: '#6c757d' }} />
-    <ChevronIcon style={{ width: 48, height: 48, color: '#6c757d' }} />
-    <FacebookIcon style={{ width: 48, height: 48, color: '#4267B2' }} />
-    <TwitterIcon style={{ width: 48, height: 48, color: '#1DA1F2' }} />
+    <Icon name="Check" size={48} color="#007bff" />
+    <Icon name="Search" size={48} color="#28a745" />
+    <Icon name="Settings" size={48} color="#dc3545" />
+    <Icon name="Home" size={48} color="#6c757d" />
+    <Icon name="User" size={48} color="#6c757d" />
+    <Icon name="Heart" size={48} color="#4267B2" />
+    <Icon name="Mail" size={48} color="#1DA1F2" />
   </div>
 );

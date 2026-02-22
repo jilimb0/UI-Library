@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Modal, Button } from '@ui/core';
+import { Modal, Button } from '@ui-lib/core';
 
 export function ModalsPage() {
   const [isOpen, setIsOpen] = useState(false);

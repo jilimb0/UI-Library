@@ -6,9 +6,9 @@ export default defineConfig({
   plugins: [react()], 
   resolve: {
     alias: {
-      '@ui/core': path.resolve(__dirname, '../../packages/core/src'),
-      '@ui/utils': path.resolve(__dirname, '../../packages/utils/src'),
-      '@ui/tokens': path.resolve(__dirname, '../../packages/tokens/src'),
+      '@ui-lib/core': path.resolve(__dirname, '../../packages/core/src'),
+      '@ui-lib/utils': path.resolve(__dirname, '../../packages/utils/src'),
+      '@ui-lib/tokens': path.resolve(__dirname, '../../packages/tokens/src'),
       '@': path.resolve(__dirname, './src'),
     }
   },

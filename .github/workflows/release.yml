@@ -2,25 +2,28 @@ name: Release
 on:
   push:
     branches: [main]
+
 jobs:
   release:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
-      - uses: pnpm/action-setup@v4
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: pnpm/action-setup@v2
         with:
-          version: 9
+          version: 8
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: "pnpm"
+          node-version: 18
+          cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm turbo run build
-      - name: Create Release
+      - run: pnpm build
+      - name: Create Release Pull Request or Publish
         uses: changesets/action@v1
+        with:
+          publish: pnpm release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          publish: pnpm run release
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

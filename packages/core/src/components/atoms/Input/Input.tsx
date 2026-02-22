@@ -1,4 +1,4 @@
-import { InputHTMLAttributes, forwardRef } from 'react';
+import { InputHTMLAttributes, forwardRef, useId } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../../utils/cn';
 
@@ -36,25 +36,32 @@ export interface InputProps
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
   (
-    { className, type = 'text', size, variant, label, description, ...props },
+    {
+      className,
+      type = 'text',
+      size,
+      variant,
+      label,
+      description,
+      id,
+      ...props
+    },
     ref
   ) => {
-    const labelId = label
-      ? `input-label-${Math.random().toString(36).substr(2, 9)}`
-      : undefined;
-    const descriptionId = description
-      ? `input-desc-${Math.random().toString(36).substr(2, 9)}`
-      : undefined;
+    const uid = useId();
+    const inputId = id ?? `input-${uid}`;
+    const labelId = label ? `${inputId}-label` : undefined;
+    const descriptionId = description ? `${inputId}-description` : undefined;
 
     return (
       <div>
         {label && (
-          <label id={labelId} htmlFor="input">
+          <label id={labelId} htmlFor={inputId}>
             {label}
           </label>
         )}
         <input
-          id="input"
+          id={inputId}
           type={type}
           className={cn(inputVariants({ size, variant }), className)}
           ref={ref}

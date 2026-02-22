@@ -7,5 +7,5 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@ui/playground", "@ui/docs"]
+  "ignore": ["@ui-lib/playground", "@ui-lib/storybook"]
 }

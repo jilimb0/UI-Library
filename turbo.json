@@ -6,24 +6,21 @@
       "outputs": ["dist/**", ".next/**", "storybook-static/**"]
     },
     "test": {
-      "cache": false,
+      "dependsOn": ["^build"],
       "outputs": ["coverage/**"]
     },
-    "lint": {
-      "cache": false,
+    "lint": {},
+    "typecheck": {
+      "dependsOn": ["^typecheck"],
       "outputs": []
     },
     "dev": {
       "cache": false,
       "persistent": true
     },
-    "ui-storybook": {
+    "storybook": {
       "cache": false,
       "persistent": true
-    },
-    "typecheck": {
-      "dependsOn": ["^build"],
-      "outputs": [".next/cache/**", ".tsbuildinfo"]
     }
   }
 }

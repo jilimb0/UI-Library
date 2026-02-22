@@ -1,11 +1,11 @@
 
-# @ui/tokens
+# @ui-lib/tokens
 
 Design tokens package for UI library
 
 ## Installation
 ```
-npm install @ui/tokens
+npm install @ui-lib/tokens
 ```
 
 ## Usage

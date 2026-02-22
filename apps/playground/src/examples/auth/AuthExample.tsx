@@ -1,5 +1,5 @@
 import { useState, FormEvent } from "react"
-import { Form, Field, Input, Button } from "@ui/core"
+import { Form, Field, Input, Button } from "@ui-lib/core"
 
 export function AuthExample() {
   const [email, setEmail] = useState("")

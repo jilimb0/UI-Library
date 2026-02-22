@@ -3,25 +3,27 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "storybook": "pnpm exec ui-storybook dev -p 6006",
-    "build-storybook": "pnpm exec ui-storybook build"
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "typecheck": "echo \"storybook: no typecheck\"",
+    "lint": "echo \"storybook: no lint\""
   },
   "dependencies": {
-    "@ui/core": "workspace:*"
+    "@ui-lib/core": "workspace:*",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@storybook/addon-a11y": "^7.5.3",
-    "@storybook/addon-docs": "7.5.3",
-    "@storybook/addon-essentials": "7.5.3",
-    "@storybook/addon-interactions": "^7.5.3",
-    "@storybook/addon-links": "^7.5.3",
-    "@storybook/blocks": "7.5.3",
-    "@storybook/react": "^7.5.3",
-    "@storybook/react-vite": "^7.5.3",
-    "@storybook/test": "^7.6.21",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "storybook": "7.5.3",
-    "vite": "^4.4.0"
+    "@storybook/addon-a11y": "^8.6.17",
+    "@storybook/addon-docs": "^8.6.17",
+    "@storybook/addon-essentials": "^8.6.17",
+    "@storybook/addon-interactions": "^8.6.17",
+    "@storybook/addon-links": "^8.6.17",
+    "@storybook/blocks": "^8.6.17",
+    "@storybook/react": "^8.6.17",
+    "@storybook/react-vite": "^8.6.17",
+    "@storybook/test": "^8.6.17",
+    "storybook": "^8.6.17",
+    "vite": "^5.0.0"
   }
 }

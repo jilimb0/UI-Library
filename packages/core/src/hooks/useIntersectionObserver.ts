@@ -8,14 +8,24 @@ export function useIntersectionObserver(options?: IntersectionObserverInit) {
     const target = targetRef.current;
     if (!target) return;
 
-    const observer = new IntersectionObserver(([entry]) => {
-      setIsIntersecting(entry.isIntersecting);
-    }, options);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsIntersecting(entry.isIntersecting);
+      },
+      {
+        root: options?.root ?? null,
+        rootMargin: options?.rootMargin,
+        threshold: options?.threshold,
+      }
+    );
 
     observer.observe(target);
 
-    return () => observer.unobserve(target);
-  }, [options]);
+    return () => {
+      observer.unobserve(target);
+      observer.disconnect();
+    };
+  }, [options?.root, options?.rootMargin, options?.threshold]);
 
   return { targetRef, isIntersecting };
 }

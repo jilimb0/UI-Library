@@ -1,16 +1,37 @@
-import { LucideProps, LucideIcon } from 'lucide-react';
-import * as Icons from 'lucide-react';
+import {
+  LucideProps,
+  Home,
+  User,
+  Settings,
+  Search,
+  Heart,
+  Star,
+  Bell,
+  Mail,
+  Check,
+} from 'lucide-react';
 import { forwardRef, ComponentPropsWithRef } from 'react';
 
-type IconName = keyof typeof Icons;
+const iconsMap = {
+  Home,
+  User,
+  Settings,
+  Search,
+  Heart,
+  Star,
+  Bell,
+  Mail,
+  Check,
+};
+
+type IconName = keyof typeof iconsMap;
 
 export interface IconProps extends Omit<LucideProps, 'ref'> {
   name: IconName;
 }
 
 const Icon = forwardRef<SVGSVGElement, IconProps>(({ name, ...props }, ref) => {
-  // Приводим к типу LucideIcon
-  const LucideIcon = Icons[name as IconName] as LucideIcon;
+  const LucideIcon = iconsMap[name];
 
   if (!LucideIcon) return null;
 

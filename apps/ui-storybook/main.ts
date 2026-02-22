@@ -37,12 +37,12 @@ const config: StorybookConfig = {
     return mergeConfig(config, {
       resolve: {
         alias: {
-          '@ui/core': path.resolve(__dirname, '../../packages/core/src'),
+          '@ui-lib/core': path.resolve(__dirname, '../../packages/core/src'),
         },
         conditions: ['development', 'import', 'module', 'browser', 'default']
       },
       optimizeDeps: {
-        include: ['@ui/core']
+        include: ['@ui-lib/core']
       }
     });
   }

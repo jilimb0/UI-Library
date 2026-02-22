@@ -1,5 +1,5 @@
 {
-  "name": "@ui/utils",
+  "name": "@ui-lib/utils",
   "version": "0.1.5",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -12,14 +12,17 @@
     "build": "pnpm tsc --build",
     "lint": "eslint \"src/**/*.ts\"",
     "lint:fix": "eslint \"src/**/*.ts\" --fix",
-    "test": "echo \"@ui/utils: no tests\"",
-    "test:coverage": "echo \"@ui/utils: no tests\""
+    "test": "echo \"@ui-lib/utils: no tests\"",
+    "test:coverage": "echo \"@ui-lib/utils: no tests\"",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@testing-library/react": "^14.0.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "eslint": "^8.50.0",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "eslint-plugin-prettier": "^5.5.5",
+    "eslint-config-prettier": "^10.1.8"
   }
 }

@@ -1,13 +1,19 @@
-import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 
-export default defineConfig({
+export default {
   plugins: [react()],
+  resolve: {
+    alias: {
+      '@ui-lib/core': path.resolve(__dirname, 'packages/core/src'),
+      '@ui-lib/icons': path.resolve(__dirname, 'packages/icons/src'),
+      '@ui-lib/tokens': path.resolve(__dirname, 'packages/tokens/src'),
+      '@ui-lib/utils': path.resolve(__dirname, 'packages/utils/src'),
+    },
+  },
   test: {
     globals: true,
     environment: 'happy-dom',
-    // ✅ Абсолютный путь к setupFiles из корня
     setupFiles: [path.resolve(__dirname, './vitest.setup.ts')],
     css: true,
 
@@ -28,4 +34,4 @@ export default defineConfig({
       interopDefault: true,
     },
   },
-});
+};

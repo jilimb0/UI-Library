@@ -1,6 +1,6 @@
 
 import type { Preview } from '@storybook/react';
-import { ThemeProvider } from '@ui/core';
+import { ThemeProvider } from '@ui-lib/core';
 import '../../packages/core/src/styles/globals.css';
 
 const preview: Preview = {

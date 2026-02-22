@@ -1,5 +1,6 @@
 import { forwardRef, InputHTMLAttributes, useId } from 'react';
 import { cn } from '../../../utils/cn';
+import { CheckIcon } from '@ui-lib/icons';
 
 export interface CheckboxProps extends Omit<
   InputHTMLAttributes<HTMLInputElement>,
@@ -63,10 +64,15 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             {...props}
           />
 
-          <img
-            src="/public/icons/interface/CheckIcon.svg"
-            alt="checkbox"
-            className="pointer-events-none absolute inset-0 flex items-center justify-center"
+          <CheckIcon
+            className={cn(
+              'pointer-events-none absolute inset-0 m-auto text-white opacity-0 peer-checked:opacity-100',
+              {
+                'h-3 w-3': size === 'sm',
+                'h-4 w-4': size === 'md',
+                'h-5 w-5': size === 'lg',
+              }
+            )}
           />
         </div>
 

@@ -1,4 +1,5 @@
 import { renderHook } from '@testing-library/react';
+import { vi } from 'vitest';
 import { useMediaQuery } from './useMediaQuery';
 
 describe('useMediaQuery', () => {
@@ -20,7 +21,9 @@ describe('useMediaQuery', () => {
 
   it('returns true or false based on query', () => {
     // Меняем значение matches для теста
-    (window.matchMedia as jest.Mock).mockImplementation((query) => ({
+    (
+      window.matchMedia as unknown as ReturnType<typeof vi.fn>
+    ).mockImplementation((query) => ({
       matches: query.includes('max-width'),
       media: query,
       onchange: null,

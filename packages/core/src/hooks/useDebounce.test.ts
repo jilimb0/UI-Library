@@ -1,7 +1,8 @@
 import { renderHook, act } from '@testing-library/react';
+import { vi } from 'vitest';
 import { useDebounce } from './useDebounce';
 
-jest.useFakeTimers();
+vi.useFakeTimers();
 
 describe('useDebounce', () => {
   it('debounces value changes', () => {
@@ -16,13 +17,13 @@ describe('useDebounce', () => {
 
     rerender({ value: 'changed', delay: 500 });
     act(() => {
-      jest.advanceTimersByTime(250);
+      vi.advanceTimersByTime(250);
     });
 
     expect(result.current).toBe('initial');
 
     act(() => {
-      jest.advanceTimersByTime(500);
+      vi.advanceTimersByTime(500);
     });
 
     expect(result.current).toBe('changed');

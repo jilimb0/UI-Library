@@ -11,7 +11,7 @@ describe('Toast', () => {
   });
 
   it('auto hides after duration callback', () => {
-    jest.useFakeTimers();
+    vi.useFakeTimers();
     const onAnimationEnd = vi.fn();
 
     render(
@@ -20,7 +20,7 @@ describe('Toast', () => {
       </Toast>
     );
 
-    jest.advanceTimersByTime(3000);
+    vi.advanceTimersByTime(3000);
     expect(onAnimationEnd).toHaveBeenCalled();
   });
 });

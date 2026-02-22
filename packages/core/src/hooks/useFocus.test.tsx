@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 
 import { render, screen, fireEvent } from '@testing-library/react';
 import { useFocus } from './useFocus';
@@ -10,7 +10,7 @@ const TestComponent = () => {
 
 describe('useFocus', () => {
   it("should log 'Element focused' on focus", () => {
-    const spy = jest.spyOn(console, 'log');
+    const spy = vi.spyOn(console, 'log');
     render(<TestComponent />);
     fireEvent.focus(screen.getByTestId('test-input'));
     expect(spy).toHaveBeenCalledWith('Element focused');

@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Button, Card, Input, TextArea, Alert } from '@ui/core';
+import { Button, Card, Input, TextArea, Alert } from '@ui-lib/core';
 
 export function App() {
   const [inputValue, setInputValue] = useState('');

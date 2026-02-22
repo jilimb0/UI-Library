@@ -1,10 +1,10 @@
-import { Card, Form, Field, Input, Button } from '@ui/core';
+import { Card, Form, Field, Input, Button } from '@ui-lib/core';
 
 export function SettingsExample() {
   return (
     <Card>
       <h2>Settings</h2>
-      <Form>
+      <Form onSubmit={() => {}}>
         <Field label="Username">
           <Input placeholder="Username" />
         </Field>

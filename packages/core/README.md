@@ -1,5 +1,5 @@
 
-# @ui/core
+# @ui-lib/core
 
 Enterprise React UI Component Library v1.0.0
 
@@ -44,7 +44,7 @@ pnpm lint
 ## Usage
 
 ```tsx
-import { Button } from '@ui/core';
+import { Button } from '@ui-lib/core';
 
 function App() {
   return <Button>Click me</Button>;

@@ -20,6 +20,7 @@ const meta: Meta<typeof Icon> = {
         'Star',
         'Bell',
         'Mail',
+        'Check',
       ],
     },
     size: {
