@@ -6,12 +6,12 @@ import { axe } from 'jest-axe';
 
 describe('Avatar component', () => {
   it('renders without crashing', () => {
-    render(<Avatar />);
+    render(<Avatar alt="User avatar" />);
     expect(screen.getByRole('img')).toBeInTheDocument();
   });
 
   it('has no accessibility violations', async () => {
-    const { container } = render(<Avatar />);
+    const { container } = render(<Avatar alt="User avatar" />);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

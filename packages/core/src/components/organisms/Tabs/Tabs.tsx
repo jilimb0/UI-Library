@@ -3,6 +3,7 @@ import {
   cloneElement,
   forwardRef,
   isValidElement,
+  ReactElement,
   ReactNode,
   useState,
 } from 'react';
@@ -26,7 +27,8 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(
       <div ref={ref} {...props}>
         {Children.map(children, (child, index) => {
           if (!isValidElement(child)) return null;
-          return cloneElement(child, {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          return cloneElement(child as ReactElement<any>, {
             selected: selectedIndex === index,
             onSelect: () => handleSelect(index),
           });

@@ -1,21 +1,26 @@
 
-import { Preview } from '@storybook/react';
+import { Preview } from '@storybook/react-vite';
 
 const preview: Preview = {
   parameters: {
     actions: { argTypesRegex: '^on[A-Z].*' },
     controls: { expanded: true },
     backgrounds: {
-      default: 'light',
-      values: [
-        { name: 'light', value: '#ffffff' },
-        { name: 'dark', value: '#000000' }
-      ]
+      options: {
+        light: { name: 'light', value: '#ffffff' },
+        dark: { name: 'dark', value: '#000000' }
+      }
     },
     docs: {
       source: {
         excludeDecorators: true,
       }
+    }
+  },
+
+  initialGlobals: {
+    backgrounds: {
+      value: 'light'
     }
   }
 };

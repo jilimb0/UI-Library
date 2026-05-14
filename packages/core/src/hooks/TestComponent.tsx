@@ -1,4 +1,4 @@
-import { FC, RefObject } from 'react';
+import { FC, useRef } from 'react';
 import { useClickOutside } from './useClickOutside';
 
 type TestComponentProps = {
@@ -6,7 +6,7 @@ type TestComponentProps = {
 };
 
 const TestComponent: FC<TestComponentProps> = ({ callback }) => {
-  const ref = { current: null } as RefObject<HTMLDivElement>;
+  const ref = useRef<HTMLDivElement>(null);
 
   useClickOutside(ref, callback);
 

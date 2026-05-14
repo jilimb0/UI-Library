@@ -5,7 +5,7 @@ export function ButtonsPage() {
     <div style={{ padding: 20 }}>
       <h2>Buttons Examples</h2>
       <Button variant="default">Default Button</Button>
-      <Button variant="primary" style={{ marginLeft: 10 }}>
+      <Button variant="default" style={{ marginLeft: 10 }}>
         Primary Button
       </Button>
       <Button variant="destructive" style={{ marginLeft: 10 }}>

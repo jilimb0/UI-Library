@@ -1,3 +1,5 @@
+import { fileURLToPath } from "node:url";
+import { dirname } from "node:path";
 import type { StorybookConfig } from '@storybook/react-vite';
 
 const config: StorybookConfig = {
@@ -6,13 +8,11 @@ const config: StorybookConfig = {
     '../../../packages/core/src/**/*.stories.@(js|jsx|ts|tsx|mdx)'
   ],
   addons: [
-    '@storybook/addon-essentials',
-    '@storybook/addon-a11y',
-    '@storybook/addon-design-tokens',
-    '@storybook/addon-docs'
+    getAbsolutePath("@storybook/addon-a11y"),
+    getAbsolutePath("@storybook/addon-docs")
   ],
   framework: {
-    name: '@storybook/react-vite',
+    name: getAbsolutePath("@storybook/react-vite"),
     options: {}
   },
   typescript: {
@@ -26,3 +26,7 @@ const config: StorybookConfig = {
 };
 
 export default config;
+
+function getAbsolutePath(value: string): any {
+  return dirname(fileURLToPath(import.meta.resolve(`${value}/package.json`)));
+}

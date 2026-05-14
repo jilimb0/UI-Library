@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Navigation } from './Navigation';
 import { MenuItem } from '../../molecules/MenuItem';
 import { Link } from '../../atoms/Link';

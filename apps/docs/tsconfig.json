@@ -5,7 +5,7 @@
     "jsx": "react-jsx",
     "module": "ESNext",
     "target": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "bundler",
     "sourceMap": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,

@@ -1,0 +1,7 @@
+dist/
+*.tsbuildinfo
+
+# Compiled output accidentally generated inside src/
+src/**/*.js
+src/**/*.d.ts
+src/**/*.d.ts.map

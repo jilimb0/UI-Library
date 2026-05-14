@@ -3,6 +3,7 @@ import {
   cloneElement,
   forwardRef,
   isValidElement,
+  ReactElement,
   ReactNode,
   useState,
 } from 'react';
@@ -39,7 +40,8 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
           if (!isValidElement(child)) return null;
           // Проверяем, что дочерний элемент — React-компонент, а не DOM-элемент
           if (typeof child.type === 'string') return child;
-          return cloneElement(child, {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          return cloneElement(child as ReactElement<any>, {
             isOpen: openItems.includes(index),
             onToggle: () => toggleItem(index),
           });

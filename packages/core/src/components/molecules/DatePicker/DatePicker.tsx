@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useState, ReactElement } from 'react';
 import {
   format,
   addMonths,
@@ -33,8 +33,8 @@ const DatePicker: FC<DatePickerProps> = ({
   const endDate = endOfWeek(endMonth);
 
   const dateFormat = 'd';
-  const rows: JSX.Element[] = [];
-  let days: JSX.Element[] = [];
+  const rows: ReactElement[] = [];
+  let days: ReactElement[] = [];
   let day = startDate;
 
   while (day <= endDate) {

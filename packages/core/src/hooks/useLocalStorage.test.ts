@@ -4,7 +4,17 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 describe('useLocalStorage', () => {
   beforeEach(() => {
-    localStorage.clear();
+    vi.stubGlobal('localStorage', (() => {
+      let store: Record<string, string> = {};
+      return {
+        getItem: (key: string) => store[key] ?? null,
+        setItem: (key: string, value: string) => { store[key] = value; },
+        removeItem: (key: string) => { delete store[key]; },
+        clear: () => { store = {}; },
+        get length() { return Object.keys(store).length; },
+        key: (i: number) => Object.keys(store)[i] ?? null,
+      };
+    })());
   });
 
   it('should initialize with default value', () => {
@@ -24,15 +34,17 @@ describe('useLocalStorage', () => {
   });
 
   it('should handle JSON serialization errors gracefully', () => {
-    const { result } = renderHook(() => useLocalStorage('test-key', 'initial'));
     const consoleErrorSpy = vi
       .spyOn(console, 'error')
       .mockImplementation(() => {});
+
     const setItemSpy = vi
-      .spyOn(Storage.prototype, 'setItem')
+      .spyOn(localStorage, 'setItem')
       .mockImplementation(() => {
         throw new Error('Serialization error');
       });
+
+    const { result } = renderHook(() => useLocalStorage('test-key', 'initial'));
 
     act(() => {
       result.current[1]('updated');

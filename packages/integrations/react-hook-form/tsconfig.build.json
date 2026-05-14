@@ -3,7 +3,9 @@
   "compilerOptions": {
     "noEmit": false,
     "emitDeclarationOnly": false,
+    "rootDir": "src",
     "outDir": "dist"
   },
+  "include": ["src"],
   "exclude": ["**/*.test.ts", "**/*.test.tsx"]
 }

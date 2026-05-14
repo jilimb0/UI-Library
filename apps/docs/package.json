@@ -10,12 +10,12 @@
     "lint": "echo \"app: no lint\""
   },
   "dependencies": {
-    "react": ">=18.0.0",
-    "react-dom": ">=18.0.0"
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6"
   },
   "devDependencies": {
-    "vite": "^4.4.0",
-    "@vitejs/plugin-react": "^4.1.0",
-    "typescript": "^5.0.0"
+    "@vitejs/plugin-react": "^6.0.2",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.0"
   }
 }
