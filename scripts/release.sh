@@ -1,7 +1,13 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-# Скрипт релиза проекта
+echo "[release] preflight"
+pnpm release:preflight
 
-npm run build
-npm run test
-# Публикация, например npm publish
+echo "[release] version packages (changesets)"
+pnpm version-packages
+
+echo "[release] publish"
+pnpm release
+
+echo "[release] done"

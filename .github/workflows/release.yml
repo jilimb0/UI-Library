@@ -19,7 +19,10 @@ jobs:
           node-version: 18
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm test
       - run: pnpm build
+      - run: pnpm demo:build
       - name: Create Release Pull Request or Publish
         uses: changesets/action@v1
         with:

@@ -1,0 +1,27 @@
+{
+  "name": "@ui/demo-showcase",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "lint": "echo \"demo-showcase: no lint\""
+  },
+  "dependencies": {
+    "@ui-lib/core": "workspace:*",
+    "@ui-lib/icons": "workspace:*",
+    "@ui-lib/react-hook-form": "workspace:*",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.53.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.27",
+    "@types/react-dom": "^18.3.7",
+    "@vitejs/plugin-react": "^4.7.0",
+    "typescript": "^5.2.0",
+    "vite": "^5.4.10"
+  }
+}

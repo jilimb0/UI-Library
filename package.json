@@ -16,6 +16,11 @@
     "typecheck": "turbo run typecheck",
     "storybook": "turbo run storybook",
     "build-storybook": "pnpm --filter @ui-lib/storybook build-storybook",
+    "demo:dev": "pnpm --filter @ui/demo-showcase dev",
+    "demo:build": "pnpm --filter @ui/demo-showcase build",
+    "demo:preview": "pnpm --filter @ui/demo-showcase preview",
+    "demo:typecheck": "pnpm --filter @ui/demo-showcase typecheck",
+    "release:preflight": "./scripts/release-preflight.sh",
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "turbo run build && changeset publish"
