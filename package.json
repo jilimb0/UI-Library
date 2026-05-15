@@ -24,11 +24,23 @@
     "release:preflight": "./scripts/release-preflight.sh",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release": "turbo run build && changeset publish"
+    "release": "turbo run build && changeset publish",
+    "validate": "pnpm lint && pnpm typecheck && pnpm test && pnpm build",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,mjs,cjs}": [
+      "biome check --write --no-errors-on-unmatched"
+    ],
+    "*.{json,jsonc,css,md,yml,yaml}": [
+      "biome format --write --no-errors-on-unmatched"
+    ]
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.15",
     "@changesets/cli": "^2.27.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.0.4",
     "turbo": "^2.9.14",
     "typescript": "^6.0.3"
   }
