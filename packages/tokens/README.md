@@ -1,12 +1,29 @@
-
 # @ui-lib/tokens
 
-Design tokens package for UI library
+Design token package for multi-framework consumption.
 
-## Installation
-```
-npm install @ui-lib/tokens
-```
+## Includes
+
+- Color scales (`50..900`) and semantic light/dark colors
+- Motion tokens (duration/easing)
+- Opacity tokens
+- CSS variable generator
+- Tailwind preset
 
 ## Usage
-Import design tokens from this package to use consistent design values across UI components.
+
+```ts
+import { generateCSSVariables, colors, motion } from '@ui-lib/tokens';
+
+const css = generateCSSVariables({ mode: 'dark' });
+```
+
+Tailwind preset:
+
+```ts
+import preset from '@ui-lib/tokens/tailwind.preset';
+
+export default {
+  presets: [preset],
+};
+```

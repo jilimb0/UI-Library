@@ -1,4 +1,3 @@
-
 module.exports = {
   reporters: [
     'default',
@@ -6,9 +5,9 @@ module.exports = {
       'jest-junit',
       {
         outputDirectory: './coverage',
-        outputName: 'junit.xml'
-      }
-    ]
+        outputName: 'junit.xml',
+      },
+    ],
   ],
   collectCoverage: true,
   coverageThreshold: {
@@ -16,7 +15,7 @@ module.exports = {
       branches: 80,
       functions: 80,
       lines: 80,
-      statements: 80
-    }
-  }
+      statements: 80,
+    },
+  },
 };

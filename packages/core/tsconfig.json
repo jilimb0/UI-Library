@@ -9,7 +9,7 @@
     "noEmit": false,
     "paths": {
       "@/*": ["./src/*"],
-      "@ui-lib/tokens": ["../tokens/src"]
+      "@ui-lib/tokens": ["../tokens/src/index.ts"]
     },
     "types": []
   },

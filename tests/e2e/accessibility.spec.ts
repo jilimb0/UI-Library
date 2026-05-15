@@ -1,5 +1,4 @@
-
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 const axeSource = require('axe-core').source;
 
@@ -9,7 +8,7 @@ test('accessibility check for storybook', async ({ page }) => {
   await page.addScriptTag({ content: axeSource });
   const results = await page.evaluate(async () => {
     return await new Promise((resolve) => {
-      // @ts-ignore
+      // @ts-expect-error
       axe.run((err, results) => {
         if (err) throw err;
         resolve(results);

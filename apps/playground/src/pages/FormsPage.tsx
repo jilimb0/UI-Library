@@ -1,13 +1,13 @@
-import { useState } from "react"
-import { Form, Field, Input, TextArea, Button } from "@ui-lib/core"
+import { Button, Field, Form, Input, TextArea } from '@ui-lib/core';
+import { useState } from 'react';
 
 export function FormsPage() {
-  const [name, setName] = useState("")
-  const [message, setMessage] = useState("")
+  const [name, setName] = useState('');
+  const [message, setMessage] = useState('');
 
   const handleSubmit = (data: Record<string, any>) => {
-    alert(`Name: ${data.name}, Message: ${data.message}`)
-  }
+    alert(`Name: ${data.name}, Message: ${data.message}`);
+  };
 
   return (
     <div style={{ padding: 20 }}>
@@ -25,5 +25,5 @@ export function FormsPage() {
         <Button type="submit">Submit</Button>
       </Form>
     </div>
-  )
+  );
 }

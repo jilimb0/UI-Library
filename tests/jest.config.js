@@ -5,24 +5,24 @@ module.exports = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
     '^@ui-lib/(.*)$': '<rootDir>/packages/$1/src',
-    '^@ui/(.*)$': '<rootDir>/packages/$1/src'
+    '^@ui/(.*)$': '<rootDir>/packages/$1/src',
   },
   transform: {
-    '^.+\.tsx?$': 'ts-jest',
+    '^.+.tsx?$': 'ts-jest',
   },
   testPathIgnorePatterns: ['/node_modules/', '/dist/'],
   coverageDirectory: './coverage',
   collectCoverageFrom: [
     'packages/core/src/**/*.{ts,tsx}',
     '!**/node_modules/**',
-    '!**/*.d.ts'
+    '!**/*.d.ts',
   ],
   coverageThreshold: {
     global: {
       branches: 80,
       functions: 80,
       lines: 80,
-      statements: 80
-    }
-  }
+      statements: 80,
+    },
+  },
 };

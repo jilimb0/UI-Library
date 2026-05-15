@@ -1,8 +1,7 @@
-import { describe, it, expect } from 'vitest';
-
 import { render, screen } from '@testing-library/react';
-import { Toast } from './Toast';
 import { axe } from 'jest-axe';
+import { describe, expect, it } from 'vitest';
+import { Toast } from './Toast';
 
 describe('Toast Accessibility', () => {
   it('has no accessibility violations', async () => {

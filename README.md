@@ -1,33 +1,37 @@
 # UI Library Monorepo
 
-Production-ready monorepo for React UI components, icons, tokens, and utilities.
+Production-ready monorepo for design tokens, React UI components, icons, and framework integrations.
+
+## Packages
+
+- `@ui-lib/core`: UI components (atoms, molecules, organisms, templates), themes, hooks
+- `@ui-lib/tokens`: color scales, semantic tokens, motion/opacity tokens, CSS variables, Tailwind preset
+- `@ui-lib/icons`: icon exports
+- `@ui-lib/integration-next`: Next.js adapters
+- `@ui-lib/integration-tanstack-query`: async DataTable integration
+- `@ui-lib/integration-tanstack-router`: router adapters
+- `@ui-lib/integration-i18n`: translation provider/hook
 
 ## Quick Start
 
 ```bash
 pnpm install
-pnpm demo:dev
+pnpm typecheck
+pnpm dev
 ```
 
-## Demo Commands
+## Build
 
 ```bash
-pnpm demo:typecheck
-pnpm demo:build
-pnpm demo:preview
+pnpm build
 ```
+
+## Docs
+
+Architecture and guides are in `docs/`.
 
 ## Release
 
 ```bash
 pnpm release:preflight
 ```
-
-Release docs:
-
-- `docs/release/PR_CHECKLIST.md`
-- `docs/release/RELEASE_RUNBOOK.md`
-- `docs/release/RELEASE_NOTES_TEMPLATE.md`
-- `docs/release/DEMO_PITCH.md`
-- `docs/release/EXTERNAL_SETUP.md`
-- `docs/marketing/LAUNCH_POSTS.md`

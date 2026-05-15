@@ -1,14 +1,14 @@
-import { useState, FormEvent } from "react"
-import { Form, Field, Input, Button } from "@ui-lib/core"
+import { Button, Field, Form, Input } from '@ui-lib/core';
+import { useState } from 'react';
 
 export function AuthExample() {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleSubmit = (data: Record<string, any>) => {
     // data содержит { email: "...", password: "..." }
-    alert(`Email: ${data.email}, Password: ${data.password}`)
-  }
+    alert(`Email: ${data.email}, Password: ${data.password}`);
+  };
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -30,5 +30,5 @@ export function AuthExample() {
       </Field>
       <Button type="submit">Login</Button>
     </Form>
-  )
+  );
 }

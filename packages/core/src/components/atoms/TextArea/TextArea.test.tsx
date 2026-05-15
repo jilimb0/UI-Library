@@ -1,6 +1,5 @@
-import { describe, it, expect } from 'vitest';
-
 import { render, screen } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
 import { TextArea } from './TextArea';
 import '@testing-library/jest-dom';
 import { axe } from 'jest-axe';

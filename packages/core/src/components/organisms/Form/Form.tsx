@@ -1,4 +1,4 @@
-import { FormEvent, FormHTMLAttributes, forwardRef } from 'react';
+import { type FormEvent, type FormHTMLAttributes, forwardRef } from 'react';
 
 export interface FormProps extends FormHTMLAttributes<HTMLFormElement> {
   onSubmit: (data: Record<string, any>) => void;
@@ -19,8 +19,8 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(
       <form
         ref={ref}
         onSubmit={handleSubmit}
-        role="form"
         data-testid="form"
+        aria-label="form"
         {...props}
       >
         {children}

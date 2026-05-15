@@ -1,5 +1,5 @@
+import { forwardRef, type HTMLAttributes } from 'react';
 import { cn } from '../../../utils/cn';
-import { forwardRef, HTMLAttributes } from 'react';
 
 export interface AlertProps extends HTMLAttributes<HTMLDivElement> {
   variant?: 'default' | 'success' | 'warning' | 'error';

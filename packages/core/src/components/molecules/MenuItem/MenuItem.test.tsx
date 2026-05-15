@@ -1,8 +1,7 @@
-import { describe, it, expect } from 'vitest';
-
 import { render, screen } from '@testing-library/react';
-import { MenuItem } from './MenuItem';
 import { axe } from 'jest-axe';
+import { describe, expect, it } from 'vitest';
+import { MenuItem } from './MenuItem';
 
 describe('MenuItem component', () => {
   it('renders without crashing', () => {

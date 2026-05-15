@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Accordion } from './Accordion';
 import { Heading } from '../../atoms/Heading';
 import { Text } from '../../atoms/Text';
+import { Accordion } from './Accordion';
 
 const meta: Meta<typeof Accordion> = {
   title: 'Components/Organisms/Accordion',
@@ -19,6 +19,7 @@ type Story = StoryObj<typeof Accordion>;
 const AccordionItem = ({ isOpen, onToggle, title, children }: any) => (
   <div className="border-b">
     <button
+      type="button"
       onClick={onToggle}
       className="w-full text-left p-4 flex justify-between items-center hover:bg-gray-50"
     >

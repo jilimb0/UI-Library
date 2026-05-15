@@ -1,20 +1,31 @@
-import { renderHook, act } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useLocalStorage } from './useLocalStorage';
-import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 describe('useLocalStorage', () => {
   beforeEach(() => {
-    vi.stubGlobal('localStorage', (() => {
-      let store: Record<string, string> = {};
-      return {
-        getItem: (key: string) => store[key] ?? null,
-        setItem: (key: string, value: string) => { store[key] = value; },
-        removeItem: (key: string) => { delete store[key]; },
-        clear: () => { store = {}; },
-        get length() { return Object.keys(store).length; },
-        key: (i: number) => Object.keys(store)[i] ?? null,
-      };
-    })());
+    vi.stubGlobal(
+      'localStorage',
+      (() => {
+        let store: Record<string, string> = {};
+        return {
+          getItem: (key: string) => store[key] ?? null,
+          setItem: (key: string, value: string) => {
+            store[key] = value;
+          },
+          removeItem: (key: string) => {
+            delete store[key];
+          },
+          clear: () => {
+            store = {};
+          },
+          get length() {
+            return Object.keys(store).length;
+          },
+          key: (i: number) => Object.keys(store)[i] ?? null,
+        };
+      })()
+    );
   });
 
   it('should initialize with default value', () => {

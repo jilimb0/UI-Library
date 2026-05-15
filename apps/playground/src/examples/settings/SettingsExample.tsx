@@ -1,4 +1,4 @@
-import { Card, Form, Field, Input, Button } from '@ui-lib/core';
+import { Button, Card, Field, Form, Input } from '@ui-lib/core';
 
 export function SettingsExample() {
   return (

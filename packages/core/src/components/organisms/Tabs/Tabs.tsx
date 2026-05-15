@@ -1,41 +1,47 @@
-import {
-  Children,
-  cloneElement,
-  forwardRef,
-  isValidElement,
-  ReactElement,
-  ReactNode,
-  useState,
-} from 'react';
+import * as RadixTabs from '@radix-ui/react-tabs';
+import type { ComponentPropsWithoutRef } from 'react';
+import { cn } from '../../../utils/cn';
 
-export interface TabsProps {
-  children: ReactNode;
-  defaultIndex?: number;
-  onChange?: (index: number) => void;
+function TabsRoot(props: ComponentPropsWithoutRef<typeof RadixTabs.Root>) {
+  return <RadixTabs.Root {...props} />;
 }
 
-export const Tabs = forwardRef<HTMLDivElement, TabsProps>(
-  ({ children, defaultIndex = 0, onChange, ...props }, ref) => {
-    const [selectedIndex, setSelectedIndex] = useState(defaultIndex);
+function TabsList({
+  className,
+  ...props
+}: ComponentPropsWithoutRef<typeof RadixTabs.List>) {
+  return (
+    <RadixTabs.List
+      className={cn('inline-flex rounded-md bg-slate-100 p-1', className)}
+      {...props}
+    />
+  );
+}
 
-    const handleSelect = (index: number) => {
-      setSelectedIndex(index);
-      onChange?.(index);
-    };
+function TabsTrigger({
+  className,
+  ...props
+}: ComponentPropsWithoutRef<typeof RadixTabs.Trigger>) {
+  return (
+    <RadixTabs.Trigger
+      className={cn(
+        'rounded px-3 py-1.5 text-sm font-medium text-slate-700 data-[state=active]:bg-white data-[state=active]:text-slate-900 data-[state=active]:shadow-sm',
+        className
+      )}
+      {...props}
+    />
+  );
+}
 
-    return (
-      <div ref={ref} {...props}>
-        {Children.map(children, (child, index) => {
-          if (!isValidElement(child)) return null;
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          return cloneElement(child as ReactElement<any>, {
-            selected: selectedIndex === index,
-            onSelect: () => handleSelect(index),
-          });
-        })}
-      </div>
-    );
-  }
-);
+function TabsContent({
+  className,
+  ...props
+}: ComponentPropsWithoutRef<typeof RadixTabs.Content>) {
+  return <RadixTabs.Content className={cn('mt-4', className)} {...props} />;
+}
 
-Tabs.displayName = 'Tabs';
+export const Tabs = Object.assign(TabsRoot, {
+  List: TabsList,
+  Trigger: TabsTrigger,
+  Content: TabsContent,
+});

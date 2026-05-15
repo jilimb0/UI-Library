@@ -1,8 +1,7 @@
-import { describe, it, expect } from 'vitest';
-
 import { render, screen } from '@testing-library/react';
-import { Badge } from './Badge';
 import { axe } from 'jest-axe';
+import { describe, expect, it } from 'vitest';
+import { Badge } from './Badge';
 
 describe('Badge', () => {
   it('renders without crashing', () => {

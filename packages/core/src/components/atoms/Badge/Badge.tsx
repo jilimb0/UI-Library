@@ -1,6 +1,6 @@
 import { cva, type VariantProps } from 'class-variance-authority';
+import { forwardRef, type HTMLAttributes } from 'react';
 import { cn } from '../../../utils/cn';
-import { forwardRef, HTMLAttributes } from 'react';
 
 const badgeVariants = cva(
   'inline-flex items-center rounded-md px-2 py-1 text-xs font-medium',
@@ -20,7 +20,8 @@ const badgeVariants = cva(
 );
 
 export interface BadgeProps
-  extends HTMLAttributes<HTMLSpanElement>, VariantProps<typeof badgeVariants> {}
+  extends HTMLAttributes<HTMLSpanElement>,
+    VariantProps<typeof badgeVariants> {}
 
 const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
   ({ className, variant, ...props }, ref) => {

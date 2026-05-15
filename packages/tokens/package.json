@@ -1,17 +1,31 @@
 {
   "name": "@ui-lib/tokens",
-  "version": "2.0.0",
+  "version": "0.1.0",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./tailwind.preset": "./tailwind.preset.ts"
+  },
   "files": [
-    "dist"
+    "dist",
+    "tailwind.preset.ts"
   ],
   "scripts": {
     "build": "rollup -c",
     "build:tokens": "node scripts/build-tokens.js",
     "typecheck": "tsc --noEmit",
-    "lint": "echo \"package: no lint\""
+    "lint": "biome check src"
+  },
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^12.1.2",
+    "rollup": "^4.34.8",
+    "typescript": "^6.0.3"
   },
   "license": "MIT",
   "type": "module"

@@ -1,4 +1,5 @@
-import { useState, useMemo, ReactNode } from 'react';
+import { type ReactNode, useMemo, useState } from 'react';
+import { Pagination } from '../../molecules/Pagination';
 
 interface Column<T> {
   key: string;
@@ -13,14 +14,19 @@ interface DataTableProps<T> {
   data: T[];
   columns: Column<T>[];
   pageSize?: number;
+  pageSizeOptions?: number[];
 }
 
-function DataTable<T>({ data, columns, pageSize = 10 }: DataTableProps<T>) {
+function DataTable<T>({
+  data,
+  columns,
+  pageSize = 10,
+  pageSizeOptions = [10, 20, 50, 100],
+}: DataTableProps<T>) {
   const [sortColumn, setSortColumn] = useState<string | null>(null);
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
   const [currentPage, setCurrentPage] = useState(1);
-
-  if (data.length === 0) return <div>No data</div>;
+  const [activePageSize, setActivePageSize] = useState(pageSize);
 
   const sortedData = useMemo(() => {
     if (!sortColumn) return data;
@@ -40,12 +46,14 @@ function DataTable<T>({ data, columns, pageSize = 10 }: DataTableProps<T>) {
     return sorted;
   }, [data, sortColumn, sortDirection]);
 
-  const totalPages = Math.ceil(sortedData.length / pageSize);
+  const totalPages = Math.ceil(sortedData.length / activePageSize);
 
   const displayedData = useMemo(() => {
-    const start = (currentPage - 1) * pageSize;
-    return sortedData.slice(start, start + pageSize);
-  }, [sortedData, currentPage, pageSize]);
+    const start = (currentPage - 1) * activePageSize;
+    return sortedData.slice(start, start + activePageSize);
+  }, [sortedData, currentPage, activePageSize]);
+
+  if (data.length === 0) return <div>No data</div>;
 
   const handleSort = (colKey: string) => {
     if (sortColumn === colKey) {
@@ -79,8 +87,8 @@ function DataTable<T>({ data, columns, pageSize = 10 }: DataTableProps<T>) {
           </tr>
         </thead>
         <tbody>
-          {displayedData.map((item, idx) => (
-            <tr key={idx} className="border border-gray-300">
+          {displayedData.map((item, _idx) => (
+            <tr key={JSON.stringify(item)} className="border border-gray-300">
               {columns.map((col) => (
                 <td key={col.key} className="border border-gray-300 px-4 py-2">
                   {col.render
@@ -92,27 +100,17 @@ function DataTable<T>({ data, columns, pageSize = 10 }: DataTableProps<T>) {
           ))}
         </tbody>
       </table>
-      <div className="flex justify-between mt-2">
-        <button
-          className="px-2 py-1 border rounded"
-          onClick={() => setCurrentPage((page) => Math.max(page - 1, 1))}
-          disabled={currentPage === 1}
-        >
-          Previous
-        </button>
-        <span>
-          Page {currentPage} of {totalPages}
-        </span>
-        <button
-          className="px-2 py-1 border rounded"
-          onClick={() =>
-            setCurrentPage((page) => Math.min(page + 1, totalPages))
-          }
-          disabled={currentPage === totalPages}
-        >
-          Next
-        </button>
-      </div>
+      <Pagination
+        page={currentPage}
+        totalPages={Math.max(totalPages, 1)}
+        onPageChange={setCurrentPage}
+        pageSize={activePageSize}
+        pageSizeOptions={pageSizeOptions}
+        onPageSizeChange={(nextPageSize) => {
+          setActivePageSize(nextPageSize);
+          setCurrentPage(1);
+        }}
+      />
     </div>
   );
 }

@@ -1,52 +1,40 @@
-
 # @ui-lib/core
 
-Enterprise React UI Component Library v1.0.0
+React UI component library with layered architecture:
 
-## Getting Started
+- Atoms
+- Molecules
+- Organisms
+- Templates
 
-Install dependencies:
-```bash
-pnpm install
-```
+## Highlights
 
-Dev server:
-```bash
-pnpm dev
-```
+- ThemeProvider with light/dark + token overrides
+- Compound components (`Modal`, `Tabs`, `Accordion`)
+- Polymorphic API (`Button`, `Text`, `Heading` via `as`)
+- Dashboard-ready organisms (`Sidebar`, `Drawer`, `Kanban`, `CommandPalette`, `DataTable`, `Calendar`)
 
-Build:
-```bash
-pnpm build
-```
-
-Test:
-```bash
-pnpm test
-```
-
-Lint:
-```bash
-pnpm lint
-```
-
-## Features
-
-- Fully typed TypeScript components
-- Atomic Design Architecture
-- React 18+ support
-- Tailwind CSS and class-variance-authority styling
-- Dark and light theme support
-- Accessibility (WCAG 2.1) compliance
-- Storybook documentation with interactive stories
-- Jest testing with coverage
-
-## Usage
+## Example
 
 ```tsx
-import { Button } from '@ui-lib/core';
+import { ThemeProvider, Button, Modal } from '@ui-lib/core';
 
-function App() {
-  return <Button>Click me</Button>;
+export function App() {
+  return (
+    <ThemeProvider theme="dark">
+      <Button as="a" href="/docs">Open docs</Button>
+      <Modal>
+        <Modal.Trigger asChild>
+          <Button>Open modal</Button>
+        </Modal.Trigger>
+        <Modal.Content>
+          <Modal.Header>
+            <Modal.Title>Title</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Body</Modal.Body>
+        </Modal.Content>
+      </Modal>
+    </ThemeProvider>
+  );
 }
 ```

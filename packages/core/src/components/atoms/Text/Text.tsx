@@ -1,6 +1,6 @@
 import { cva, type VariantProps } from 'class-variance-authority';
+import type { ElementType, HTMLAttributes } from 'react';
 import { cn } from '../../../utils/cn';
-import { forwardRef, HTMLAttributes } from 'react';
 
 const textVariants = cva('text-foreground', {
   variants: {
@@ -25,21 +25,19 @@ const textVariants = cva('text-foreground', {
 });
 
 export interface TextProps
-  extends
-    HTMLAttributes<HTMLParagraphElement>,
-    VariantProps<typeof textVariants> {}
+  extends HTMLAttributes<HTMLParagraphElement>,
+    VariantProps<typeof textVariants> {
+  as?: ElementType;
+}
 
-const Text = forwardRef<HTMLParagraphElement, TextProps>(
-  ({ size, weight, className, ...props }, ref) => {
-    return (
-      <p
-        ref={ref}
-        className={cn(textVariants({ size, weight, className }))}
-        {...props}
-      />
-    );
-  }
-);
-Text.displayName = 'Text';
+const Text = ({ as, size, weight, className, ...props }: TextProps) => {
+  const Component = (as ?? 'p') as ElementType;
+  return (
+    <Component
+      className={cn(textVariants({ size, weight, className }))}
+      {...props}
+    />
+  );
+};
 
 export { Text, textVariants };

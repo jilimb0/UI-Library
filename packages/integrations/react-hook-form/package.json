@@ -1,6 +1,6 @@
 {
   "name": "@ui-lib/react-hook-form",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -10,13 +10,16 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "test": "echo \"@ui-lib/react-hook-form: no tests\"",
-    "lint": "echo \"@ui-lib/react-hook-form: no lint\"",
+    "lint": "biome check src",
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0",
     "react-hook-form": ">=7.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.14"
   },
   "dependencies": {
     "@ui-lib/core": "workspace:*"

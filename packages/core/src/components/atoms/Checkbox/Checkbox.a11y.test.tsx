@@ -1,8 +1,7 @@
-import { describe, it, expect, vi } from 'vitest';
-
 import { render, screen } from '@testing-library/react';
-import { axe } from 'jest-axe';
 import userEvent from '@testing-library/user-event';
+import { axe } from 'jest-axe';
+import { describe, expect, it, vi } from 'vitest';
 import { Checkbox } from './Checkbox';
 import '@testing-library/jest-dom';
 import 'jest-axe/extend-expect';

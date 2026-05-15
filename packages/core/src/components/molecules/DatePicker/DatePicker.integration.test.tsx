@@ -1,8 +1,7 @@
-import { describe, it, expect, vi } from 'vitest';
-
 import { render, screen } from '@testing-library/react';
-import { default as DatePicker } from './DatePicker';
 import userEvent from '@testing-library/user-event';
+import { describe, expect, it, vi } from 'vitest';
+import { default as DatePicker } from './DatePicker';
 import '@testing-library/jest-dom';
 
 const DEFAULT_MONTH = new Date(2025, 11, 1); // December 2025

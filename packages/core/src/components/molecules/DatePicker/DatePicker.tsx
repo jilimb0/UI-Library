@@ -1,16 +1,16 @@
-import { FC, useState, ReactElement } from 'react';
 import {
-  format,
-  addMonths,
-  subMonths,
-  startOfMonth,
-  endOfMonth,
-  startOfWeek,
-  endOfWeek,
   addDays,
-  isSameMonth,
+  addMonths,
+  endOfMonth,
+  endOfWeek,
+  format,
   isSameDay,
+  isSameMonth,
+  startOfMonth,
+  startOfWeek,
+  subMonths,
 } from 'date-fns';
+import { type FC, type ReactElement, useState } from 'react';
 
 interface DatePickerProps {
   selectedDate: Date | null;
@@ -51,6 +51,7 @@ const DatePicker: FC<DatePickerProps> = ({
               : ''
           } cursor-pointer p-2 text-center`}
           onClick={() => onChange(cloneDay)}
+          onKeyDown={(e) => e.key === 'Enter' && onChange(cloneDay)}
         >
           {format(cloneDay, dateFormat)}
         </td>
@@ -64,11 +65,17 @@ const DatePicker: FC<DatePickerProps> = ({
   return (
     <div>
       <div className="flex justify-between items-center mb-2">
-        <button onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}>
+        <button
+          type="button"
+          onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
+        >
           Prev
         </button>
         <span>{format(currentMonth, 'MMMM yyyy')}</span>
-        <button onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}>
+        <button
+          type="button"
+          onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
+        >
           Next
         </button>
       </div>

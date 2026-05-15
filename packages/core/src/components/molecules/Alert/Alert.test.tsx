@@ -1,8 +1,7 @@
-import { describe, it, expect } from 'vitest';
-
 import { render, screen } from '@testing-library/react';
-import { Alert } from './Alert';
 import { axe } from 'jest-axe';
+import { describe, expect, it } from 'vitest';
+import { Alert } from './Alert';
 
 describe('Alert component', () => {
   it('renders without crashing', () => {

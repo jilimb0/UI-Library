@@ -1,8 +1,7 @@
-import { describe, it, expect } from 'vitest';
-
 import { render, screen } from '@testing-library/react';
-import { Field } from './Field';
 import { axe } from 'jest-axe';
+import { describe, expect, it } from 'vitest';
+import { Field } from './Field';
 
 describe('Field component', () => {
   it('renders without crashing', () => {

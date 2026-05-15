@@ -1,107 +1,84 @@
-import { forwardRef, HTMLAttributes, ReactNode, useEffect } from 'react';
-import { createPortal } from 'react-dom';
-import { useFocus } from '../../../hooks/index';
+import * as Dialog from '@radix-ui/react-dialog';
+import type { ComponentPropsWithoutRef, ReactNode } from 'react';
+import { cn } from '../../../utils/cn';
 
-interface ModalProps extends HTMLAttributes<HTMLDivElement> {
-  isOpen: boolean;
-  onClose: () => void;
-  initialFocus?: 'first' | 'last';
-  children: ReactNode;
+type ModalRootProps = ComponentPropsWithoutRef<typeof Dialog.Root>;
+type ModalContentProps = ComponentPropsWithoutRef<typeof Dialog.Content>;
+
+function ModalRoot(props: ModalRootProps) {
+  return <Dialog.Root {...props} />;
 }
 
-const Modal = forwardRef<HTMLDivElement, ModalProps>(
-  ({ isOpen, onClose, initialFocus = 'first', children, ...props }, ref) => {
-    // вместо useRef — используем useFocus
-    const containerRef = useFocus<HTMLDivElement>();
+function ModalTrigger(props: ComponentPropsWithoutRef<typeof Dialog.Trigger>) {
+  return <Dialog.Trigger {...props} />;
+}
 
-    const getFocusable = () => {
-      if (!containerRef.current) return [];
-      return Array.from(
-        containerRef.current.querySelectorAll<HTMLElement>(
-          'button:not([data-modal-close]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-        )
-      );
-    };
+function ModalClose(props: ComponentPropsWithoutRef<typeof Dialog.Close>) {
+  return <Dialog.Close {...props} />;
+}
 
-    useEffect(() => {
-      if (!isOpen || !containerRef.current) return;
-
-      const focusable = getFocusable();
-      if (!focusable.length) return;
-
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      const target = initialFocus === 'last' ? last : first;
-
-      // выставляем начальный фокус
-      target.focus();
-
-      const handleKeyDown = (e: KeyboardEvent) => {
-        if (e.key !== 'Tab') return;
-
-        const currentFocusable = getFocusable();
-        if (currentFocusable.length <= 1) return;
-
-        const firstEl = currentFocusable[0];
-        const lastEl = currentFocusable[currentFocusable.length - 1];
-        const active = document.activeElement as HTMLElement;
-
-        // Shift+Tab на первом → последний
-        if (e.shiftKey && active === firstEl) {
-          e.preventDefault();
-          lastEl.focus();
-          return;
-        }
-
-        // Tab на последнем → первый
-        if (!e.shiftKey && active === lastEl) {
-          e.preventDefault();
-          firstEl.focus();
-          return;
-        }
-      };
-
-      document.addEventListener('keydown', handleKeyDown);
-      return () => document.removeEventListener('keydown', handleKeyDown);
-    }, [isOpen, initialFocus]);
-
-    if (!isOpen) return null;
-
-    return createPortal(
-      <div
-        ref={ref}
-        role="dialog"
-        aria-modal="true"
-        data-testid="modal-overlay"
-        className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
-        onClick={(e) => {
-          if (e.target === e.currentTarget) {
-            onClose();
-          }
-          props.onClick?.(e);
-        }}
+function ModalContent({ className, children, ...props }: ModalContentProps) {
+  return (
+    <Dialog.Portal>
+      <Dialog.Overlay className="fixed inset-0 z-40 bg-black/50" />
+      <Dialog.Content
+        className={cn(
+          'fixed left-1/2 top-1/2 z-50 w-full max-w-lg -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white p-6 shadow-xl focus:outline-none',
+          className
+        )}
         {...props}
       >
-        <div
-          ref={containerRef}
-          className="bg-white rounded-lg p-6 shadow-lg max-w-md w-full mx-4"
-        >
-          {children}
-          <button
-            data-modal-close
-            type="button"
-            onClick={onClose}
-            className="mt-4 px-4 py-2 bg-red-500 text-white rounded"
-          >
-            Close
-          </button>
-        </div>
-      </div>,
-      document.body
-    );
-  }
-);
+        {children}
+      </Dialog.Content>
+    </Dialog.Portal>
+  );
+}
 
-Modal.displayName = 'Modal';
+function ModalHeader({
+  className,
+  children,
+}: {
+  className?: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className={cn('mb-4 border-b border-slate-200 pb-3', className)}>
+      {children}
+    </div>
+  );
+}
 
-export default Modal;
+function ModalBody({
+  className,
+  children,
+}: {
+  className?: string;
+  children: ReactNode;
+}) {
+  return <div className={cn('py-1', className)}>{children}</div>;
+}
+
+function ModalFooter({
+  className,
+  children,
+}: {
+  className?: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className={cn('mt-5 flex items-center justify-end gap-2', className)}>
+      {children}
+    </div>
+  );
+}
+
+export const Modal = Object.assign(ModalRoot, {
+  Trigger: ModalTrigger,
+  Content: ModalContent,
+  Header: ModalHeader,
+  Body: ModalBody,
+  Footer: ModalFooter,
+  Close: ModalClose,
+  Title: Dialog.Title,
+  Description: Dialog.Description,
+});

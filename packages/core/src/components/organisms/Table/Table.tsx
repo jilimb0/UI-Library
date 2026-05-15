@@ -1,4 +1,4 @@
-import { forwardRef, ReactNode, TableHTMLAttributes } from 'react';
+import { forwardRef, type ReactNode, type TableHTMLAttributes } from 'react';
 
 export interface TableProps extends TableHTMLAttributes<HTMLTableElement> {
   children?: ReactNode;

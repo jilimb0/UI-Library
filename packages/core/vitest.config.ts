@@ -7,11 +7,11 @@ export default {
     include: ['src/**/*.test.{ts,tsx}', 'src/**/*.spec.{ts,tsx}'],
     server: {
       deps: {
-        inline: ['jest-axe']
-      }
+        inline: ['jest-axe'],
+      },
     },
     deps: {
-      interopDefault: true
-    }
-  }
+      interopDefault: true,
+    },
+  },
 };

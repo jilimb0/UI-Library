@@ -1,8 +1,8 @@
 import {
   announceToScreenReader,
-  trapFocus,
-  getAriaProps,
   generateId,
+  getAriaProps,
+  trapFocus,
 } from './accessibility';
 import '@testing-library/jest-dom';
 

@@ -1,4 +1,4 @@
-const { performance } = require('perf_hooks');
+const { performance } = require('node:perf_hooks');
 
 describe('Render performance baseline', () => {
   it('runs under threshold', () => {

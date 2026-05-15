@@ -1,5 +1,10 @@
-import { ChangeEvent, forwardRef, SelectHTMLAttributes, useId } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
+import {
+  type ChangeEvent,
+  forwardRef,
+  type SelectHTMLAttributes,
+  useId,
+} from 'react';
 import { cn } from '../../../utils/cn';
 
 export const selectVariants = cva(
@@ -21,8 +26,7 @@ export const selectVariants = cva(
 type Option = { value: string; label: string };
 
 export interface SelectProps
-  extends
-    Omit<SelectHTMLAttributes<HTMLSelectElement>, 'size'>,
+  extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'size'>,
     VariantProps<typeof selectVariants> {
   size?: 'default' | 'sm' | 'lg';
   label?: string;

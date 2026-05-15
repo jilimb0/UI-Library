@@ -38,7 +38,10 @@ function DocsApp() {
                 Button, Card, Modal, DatePicker and 20+ more production-ready
                 components
               </p>
-              <button className="w-full bg-indigo-600 text-white py-3 px-6 rounded-xl font-medium hover:bg-indigo-700 transition-colors">
+              <button
+                type="button"
+                className="w-full bg-indigo-600 text-white py-3 px-6 rounded-xl font-medium hover:bg-indigo-700 transition-colors"
+              >
                 Browse Components →
               </button>
             </div>

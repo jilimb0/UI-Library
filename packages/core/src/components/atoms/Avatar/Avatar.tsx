@@ -1,5 +1,10 @@
+import {
+  forwardRef,
+  type ImgHTMLAttributes,
+  type ReactNode,
+  useState,
+} from 'react';
 import { cn } from '../../../utils/cn';
-import { forwardRef, ImgHTMLAttributes, ReactNode, useState } from 'react';
 
 export interface AvatarProps extends ImgHTMLAttributes<HTMLImageElement> {
   fallback?: ReactNode;

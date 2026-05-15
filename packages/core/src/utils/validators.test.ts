@@ -1,4 +1,4 @@
-import { validateField, commonValidators } from './validators';
+import { commonValidators, validateField } from './validators';
 
 describe('validators', () => {
   describe('validateField', () => {

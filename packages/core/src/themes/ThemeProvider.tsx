@@ -1,31 +1,59 @@
+import { generateCSSVariables } from '@ui-lib/tokens';
 import {
-  useContext,
   createContext,
-  useState,
+  type FC,
+  type ReactNode,
+  useContext,
   useEffect,
-  FC,
-  ReactNode,
+  useState,
 } from 'react';
 
 interface ThemeContextValue {
-  theme: string;
-  setTheme: (theme: string) => void;
+  theme: 'light' | 'dark';
+  setTheme: (theme: 'light' | 'dark') => void;
 }
 
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
-const ThemeProvider: FC<{
-  defaultTheme?: string;
+export interface ThemeProviderProps {
+  defaultTheme?: 'light' | 'dark';
+  theme?: 'light' | 'dark';
+  customTokens?: {
+    colors?: Record<string, Record<string, string>>;
+    semantic?: Record<string, string>;
+  };
   children: ReactNode;
-}> = ({ defaultTheme = 'light', children }) => {
+}
+
+const ThemeProvider: FC<ThemeProviderProps> = ({
+  defaultTheme = 'light',
+  theme: controlledTheme,
+  customTokens,
+  children,
+}) => {
   const [theme, setTheme] = useState(defaultTheme);
+  const resolvedTheme = controlledTheme ?? theme;
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
+    document.documentElement.setAttribute('data-theme', resolvedTheme);
+    const cssVariables = generateCSSVariables({
+      mode: resolvedTheme,
+      ...customTokens,
+    });
+    const styleTagId = 'ui-lib-theme-variables';
+    let styleTag = document.getElementById(
+      styleTagId
+    ) as HTMLStyleElement | null;
+    if (!styleTag) {
+      styleTag = document.createElement('style');
+      styleTag.id = styleTagId;
+      document.head.appendChild(styleTag);
+    }
+    styleTag.textContent = cssVariables;
+  }, [resolvedTheme, customTokens]);
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
+    <ThemeContext.Provider value={{ theme: resolvedTheme, setTheme }}>
       {children}
     </ThemeContext.Provider>
   );

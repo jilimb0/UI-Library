@@ -1,6 +1,5 @@
-
+import { Alert, Button, Card, Input, TextArea } from '@ui-lib/core';
 import { useState } from 'react';
-import { Button, Card, Input, TextArea, Alert } from '@ui-lib/core';
 
 export function App() {
   const [inputValue, setInputValue] = useState('');
@@ -21,12 +20,18 @@ export function App() {
         />
         <TextArea placeholder="Multiline text area" style={{ marginTop: 10 }} />
         <Button onClick={handleClick} style={{ marginTop: 10 }}>
-          <img style={{ width: 16, height: 16, marginRight: 8 }} src='../../../public/icons/action/SaveIcon'  />
+          <img
+            style={{ width: 16, height: 16, marginRight: 8 }}
+            src="../../../public/icons/action/SaveIcon"
+            alt=""
+          />
           Save
         </Button>
-        {alertVisible && <Alert variant="success" style={{ marginTop: 10 }}>
-          Saved successfully!
-        </Alert>}
+        {alertVisible && (
+          <Alert variant="success" style={{ marginTop: 10 }}>
+            Saved successfully!
+          </Alert>
+        )}
       </Card>
     </div>
   );

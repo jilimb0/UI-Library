@@ -1,67 +1,82 @@
-import { describe, it, expect, vi } from 'vitest';
-
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { axe } from 'jest-axe';
+import { describe, expect, it, vi } from 'vitest';
 import { Tabs } from './Tabs';
-import { ReactNode } from 'react';
 import '@testing-library/jest-dom';
-
-type TabProps = {
-  children: ReactNode;
-  selected?: boolean;
-  onSelect?: () => void;
-};
-
-const MockTab = ({ children, selected = false, onSelect }: TabProps) => {
-  return (
-    <button className={selected ? 'active' : ''} onClick={onSelect}>
-      {children}
-    </button>
-  );
-};
 
 describe('Tabs', () => {
   it('renders without crashing', () => {
-    const { container } = render(<Tabs>Example</Tabs>);
+    const { container } = render(
+      <Tabs defaultValue="tab1">
+        <Tabs.List>
+          <Tabs.Trigger value="tab1">Tab 1</Tabs.Trigger>
+        </Tabs.List>
+        <Tabs.Content value="tab1">Content 1</Tabs.Content>
+      </Tabs>
+    );
     expect(container.firstChild).toBeInTheDocument();
   });
 
   it('has no accessibility violations', async () => {
-    const { container } = render(<Tabs>Example</Tabs>);
+    const { container } = render(
+      <Tabs defaultValue="tab1">
+        <Tabs.List>
+          <Tabs.Trigger value="tab1">Tab 1</Tabs.Trigger>
+          <Tabs.Trigger value="tab2">Tab 2</Tabs.Trigger>
+        </Tabs.List>
+        <Tabs.Content value="tab1">Content 1</Tabs.Content>
+        <Tabs.Content value="tab2">Content 2</Tabs.Content>
+      </Tabs>
+    );
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
 
-  it('should switch tabs', () => {
+  it('should switch tabs', async () => {
+    const user = userEvent.setup();
     render(
-      <Tabs>
-        <MockTab>Tab 1</MockTab>
-        <MockTab>Tab 2</MockTab>
+      <Tabs defaultValue="tab1">
+        <Tabs.List>
+          <Tabs.Trigger value="tab1">Tab 1</Tabs.Trigger>
+          <Tabs.Trigger value="tab2">Tab 2</Tabs.Trigger>
+        </Tabs.List>
+        <Tabs.Content value="tab1">Content 1</Tabs.Content>
+        <Tabs.Content value="tab2">Content 2</Tabs.Content>
       </Tabs>
     );
-    fireEvent.click(screen.getByText('Tab 2'));
-    expect(screen.getByText('Tab 2')).toHaveClass('active');
+    await user.click(screen.getByText('Tab 2'));
+    expect(screen.getByText('Tab 2')).toHaveAttribute('data-state', 'active');
   });
 
-  it('should handle defaultIndex', () => {
+  it('should handle defaultValue', () => {
     render(
-      <Tabs defaultIndex={1}>
-        <MockTab>Tab 1</MockTab>
-        <MockTab>Tab 2</MockTab>
+      <Tabs defaultValue="tab2">
+        <Tabs.List>
+          <Tabs.Trigger value="tab1">Tab 1</Tabs.Trigger>
+          <Tabs.Trigger value="tab2">Tab 2</Tabs.Trigger>
+        </Tabs.List>
+        <Tabs.Content value="tab1">Content 1</Tabs.Content>
+        <Tabs.Content value="tab2">Content 2</Tabs.Content>
       </Tabs>
     );
-    expect(screen.getByText('Tab 2')).toHaveClass('active');
+    expect(screen.getByText('Tab 2')).toHaveAttribute('data-state', 'active');
   });
 
-  it('should call onChange when tab is selected', () => {
-    const onChange = vi.fn();
+  it('should call onValueChange when tab is selected', async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
     render(
-      <Tabs onChange={onChange}>
-        <MockTab>Tab 1</MockTab>
-        <MockTab>Tab 2</MockTab>
+      <Tabs defaultValue="tab1" onValueChange={onValueChange}>
+        <Tabs.List>
+          <Tabs.Trigger value="tab1">Tab 1</Tabs.Trigger>
+          <Tabs.Trigger value="tab2">Tab 2</Tabs.Trigger>
+        </Tabs.List>
+        <Tabs.Content value="tab1">Content 1</Tabs.Content>
+        <Tabs.Content value="tab2">Content 2</Tabs.Content>
       </Tabs>
     );
-    fireEvent.click(screen.getByText('Tab 2'));
-    expect(onChange).toHaveBeenCalledWith(1);
+    await user.click(screen.getByText('Tab 2'));
+    expect(onValueChange).toHaveBeenCalledWith('tab2');
   });
 });

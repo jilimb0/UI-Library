@@ -1,6 +1,6 @@
 import { cva, type VariantProps } from 'class-variance-authority';
+import type { ButtonHTMLAttributes, ElementType, ReactNode } from 'react';
 import { cn } from '../../../utils/cn';
-import { ButtonHTMLAttributes, forwardRef, ReactNode } from 'react';
 
 const buttonVariants = cva(
   'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50',
@@ -33,46 +33,43 @@ const buttonVariants = cva(
 );
 
 export interface ButtonProps
-  extends
-    ButtonHTMLAttributes<HTMLButtonElement>,
+  extends ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
+  as?: ElementType;
   loading?: boolean;
   leftIcon?: ReactNode;
   rightIcon?: ReactNode;
 }
 
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  (
-    {
-      className,
-      variant,
-      size,
-      loading = false,
-      leftIcon,
-      rightIcon,
-      disabled,
-      children,
-      ...props
-    },
-    ref
-  ) => {
-    return (
-      <button
-        className={cn(buttonVariants({ variant, size, className }))}
-        ref={ref}
-        disabled={disabled || loading}
-        {...props}
-      >
-        {loading && (
-          <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-        )}
-        {leftIcon && <span className="mr-2">{leftIcon}</span>}
-        {children}
-        {rightIcon && <span className="ml-2">{rightIcon}</span>}
-      </button>
-    );
-  }
-);
-Button.displayName = 'Button';
+function Button({
+  as,
+  className,
+  variant,
+  size,
+  loading = false,
+  leftIcon,
+  rightIcon,
+  disabled,
+  children,
+  ...props
+}: ButtonProps) {
+  const Component = (as ?? 'button') as ElementType;
+  const isNativeButton = Component === 'button';
+
+  return (
+    <Component
+      className={cn(buttonVariants({ variant, size, className }))}
+      disabled={isNativeButton ? disabled || loading : undefined}
+      {...props}
+    >
+      {loading && (
+        <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+      )}
+      {leftIcon && <span className="mr-2">{leftIcon}</span>}
+      {children}
+      {rightIcon && <span className="ml-2">{rightIcon}</span>}
+    </Component>
+  );
+}
 
 export { Button, buttonVariants };

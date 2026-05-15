@@ -1,10 +1,10 @@
-import { type VariantProps } from 'class-variance-authority';
-import { buttonVariants } from '../components/atoms/Button/Button';
-import { inputVariants } from '../components/atoms/Input/Input';
-import { textVariants } from '../components/atoms/Text/Text';
-import { badgeVariants } from '../components/atoms/Badge/Badge';
-import { selectVariants } from '../components/atoms/Select/Select';
-import { textareaVariants } from '../components/atoms/TextArea/TextArea';
+import type { VariantProps } from 'class-variance-authority';
+import type { badgeVariants } from '../components/atoms/Badge/Badge';
+import type { buttonVariants } from '../components/atoms/Button/Button';
+import type { inputVariants } from '../components/atoms/Input/Input';
+import type { selectVariants } from '../components/atoms/Select/Select';
+import type { textVariants } from '../components/atoms/Text/Text';
+import type { textareaVariants } from '../components/atoms/TextArea/TextArea';
 
 // Common component sizes
 export type ComponentSize = 'sm' | 'md' | 'lg';

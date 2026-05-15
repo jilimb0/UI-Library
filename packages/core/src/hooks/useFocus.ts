@@ -1,4 +1,4 @@
-import { useEffect, useRef, RefObject } from 'react';
+import { type RefObject, useEffect, useRef } from 'react';
 
 export function useFocus<T extends HTMLElement>(): RefObject<T | null> {
   const ref = useRef<T>(null);

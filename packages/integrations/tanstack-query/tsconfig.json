@@ -1,0 +1,22 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "outDir": "dist",
+    "rootDir": "src",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "noEmit": false,
+    "ignoreDeprecations": "6.0",
+    "paths": {
+      "@ui-lib/core": ["../../core/src/index.ts"],
+      "@ui-lib/tokens": ["../../tokens/src/index.ts"]
+    }
+  },
+  "include": ["src/**/*"],
+  "references": [
+    { "path": "../../core" },
+    { "path": "../../tokens" }
+  ]
+}

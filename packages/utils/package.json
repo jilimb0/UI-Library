@@ -1,6 +1,6 @@
 {
   "name": "@ui-lib/utils",
-  "version": "0.1.5",
+  "version": "0.1.0",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
@@ -10,20 +10,14 @@
   ],
   "scripts": {
     "build": "pnpm tsc --build",
-    "lint": "eslint \"src/**/*.ts\"",
-    "lint:fix": "eslint \"src/**/*.ts\" --fix",
+    "lint": "biome check src",
+    "lint:fix": "biome check --write src",
     "test": "echo \"@ui-lib/utils: no tests\"",
     "test:coverage": "echo \"@ui-lib/utils: no tests\"",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "@testing-library/react": "^16.3.2",
-    "@testing-library/dom": "^10.4.0",
-    "@typescript-eslint/eslint-plugin": "^8.33.0",
-    "@typescript-eslint/parser": "^8.33.0",
-    "eslint": "^10.3.0", 
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.5",
-    "typescript": "^5.9.3"
+    "@types/react": "^19.2.14",
+    "typescript": "^6.0.3"
   }
 }

@@ -1,6 +1,6 @@
-const fs = require('fs');
-const path = require('path');
-const zlib = require('zlib');
+const fs = require('node:fs');
+const path = require('node:path');
+const zlib = require('node:zlib');
 
 describe('Bundle Size', () => {
   const distPath = path.join(__dirname, '../../packages/core/dist');

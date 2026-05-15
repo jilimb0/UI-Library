@@ -1,6 +1,6 @@
-import { defineConfig } from 'vite';
+import path from 'node:path';
 import react from '@vitejs/plugin-react';
-import path from 'path';
+import { defineConfig } from 'vite';
 
 export default defineConfig({
   base: process.env.DEMO_BASE_PATH || '/',
@@ -13,7 +13,7 @@ export default defineConfig({
       '@ui-lib/react-hook-form': path.resolve(
         __dirname,
         '../../packages/integrations/react-hook-form/src'
-      )
-    }
-  }
+      ),
+    },
+  },
 });

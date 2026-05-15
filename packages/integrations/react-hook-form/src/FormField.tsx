@@ -1,14 +1,34 @@
-import type { ComponentProps } from 'react';
-import { useController, type Control, type FieldValues, type Path } from 'react-hook-form';
 import { Field, Input } from '@ui-lib/core';
+import type React from 'react';
+import type { HTMLAttributes, ReactNode } from 'react';
+import {
+  type Control,
+  type FieldValues,
+  type Path,
+  useController,
+} from 'react-hook-form';
 
-type InputProps = ComponentProps<typeof Input>;
+// Local type mirror to avoid resolving stale .d.ts/.js from @ui-lib/core src
+interface FieldWrapperProps extends HTMLAttributes<HTMLDivElement> {
+  label?: ReactNode;
+  error?: ReactNode;
+  description?: ReactNode;
+  children?: ReactNode;
+}
 
-export type FormFieldProps<T extends FieldValues> = Omit<InputProps, 'onChange' | 'value'> & {
+const FieldWrapper = Field as React.ForwardRefExoticComponent<
+  FieldWrapperProps & React.RefAttributes<HTMLDivElement>
+>;
+
+export type FormFieldProps<T extends FieldValues> = {
   name: Path<T>;
   control: Control<T>;
-  label?: ComponentProps<typeof Field>['label'];
-  description?: ComponentProps<typeof Field>['description'];
+  label?: ReactNode;
+  description?: ReactNode;
+  placeholder?: string;
+  disabled?: boolean;
+  className?: string;
+  size?: 'default' | 'sm' | 'lg';
 };
 
 export function FormField<T extends FieldValues>({
@@ -21,12 +41,12 @@ export function FormField<T extends FieldValues>({
   const { field, fieldState } = useController({ name, control });
 
   return (
-    <Field
+    <FieldWrapper
       label={label}
       description={description}
       error={fieldState.error?.message}
     >
       <Input {...inputProps} {...field} />
-    </Field>
+    </FieldWrapper>
   );
 }

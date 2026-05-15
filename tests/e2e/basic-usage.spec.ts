@@ -1,5 +1,4 @@
-
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test('basic usage of button component', async ({ page }) => {
   await page.goto('http://localhost:6006');

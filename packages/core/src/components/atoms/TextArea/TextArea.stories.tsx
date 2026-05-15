@@ -54,7 +54,7 @@ export const WithValue: Story = {
   },
 };
 
-export const Error: Story = {
+export const ErrorVariant: Story = {
   args: {
     variant: 'error',
     placeholder: 'Error state',

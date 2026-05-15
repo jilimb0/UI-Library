@@ -1,11 +1,9 @@
-import { forwardRef, InputHTMLAttributes, useId } from 'react';
-import { cn } from '../../../utils/cn';
 import { CheckIcon } from '@ui-lib/icons';
+import { forwardRef, type InputHTMLAttributes, useId } from 'react';
+import { cn } from '../../../utils/cn';
 
-export interface CheckboxProps extends Omit<
-  InputHTMLAttributes<HTMLInputElement>,
-  'type' | 'size'
-> {
+export interface CheckboxProps
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'size'> {
   label?: string;
   description?: string;
   error?: boolean;

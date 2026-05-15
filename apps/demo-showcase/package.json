@@ -1,13 +1,12 @@
 {
-  "name": "@ui/demo-showcase",
-  "version": "1.0.0",
+  "name": "@ui-app/demo-showcase",
   "private": true,
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
-    "lint": "echo \"demo-showcase: no lint\""
+    "lint": "biome check src"
   },
   "dependencies": {
     "@ui-lib/core": "workspace:*",

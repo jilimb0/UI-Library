@@ -1,4 +1,4 @@
-import { FC, useRef } from 'react';
+import { type FC, useRef } from 'react';
 import { useClickOutside } from './useClickOutside';
 
 type TestComponentProps = {

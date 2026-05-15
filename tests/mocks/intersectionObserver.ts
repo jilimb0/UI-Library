@@ -1,6 +1,4 @@
-
 class IntersectionObserver {
-  constructor() {}
   observe() {}
   unobserve() {}
   disconnect() {}

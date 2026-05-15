@@ -1,48 +1,66 @@
 import {
-  LucideProps,
-  Home,
-  User,
-  Settings,
-  Search,
-  Heart,
-  Star,
+  ArrowLeft,
+  ArrowRight,
   Bell,
-  Mail,
   Check,
+  ChevronDown,
+  ChevronUp,
+  Heart,
+  Home,
+  type LucideProps,
+  Mail,
+  Search,
+  Settings,
+  Star,
+  User,
+  X,
 } from 'lucide-react';
-import { forwardRef, ComponentPropsWithRef } from 'react';
+import { type ComponentType, forwardRef } from 'react';
 
-const iconsMap = {
-  Home,
-  User,
-  Settings,
-  Search,
-  Heart,
-  Star,
-  Bell,
-  Mail,
-  Check,
+export type LucideIconName =
+  | 'arrow-right'
+  | 'arrow-left'
+  | 'chevron-down'
+  | 'chevron-up'
+  | 'check'
+  | 'x'
+  | 'search'
+  | 'settings'
+  | 'user'
+  | 'home'
+  | 'mail'
+  | 'bell'
+  | 'star'
+  | 'heart';
+
+const lucideIconMap: Record<LucideIconName, any> = {
+  'arrow-right': ArrowRight,
+  'arrow-left': ArrowLeft,
+  'chevron-down': ChevronDown,
+  'chevron-up': ChevronUp,
+  check: Check,
+  x: X,
+  search: Search,
+  settings: Settings,
+  user: User,
+  home: Home,
+  mail: Mail,
+  bell: Bell,
+  star: Star,
+  heart: Heart,
 };
 
-type IconName = keyof typeof iconsMap;
-
 export interface IconProps extends Omit<LucideProps, 'ref'> {
-  name: IconName;
+  name?: LucideIconName;
+  as?: ComponentType<any>;
 }
 
-const Icon = forwardRef<SVGSVGElement, IconProps>(({ name, ...props }, ref) => {
-  const LucideIcon = iconsMap[name];
-
-  if (!LucideIcon) return null;
-
-  return (
-    <LucideIcon
-      ref={ref}
-      data-testid="icon-svg"
-      {...(props as ComponentPropsWithRef<'svg'>)}
-    />
-  );
-});
+const Icon = forwardRef<SVGSVGElement, IconProps>(
+  ({ name = 'check', as, ...props }, ref) => {
+    const ResolvedIcon = as ?? lucideIconMap[name];
+    return <ResolvedIcon ref={ref} data-testid="icon-svg" {...props} />;
+  }
+);
 
 Icon.displayName = 'Icon';
 

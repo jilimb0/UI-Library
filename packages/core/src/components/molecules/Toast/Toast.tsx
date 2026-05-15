@@ -1,4 +1,4 @@
-import { forwardRef, HTMLAttributes, useEffect } from 'react';
+import { forwardRef, type HTMLAttributes, useEffect } from 'react';
 import { cn } from '../../../utils/cn';
 
 export interface ToastProps extends HTMLAttributes<HTMLDivElement> {

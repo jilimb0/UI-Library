@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const { exec } = require('child_process');
+const { exec } = require('node:child_process');
 
 console.log('Updating dependencies...');
 

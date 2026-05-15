@@ -1,4 +1,3 @@
-
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 module.exports = {
@@ -6,7 +5,7 @@ module.exports = {
     new BundleAnalyzerPlugin({
       analyzerMode: 'static',
       openAnalyzer: false,
-      reportFilename: 'bundle-report.html'
-    })
-  ]
+      reportFilename: 'bundle-report.html',
+    }),
+  ],
 };

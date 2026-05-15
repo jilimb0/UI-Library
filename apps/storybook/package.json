@@ -1,12 +1,11 @@
 {
-  "name": "@ui-lib/storybook",
-  "version": "1.1.0",
+  "name": "@ui-app/storybook",
   "private": true,
   "scripts": {
     "dev": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "typecheck": "echo \"storybook: no typecheck\"",
-    "lint": "echo \"storybook: no lint\""
+    "lint": "biome check src"
   },
   "dependencies": {
     "@ui-lib/core": "workspace:*",

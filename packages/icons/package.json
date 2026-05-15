@@ -1,6 +1,6 @@
 {
   "name": "@ui-lib/icons",
-  "version": "2.0.0",
+  "version": "0.1.0",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
@@ -11,10 +11,19 @@
     "build": "rollup -c",
     "build:icons": "node scripts/build-icons.js",
     "typecheck": "tsc --noEmit",
-    "lint": "echo \"package: no lint\""
+    "lint": "biome check src"
   },
   "peerDependencies": {
     "react": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.14",
+    "@rollup/plugin-commonjs": "^29.0.2",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-typescript": "^12.1.2",
+    "rollup": "^4.34.8",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "typescript": "^6.0.3"
   },
   "license": "MIT",
   "type": "module"

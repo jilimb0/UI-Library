@@ -57,7 +57,7 @@ export const commonValidators = {
     },
   },
   phone: {
-    pattern: /^\+?[\d\s\-\(\)]+$/,
+    pattern: /^\+?[\d\s\-()]+$/,
     minLength: 10,
   },
   url: {

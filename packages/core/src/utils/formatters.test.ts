@@ -1,10 +1,10 @@
 import {
   formatCurrency,
-  formatNumber,
   formatDate,
+  formatNumber,
   formatRelativeTime,
-  truncateText,
   slugify,
+  truncateText,
 } from './formatters';
 
 describe('formatters', () => {

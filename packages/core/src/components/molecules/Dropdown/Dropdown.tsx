@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, FC } from 'react';
+import { type FC, useEffect, useRef, useState } from 'react';
 
 interface DropdownItem {
   id: number | string;
@@ -22,7 +22,7 @@ export const Dropdown: FC<DropdownProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState<DropdownItem | null>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const menuRef = useRef<HTMLUListElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const toggleDropdown = () => {
     if (!disabled) setIsOpen((prev) => !prev);
@@ -59,9 +59,11 @@ export const Dropdown: FC<DropdownProps> = ({
       if (!isOpen) return;
       if (!menuRef.current) return;
 
-      const itemsArray = Array.from(menuRef.current.querySelectorAll('li'));
-      const currentIndex = itemsArray.findIndex(
-        (el) => el === document.activeElement
+      const itemsArray = Array.from(
+        menuRef.current.querySelectorAll('[role="menuitem"]')
+      );
+      const currentIndex = itemsArray.indexOf(
+        document.activeElement as HTMLDivElement
       );
 
       switch (event.key) {
@@ -132,18 +134,18 @@ export const Dropdown: FC<DropdownProps> = ({
       </button>
 
       {isOpen && (
-        <ul
+        <div
           ref={menuRef}
-          className="absolute z-10 mt-1 max-h-60 w-48 overflow-auto rounded-md border border-gray-300 bg-white shadow-lg focus:outline-none"
           role="menu"
+          className="absolute z-10 mt-1 max-h-60 w-48 overflow-auto rounded-md border border-gray-300 bg-white shadow-lg focus:outline-none"
           tabIndex={-1}
           aria-labelledby="dropdown-button"
         >
           {items.map((item) => (
-            <li
+            <div
               key={item.id}
-              tabIndex={-1}
               role="menuitem"
+              tabIndex={-1}
               className="cursor-pointer px-4 py-2 hover:bg-blue-600 hover:text-white focus:bg-blue-600 focus:text-white"
               onClick={() => handleSelect(item)}
               onKeyDown={(e) => {
@@ -153,9 +155,9 @@ export const Dropdown: FC<DropdownProps> = ({
               }}
             >
               {item.label}
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );

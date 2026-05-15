@@ -1,7 +1,7 @@
-import { expect, afterEach, vi } from 'vitest';
-import { cleanup } from '@testing-library/react';
 import * as matchers from '@testing-library/jest-dom/matchers';
+import { cleanup } from '@testing-library/react';
 import { axe, toHaveNoViolations } from 'jest-axe';
+import { afterEach, expect, vi } from 'vitest';
 
 // Provide Jest-like globals for legacy tests
 (globalThis as any).jest = {

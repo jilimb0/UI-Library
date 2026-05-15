@@ -8,9 +8,9 @@
     "ignoreDeprecations": "6.0",
     "paths": {
       "@ui-lib/core": ["../../core/src/index.ts"],
+      "@ui-lib/utils": ["../../utils/src/index.ts"],
       "@ui-lib/tokens": ["../../tokens/src/index.ts"],
-      "@ui-lib/icons": ["../../icons/src/index.ts"],
-      "@ui-lib/utils": ["../../utils/src/index.ts"]
+      "@ui-lib/icons": ["../../icons/src/index.ts"]
     }
   },
   "include": ["src"]

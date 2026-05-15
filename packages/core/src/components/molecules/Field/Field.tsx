@@ -1,4 +1,4 @@
-import { forwardRef, HTMLAttributes, ReactNode } from 'react';
+import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 import { cn } from '../../../utils/cn';
 
 export interface FieldProps extends HTMLAttributes<HTMLDivElement> {
@@ -16,7 +16,10 @@ const Field = forwardRef<HTMLDivElement, FieldProps>(
         {...props}
       >
         {label && (
-          <label className="block text-sm font-medium text-gray-700">
+          <label
+            className="block text-sm font-medium text-gray-700"
+            htmlFor={props.id}
+          >
             {label}
           </label>
         )}

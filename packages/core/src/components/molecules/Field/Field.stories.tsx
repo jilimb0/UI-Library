@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { Input, TextArea } from '../../atoms';
 import { Field } from './Field';
-import { TextArea, Input } from '../../atoms';
 
 const meta: Meta<typeof Field> = {
   title: 'Components/Molecules/Field',

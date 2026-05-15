@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Card } from './Card';
+import { Button } from '../../atoms/Button';
 import { Heading } from '../../atoms/Heading';
 import { Text } from '../../atoms/Text';
-import { Button } from '../../atoms/Button';
+import { Card } from './Card';
 
 const meta: Meta<typeof Card> = {
   title: 'Components/Molecules/Card',

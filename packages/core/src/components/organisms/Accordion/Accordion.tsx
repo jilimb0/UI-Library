@@ -1,55 +1,57 @@
-import {
-  Children,
-  cloneElement,
-  forwardRef,
-  isValidElement,
-  ReactElement,
-  ReactNode,
-  useState,
-} from 'react';
+import * as RadixAccordion from '@radix-ui/react-accordion';
+import type { ComponentPropsWithoutRef } from 'react';
+import { cn } from '../../../utils/cn';
 
-export interface AccordionProps {
-  multiple?: boolean;
-  children: ReactNode;
-  className?: string;
+function AccordionRoot({
+  className,
+  ...props
+}: ComponentPropsWithoutRef<typeof RadixAccordion.Root>) {
+  return <RadixAccordion.Root className={cn(className)} {...props} />;
 }
 
-export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
-  ({ multiple = false, children, className, ...props }, ref) => {
-    const [openItems, setOpenItems] = useState<number[]>([]);
+function AccordionItem({
+  className,
+  ...props
+}: ComponentPropsWithoutRef<typeof RadixAccordion.Item>) {
+  return (
+    <RadixAccordion.Item
+      className={cn('border-b border-slate-200', className)}
+      {...props}
+    />
+  );
+}
 
-    const toggleItem = (index: number) => {
-      if (multiple) {
-        if (openItems.includes(index)) {
-          setOpenItems(openItems.filter((i) => i !== index));
-        } else {
-          setOpenItems([...openItems, index]);
-        }
-      } else {
-        if (openItems[0] === index) {
-          setOpenItems([]);
-        } else {
-          setOpenItems([index]);
-        }
-      }
-    };
+function AccordionTrigger({
+  className,
+  ...props
+}: ComponentPropsWithoutRef<typeof RadixAccordion.Trigger>) {
+  return (
+    <RadixAccordion.Header>
+      <RadixAccordion.Trigger
+        className={cn(
+          'flex w-full items-center justify-between py-3 text-left text-sm font-medium',
+          className
+        )}
+        {...props}
+      />
+    </RadixAccordion.Header>
+  );
+}
 
-    return (
-      <div ref={ref} className={className} data-testid="accordion" {...props}>
-        {Children.map(children, (child, index) => {
-          if (!isValidElement(child)) return null;
-          // Проверяем, что дочерний элемент — React-компонент, а не DOM-элемент
-          if (typeof child.type === 'string') return child;
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          return cloneElement(child as ReactElement<any>, {
-            isOpen: openItems.includes(index),
-            onToggle: () => toggleItem(index),
-          });
-        })}
-      </div>
-    );
-  }
-);
-Accordion.displayName = 'Accordion';
+function AccordionContent({
+  className,
+  ...props
+}: ComponentPropsWithoutRef<typeof RadixAccordion.Content>) {
+  return (
+    <RadixAccordion.Content
+      className={cn('pb-3 text-sm text-slate-600', className)}
+      {...props}
+    />
+  );
+}
 
-export default Accordion;
+export const Accordion = Object.assign(AccordionRoot, {
+  Item: AccordionItem,
+  Trigger: AccordionTrigger,
+  Content: AccordionContent,
+});

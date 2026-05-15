@@ -1,4 +1,3 @@
-
 class IntersectionObserver {
   constructor(callback) {
     this.callback = callback;
@@ -9,5 +8,5 @@ class IntersectionObserver {
 }
 
 module.exports = {
-  IntersectionObserver
+  IntersectionObserver,
 };
