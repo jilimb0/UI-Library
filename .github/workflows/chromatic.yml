@@ -1,5 +1,12 @@
 name: Chromatic
-on: [push]
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'packages/**'
+      - 'apps/storybook/**'
+      - '.github/workflows/chromatic.yml'
 
 jobs:
   visual-tests:
@@ -11,7 +18,7 @@ jobs:
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - name: Publish to Chromatic

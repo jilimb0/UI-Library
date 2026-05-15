@@ -1,9 +1,16 @@
 name: Security Audit
+
 on:
   schedule:
     - cron: '0 2 * * 1'
-  push:
+  pull_request:
     branches: [main]
+    paths:
+      - 'pnpm-lock.yaml'
+      - 'package.json'
+      - 'packages/**/package.json'
+      - '.github/workflows/security-audit.yml'
+  workflow_dispatch:
 
 jobs:
   audit:
@@ -13,7 +20,7 @@ jobs:
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - name: Security audit
