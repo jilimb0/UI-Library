@@ -7,7 +7,7 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "strict": false,
+    "strict": true,
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
@@ -20,6 +20,8 @@
       "@/*": ["./src/*"],
       "@ui-lib/core": ["../../packages/core/src/index.ts"],
       "@ui-lib/core/*": ["../../packages/core/src/*"],
+      "@ui-lib/icons": ["../../packages/icons/src/index.ts"],
+      "@ui-lib/tokens": ["../../packages/tokens/src/index.ts"],
       "@ui-lib/utils": ["../../packages/utils/src/index.ts"],
       "@ui-lib/utils/*": ["../../packages/utils/src/*"]
     }

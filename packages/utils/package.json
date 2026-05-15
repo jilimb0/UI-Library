@@ -9,7 +9,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "pnpm tsc --build",
+    "build": "rollup -c",
     "lint": "biome check src",
     "lint:fix": "biome check --write src",
     "test": "echo \"@ui-lib/utils: no tests\"",
@@ -17,7 +17,9 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
+    "@rollup/plugin-typescript": "^12.1.2",
     "@types/react": "^19.2.14",
+    "rollup": "^4.34.8",
     "typescript": "^6.0.3"
   }
 }

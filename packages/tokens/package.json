@@ -10,7 +10,9 @@
       "require": "./dist/index.js",
       "types": "./dist/index.d.ts"
     },
-    "./tailwind.preset": "./tailwind.preset.ts"
+    "./tailwind.preset": {
+      "default": "./tailwind.preset.ts"
+    }
   },
   "files": [
     "dist",

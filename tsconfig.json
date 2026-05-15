@@ -21,10 +21,7 @@
       "@ui-lib/utils": ["packages/utils/src"],
       "@ui-lib/tokens": ["packages/tokens/src"],
       "@ui-lib/icons": ["packages/icons/src"],
-      "@ui-lib/react-hook-form": ["packages/integrations/react-hook-form/src"],
-      "@ui/core": ["packages/core/src"],
-      "@ui/utils": ["packages/utils/src"],
-      "@ui/tokens": ["packages/tokens/src"]
+      "@ui-lib/react-hook-form": ["packages/integrations/react-hook-form/src"]
     }
   },
   "include": [

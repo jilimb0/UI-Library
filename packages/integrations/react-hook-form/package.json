@@ -2,7 +2,7 @@
   "name": "@ui-lib/react-hook-form",
   "version": "0.1.0",
   "main": "dist/index.js",
-  "module": "dist/index.js",
+  "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
