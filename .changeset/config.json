@@ -7,5 +7,5 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@ui-app/playground", "@ui-app/storybook", "@ui-app/ui-storybook", "@ui-app/docs", "@ui-app/demo-showcase"]
+  "ignore": ["@ui-app/playground", "@ui-app/storybook", "@ui-app/docs", "@ui-app/demo-showcase"]
 }
