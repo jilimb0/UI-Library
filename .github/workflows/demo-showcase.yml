@@ -33,13 +33,18 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Build packages
+        run: pnpm build --filter @ui-lib/tokens --filter @ui-lib/icons --filter @ui-lib/utils --filter @ui-lib/core
+
       - name: Build demo showcase
-        run: pnpm --filter @ui/demo-showcase build
+        run: pnpm --filter @ui-app/demo-showcase build
         env:
           DEMO_BASE_PATH: /${{ github.event.repository.name }}/
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

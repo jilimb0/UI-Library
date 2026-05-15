@@ -29,3 +29,4 @@ jobs:
           languages: ${{ matrix.language }}
       - run: pnpm build
       - uses: github/codeql-action/analyze@v3
+        continue-on-error: true

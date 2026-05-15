@@ -9,7 +9,8 @@
     "noEmit": false,
     "paths": {
       "@/*": ["./src/*"],
-      "@ui-lib/tokens": ["../tokens/src/index.ts"]
+      "@ui-lib/tokens": ["../tokens/src/index.ts"],
+      "@ui-lib/icons": ["../icons/src/index.ts"]
     },
     "types": []
   },
