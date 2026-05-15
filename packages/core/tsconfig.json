@@ -7,12 +7,12 @@
     "declarationMap": true,
     "sourceMap": true,
     "noEmit": false,
+    "allowArbitraryExtensions": true,
     "paths": {
       "@/*": ["./src/*"],
       "@ui-lib/tokens": ["../tokens/src/index.ts"],
       "@ui-lib/icons": ["../icons/src/index.ts"]
-    },
-    "types": ["vite/client"]
+    }
   },
   "include": [
     "src/**/*",
