@@ -1,9 +1,10 @@
-const fs = require('node:fs');
-const path = require('node:path');
-const zlib = require('node:zlib');
+import fs from 'node:fs';
+import path from 'node:path';
+import zlib from 'node:zlib';
+import { describe, expect, it } from 'vitest';
 
 describe('Bundle Size', () => {
-  const distPath = path.join(__dirname, '../../packages/core/dist');
+  const distPath = path.join(import.meta.dirname, '../../packages/core/dist');
 
   it('has acceptable gzip size', () => {
     if (!fs.existsSync(distPath)) return;

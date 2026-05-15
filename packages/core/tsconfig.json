@@ -12,7 +12,7 @@
       "@ui-lib/tokens": ["../tokens/src/index.ts"],
       "@ui-lib/icons": ["../icons/src/index.ts"]
     },
-    "types": []
+    "types": ["vite/client"]
   },
   "include": [
     "src/**/*",

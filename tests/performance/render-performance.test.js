@@ -1,4 +1,5 @@
-const { performance } = require('node:perf_hooks');
+import { performance } from 'node:perf_hooks';
+import { describe, expect, it } from 'vitest';
 
 describe('Render performance baseline', () => {
   it('runs under threshold', () => {

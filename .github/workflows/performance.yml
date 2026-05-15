@@ -26,5 +26,4 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
-      - run: pnpm exec jest tests/performance/bundle-size.test.js --runInBand
-      - run: pnpm exec jest tests/performance/memory-leaks.test.js --runInBand
+      - run: pnpm exec vitest run --config tests/performance/vitest.config.js

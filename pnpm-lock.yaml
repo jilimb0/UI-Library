@@ -4,6 +4,12 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+catalogs:
+  default:
+    vitest:
+      specifier: ^2.1.9
+      version: 2.1.9
+
 importers:
 
   .:
@@ -26,6 +32,9 @@ importers:
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
+      vitest:
+        specifier: 'catalog:'
+        version: 2.1.9(@types/node@25.7.0)(happy-dom@14.12.3)(lightningcss@1.32.0)(terser@5.47.1)
 
   apps/demo-showcase:
     dependencies:

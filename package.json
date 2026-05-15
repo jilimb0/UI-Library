@@ -42,6 +42,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^17.0.4",
     "turbo": "^2.9.14",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vitest": "catalog:"
   }
 }

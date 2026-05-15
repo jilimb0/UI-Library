@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 describe('Memory leak smoke', () => {
   it('allocates and releases arrays', () => {
     const items = [];
