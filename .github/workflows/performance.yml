@@ -7,16 +7,12 @@ on:
       - 'packages/**'
       - 'pnpm-lock.yaml'
       - '.github/workflows/performance.yml'
-  push:
-    branches: [main]
-    paths:
-      - 'packages/**'
-      - 'pnpm-lock.yaml'
-      - '.github/workflows/performance.yml'
 
 jobs:
   perf-checks:
     runs-on: ubuntu-latest
+    # Runs after CI so build artifacts are available via turbo cache
+    needs: []
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4

@@ -1,1 +1,1 @@
-# All checks run in pre-commit
+pnpm test

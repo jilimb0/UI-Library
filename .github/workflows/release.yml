@@ -4,9 +4,6 @@ on:
   push:
     branches: [main]
     paths:
-      - 'packages/**'
-      - 'pnpm-lock.yaml'
-      - 'package.json'
       - '.changeset/**'
       - '.github/workflows/release.yml'
 
@@ -22,11 +19,11 @@ jobs:
         with:
           node-version: 22
           cache: pnpm
+          registry-url: 'https://registry.npmjs.org'
       - run: pnpm install --frozen-lockfile
-      - run: pnpm typecheck
-      - run: pnpm test
+      # CI already ran lint/typecheck/test on this code via PR
+      # Only build and publish here
       - run: pnpm build
-      - run: pnpm demo:build
       - name: Create Release Pull Request or Publish
         uses: changesets/action@v1
         with:
