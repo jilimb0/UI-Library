@@ -1,4 +1,4 @@
-import { Button, Modal } from '@ui-lib/core';
+import { Button, Modal } from '@ui-construction-library/core';
 import { useState } from 'react';
 
 export function ModalsPage() {

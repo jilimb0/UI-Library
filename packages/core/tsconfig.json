@@ -10,8 +10,8 @@
     "allowArbitraryExtensions": true,
     "paths": {
       "@/*": ["./src/*"],
-      "@ui-lib/tokens": ["../tokens/src/index.ts"],
-      "@ui-lib/icons": ["../icons/src/index.ts"]
+      "@ui-construction-library/tokens": ["../tokens/src/index.ts"],
+      "@ui-construction-library/icons": ["../icons/src/index.ts"]
     }
   },
   "include": [

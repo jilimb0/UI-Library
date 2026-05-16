@@ -1,5 +1,5 @@
 {
-  "name": "@ui-lib/integration-tanstack-query",
+  "name": "@ui-construction-library/integration-tanstack-query",
   "version": "0.1.0",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -14,7 +14,7 @@
     "react": ">=18.0.0"
   },
   "dependencies": {
-    "@ui-lib/core": "workspace:*"
+    "@ui-construction-library/core": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "^19.2.14",

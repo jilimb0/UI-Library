@@ -1,4 +1,4 @@
-import { Button } from '@ui-lib/core';
+import { Button } from '@ui-construction-library/core';
 
 export function ButtonsPage() {
   return (

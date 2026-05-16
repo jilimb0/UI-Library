@@ -1,4 +1,4 @@
-import { Button, Field, Form, Input } from '@ui-lib/core';
+import { Button, Field, Form, Input } from '@ui-construction-library/core';
 import { useState } from 'react';
 
 export function AuthExample() {

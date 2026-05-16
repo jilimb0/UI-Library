@@ -8,9 +8,15 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '@ui-lib/core': path.resolve(__dirname, '../../packages/core/src'),
-      '@ui-lib/icons': path.resolve(__dirname, '../../packages/icons/src'),
-      '@ui-lib/react-hook-form': path.resolve(
+      '@ui-construction-library/core': path.resolve(
+        __dirname,
+        '../../packages/core/src'
+      ),
+      '@ui-construction-library/icons': path.resolve(
+        __dirname,
+        '../../packages/icons/src'
+      ),
+      '@ui-construction-library/react-hook-form': path.resolve(
         __dirname,
         '../../packages/integrations/react-hook-form/src'
       ),

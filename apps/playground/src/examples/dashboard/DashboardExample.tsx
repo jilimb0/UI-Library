@@ -1,4 +1,4 @@
-import { Button, Card, Table } from '@ui-lib/core';
+import { Button, Card, Table } from '@ui-construction-library/core';
 
 const data = [
   { id: 1, name: 'Product A', price: 100 },

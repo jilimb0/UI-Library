@@ -1,8 +1,8 @@
 # Storybook App
 
-Storybook workspace for `@ui-lib/*` packages.
+Storybook workspace for `@ui-construction-library/*` packages.
 
 ## Scripts
 
-- `pnpm --filter @ui-lib/storybook dev`
-- `pnpm --filter @ui-lib/storybook build-storybook`
+- `pnpm --filter @ui-construction-library/storybook dev`
+- `pnpm --filter @ui-construction-library/storybook build-storybook`

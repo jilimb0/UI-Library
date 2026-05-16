@@ -8,11 +8,11 @@
 
 ## Packages
 
-- `@ui-lib/core`: 
-- `@ui-lib/icons`: 
-- `@ui-lib/tokens`: 
-- `@ui-lib/utils`: 
-- `@ui-lib/react-hook-form`: 
+- `@ui-construction-library/core`: 
+- `@ui-construction-library/icons`: 
+- `@ui-construction-library/tokens`: 
+- `@ui-construction-library/utils`: 
+- `@ui-construction-library/react-hook-form`: 
 
 ## Demo
 

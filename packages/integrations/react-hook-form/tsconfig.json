@@ -7,10 +7,10 @@
     "jsx": "react-jsx",
     "ignoreDeprecations": "6.0",
     "paths": {
-      "@ui-lib/core": ["../../core/src/index.ts"],
-      "@ui-lib/utils": ["../../utils/src/index.ts"],
-      "@ui-lib/tokens": ["../../tokens/src/index.ts"],
-      "@ui-lib/icons": ["../../icons/src/index.ts"]
+      "@ui-construction-library/core": ["../../core/src/index.ts"],
+      "@ui-construction-library/utils": ["../../utils/src/index.ts"],
+      "@ui-construction-library/tokens": ["../../tokens/src/index.ts"],
+      "@ui-construction-library/icons": ["../../icons/src/index.ts"]
     }
   },
   "include": ["src"]

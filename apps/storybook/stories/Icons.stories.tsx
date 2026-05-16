@@ -1,5 +1,5 @@
 import type { Meta } from '@storybook/react-vite';
-import { Icon } from '@ui-lib/core';
+import { Icon } from '@ui-construction-library/core';
 
 const meta: Meta = {
   title: 'Design Tokens/Icons',

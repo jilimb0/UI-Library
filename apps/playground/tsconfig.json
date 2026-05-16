@@ -18,12 +18,12 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@ui-lib/core": ["../../packages/core/src/index.ts"],
-      "@ui-lib/core/*": ["../../packages/core/src/*"],
-      "@ui-lib/icons": ["../../packages/icons/src/index.ts"],
-      "@ui-lib/tokens": ["../../packages/tokens/src/index.ts"],
-      "@ui-lib/utils": ["../../packages/utils/src/index.ts"],
-      "@ui-lib/utils/*": ["../../packages/utils/src/*"]
+      "@ui-construction-library/core": ["../../packages/core/src/index.ts"],
+      "@ui-construction-library/core/*": ["../../packages/core/src/*"],
+      "@ui-construction-library/icons": ["../../packages/icons/src/index.ts"],
+      "@ui-construction-library/tokens": ["../../packages/tokens/src/index.ts"],
+      "@ui-construction-library/utils": ["../../packages/utils/src/index.ts"],
+      "@ui-construction-library/utils/*": ["../../packages/utils/src/*"]
     }
   },
   "include": ["src"],

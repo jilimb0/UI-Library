@@ -1,5 +1,5 @@
 {
-  "name": "@ui-lib/integration-tanstack-router",
+  "name": "@ui-construction-library/integration-tanstack-router",
   "version": "0.1.0",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",

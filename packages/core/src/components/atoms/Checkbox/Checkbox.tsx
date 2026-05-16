@@ -1,4 +1,4 @@
-import { CheckIcon } from '@ui-lib/icons';
+import { CheckIcon } from '@ui-construction-library/icons';
 import { forwardRef, type InputHTMLAttributes, useId } from 'react';
 import { cn } from '../../../utils/cn';
 

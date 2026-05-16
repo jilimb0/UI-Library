@@ -1,4 +1,10 @@
-import { Button, Field, Form, Input, TextArea } from '@ui-lib/core';
+import {
+  Button,
+  Field,
+  Form,
+  Input,
+  TextArea,
+} from '@ui-construction-library/core';
 import { useState } from 'react';
 
 export function FormsPage() {

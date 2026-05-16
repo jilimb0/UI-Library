@@ -1,5 +1,5 @@
 {
-  "name": "@ui-lib/core",
+  "name": "@ui-construction-library/core",
   "version": "0.1.0",
   "description": "Modern React UI component library",
   "main": "dist/index.js",
@@ -50,8 +50,8 @@
     "@radix-ui/react-slider": "^1.3.6",
     "@radix-ui/react-switch": "^1.2.6",
     "@radix-ui/react-tabs": "^1.1.2",
-    "@ui-lib/icons": "workspace:*",
-    "@ui-lib/tokens": "workspace:*",
+    "@ui-construction-library/icons": "workspace:*",
+    "@ui-construction-library/tokens": "workspace:*",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.0.0",
     "cmdk": "^1.1.1",

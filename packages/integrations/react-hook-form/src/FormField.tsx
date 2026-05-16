@@ -1,4 +1,4 @@
-import { Field, Input } from '@ui-lib/core';
+import { Field, Input } from '@ui-construction-library/core';
 import type React from 'react';
 import type { HTMLAttributes, ReactNode } from 'react';
 import {
@@ -8,7 +8,7 @@ import {
   useController,
 } from 'react-hook-form';
 
-// Local type mirror to avoid resolving stale .d.ts/.js from @ui-lib/core src
+// Local type mirror to avoid resolving stale .d.ts/.js from @ui-construction-library/core src
 interface FieldWrapperProps extends HTMLAttributes<HTMLDivElement> {
   label?: ReactNode;
   error?: ReactNode;

@@ -1,5 +1,5 @@
 import { type QueryKey, useQuery } from '@tanstack/react-query';
-import { DataTable } from '@ui-lib/core';
+import { DataTable } from '@ui-construction-library/core';
 import type { ReactNode } from 'react';
 
 type Column<T> = {

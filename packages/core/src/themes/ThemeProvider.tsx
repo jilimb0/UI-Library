@@ -1,4 +1,4 @@
-import { generateCSSVariables } from '@ui-lib/tokens';
+import { generateCSSVariables } from '@ui-construction-library/tokens';
 import {
   createContext,
   type FC,

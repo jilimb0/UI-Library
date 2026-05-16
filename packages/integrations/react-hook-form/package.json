@@ -1,5 +1,5 @@
 {
-  "name": "@ui-lib/react-hook-form",
+  "name": "@ui-construction-library/react-hook-form",
   "version": "0.1.0",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "test": "echo \"@ui-lib/react-hook-form: no tests\"",
+    "test": "echo \"@ui-construction-library/react-hook-form: no tests\"",
     "lint": "biome check src",
     "typecheck": "tsc --noEmit"
   },
@@ -22,7 +22,7 @@
     "@types/react": "^19.2.14"
   },
   "dependencies": {
-    "@ui-lib/core": "workspace:*"
+    "@ui-construction-library/core": "workspace:*"
   },
   "license": "MIT",
   "type": "module"

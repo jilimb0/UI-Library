@@ -1,4 +1,4 @@
-# @ui-lib/tokens
+# @ui-construction-library/tokens
 
 Design token package for multi-framework consumption.
 
@@ -13,7 +13,7 @@ Design token package for multi-framework consumption.
 ## Usage
 
 ```ts
-import { generateCSSVariables, colors, motion } from '@ui-lib/tokens';
+import { generateCSSVariables, colors, motion } from '@ui-construction-library/tokens';
 
 const css = generateCSSVariables({ mode: 'dark' });
 ```
@@ -21,7 +21,7 @@ const css = generateCSSVariables({ mode: 'dark' });
 Tailwind preset:
 
 ```ts
-import preset from '@ui-lib/tokens/tailwind.preset';
+import preset from '@ui-construction-library/tokens/tailwind.preset';
 
 export default {
   presets: [preset],

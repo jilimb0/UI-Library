@@ -1,4 +1,10 @@
-import { Button, Card, Field, Form, Input } from '@ui-lib/core';
+import {
+  Button,
+  Card,
+  Field,
+  Form,
+  Input,
+} from '@ui-construction-library/core';
 
 export function SettingsExample() {
   return (

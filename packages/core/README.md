@@ -1,4 +1,4 @@
-# @ui-lib/core
+# @ui-construction-library/core
 
 React UI component library with layered architecture:
 
@@ -17,7 +17,7 @@ React UI component library with layered architecture:
 ## Example
 
 ```tsx
-import { ThemeProvider, Button, Modal } from '@ui-lib/core';
+import { ThemeProvider, Button, Modal } from '@ui-construction-library/core';
 
 export function App() {
   return (

@@ -1,6 +1,6 @@
 # Demo Showcase
 
-Marketing-grade demo app for `@ui-lib/*` packages.
+Marketing-grade demo app for `@ui-construction-library/*` packages.
 
 ## Run
 

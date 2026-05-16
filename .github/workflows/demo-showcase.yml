@@ -31,7 +31,7 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       # CI already validated on PR — build only
-      - run: pnpm build --filter @ui-lib/tokens --filter @ui-lib/icons --filter @ui-lib/utils --filter @ui-lib/core
+      - run: pnpm build --filter @ui-construction-library/tokens --filter @ui-construction-library/icons --filter @ui-construction-library/utils --filter @ui-construction-library/core
       - run: pnpm --filter @ui-app/demo-showcase build
         env:
           DEMO_BASE_PATH: /${{ github.event.repository.name }}/

@@ -5,10 +5,22 @@ export default {
   plugins: [react()],
   resolve: {
     alias: {
-      '@ui-lib/core': path.resolve(__dirname, 'packages/core/src'),
-      '@ui-lib/icons': path.resolve(__dirname, 'packages/icons/src'),
-      '@ui-lib/tokens': path.resolve(__dirname, 'packages/tokens/src'),
-      '@ui-lib/utils': path.resolve(__dirname, 'packages/utils/src'),
+      '@ui-construction-library/core': path.resolve(
+        __dirname,
+        'packages/core/src'
+      ),
+      '@ui-construction-library/icons': path.resolve(
+        __dirname,
+        'packages/icons/src'
+      ),
+      '@ui-construction-library/tokens': path.resolve(
+        __dirname,
+        'packages/tokens/src'
+      ),
+      '@ui-construction-library/utils': path.resolve(
+        __dirname,
+        'packages/utils/src'
+      ),
     },
   },
   test: {

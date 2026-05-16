@@ -1,4 +1,10 @@
-import { Alert, Button, Card, Input, TextArea } from '@ui-lib/core';
+import {
+  Alert,
+  Button,
+  Card,
+  Input,
+  TextArea,
+} from '@ui-construction-library/core';
 import { useState } from 'react';
 
 export function App() {

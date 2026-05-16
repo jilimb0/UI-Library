@@ -38,8 +38,8 @@ import {
   usePrevious,
   useTheme,
   useToggle,
-} from '@ui-lib/core';
-import { FormField } from '@ui-lib/react-hook-form';
+} from '@ui-construction-library/core';
+import { FormField } from '@ui-construction-library/react-hook-form';
 import { useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -117,7 +117,7 @@ function LeadFormCard() {
   return (
     <Card className="panel">
       <h2>React Hook Form Integration</h2>
-      <p>Real form wiring with `@ui-lib/react-hook-form`.</p>
+      <p>Real form wiring with `@ui-construction-library/react-hook-form`.</p>
       <form
         onSubmit={handleSubmit((data) => {
           setMessage(`Lead captured: ${data.name} (${data.company})`);

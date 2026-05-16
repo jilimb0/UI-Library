@@ -1,4 +1,4 @@
-// Jest setup for @ui-lib/utils
+// Jest setup for @ui-construction-library/utils
 // Keep minimal to avoid impacting other packages.
 
 export {};

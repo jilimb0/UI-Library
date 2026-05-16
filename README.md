@@ -4,13 +4,13 @@ Production-ready monorepo for design tokens, React UI components, icons, and fra
 
 ## Packages
 
-- `@ui-lib/core`: UI components (atoms, molecules, organisms, templates), themes, hooks
-- `@ui-lib/tokens`: color scales, semantic tokens, motion/opacity tokens, CSS variables, Tailwind preset
-- `@ui-lib/icons`: icon exports
-- `@ui-lib/integration-next`: Next.js adapters
-- `@ui-lib/integration-tanstack-query`: async DataTable integration
-- `@ui-lib/integration-tanstack-router`: router adapters
-- `@ui-lib/integration-i18n`: translation provider/hook
+- `@ui-construction-library/core`: UI components (atoms, molecules, organisms, templates), themes, hooks
+- `@ui-construction-library/tokens`: color scales, semantic tokens, motion/opacity tokens, CSS variables, Tailwind preset
+- `@ui-construction-library/icons`: icon exports
+- `@ui-construction-library/integration-next`: Next.js adapters
+- `@ui-construction-library/integration-tanstack-query`: async DataTable integration
+- `@ui-construction-library/integration-tanstack-router`: router adapters
+- `@ui-construction-library/integration-i18n`: translation provider/hook
 
 ## Quick Start
 
