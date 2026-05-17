@@ -27,7 +27,7 @@ jobs:
       # CI already validated this code — build only, no lint/test/typecheck
       - run: pnpm build
       - run: pnpm build-storybook
-      - uses: peaceiris/actions-gh-pages@v3
+      - uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./apps/storybook/storybook-static
