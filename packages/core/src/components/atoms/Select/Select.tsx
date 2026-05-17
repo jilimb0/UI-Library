@@ -1,14 +1,16 @@
+import { ChevronDownIcon } from '@ui-construction-library/icons';
 import { cva, type VariantProps } from 'class-variance-authority';
 import {
   type ChangeEvent,
   forwardRef,
+  type ReactNode,
   type SelectHTMLAttributes,
   useId,
 } from 'react';
 import { cn } from '../../../utils/cn';
 
 export const selectVariants = cva(
-  'flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50',
+  'flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 appearance-none pr-8',
   {
     variants: {
       size: {
@@ -34,6 +36,8 @@ export interface SelectProps
   options?: Option[];
   error?: boolean;
   errorMessage?: string;
+  /** Custom icon rendered as the dropdown arrow. Defaults to ChevronDownIcon. */
+  icon?: ReactNode;
 }
 
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(
@@ -48,6 +52,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
       className,
       id,
       onChange,
+      icon,
       ...props
     },
     ref
@@ -72,23 +77,28 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             {label}
           </label>
         )}
-        <select
-          id={selectId}
-          aria-labelledby={label ? labelId : undefined}
-          aria-describedby={
-            description || (error && errorMessage) ? descriptionId : undefined
-          }
-          className={cn(selectVariants({ size, className }))}
-          ref={ref}
-          onChange={handleChange}
-          {...props}
-        >
-          {options?.map((opt) => (
-            <option key={opt.value} value={opt.value}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
+        <div className="relative">
+          <select
+            id={selectId}
+            aria-labelledby={label ? labelId : undefined}
+            aria-describedby={
+              description || (error && errorMessage) ? descriptionId : undefined
+            }
+            className={cn(selectVariants({ size, className }))}
+            ref={ref}
+            onChange={handleChange}
+            {...props}
+          >
+            {options?.map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
+          <span className="pointer-events-none absolute inset-y-0 right-2 flex items-center text-muted-foreground">
+            {icon ?? <ChevronDownIcon className="h-4 w-4" />}
+          </span>
+        </div>
         {(description || (error && errorMessage)) && (
           <p id={descriptionId} className="text-xs text-muted-foreground">
             {error && errorMessage ? errorMessage : description}
@@ -98,3 +108,5 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     );
   }
 );
+
+Select.displayName = 'Select';

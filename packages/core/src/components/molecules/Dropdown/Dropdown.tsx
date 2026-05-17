@@ -1,4 +1,5 @@
-import { type FC, useEffect, useRef, useState } from 'react';
+import { ChevronDownIcon } from '@ui-construction-library/icons';
+import { type FC, type ReactNode, useEffect, useRef, useState } from 'react';
 
 interface DropdownItem {
   id: number | string;
@@ -11,6 +12,8 @@ interface DropdownProps {
   onChange?: (value: string) => void;
   placeholder?: string;
   disabled?: boolean;
+  /** Custom icon rendered as the dropdown arrow. Defaults to ChevronDownIcon. */
+  icon?: ReactNode;
 }
 
 export const Dropdown: FC<DropdownProps> = ({
@@ -18,6 +21,7 @@ export const Dropdown: FC<DropdownProps> = ({
   onChange,
   placeholder = 'Select...',
   disabled = false,
+  icon,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState<DropdownItem | null>(null);
@@ -34,7 +38,6 @@ export const Dropdown: FC<DropdownProps> = ({
     if (onChange) onChange(item.value);
   };
 
-  // Close dropdown on outside click
   useEffect(() => {
     function onClickOutside(event: MouseEvent) {
       if (
@@ -46,18 +49,13 @@ export const Dropdown: FC<DropdownProps> = ({
         setIsOpen(false);
       }
     }
-
     document.addEventListener('mousedown', onClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', onClickOutside);
-    };
+    return () => document.removeEventListener('mousedown', onClickOutside);
   }, []);
 
-  // Keyboard navigation
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
-      if (!isOpen) return;
-      if (!menuRef.current) return;
+      if (!isOpen || !menuRef.current) return;
 
       const itemsArray = Array.from(
         menuRef.current.querySelectorAll('[role="menuitem"]')
@@ -88,20 +86,15 @@ export const Dropdown: FC<DropdownProps> = ({
         }
         case 'Enter': {
           event.preventDefault();
-          if (document.activeElement) {
-            (document.activeElement as HTMLElement).click();
-          }
+          (document.activeElement as HTMLElement)?.click();
           setIsOpen(false);
           buttonRef.current?.focus();
           break;
         }
       }
     }
-
     document.addEventListener('keydown', onKeyDown);
-    return () => {
-      document.removeEventListener('keydown', onKeyDown);
-    };
+    return () => document.removeEventListener('keydown', onKeyDown);
   }, [isOpen]);
 
   return (
@@ -118,19 +111,9 @@ export const Dropdown: FC<DropdownProps> = ({
         onClick={toggleDropdown}
       >
         <span>{selected ? selected.label : placeholder}</span>
-        <svg
-          className="ml-2 h-5 w-5"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          aria-hidden="true"
-        >
-          <path
-            fillRule="evenodd"
-            d="M5.23 7.21a.75.75 0 011.06.02L10 11.292l3.71-4.06a.75.75 0 111.08 1.04l-4.25 4.653a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z"
-            clipRule="evenodd"
-          />
-        </svg>
+        <span className="ml-2 h-5 w-5 flex items-center justify-center">
+          {icon ?? <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />}
+        </span>
       </button>
 
       {isOpen && (
@@ -149,9 +132,7 @@ export const Dropdown: FC<DropdownProps> = ({
               className="cursor-pointer px-4 py-2 hover:bg-blue-600 hover:text-white focus:bg-blue-600 focus:text-white"
               onClick={() => handleSelect(item)}
               onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  handleSelect(item);
-                }
+                if (e.key === 'Enter') handleSelect(item);
               }}
             >
               {item.label}

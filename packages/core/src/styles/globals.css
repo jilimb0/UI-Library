@@ -83,7 +83,6 @@ html {
   --info-foreground: #ffffff;
 }
 
-[data-theme="dark"],
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --background: #0f172a;

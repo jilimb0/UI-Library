@@ -127,15 +127,6 @@ label {
   margin-bottom: 0.375rem;
 }
 
-/* select element */
-select.input {
-  appearance: none;
-  background-image: url("./chevron-down.svg");
-  background-repeat: no-repeat;
-  background-position: right 0.75rem center;
-  padding-right: 2.5rem;
-}
-
 /* textarea */
 textarea.input {
   height: auto;

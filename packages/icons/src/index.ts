@@ -1,6 +1,7 @@
 import * as LucideIcons from 'lucide-react';
 
 export { CheckIcon } from './CheckIcon';
+export { ChevronDownIcon } from './ChevronDownIcon';
 export { CloseIcon } from './CloseIcon';
 
 export const lucideIcons = LucideIcons;
