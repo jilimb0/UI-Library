@@ -1,0 +1,49 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    "group:allNonMajor",
+    ":dependencyDashboard",
+    ":semanticCommits",
+    ":automergeMinor"
+  ],
+  "labels": ["dependencies"],
+  "assignees": ["jilimb0"],
+  "schedule": ["before 6am on monday"],
+  "timezone": "Europe/Istanbul",
+  "packageRules": [
+    {
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true,
+      "automergeType": "pr",
+      "platformAutomerge": true
+    },
+    {
+      "matchPackageNames": ["react", "react-dom", "typescript"],
+      "matchUpdateTypes": ["major"],
+      "automerge": false,
+      "labels": ["dependencies", "major"]
+    },
+    {
+      "groupName": "Storybook",
+      "matchPackagePatterns": ["^@storybook/", "^storybook"]
+    },
+    {
+      "groupName": "TanStack",
+      "matchPackagePatterns": ["^@tanstack/"]
+    },
+    {
+      "groupName": "Testing",
+      "matchPackagePatterns": ["^@testing-library/", "^vitest", "^@vitest/"]
+    },
+    {
+      "groupName": "Build tools",
+      "matchPackageNames": ["vite", "tsup", "esbuild", "rollup"],
+      "matchPackagePatterns": ["^@vitejs/"]
+    }
+  ],
+  "ignorePaths": ["**/node_modules/**"],
+  "prConcurrentLimit": 5,
+  "prHourlyLimit": 2
+}

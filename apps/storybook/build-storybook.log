@@ -1,0 +1,363 @@
+
+[90m┌[39m  Building storybook v10.4.0
+[90m│[39m
+[32m◇[39m  Cleaning outputDir:
+[90m│[39m  [36m../../../../../../../private/var/folders/p6/lsrwt_rs2qzgf1gr6y9lyspc0000gp/T/chromatic--45844-OQ7OzM37K46u[39m
+[90m│[39m
+[32m◇[39m  Loading presets
+[90m│[39m
+[32m◇[39m  Building manager..
+[90m│[39m
+[34m●[39m  Building preview..
+[90m│[39m
+[33m▲[39m  No story files found for the specified pattern:
+[90m│[39m  [34m../packages/core/src/**/*.stories.@(js|jsx|ts|tsx)[39m
+[90m│[39m  [43mVite[49m [36mvite v8.0.13 [32mbuilding client environment for production...[36m[39m
+[2Ktransforming...[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/animations/MotionComponents.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/animations/Bounce.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/animations/SlideIn.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/animations/FadeIn.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/themes/ThemeProvider.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/templates/StackedLayout.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/templates/DashboardLayout.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/templates/DocsLayout.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/templates/MarketingLayout.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/templates/SidebarLayout.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/templates/AuthLayout.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/organisms/EmptyState/EmptyState.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/organisms/Drawer/Drawer.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/organisms/Form/Form.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/organisms/Accordion/Accordion.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/organisms/Tabs/Tabs.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/organisms/Calendar/Calendar.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/organisms/Sidebar/Sidebar.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/organisms/Modal/Modal.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/organisms/CommandPalette/CommandPalette.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/organisms/Kanban/Kanban.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/organisms/Navigation/Navigation.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/organisms/DataTable/DataTable.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/atoms/Button/Button.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/organisms/Timeline/Timeline.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/atoms/Avatar/Avatar.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/atoms/Heading/Heading.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/atoms/Icon/Icon.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/atoms/Badge/Badge.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/atoms/TextArea/TextArea.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/organisms/Table/Table.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/atoms/Divider/Divider.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/organisms/TreeView/TreeView.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/atoms/Checkbox/Checkbox.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/atoms/Input/Input.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/atoms/Code/Code.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/atoms/Progress/Progress.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/atoms/Link/Link.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/atoms/RadioButton/RadioGroup.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/atoms/Tag/Tag.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/atoms/Image/Image.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/atoms/Kbd/Kbd.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/molecules/Breadcrumb/Breadcrumb.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/atoms/Text/Text.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/molecules/Tooltip/Tooltip.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/molecules/Alert/Alert.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/molecules/Card/Card.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/atoms/Spinner/Spinner.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/atoms/Switch/Switch.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/atoms/Select/Select.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/molecules/Slider/Slider.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/molecules/ColorPicker/ColorPicker.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/molecules/ComboBox/ComboBox.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/molecules/ContextMenu/ContextMenu.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/molecules/OTPInput/OTPInput.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/molecules/DatePicker/DatePicker.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/atoms/RadioButton/RadioButton.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/molecules/Rating/Rating.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/molecules/Field/Field.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/molecules/Toast/Toast.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/molecules/Popover/Popover.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/molecules/MenuItem/MenuItem.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/molecules/FileUpload/FileUpload.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/molecules/SearchInput/SearchInput.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/molecules/Stepper/Stepper.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/molecules/Dropdown/Dropdown.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/atoms/Skeleton/Skeleton.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin vite:react-docgen-typescript] Skipping docgen for[39m
+[90m│[39m  [33m"/Users/jilimbo/Documents/PersonalProjects/UI-Library/packages/core/src/components/molecules/Pagination/Pagination.tsx"[39m
+[90m│[39m  [33mbecause it is not included in the active TypeScript project.[39m
+✓ 2619 modules transformed.
+rendering chunks...
+computing gzip size...
+[90m│[39m  [43mVite[49m
+[90m│[39m  ../../../../../../../private/var/folders/p6/lsrwt_rs2qzgf1gr6y9lyspc0000gp/T/chromatic--45844-OQ7OzM37K46u/iframe.html
+[90m│[39m  19.03 kB │ gzip:   5.30 kB
+[90m│[39m  ../../../../../../../private/var/folders/p6/lsrwt_rs2qzgf1gr6y9lyspc0000gp/T/chromatic--45844-OQ7OzM37K46u/assets/iframe-Ckp-oLx4.css
+[90m│[39m  0.83 kB │ gzip:   0.42 kB
+[90m│[39m  ../../../../../../../private/var/folders/p6/lsrwt_rs2qzgf1gr6y9lyspc0000gp/T/chromatic--45844-OQ7OzM37K46u/assets/Icons-BlJhnxcP.css
+[90m│[39m  2.05 kB │ gzip:   0.71 kB
+[90m│[39m  ../../../../../../../private/var/folders/p6/lsrwt_rs2qzgf1gr6y9lyspc0000gp/T/chromatic--45844-OQ7OzM37K46u/assets/react-CLDQ987Q.js
+[90m│[39m  0.08 kB │ gzip:   0.10 kB
+[90m│[39m  ../../../../../../../private/var/folders/p6/lsrwt_rs2qzgf1gr6y9lyspc0000gp/T/chromatic--45844-OQ7OzM37K46u/assets/chunk-242VQQM5-Bymtq5Lv.js
+[90m│[39m  0.22 kB │ gzip:   0.19 kB
+[90m│[39m  ../../../../../../../private/var/folders/p6/lsrwt_rs2qzgf1gr6y9lyspc0000gp/T/chromatic--45844-OQ7OzM37K46u/assets/chunk-S2IHWCOG-CJXnaOB1.js
+[90m│[39m  0.24 kB │ gzip:   0.17 kB
+[90m│[39m  ../../../../../../../private/var/folders/p6/lsrwt_rs2qzgf1gr6y9lyspc0000gp/T/chromatic--45844-OQ7OzM37K46u/assets/formatter-EIJCOSYU-CXQ1JTzT.js
+[90m│[39m  0.27 kB │ gzip:   0.22 kB
+[90m│[39m  ../../../../../../../private/var/folders/p6/lsrwt_rs2qzgf1gr6y9lyspc0000gp/T/chromatic--45844-OQ7OzM37K46u/assets/jsx-runtime-CuZwk2YS.js
+[90m│[39m  0.43 kB │ gzip:   0.30 kB
+[90m│[39m  ../../../../../../../private/var/folders/p6/lsrwt_rs2qzgf1gr6y9lyspc0000gp/T/chromatic--45844-OQ7OzM37K46u/assets/Introduction.stories-BDTlK1Dh.js
+[90m│[39m  0.65 kB │ gzip:   0.43 kB
+[90m│[39m  ../../../../../../../private/var/folders/p6/lsrwt_rs2qzgf1gr6y9lyspc0000gp/T/chromatic--45844-OQ7OzM37K46u/assets/Colors.stories-DJOWIPpA.js
+[90m│[39m  1.44 kB │ gzip:   0.70 kB
+[90m│[39m  ../../../../../../../private/var/folders/p6/lsrwt_rs2qzgf1gr6y9lyspc0000gp/T/chromatic--45844-OQ7OzM37K46u/assets/Typography.stories-DzsO0yBb.js
+[90m│[39m  1.52 kB │ gzip:   0.64 kB
+[90m│[39m  ../../../../../../../private/var/folders/p6/lsrwt_rs2qzgf1gr6y9lyspc0000gp/T/chromatic--45844-OQ7OzM37K46u/assets/Spacing.stories-DMLmhTar.js
+[90m│[39m  1.60 kB │ gzip:   0.73 kB
+[90m│[39m  ../../../../../../../private/var/folders/p6/lsrwt_rs2qzgf1gr6y9lyspc0000gp/T/chromatic--45844-OQ7OzM37K46u/assets/preload-helper-DbRxMUml.js
+[90m│[39m  2.44 kB │ gzip:   1.27 kB
+[90m│[39m  ../../../../../../../private/var/folders/p6/lsrwt_rs2qzgf1gr6y9lyspc0000gp/T/chromatic--45844-OQ7OzM37K46u/assets/react-dom-BSxsykZt.js
+[90m│[39m  3.58 kB │ gzip:   1.36 kB
+[90m│[39m  ../../../../../../../private/var/folders/p6/lsrwt_rs2qzgf1gr6y9lyspc0000gp/T/chromatic--45844-OQ7OzM37K46u/assets/chunk-3LY4VQVK-D5SgNHCK.js
+[90m│[39m  4.03 kB │ gzip:   1.70 kB
+[90m│[39m  ../../../../../../../private/var/folders/p6/lsrwt_rs2qzgf1gr6y9lyspc0000gp/T/chromatic--45844-OQ7OzM37K46u/assets/chunk-LITCR56V-BMd2Ol7w.js
+[90m│[39m  22.00 kB │ gzip:   7.32 kB
+[90m│[39m  ../../../../../../../private/var/folders/p6/lsrwt_rs2qzgf1gr6y9lyspc0000gp/T/chromatic--45844-OQ7OzM37K46u/vite-inject-mocker-entry.js
+[90m│[39m  27.81 kB │ gzip:   9.63 kB
+[90m│[39m  ../../../../../../../private/var/folders/p6/lsrwt_rs2qzgf1gr6y9lyspc0000gp/T/chromatic--45844-OQ7OzM37K46u/assets/matchers-5TDFFDYO-DFdow68x.js
+[90m│[39m  28.76 kB │ gzip:   9.66 kB
+[90m│[39m  ../../../../../../../private/var/folders/p6/lsrwt_rs2qzgf1gr6y9lyspc0000gp/T/chromatic--45844-OQ7OzM37K46u/assets/Color-23OOGO2C-Ke2--mnR.js
+[90m│[39m  30.94 kB │ gzip:  11.63 kB
+[90m│[39m  ../../../../../../../private/var/folders/p6/lsrwt_rs2qzgf1gr6y9lyspc0000gp/T/chromatic--45844-OQ7OzM37K46u/assets/WithTooltip-65CFNBJE-DefwfW-p.js
+[90m│[39m  33.24 kB │ gzip:  11.67 kB
+[90m│[39m  ../../../../../../../private/var/folders/p6/lsrwt_rs2qzgf1gr6y9lyspc0000gp/T/chromatic--45844-OQ7OzM37K46u/assets/theming-TWrJRZ2v.js
+[90m│[39m  55.32 kB │ gzip:  21.38 kB
+[90m│[39m  ../../../../../../../private/var/folders/p6/lsrwt_rs2qzgf1gr6y9lyspc0000gp/T/chromatic--45844-OQ7OzM37K46u/assets/syntaxhighlighter-W7WJGI2T-CpA8756k.js
+[90m│[39m  76.53 kB │ gzip:  27.54 kB
+[90m│[39m  ../../../../../../../private/var/folders/p6/lsrwt_rs2qzgf1gr6y9lyspc0000gp/T/chromatic--45844-OQ7OzM37K46u/assets/react-18-D3yRwAS4.js
+[90m│[39m  179.11 kB │ gzip:  56.69 kB
+[90m│[39m  ../../../../../../../private/var/folders/p6/lsrwt_rs2qzgf1gr6y9lyspc0000gp/T/chromatic--45844-OQ7OzM37K46u/assets/DocsRenderer-LL677BLK-CRIHpSxn.js
+[90m│[39m  184.70 kB │ gzip:  58.72 kB
+[90m│[39m  ../../../../../../../private/var/folders/p6/lsrwt_rs2qzgf1gr6y9lyspc0000gp/T/chromatic--45844-OQ7OzM37K46u/assets/Icons.stories-DyIrvK01.js
+[90m│[39m  224.86 kB │ gzip:  75.44 kB
+[90m│[39m  ../../../../../../../private/var/folders/p6/lsrwt_rs2qzgf1gr6y9lyspc0000gp/T/chromatic--45844-OQ7OzM37K46u/assets/components-BlQRE776.js
+[90m│[39m  549.58 kB │ gzip: 174.78 kB
+[90m│[39m  ../../../../../../../private/var/folders/p6/lsrwt_rs2qzgf1gr6y9lyspc0000gp/T/chromatic--45844-OQ7OzM37K46u/assets/axe-e6jv6gh6.js
+[90m│[39m  571.05 kB │ gzip: 155.77 kB
+[90m│[39m  ../../../../../../../private/var/folders/p6/lsrwt_rs2qzgf1gr6y9lyspc0000gp/T/chromatic--45844-OQ7OzM37K46u/assets/iframe-BTt1UAOO.js
+[90m│[39m  1,086.02 kB │ gzip: 306.56 kB
+
+[90m│[39m
+[33m▲[39m  [43mVite[49m [33m[plugin builtin:vite-reporter]
+[90m│[39m  (!) Some chunks are larger than 500 kB after minification. Consider:
+[90m│[39m  - Using dynamic import() to code-split the application
+[90m│[39m  - Use build.rolldownOptions.output.codeSplitting to improve chunking:
+[90m│[39m  ]8;;https://rolldown.rs/reference/OutputOptions.codeSplittinghttps://rolldown.rs/reference/OutputOptions.codeSplitting]8;;
+[90m│[39m  - Adjust chunk size limit for this warning via
+[90m│[39m  build.chunkSizeWarningLimit.[39m
+[90m│[39m  [43mVite[49m [32m✓ built in 917ms[39m
+[90m│[39m
+[32m◇[39m  Output directory:
+[90m│[39m  /private/var/folders/p6/lsrwt_rs2qzgf1gr6y9lyspc0000gp/T/chromatic--45844-OQ7OzM37K46u
+[90m│[39m
+[90m└[39m  Storybook build completed successfully
+

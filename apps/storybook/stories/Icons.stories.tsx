@@ -1,4 +1,4 @@
-import type { Meta } from '@storybook/react-vite';
+import type { Meta } from '@storybook/react';
 import { Icon } from '@ui-construction-library/core';
 
 const meta: Meta = {
@@ -10,12 +10,12 @@ export default meta;
 
 export const Icons = () => (
   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
-    <Icon name="Check" size={48} color="#007bff" />
-    <Icon name="Search" size={48} color="#28a745" />
-    <Icon name="Settings" size={48} color="#dc3545" />
-    <Icon name="Home" size={48} color="#6c757d" />
-    <Icon name="User" size={48} color="#6c757d" />
-    <Icon name="Heart" size={48} color="#4267B2" />
-    <Icon name="Mail" size={48} color="#1DA1F2" />
+    <Icon name="check" size={48} color="#007bff" />
+    <Icon name="search" size={48} color="#28a745" />
+    <Icon name="settings" size={48} color="#dc3545" />
+    <Icon name="home" size={48} color="#6c757d" />
+    <Icon name="user" size={48} color="#6c757d" />
+    <Icon name="heart" size={48} color="#4267B2" />
+    <Icon name="mail" size={48} color="#1DA1F2" />
   </div>
 );

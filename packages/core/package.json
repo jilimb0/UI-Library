@@ -1,6 +1,10 @@
 {
   "name": "@ui-construction-library/core",
   "version": "0.1.0",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "description": "Modern React UI component library",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",

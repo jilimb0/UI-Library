@@ -3,15 +3,26 @@ import type { Meta } from '@storybook/react';
 const meta: Meta = { title: 'Design System/Colors' };
 export default meta;
 
+const colors = [
+  { name: 'Primary Blue', value: '#2563eb' },
+  { name: 'Emerald', value: '#059669' },
+  { name: 'Amber', value: '#d97706' },
+  { name: 'Rose', value: '#dc2626' },
+];
+
 export const Palette = () => (
-  <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-    {['bg-blue-600', 'bg-emerald-600', 'bg-amber-500', 'bg-rose-600'].map(
-      (c) => (
-        <div key={c} className="rounded border p-3">
-          <div className={`h-16 rounded ${c}`} />
-          <p className="mt-2 text-sm">{c}</p>
-        </div>
-      )
-    )}
+  <div
+    style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}
+  >
+    {colors.map((c) => (
+      <div
+        key={c.name}
+        style={{ border: '1px solid #e5e7eb', borderRadius: 8, padding: 12 }}
+      >
+        <div style={{ height: 64, borderRadius: 6, background: c.value }} />
+        <p style={{ marginTop: 8, fontSize: 13, color: '#374151' }}>{c.name}</p>
+        <p style={{ fontSize: 12, color: '#9ca3af' }}>{c.value}</p>
+      </div>
+    ))}
   </div>
 );

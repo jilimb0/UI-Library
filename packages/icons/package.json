@@ -1,6 +1,10 @@
 {
   "name": "@ui-construction-library/icons",
   "version": "0.1.0",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
