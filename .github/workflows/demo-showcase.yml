@@ -35,7 +35,7 @@ jobs:
       - run: pnpm --filter @ui-app/demo-showcase build
         env:
           DEMO_BASE_PATH: /${{ github.event.repository.name }}/
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: ./apps/demo-showcase/dist
 
