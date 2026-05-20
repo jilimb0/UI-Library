@@ -36,6 +36,31 @@
       "biome format --write --no-errors-on-unmatched"
     ]
   },
+  "pnpm": {
+    "overrides": {
+      "happy-dom": ">=20.8.9",
+      "esbuild": "^0.25.0",
+      "vite": "^8.0.0",
+      "postcss": ">=8.5.10"
+    },
+    "packageExtensions": {
+      "@storybook/builder-vite@*": {
+        "peerDependencies": {
+          "vite": "^8.0.0"
+        }
+      },
+      "@storybook/react-vite@*": {
+        "peerDependencies": {
+          "vite": "^8.0.0"
+        }
+      },
+      "next@*": {
+        "dependencies": {
+          "postcss": ">=8.5.10"
+        }
+      }
+    }
+  },
   "devDependencies": {
     "@biomejs/biome": "2.4.15",
     "@changesets/cli": "^2.27.0",
