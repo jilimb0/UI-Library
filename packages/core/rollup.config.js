@@ -30,7 +30,7 @@ export default [
         declarationDir: 'dist',
         exclude: ['**/*.test.ts', '**/*.test.tsx', '**/*.stories.tsx'],
       }),
-      postcss({ extract: 'styles.css', minimize: true }),
+      postcss({ extract: 'styles.css', minimize: false }),
       terser(),
     ],
   },

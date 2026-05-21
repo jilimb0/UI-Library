@@ -24,6 +24,8 @@
     "release:preflight": "./scripts/release-preflight.sh",
     "changeset": "changeset",
     "version-packages": "changeset version",
+    "sync-versions": "node scripts/sync-app-versions.js",
+    "sync-versions:dry": "node scripts/sync-app-versions.js --dry-run",
     "release": "turbo run build && changeset publish",
     "validate": "pnpm lint && pnpm typecheck && pnpm test && pnpm build",
     "prepare": "husky"

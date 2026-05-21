@@ -1,4 +1,7 @@
 @import "tailwindcss";
 
 /* Import the UI library base styles (globals, components, utilities, animations) */
-@import "@ui-construction-library/core/styles";
+@import "@ui-construction-library/core-styles/globals.css";
+@import "@ui-construction-library/core-styles/components.css";
+@import "@ui-construction-library/core-styles/utilities.css";
+@import "@ui-construction-library/core-styles/animations.css";

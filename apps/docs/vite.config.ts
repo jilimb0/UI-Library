@@ -7,6 +7,10 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
+      '@ui-construction-library/core-styles': path.resolve(
+        __dirname,
+        '../../packages/core/src/styles'
+      ),
       '@ui-construction-library/core': path.resolve(
         __dirname,
         '../../packages/core/src'
