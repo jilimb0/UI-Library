@@ -413,11 +413,25 @@ function ThemeToggle() {
   );
 }
 
-function DocsHeader() {
+function DocsHeader({
+  navOpen,
+  onToggleNav,
+}: {
+  navOpen: boolean;
+  onToggleNav: () => void;
+}) {
   return (
     <header className="sticky top-0 z-40 border-b border-[var(--border)] bg-[var(--card)]/90 backdrop-blur-sm">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-3">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onToggleNav}
+            aria-label={navOpen ? 'Hide navigation' : 'Show navigation'}
+          >
+            {navOpen ? 'Hide nav' : 'Show nav'}
+          </Button>
           <Heading as="h1" className="!mb-0 !text-xl font-bold">
             UI Library
           </Heading>
@@ -447,7 +461,15 @@ function DocsHeader() {
   );
 }
 
-function DocsSidebar({ activeId }: { activeId: string }) {
+function DocsSidebar({
+  activeId,
+  navOpen,
+  onClose,
+}: {
+  activeId: string;
+  navOpen: boolean;
+  onClose: () => void;
+}) {
   const groups = useMemo(() => {
     return Object.entries(CATEGORY_META).map(([key, meta]) => ({
       key: key as CategoryKey,
@@ -457,41 +479,63 @@ function DocsSidebar({ activeId }: { activeId: string }) {
   }, []);
 
   return (
-    <aside className="sticky top-20 hidden h-[calc(100vh-6rem)] overflow-auto rounded-2xl border border-[var(--border)] bg-[var(--card)] p-4 lg:block">
-      <div className="mb-4">
-        <Text className="text-xs uppercase tracking-[0.16em] text-[var(--muted-foreground)]">
-          Navigation
-        </Text>
-      </div>
-      <div className="space-y-5">
-        {groups.map((group) => (
-          <div key={group.key} className="space-y-2">
-            <div className="flex items-center justify-between">
-              <Text className="text-sm font-semibold">{group.meta.title}</Text>
-              <Badge>{group.items.length}</Badge>
+    <>
+      {navOpen ? (
+        <button
+          type="button"
+          className="fixed inset-0 z-30 bg-black/35 lg:hidden"
+          onClick={onClose}
+          aria-label="Close navigation"
+        />
+      ) : null}
+      <aside
+        className={`z-40 rounded-2xl border border-[var(--border)] bg-[var(--card)] p-4 shadow-xl transition-all lg:sticky lg:top-20 lg:block lg:h-[calc(100vh-6rem)] lg:overflow-auto lg:shadow-none ${
+          navOpen
+            ? 'fixed inset-y-20 left-4 w-[min(320px,calc(100vw-2rem))] overflow-auto'
+            : 'hidden lg:hidden'
+        }`}
+      >
+        <div className="mb-4 flex items-center justify-between gap-3">
+          <Text className="text-xs uppercase tracking-[0.16em] text-[var(--muted-foreground)]">
+            Navigation
+          </Text>
+          <Button variant="outline" size="sm" onClick={onClose}>
+            Close
+          </Button>
+        </div>
+        <div className="space-y-5">
+          {groups.map((group) => (
+            <div key={group.key} className="space-y-2">
+              <div className="flex items-center justify-between">
+                <Text className="text-sm font-semibold">
+                  {group.meta.title}
+                </Text>
+                <Badge>{group.items.length}</Badge>
+              </div>
+              <div className="space-y-1">
+                {group.items.map((item) => {
+                  const isActive = activeId === item;
+                  return (
+                    <a
+                      key={item}
+                      href={`#${item}`}
+                      onClick={onClose}
+                      className={`block rounded-md px-3 py-2 text-sm no-underline transition-colors ${
+                        isActive
+                          ? 'bg-[var(--primary)] text-[var(--primary-foreground)]'
+                          : 'text-[var(--muted-foreground)] hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)]'
+                      }`}
+                    >
+                      {item}
+                    </a>
+                  );
+                })}
+              </div>
             </div>
-            <div className="space-y-1">
-              {group.items.map((item) => {
-                const isActive = activeId === item;
-                return (
-                  <a
-                    key={item}
-                    href={`#${item}`}
-                    className={`block rounded-md px-3 py-2 text-sm no-underline transition-colors ${
-                      isActive
-                        ? 'bg-[var(--primary)] text-[var(--primary-foreground)]'
-                        : 'text-[var(--muted-foreground)] hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)]'
-                    }`}
-                  >
-                    {item}
-                  </a>
-                );
-              })}
-            </div>
-          </div>
-        ))}
-      </div>
-    </aside>
+          ))}
+        </div>
+      </aside>
+    </>
   );
 }
 
@@ -996,14 +1040,22 @@ function DocsShell() {
   const [activeId, setActiveId] = useState(
     CATEGORY_META.atoms.inventory[0] ?? 'Button'
   );
+  const [navOpen, setNavOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
-      <DocsHeader />
-      <div className="mx-auto grid max-w-7xl gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[280px,1fr] lg:px-8">
-        <DocsSidebar activeId={activeId} />
+      <DocsHeader
+        navOpen={navOpen}
+        onToggleNav={() => setNavOpen((current) => !current)}
+      />
+      <div className="mx-auto flex max-w-7xl gap-6 px-4 py-6 sm:px-6 lg:px-8">
+        <DocsSidebar
+          activeId={activeId}
+          navOpen={navOpen}
+          onClose={() => setNavOpen(false)}
+        />
 
-        <main className="space-y-8 pb-16">
+        <main className="min-w-0 flex-1 space-y-8 pb-16">
           <HeroSection />
           <CategoryCards />
           <DocsSearch />

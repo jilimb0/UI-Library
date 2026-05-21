@@ -8,6 +8,8 @@ import {
   useState,
 } from 'react';
 
+const THEME_STORAGE_KEY = 'ui-library-theme';
+
 interface ThemeContextValue {
   theme: 'light' | 'dark';
   setTheme: (theme: 'light' | 'dark') => void;
@@ -31,7 +33,17 @@ const ThemeProvider: FC<ThemeProviderProps> = ({
   customTokens,
   children,
 }) => {
-  const [theme, setTheme] = useState(defaultTheme);
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    if (typeof window === 'undefined') {
+      return defaultTheme;
+    }
+
+    const storedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
+    return storedTheme === 'light' || storedTheme === 'dark'
+      ? storedTheme
+      : defaultTheme;
+  });
+
   const resolvedTheme = controlledTheme ?? theme;
 
   useEffect(() => {
@@ -50,7 +62,11 @@ const ThemeProvider: FC<ThemeProviderProps> = ({
       document.head.appendChild(styleTag);
     }
     styleTag.textContent = cssVariables;
-  }, [resolvedTheme, customTokens]);
+
+    if (typeof window !== 'undefined' && !controlledTheme) {
+      window.localStorage.setItem(THEME_STORAGE_KEY, resolvedTheme);
+    }
+  }, [resolvedTheme, customTokens, controlledTheme]);
 
   return (
     <ThemeContext.Provider value={{ theme: resolvedTheme, setTheme }}>
