@@ -2,9 +2,13 @@ import path from 'node:path';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
+import corePackageJson from '../../packages/core/package.json';
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  define: {
+    __CORE_PACKAGE_VERSION__: JSON.stringify(corePackageJson.version),
+  },
   resolve: {
     alias: {
       '@ui-construction-library/core-styles': path.resolve(

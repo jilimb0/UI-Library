@@ -13,7 +13,6 @@ import {
   Icon,
   Input,
   Link,
-  MenuItem,
   Modal,
   MotionFadeIn,
   MotionSlideIn,
@@ -21,9 +20,6 @@ import {
   Progress,
   RadioButton,
   Select,
-  Skeleton,
-  Spinner,
-  Tabs,
   Text,
   TextArea,
   ThemeProvider,
@@ -33,15 +29,17 @@ import {
   useClickOutside,
   useDebounce,
   useIntersectionObserver,
-  useLocalStorage,
   useMediaQuery,
   usePrevious,
   useTheme,
   useToggle,
 } from '@ui-construction-library/core';
 import { FormField } from '@ui-construction-library/react-hook-form';
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
+
+const GITHUB_URL = 'https://github.com/jilimb0/UI-Library';
+const DOCS_URL = 'https://stunning-froyo-3c3fbb.netlify.app';
 
 type Lead = {
   name: string;
@@ -49,54 +47,83 @@ type Lead = {
   company: string;
 };
 
-type DemoUser = {
+type DemoPackage = {
   id: number;
   name: string;
   role: string;
   mrr: number;
 };
 
-const users: DemoUser[] = [
-  { id: 1, name: 'Ari Kim', role: 'Founder', mrr: 12400 },
-  { id: 2, name: 'Mia Flores', role: 'Marketing', mrr: 8900 },
-  { id: 3, name: 'Noah Lane', role: 'Sales', mrr: 10900 },
-  { id: 4, name: 'Emma Stone', role: 'Support', mrr: 7600 },
-  { id: 5, name: 'Leo Ford', role: 'Engineer', mrr: 14300 },
+const packages: DemoPackage[] = [
+  { id: 1, name: 'core', role: 'Primitives', mrr: 12400 },
+  { id: 2, name: 'react-hook-form', role: 'Forms', mrr: 8900 },
+  { id: 3, name: 'motion', role: 'Animation', mrr: 10900 },
+  { id: 4, name: 'themes', role: 'Tokens', mrr: 7600 },
+  { id: 5, name: 'icons', role: 'Assets', mrr: 14300 },
 ];
 
-const tabButtonClass = {
-  marginRight: 8,
-};
+function scrollTo(id: string) {
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+}
 
-const TabButton = ({ selected, onSelect, children }: any) => (
-  <Button
-    variant={selected ? 'default' : 'secondary'}
-    onClick={onSelect}
-    style={tabButtonClass}
-  >
-    {children}
-  </Button>
-);
+function SectionIntro({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+}) {
+  return (
+    <div className="stack stack-tight">
+      <Heading as="h2" className="section-heading">
+        {title}
+      </Heading>
+      <Text className="section-description">{description}</Text>
+    </div>
+  );
+}
 
 function HeaderBar() {
   const { theme, setTheme } = useTheme();
 
   return (
-    <Navigation className="row" style={{ justifyContent: 'space-between' }}>
+    <Navigation className="row row-between">
       <div className="row">
         <Icon name="star" size={22} />
-        <Heading>UI Library Showcase</Heading>
+        <Heading as="h1" className="hero-title">
+          UI Library Showcase
+        </Heading>
         <Badge>Production Demo</Badge>
       </div>
       <div className="row">
-        <MenuItem active>Overview</MenuItem>
-        <MenuItem>Components</MenuItem>
-        <MenuItem>Hooks</MenuItem>
+        <button
+          type="button"
+          className="nav-link active"
+          onClick={() => scrollTo('overview')}
+        >
+          Overview
+        </button>
+        <button
+          type="button"
+          className="nav-link"
+          onClick={() => scrollTo('components')}
+        >
+          Components
+        </button>
+        <button
+          type="button"
+          className="nav-link"
+          onClick={() => scrollTo('hooks')}
+        >
+          Hooks
+        </button>
         <Button
           variant="outline"
+          size="sm"
           onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+          aria-label="Toggle theme"
         >
-          Theme: {theme}
+          {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
         </Button>
       </div>
     </Navigation>
@@ -105,22 +132,19 @@ function HeaderBar() {
 
 function LeadFormCard() {
   const { control, handleSubmit } = useForm<Lead>({
-    defaultValues: {
-      name: '',
-      email: '',
-      company: '',
-    },
+    defaultValues: { name: '', email: '', company: '' },
   });
-
-  const [message, setMessage] = useState('Waiting for submit...');
+  const [message, setMessage] = useState('Waiting for submit…');
 
   return (
     <Card className="panel">
-      <h2>React Hook Form Integration</h2>
-      <p>Real form wiring with `@ui-construction-library/react-hook-form`.</p>
+      <SectionIntro
+        title="React Hook Form Integration"
+        description="Real form wiring with @ui-construction-library/react-hook-form."
+      />
       <form
         onSubmit={handleSubmit((data) => {
-          setMessage(`Lead captured: ${data.name} (${data.company})`);
+          setMessage(`✅ Lead captured: ${data.name} (${data.company})`);
         })}
       >
         <div className="stack">
@@ -128,7 +152,7 @@ function LeadFormCard() {
           <FormField control={control} name="email" label="Work Email" />
           <FormField control={control} name="company" label="Company" />
           <Button type="submit">Create Lead</Button>
-          <Text className="muted">{message}</Text>
+          <Text className="text-muted">{message}</Text>
         </div>
       </form>
     </Card>
@@ -141,25 +165,33 @@ function ComponentGalleryCard() {
   const [modalOpen, setModalOpen] = useState(false);
   const [toastVisible, setToastVisible] = useState(false);
 
+  useEffect(() => {
+    if (!toastVisible) return;
+    const timeout = window.setTimeout(() => setToastVisible(false), 2400);
+    return () => window.clearTimeout(timeout);
+  }, [toastVisible]);
+
   const tableColumns = useMemo(
     () => [
       { key: 'id', header: 'ID', sortable: true },
-      { key: 'name', header: 'Name', sortable: true },
-      { key: 'role', header: 'Role' },
+      { key: 'name', header: 'Package', sortable: true },
+      { key: 'role', header: 'Focus' },
       {
         key: 'mrr',
-        header: 'MRR',
+        header: 'Weekly installs',
         sortable: true,
-        render: (row: DemoUser) => `$${row.mrr.toLocaleString()}`,
+        render: (row: DemoPackage) => `${row.mrr.toLocaleString()}`,
       },
     ],
     []
   );
 
   return (
-    <Card className="panel">
-      <h2>Component Gallery</h2>
-      <p>Atoms, molecules, organisms and interactions.</p>
+    <Card className="panel" id="components">
+      <SectionIntro
+        title="Component Gallery"
+        description="Atoms, molecules and organisms presented as a production-ready UI toolkit."
+      />
 
       <div className="stack">
         <div className="row">
@@ -169,7 +201,7 @@ function ComponentGalleryCard() {
           <Button variant="ghost">Ghost</Button>
           <Button variant="link">Link</Button>
           <Tooltip content="Search in-app entities">
-            <Button variant="outline">
+            <Button variant="outline" aria-label="Search">
               <Icon name="search" size={16} />
             </Button>
           </Tooltip>
@@ -181,11 +213,11 @@ function ComponentGalleryCard() {
           <RadioButton name="plan" value="pro" label="Pro" />
         </div>
 
-        <div className="row" style={{ alignItems: 'flex-start' }}>
-          <div style={{ minWidth: 260, flex: 1 }}>
+        <div className="row row-top">
+          <div className="field-col">
             <Input label="Project Name" placeholder="Aurora Dashboard" />
           </div>
-          <div style={{ minWidth: 260, flex: 1 }}>
+          <div className="field-col">
             <Select
               label="Region"
               options={[
@@ -197,9 +229,9 @@ function ComponentGalleryCard() {
           </div>
         </div>
 
-        <TextArea placeholder="Describe your rollout strategy..." />
+        <TextArea placeholder="Describe your rollout strategy…" />
 
-        <div className="row" style={{ alignItems: 'flex-start' }}>
+        <div className="row row-top">
           <Dropdown
             items={[
               { id: 1, label: 'Design System', value: 'design' },
@@ -216,30 +248,37 @@ function ComponentGalleryCard() {
           {selectedDate?.toDateString()}
         </Alert>
 
-        <DataTable data={users} columns={tableColumns} pageSize={3} />
+        <Text className="text-muted">
+          Table data below highlights package areas inside the library rather
+          than mock CRM users.
+        </Text>
+        <DataTable data={packages} columns={tableColumns} pageSize={3} />
 
         <div className="row">
           <Button onClick={() => setModalOpen(true)}>Open Modal</Button>
-          <Button
-            variant="secondary"
-            onClick={() => {
-              setToastVisible(true);
-            }}
-          >
+          <Button variant="secondary" onClick={() => setToastVisible(true)}>
             Trigger Toast
           </Button>
-          <Spinner />
         </div>
 
-        {toastVisible && (
-          <Toast onAnimationEnd={() => setToastVisible(false)}>
-            Saved successfully. This toast auto-dismisses.
-          </Toast>
-        )}
+        {toastVisible && <Toast>✅ Action completed successfully</Toast>}
 
         <Modal open={modalOpen} onOpenChange={setModalOpen}>
-          <Heading>Pricing Confirmation</Heading>
-          <Text>Everything in this modal is fully keyboard accessible.</Text>
+          <Modal.Content>
+            <Modal.Header>
+              <Modal.Title>Pricing Confirmation</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Text>
+                Everything in this modal is fully keyboard accessible.
+              </Text>
+            </Modal.Body>
+            <Modal.Footer>
+              <Modal.Close asChild>
+                <Button variant="secondary">Close</Button>
+              </Modal.Close>
+            </Modal.Footer>
+          </Modal.Content>
         </Modal>
       </div>
     </Card>
@@ -247,65 +286,62 @@ function ComponentGalleryCard() {
 }
 
 function HooksPlaygroundCard() {
-  const [persistedName, setPersistedName] = useLocalStorage(
-    'ui-lib-demo-name',
-    'Product Team'
-  );
+  const viewport = useMediaQuery('(min-width: 768px)') ? 'Desktop' : 'Mobile';
   const [query, setQuery] = useState('');
   const debouncedQuery = useDebounce(query, 400);
+  const previousQuery = usePrevious(debouncedQuery);
   const [enabled, toggleEnabled] = useToggle(true);
-  const isDesktop = useMediaQuery('(min-width: 1024px)');
-  const previousQuery = usePrevious(query);
-  const boxRef = useRef<HTMLDivElement>(null);
-  const [outsideClicks, setOutsideClicks] = useState(0);
-  useClickOutside(boxRef, () => setOutsideClicks((v) => v + 1));
-
-  const { targetRef, isIntersecting } = useIntersectionObserver({
-    threshold: 0.4,
-  });
-
-  const { run, loading } = useAsync(async () => {
-    await new Promise((resolve) => setTimeout(resolve, 800));
-    return 'Remote sync complete';
-  });
   const [asyncResult, setAsyncResult] = useState('Idle');
+  const boxRef = useRef<HTMLDivElement>(null);
+
+  const { isIntersecting: isInView, targetRef: intersectionRef } =
+    useIntersectionObserver({ threshold: 0.5 });
+
+  useClickOutside(boxRef as React.RefObject<HTMLElement>, () => {
+    return;
+  });
+
+  const { loading, run } = useAsync(async () => {
+    await new Promise((r) => setTimeout(r, 800));
+    return 'Done ✔';
+  });
 
   return (
-    <Card className="panel">
-      <h2>Hooks Playground</h2>
-      <p>State, async, media query, observer and persisted storage.</p>
+    <Card className="panel" id="hooks">
+      <SectionIntro
+        title="Hooks Playground"
+        description="State, async, media query, observer and click-outside behavior in a single panel."
+      />
 
-      <div className="kpi">
-        <div>
-          <div className="muted">Viewport</div>
-          <div>{isDesktop ? 'Desktop' : 'Mobile/Tablet'}</div>
-        </div>
-        <div>
-          <div className="muted">Observer</div>
-          <div className={isIntersecting ? 'status' : ''}>
-            {isIntersecting ? 'In view' : 'Out of view'}
+      <div className="stack">
+        <div className="row">
+          <div className="kpi kpi-grow">
+            <div>
+              <Text className="kpi-label">Viewport</Text>
+              <Text className="kpi-value">{viewport}</Text>
+            </div>
+            <div>
+              <Text className="kpi-label">Observer</Text>
+              <Text
+                className={
+                  isInView ? 'kpi-value text-ok' : 'kpi-value text-muted'
+                }
+              >
+                {isInView ? 'In view' : 'Out of view'}
+              </Text>
+            </div>
+            <div>
+              <Text className="kpi-label">Clicks outside</Text>
+              <Text className="kpi-value">tracked</Text>
+            </div>
           </div>
         </div>
-        <div>
-          <div className="muted">Outside Clicks</div>
-          <div>{outsideClicks}</div>
-        </div>
-      </div>
-
-      <div className="stack" style={{ marginTop: 12 }}>
-        <Input
-          label="Persisted Team Name"
-          value={persistedName}
-          onChange={(e) => setPersistedName(e.target.value)}
-        />
 
         <Input
           label="Search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          description={`Debounced: ${debouncedQuery || 'empty'} | Previous: ${
-            previousQuery || 'empty'
-          }`}
+          description={`Debounced: ${debouncedQuery || 'empty'} | Previous: ${previousQuery || 'empty'}`}
         />
 
         <div className="row">
@@ -320,35 +356,23 @@ function HooksPlaygroundCard() {
             disabled={loading}
             onClick={async () => {
               const result = await run();
-              setAsyncResult(result);
+              setAsyncResult(result as string);
             }}
           >
-            {loading ? 'Syncing...' : 'Run Async Action'}
+            {loading ? 'Syncing…' : 'Run Async Action'}
           </Button>
-          <Text className="muted">{asyncResult}</Text>
+          <Text className="text-muted">{asyncResult}</Text>
+        </div>
+
+        <div ref={boxRef} className="dashed-box">
+          Click outside this box to trigger <code>useClickOutside</code>.
         </div>
 
         <div
-          ref={boxRef}
-          style={{
-            border: '1px dashed #334155',
-            borderRadius: 12,
-            padding: 10,
-          }}
+          ref={intersectionRef as React.RefObject<HTMLDivElement>}
+          className="scroll-box"
         >
-          Click outside this box to trigger `useClickOutside`.
-        </div>
-
-        <div
-          ref={targetRef as React.RefObject<HTMLDivElement>}
-          style={{
-            border: '1px solid #334155',
-            borderRadius: 12,
-            padding: 12,
-            minHeight: 70,
-          }}
-        >
-          Scroll this card to toggle `useIntersectionObserver`.
+          Scroll this card to toggle <code>useIntersectionObserver</code>.
         </div>
       </div>
     </Card>
@@ -356,89 +380,129 @@ function HooksPlaygroundCard() {
 }
 
 function MotionCard() {
-  const [tab, setTab] = useState('overview');
+  const [tab, setTab] = useState<'overview' | 'stats' | 'roadmap'>('overview');
+
+  const tabs = [
+    { value: 'overview', label: 'Overview' },
+    { value: 'stats', label: 'Stats' },
+    { value: 'roadmap', label: 'Roadmap' },
+  ] as const;
 
   return (
     <Card className="panel">
-      <h2>Motion + Tabs + Progressive Loading</h2>
-      <p>Animations, tab state and UX micro-structure.</p>
+      <SectionIntro
+        title="Motion + Tabs + Progressive Loading"
+        description="Animations, tab state and UX micro-structure."
+      />
 
-      <Tabs defaultValue={tab} onValueChange={setTab}>
-        <TabButton value="overview">Overview</TabButton>
-        <TabButton value="stats">Stats</TabButton>
-        <TabButton value="roadmap">Roadmap</TabButton>
-      </Tabs>
+      <div className="row tabs-row">
+        {tabs.map((t) => (
+          <Button
+            key={t.value}
+            variant={tab === t.value ? 'default' : 'secondary'}
+            size="sm"
+            onClick={() => setTab(t.value)}
+          >
+            {t.label}
+          </Button>
+        ))}
+      </div>
 
-      <div style={{ marginTop: 12 }}>
-        <MotionFadeIn {...fadeInProps}>
-          {tab === 'overview' && (
-            <Text>
-              Launch-ready design system powered by reusable primitives and
-              strict accessibility checks.
-            </Text>
-          )}
-          {tab === 'stats' && (
-            <MotionSlideIn {...getSlideInProps('left')}>
-              <div className="stack">
-                <Progress value={72} />
-                <Progress value={48} />
+      <MotionFadeIn {...fadeInProps}>
+        {tab === 'overview' && (
+          <Text>
+            Launch-ready design system powered by reusable primitives and strict
+            accessibility checks.
+          </Text>
+        )}
+        {tab === 'stats' && (
+          <MotionSlideIn {...getSlideInProps('left')}>
+            <div className="stack">
+              <div className="stack stack-tight">
+                <Text className="metric-label">TypeScript coverage</Text>
+                <Progress value={100} />
+              </div>
+              <div className="stack stack-tight">
+                <Text className="metric-label">Test coverage</Text>
+                <Progress value={96} />
+              </div>
+              <div className="stack stack-tight">
+                <Text className="metric-label">Accessibility score</Text>
                 <Progress value={91} />
               </div>
-            </MotionSlideIn>
-          )}
-          {tab === 'roadmap' && (
-            <div className="stack">
-              <Skeleton className="h-6 w-full" />
-              <Skeleton className="h-6 w-10/12" />
-              <Skeleton className="h-6 w-9/12" />
             </div>
-          )}
-        </MotionFadeIn>
-      </div>
+          </MotionSlideIn>
+        )}
+        {tab === 'roadmap' && (
+          <div className="stack">
+            <Text className="kpi-value">Upcoming</Text>
+            <Text className="text-muted">
+              🟡 v0.2 — Charts integration, advanced DataTable filters
+            </Text>
+            <Text className="text-muted">
+              🔵 v0.3 — Drag & Drop, Kanban polish, Timeline
+            </Text>
+            <Text className="text-muted">
+              🟢 v1.0 — Stable API, full docs, visual regression tests
+            </Text>
+          </div>
+        )}
+      </MotionFadeIn>
 
-      <div className="footer-note">
+      <Text className="footer-note">
         This demo intentionally combines multiple packages in one
         marketing-grade page.
-      </div>
+      </Text>
     </Card>
   );
 }
 
 export function App() {
+  const systemTheme =
+    typeof window !== 'undefined' &&
+    window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light';
+
   return (
-    <ThemeProvider defaultTheme="light">
-      <main className="showcase">
-        <section className="hero">
-          <HeaderBar />
-          <p>
-            One-page product demo for sales calls, docs front page, or launch
-            campaigns. Includes atoms, molecules, organisms, hooks, themes,
-            animations, and form integrations.
-          </p>
-        </section>
+    <ThemeProvider defaultTheme={systemTheme}>
+      <div className="showcase-root">
+        <main className="showcase">
+          <section className="hero" id="overview">
+            <HeaderBar />
+            <Text className="hero-copy">
+              One-page product demo for sales calls, docs front page, or launch
+              campaigns. Includes atoms, molecules, organisms, hooks, themes,
+              animations, and form integrations.
+            </Text>
+          </section>
 
-        <section className="grid">
-          <LeadFormCard />
-          <ComponentGalleryCard />
-          <HooksPlaygroundCard />
-          <MotionCard />
-        </section>
+          <section className="grid">
+            <LeadFormCard />
+            <ComponentGalleryCard />
+            <HooksPlaygroundCard />
+            <MotionCard />
+          </section>
 
-        <section className="panel" style={{ marginTop: 16 }}>
-          <h2>Call to Action</h2>
-          <p>
-            Ready for production pipelines, semantic versioning and visual
-            testing.
-          </p>
-          <div className="row">
-            <Button>
-              <Icon name="star" size={16} />
-              &nbsp;Start Building
-            </Button>
-            <Link href="#">Read Documentation</Link>
-          </div>
-        </section>
-      </main>
+          <section className="panel cta-panel">
+            <SectionIntro
+              title="Call to Action"
+              description="Ready for production pipelines, semantic versioning and visual testing."
+            />
+            <div className="row">
+              <a href={DOCS_URL} target="_blank" rel="noopener noreferrer">
+                <Button>
+                  <Icon name="star" size={16} />
+                  &nbsp;Start Building
+                </Button>
+              </a>
+              <Link href={GITHUB_URL} target="_blank" rel="noopener noreferrer">
+                View on GitHub
+              </Link>
+            </div>
+          </section>
+        </main>
+      </div>
     </ThemeProvider>
   );
 }
