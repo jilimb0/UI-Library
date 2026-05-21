@@ -15,13 +15,17 @@ export default defineConfig({
         __dirname,
         '../../packages/core/src'
       ),
-      '@ui-construction-library/utils': path.resolve(
+      '@ui-construction-library/icons': path.resolve(
         __dirname,
-        '../../packages/utils/src'
+        '../../packages/icons/src'
       ),
       '@ui-construction-library/tokens': path.resolve(
         __dirname,
         '../../packages/tokens/src'
+      ),
+      '@ui-construction-library/utils': path.resolve(
+        __dirname,
+        '../../packages/utils/src'
       ),
       '@': path.resolve(__dirname, './src'),
     },
