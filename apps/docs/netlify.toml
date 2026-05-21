@@ -1,7 +1,6 @@
 [build]
-  base    = "apps/docs"
-  command = "pnpm build"
-  publish = "dist"
+  command = "pnpm --filter @ui-construction-library/core build && pnpm --filter docs build"
+  publish = "apps/docs/dist"
 
 [build.environment]
   NODE_VERSION = "22"
