@@ -1,4 +1,5 @@
 import type { Meta } from '@storybook/react';
+import { StorybookSiteNav } from './StorybookSiteNav';
 
 const meta: Meta = { title: 'Design System/Spacing' };
 export default meta;
@@ -19,10 +20,11 @@ export const Scale = () => (
     style={{
       display: 'flex',
       flexDirection: 'column',
-      gap: 8,
+      gap: 16,
       fontFamily: 'sans-serif',
     }}
   >
+    <StorybookSiteNav />
     {spacingScale.map(({ label, value }) => (
       <div
         key={label}

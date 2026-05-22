@@ -582,7 +582,12 @@ function ComponentGalleryCard() {
       </Modal>
 
       {toastVisible ? (
-        <Toast>Toast feedback from the same UI kit.</Toast>
+        <Toast
+          className="fixed bottom-6 right-6 z-[70] max-w-sm"
+          onAnimationEnd={() => setToastVisible(false)}
+        >
+          Toast feedback from the same UI kit.
+        </Toast>
       ) : null}
     </Card>
   );
@@ -774,14 +779,10 @@ function FooterSection() {
       </div>
       <div className="row wrap-row">
         <Link href={GITHUB_URL} target="_blank" rel="noopener noreferrer">
-          GitHub repository
+          View GitHub
         </Link>
-        <Link href={DOCS_URL} target="_blank" rel="noopener noreferrer">
-          Documentation site
-        </Link>
-        <Link href={STORYBOOK_URL} target="_blank" rel="noopener noreferrer">
-          Storybook
-        </Link>
+        <Link href={DOCS_URL}>Open docs</Link>
+        <Link href={STORYBOOK_URL}>Open Storybook</Link>
       </div>
     </footer>
   );

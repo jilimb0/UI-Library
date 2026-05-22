@@ -61,7 +61,7 @@ export function Pagination({
           type="button"
           onClick={() => canPrev && onPageChange(page - 1)}
           disabled={!canPrev}
-          className="rounded border border-slate-300 px-3 py-1.5 text-sm disabled:opacity-50"
+          className="inline-flex items-center justify-center rounded border border-slate-300 px-3 py-1.5 text-sm disabled:opacity-50"
         >
           Prev
         </button>
@@ -88,7 +88,7 @@ export function Pagination({
                 onClick={() => onPageChange(item)}
                 aria-current={isActive ? 'page' : undefined}
                 className={cn(
-                  'min-w-8 rounded border px-2 py-1 text-sm',
+                  'inline-flex min-w-8 items-center justify-center rounded border px-2 py-1 text-sm',
                   isActive
                     ? 'border-blue-600 bg-blue-600 text-white'
                     : 'border-slate-300 text-slate-700'
@@ -104,7 +104,7 @@ export function Pagination({
           type="button"
           onClick={() => canNext && onPageChange(page + 1)}
           disabled={!canNext}
-          className="rounded border border-slate-300 px-3 py-1.5 text-sm disabled:opacity-50"
+          className="inline-flex items-center justify-center rounded border border-slate-300 px-3 py-1.5 text-sm disabled:opacity-50"
         >
           Next
         </button>

@@ -1,5 +1,6 @@
 import * as Dialog from '@radix-ui/react-dialog';
 import { Command } from 'cmdk';
+import type React from 'react';
 import type { ReactNode } from 'react';
 
 export interface CommandPaletteItem {
@@ -26,12 +27,24 @@ export function CommandPalette({
   onOpenChange,
   groups,
 }: CommandPaletteProps) {
-  const CommandRoot = Command as any;
-  const CommandInput = Command.Input as any;
-  const CommandList = Command.List as any;
-  const CommandEmpty = Command.Empty as any;
-  const CommandGroup = Command.Group as any;
-  const CommandItem = Command.Item as any;
+  const CommandRoot = Command as unknown as React.ComponentType<
+    React.ComponentProps<typeof Command>
+  >;
+  const CommandInput = Command.Input as unknown as React.ComponentType<
+    React.ComponentProps<typeof Command.Input>
+  >;
+  const CommandList = Command.List as unknown as React.ComponentType<
+    React.ComponentProps<typeof Command.List>
+  >;
+  const CommandEmpty = Command.Empty as unknown as React.ComponentType<
+    React.ComponentProps<typeof Command.Empty>
+  >;
+  const CommandGroup = Command.Group as unknown as React.ComponentType<
+    React.ComponentProps<typeof Command.Group>
+  >;
+  const CommandItem = Command.Item as unknown as React.ComponentType<
+    React.ComponentProps<typeof Command.Item>
+  >;
 
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>

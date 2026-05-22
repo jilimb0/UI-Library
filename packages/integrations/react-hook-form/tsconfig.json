@@ -5,7 +5,7 @@
     "rootDir": "src",
     "declaration": true,
     "jsx": "react-jsx",
-    "ignoreDeprecations": "6.0",
+    "ignoreDeprecations": "5.0",
     "paths": {
       "@ui-construction-library/core": ["../../core/src/index.ts"],
       "@ui-construction-library/utils": ["../../utils/src/index.ts"],

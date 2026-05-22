@@ -340,13 +340,12 @@ const COMMAND_GROUPS = [
       {
         id: 'storybook',
         label: 'Open Storybook',
-        onSelect: () =>
-          window.open(STORYBOOK_URL, '_blank', 'noopener,noreferrer'),
+        onSelect: () => window.location.assign(STORYBOOK_URL),
       },
       {
         id: 'demo',
-        label: 'Open showcase demo',
-        onSelect: () => window.open(DEMO_URL, '_blank', 'noopener,noreferrer'),
+        label: 'Open demo',
+        onSelect: () => window.location.assign(DEMO_URL),
       },
     ],
   },
@@ -402,6 +401,12 @@ function DocsContent() {
           <Button variant="ghost" onClick={() => setPaletteOpen(true)}>
             Open command menu
           </Button>
+          <Link href={DEMO_URL}>
+            <Button variant="ghost">Open demo</Button>
+          </Link>
+          <Link href={STORYBOOK_URL}>
+            <Button variant="ghost">Open Storybook</Button>
+          </Link>
           <Button
             variant="outline"
             onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
@@ -438,15 +443,11 @@ function DocsContent() {
               <code>{INSTALL_COMMAND}</code>
             </div>
             <div className="docs-hero__actions">
-              <Link
-                href={STORYBOOK_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <Link href={STORYBOOK_URL}>
                 <Button>Open Storybook</Button>
               </Link>
-              <Link href={DEMO_URL} target="_blank" rel="noopener noreferrer">
-                <Button variant="outline">Open showcase demo</Button>
+              <Link href={DEMO_URL}>
+                <Button variant="outline">Open demo</Button>
               </Link>
             </div>
           </div>

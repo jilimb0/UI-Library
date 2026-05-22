@@ -1,7 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-
-const DEMO_URL = '../';
-const DOCS_URL = '../docs/';
+import { StorybookSiteNav } from './StorybookSiteNav';
 
 function Introduction() {
   return (
@@ -56,49 +54,8 @@ function Introduction() {
         that now power the showcase demo and documentation site.
       </p>
 
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: 12,
-          marginTop: 28,
-        }}
-      >
-        <a
-          href={DEMO_URL}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            minHeight: 44,
-            padding: '10px 16px',
-            borderRadius: 999,
-            background: '#01696f',
-            color: '#ffffff',
-            textDecoration: 'none',
-            fontWeight: 600,
-          }}
-        >
-          Open demo
-        </a>
-        <a
-          href={DOCS_URL}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            minHeight: 44,
-            padding: '10px 16px',
-            borderRadius: 999,
-            border: '1px solid rgba(40, 37, 29, 0.14)',
-            background: '#ffffff',
-            color: '#28251d',
-            textDecoration: 'none',
-            fontWeight: 600,
-          }}
-        >
-          Open docs
-        </a>
+      <div style={{ marginTop: 28 }}>
+        <StorybookSiteNav />
       </div>
 
       <div

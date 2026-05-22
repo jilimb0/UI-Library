@@ -1,4 +1,5 @@
 import type { Meta } from '@storybook/react';
+import { StorybookSiteNav } from './StorybookSiteNav';
 
 const meta: Meta = { title: 'Design System/Typography' };
 export default meta;
@@ -12,6 +13,7 @@ export const Scale = () => (
       fontFamily: 'sans-serif',
     }}
   >
+    <StorybookSiteNav />
     <h1 style={{ fontSize: 36, fontWeight: 700, margin: 0 }}>Heading 1</h1>
     <h2 style={{ fontSize: 28, fontWeight: 600, margin: 0 }}>Heading 2</h2>
     <h3 style={{ fontSize: 22, fontWeight: 500, margin: 0 }}>Heading 3</h3>

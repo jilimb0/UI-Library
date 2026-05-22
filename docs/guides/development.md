@@ -1,36 +1,44 @@
-# Разработка
+# Development Guide
 
-Руководство для разработчиков по работе с UI библиотекой.
+## Install
 
-## Установка
 ```bash
-npm install
-# или
-yarn install
+pnpm install
 ```
 
-## Запуск локальной среды
+## Run apps
+
 ```bash
-npm run dev
-# или
-yarn dev
+pnpm dev
+pnpm --filter @ui-app/playground dev
+pnpm --filter @ui-app/docs dev
 ```
 
-## Структура проекта
-- apps/ - приложения
-- packages/ - пакеты
-- docs/ - документация
+## Typecheck
 
-## Кодстайл и линтинг
-- ESLint для статического анализа
-- Prettier для форматирования кода
+```bash
+pnpm --filter @ui-construction-library/core typecheck
+pnpm --filter @ui-construction-library/tokens typecheck
+```
 
-## Использование компонентов
-- Импорт и использование через index.ts
-- Пример импорта: `import { Button } from '@ui-library/components';`
+## Component development flow
 
-## Рекомендации по разработке
-- Использовать хуки и функциональные компоненты
-- Писать чистый и переиспользуемый код
-- Писать unit и интеграционные тесты
-- Документировать компоненты с помощью Storybook или JSDoc
+1. Choose the correct layer (`atoms/molecules/organisms/templates`).
+2. Implement typed props and stable API contract.
+3. Export component from layer index.
+4. Add docs and usage examples.
+5. Add tests/stories in quality iteration.
+
+## Integration package flow
+
+1. Implement adapter in `packages/integrations/<target>/src`.
+2. Keep peerDependencies minimal and explicit.
+3. Validate with package-level typecheck.
+
+## Commands
+
+```bash
+pnpm lint
+pnpm test
+pnpm build
+```

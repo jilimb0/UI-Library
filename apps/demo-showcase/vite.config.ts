@@ -22,4 +22,17 @@ export default defineConfig({
       ),
     },
   },
+  build: {
+    chunkSizeWarningLimit: 700,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules/react')) return 'react-vendor';
+          if (id.includes('node_modules/lucide-react')) return 'icons-vendor';
+          if (id.includes('node_modules/@radix-ui')) return 'radix-vendor';
+          return undefined;
+        },
+      },
+    },
+  },
 });

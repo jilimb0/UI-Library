@@ -1,7 +1,5 @@
 import type { Meta } from '@storybook/react';
-
-const DEMO_URL = '../';
-const DOCS_URL = '../docs/';
+import { StorybookSiteNav } from './StorybookSiteNav';
 
 const meta: Meta = { title: 'Design System/Colors' };
 export default meta;
@@ -15,67 +13,7 @@ const colors = [
 
 export const Palette = () => (
   <div style={{ display: 'grid', gap: 20 }}>
-    <div
-      style={{
-        display: 'flex',
-        flexWrap: 'wrap',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        gap: 12,
-        padding: '12px 16px',
-        border: '1px solid #e5e7eb',
-        borderRadius: 12,
-        background: '#ffffff',
-      }}
-    >
-      <div style={{ display: 'grid', gap: 4 }}>
-        <strong style={{ fontSize: 14, color: '#111827' }}>
-          Cross-site navigation
-        </strong>
-        <span style={{ fontSize: 13, color: '#6b7280' }}>
-          Jump to the public demo or documentation from this Storybook page.
-        </span>
-      </div>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
-        <a
-          href={DEMO_URL}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            minHeight: 40,
-            padding: '10px 14px',
-            borderRadius: 999,
-            background: '#111827',
-            color: '#ffffff',
-            textDecoration: 'none',
-            fontSize: 13,
-            fontWeight: 600,
-          }}
-        >
-          Open demo
-        </a>
-        <a
-          href={DOCS_URL}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            minHeight: 40,
-            padding: '10px 14px',
-            borderRadius: 999,
-            border: '1px solid #d1d5db',
-            background: '#ffffff',
-            color: '#111827',
-            textDecoration: 'none',
-            fontSize: 13,
-            fontWeight: 600,
-          }}
-        >
-          Open docs
-        </a>
-      </div>
-    </div>
+    <StorybookSiteNav />
 
     <div
       style={{

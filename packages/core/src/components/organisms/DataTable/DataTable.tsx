@@ -1,5 +1,6 @@
 import { type ReactNode, useMemo, useState } from 'react';
 import { Pagination } from '../../molecules/Pagination';
+import { EmptyState } from '../EmptyState';
 
 interface Column<T> {
   key: string;
@@ -53,7 +54,14 @@ function DataTable<T>({
     return sortedData.slice(start, start + activePageSize);
   }, [sortedData, currentPage, activePageSize]);
 
-  if (data.length === 0) return <div>No data</div>;
+  if (data.length === 0) {
+    return (
+      <EmptyState
+        title="No data"
+        description="There are no records to display for this table."
+      />
+    );
+  }
 
   const handleSort = (colKey: string) => {
     if (sortColumn === colKey) {

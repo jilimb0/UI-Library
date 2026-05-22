@@ -33,7 +33,9 @@ export type LucideIconName =
   | 'star'
   | 'heart';
 
-const lucideIconMap: Record<LucideIconName, any> = {
+type IconComponent = ComponentType<LucideProps>;
+
+const lucideIconMap: Record<LucideIconName, IconComponent> = {
   'arrow-right': ArrowRight,
   'arrow-left': ArrowLeft,
   'chevron-down': ChevronDown,
@@ -52,7 +54,7 @@ const lucideIconMap: Record<LucideIconName, any> = {
 
 export interface IconProps extends Omit<LucideProps, 'ref'> {
   name?: LucideIconName;
-  as?: ComponentType<any>;
+  as?: IconComponent;
 }
 
 const Icon = forwardRef<SVGSVGElement, IconProps>(

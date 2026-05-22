@@ -5,10 +5,13 @@ import {
   useDroppable,
 } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
+import type React from 'react';
 import { type ReactNode, useMemo, useState } from 'react';
 import { cn } from '../../../utils/cn';
 
-const DndContextCompat: any = DndContext;
+const DndContextCompat = DndContext as unknown as React.ComponentType<
+  React.ComponentProps<typeof DndContext>
+>;
 
 export interface KanbanCard {
   id: string;
@@ -130,7 +133,7 @@ export function Kanban({
 
   return (
     <DndContextCompat onDragEnd={onDragEnd}>
-      <div className={cn('grid gap-4 md:grid-cols-3', className)}>
+      <div className={cn('grid gap-4 sm:grid-cols-3', className)}>
         {state.map((column) => (
           <DroppableColumn key={column.id} id={column.id} title={column.title}>
             {column.cards.map((card) => (

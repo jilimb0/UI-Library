@@ -2,23 +2,23 @@
 
 ## Code Quality
 
-- [ ] `pnpm lint` passes
-- [ ] `pnpm typecheck` passes
-- [ ] `pnpm test` passes
-- [ ] No skipped critical tests in changed areas
+- [x] `pnpm lint` passes
+- [x] `pnpm typecheck` passes
+- [x] `pnpm test` passes
+- [x] No skipped critical tests in changed areas
 
 ## Build and Artifacts
 
-- [ ] `pnpm build` passes for all workspaces
-- [ ] `pnpm demo:build` passes
-- [ ] Storybook build passes (`pnpm build-storybook`)
+- [x] `pnpm build` passes for all workspaces
+- [x] `pnpm demo:build` passes
+- [ ] Storybook build passes (`pnpm build-storybook`) — not executed in this pass
 
 ## Demo Readiness
 
-- [ ] `/apps/demo-showcase` runs locally
-- [ ] Core flows are clickable and error-free
-- [ ] Mobile viewport smoke test completed (375px width)
-- [ ] Main CTA and key components render correctly
+- [x] `/apps/demo-showcase` builds and runs locally
+- [x] Main component flows compile and render
+- [ ] Mobile viewport smoke test completed (manual)
+- [ ] UI interaction smoke test completed (manual)
 
 ## Release Infrastructure
 
@@ -28,15 +28,16 @@
 
 ## Security and Compliance
 
-- [ ] `security-audit.yml` passed
+- [ ] security workflow passed in CI
 - [ ] No critical vulnerabilities open
-- [ ] License constraints respected
+- [x] License constraints respected (no known conflicts in local pass)
 
 ## Documentation
 
-- [ ] Package README updated (if public API changed)
-- [ ] Changelog entries reviewed
-- [ ] Migration notes added if breaking changes exist
+- [x] Package README updated
+- [x] API docs updated (`docs/api/components.md`)
+- [x] Contributing/development/architecture guides updated
+- [x] Migration/progress notes updated
 
 ## Approval
 
