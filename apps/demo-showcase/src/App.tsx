@@ -86,10 +86,10 @@ const showcaseSections = [
 
 const integrationPackages = [
   '@ui-construction-library/react-hook-form',
-  '@ui-construction-library/tanstack-query',
-  '@ui-construction-library/tanstack-router',
-  '@ui-construction-library/i18n',
-  '@ui-construction-library/next',
+  '@ui-construction-library/integration-tanstack-query',
+  '@ui-construction-library/integration-tanstack-router',
+  '@ui-construction-library/integration-i18n',
+  '@ui-construction-library/integration-next',
 ] as const;
 
 type Lead = {
@@ -368,6 +368,7 @@ function LeadFormCard() {
     defaultValues: { name: '', email: '', company: '' },
   });
   const [message, setMessage] = useState('Waiting for submit…');
+  const [submitted, setSubmitted] = useState(false);
 
   return (
     <Card className="panel">
@@ -379,14 +380,21 @@ function LeadFormCard() {
       <form
         onSubmit={handleSubmit((data) => {
           setMessage(`✅ Lead captured: ${data.name} (${data.company})`);
+          setSubmitted(true);
         })}
       >
         <div className="stack">
-          <FormField control={control} name="name" label="Full Name" />
-          <FormField control={control} name="email" label="Work Email" />
-          <FormField control={control} name="company" label="Company" />
+          <FormField control={control as any} name="name" label="Full Name" />
+          <FormField control={control as any} name="email" label="Work Email" />
+          <FormField control={control as any} name="company" label="Company" />
           <Button type="submit">Create Lead</Button>
-          <Text className="text-muted">{message}</Text>
+          {submitted ? (
+            <Alert variant="success" title="Lead created">
+              {message}
+            </Alert>
+          ) : (
+            <Text className="text-muted">{message}</Text>
+          )}
         </div>
       </form>
     </Card>
@@ -458,6 +466,10 @@ function ThemePlaygroundCard() {
 function ComponentGalleryCard() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [dropdownValue, setDropdownValue] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [activeFilter, setActiveFilter] = useState<
+    'all' | 'primary' | 'outline' | 'ghost'
+  >('all');
   const [modalOpen, setModalOpen] = useState(false);
   const [toastVisible, setToastVisible] = useState(false);
 
@@ -480,6 +492,30 @@ function ComponentGalleryCard() {
     ],
     []
   );
+  const filteredPackages = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    const bySearch = query
+      ? packages.filter((item) =>
+          `${item.name} ${item.role} ${item.metric}`
+            .toLowerCase()
+            .includes(query)
+        )
+      : packages;
+
+    if (activeFilter === 'all') return bySearch;
+    if (activeFilter === 'primary') {
+      return bySearch.filter(
+        (item) => item.name === 'core' || item.name === 'tokens'
+      );
+    }
+    if (activeFilter === 'outline') {
+      return bySearch.filter(
+        (item) =>
+          item.name.includes('react-hook-form') || item.name.includes('theme')
+      );
+    }
+    return bySearch.filter((item) => item.name.includes('icons'));
+  }, [searchQuery, activeFilter]);
 
   return (
     <Card className="panel" id="components">
@@ -491,15 +527,24 @@ function ComponentGalleryCard() {
 
       <div className="stack">
         <div className="row wrap-row">
-          <Button>Primary</Button>
-          <Button variant="outline">Outline</Button>
-          <Button variant="ghost">Ghost</Button>
+          <Button onClick={() => setActiveFilter('primary')}>Primary</Button>
+          <Button variant="outline" onClick={() => setActiveFilter('outline')}>
+            Outline
+          </Button>
+          <Button variant="ghost" onClick={() => setActiveFilter('ghost')}>
+            Ghost
+          </Button>
           <Badge>Badge</Badge>
           <Progress value={68} />
         </div>
 
         <div className="showcase-grid">
-          <Input label="Search packages" placeholder="Search components…" />
+          <Input
+            label="Search packages"
+            placeholder="Search components…"
+            value={searchQuery}
+            onChange={(event) => setSearchQuery(event.target.value)}
+          />
           <Select
             label="Category"
             options={[
@@ -548,7 +593,10 @@ function ComponentGalleryCard() {
           </Button>
         </div>
 
-        <DataTable columns={tableColumns} data={packages} />
+        <Text className="text-muted">
+          Active filter: {activeFilter}. Results: {filteredPackages.length}
+        </Text>
+        <DataTable columns={tableColumns} data={filteredPackages} />
 
         <Card className="compact-panel stack-tight">
           <Text className="eyebrow">Drag and drop</Text>
@@ -604,6 +652,7 @@ function MotionAndHooksCard() {
   const previousSearch = usePrevious(search);
   const isDesktop = useMediaQuery('(min-width: 960px)');
   const [toggled, toggle] = useToggle(true);
+  const [motionReplay, setMotionReplay] = useState(0);
   const floatingRef = useRef<HTMLDivElement | null>(null);
   const { isIntersecting, targetRef } = useIntersectionObserver();
 
@@ -654,8 +703,17 @@ function MotionAndHooksCard() {
           </Card>
         </div>
 
+        <div className="row wrap-row">
+          <Button
+            variant="outline"
+            onClick={() => setMotionReplay((value) => value + 1)}
+          >
+            Replay motion
+          </Button>
+        </div>
+
         <div className="feature-grid feature-grid--dual">
-          <MotionFadeIn {...fadeInProps}>
+          <MotionFadeIn key={`fade-${motionReplay}`} {...fadeInProps}>
             <div className="motion-band stack-tight">
               <Text className="eyebrow">MotionFadeIn</Text>
               <Text>
@@ -669,7 +727,10 @@ function MotionAndHooksCard() {
             </div>
           </MotionFadeIn>
 
-          <MotionSlideIn {...getSlideInProps('right')}>
+          <MotionSlideIn
+            key={`slide-${motionReplay}`}
+            {...getSlideInProps('right')}
+          >
             <div className="motion-band stack-tight">
               <Text className="eyebrow">MotionSlideIn</Text>
               <Text>

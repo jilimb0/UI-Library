@@ -5,6 +5,7 @@
 Run full verification:
 
 ```bash
+pnpm check:deps
 pnpm release:preflight
 ```
 

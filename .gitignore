@@ -12,3 +12,6 @@ yarn-error.log
 pnpm-debug.log
 *.cookie
 *.tsbuildinfo
+
+# Local Pages preview artifacts
+.pages/

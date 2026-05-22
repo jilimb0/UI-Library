@@ -2,6 +2,7 @@
 
 ## Code Quality
 
+- [x] `pnpm check:deps` passes (dependency boundary guard)
 - [x] `pnpm lint` passes
 - [x] `pnpm typecheck` passes
 - [x] `pnpm test` passes

@@ -1,5 +1,5 @@
-import * as Dialog from '@radix-ui/react-dialog';
 import type { ReactNode } from 'react';
+import { RadixDialog as Dialog } from '../../../adapters/radix';
 import { cn } from '../../../utils/cn';
 
 export interface DrawerProps {

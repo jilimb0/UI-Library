@@ -8,10 +8,10 @@ Composable React UI system for product teams that need a consistent design langu
 - `@ui-construction-library/tokens` — color, spacing, typography and semantic theme tokens [cite:184][cite:185][cite:186][cite:187]
 - `@ui-construction-library/icons` — shared icon and asset layer [cite:202]
 - `@ui-construction-library/react-hook-form` — form integration package used in the showcase demo [cite:199]
-- `@ui-construction-library/tanstack-query` — data fetching integration package [cite:199]
-- `@ui-construction-library/tanstack-router` — routing integration package [cite:199]
-- `@ui-construction-library/i18n` — localization helpers for app surfaces [cite:199]
-- `@ui-construction-library/next` — Next.js integration layer [cite:199]
+- `@ui-construction-library/integration-tanstack-query` — data fetching integration package [cite:199]
+- `@ui-construction-library/integration-tanstack-router` — routing integration package [cite:199]
+- `@ui-construction-library/integration-i18n` — localization helpers for app surfaces [cite:199]
+- `@ui-construction-library/integration-next` — Next.js integration layer [cite:199]
 
 ## Entry points
 

@@ -1,5 +1,5 @@
-import * as RadixTabs from '@radix-ui/react-tabs';
 import type { ComponentPropsWithoutRef } from 'react';
+import { RadixTabs } from '../../../adapters/radix';
 import { cn } from '../../../utils/cn';
 
 function TabsRoot(props: ComponentPropsWithoutRef<typeof RadixTabs.Root>) {
@@ -12,7 +12,10 @@ function TabsList({
 }: ComponentPropsWithoutRef<typeof RadixTabs.List>) {
   return (
     <RadixTabs.List
-      className={cn('inline-flex rounded-md bg-slate-100 p-1', className)}
+      className={cn(
+        'inline-flex items-center gap-1 rounded-md bg-slate-100 p-1',
+        className
+      )}
       {...props}
     />
   );

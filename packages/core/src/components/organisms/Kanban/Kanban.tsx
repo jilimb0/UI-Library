@@ -1,12 +1,12 @@
+import type React from 'react';
+import { type ReactNode, useMemo, useState } from 'react';
 import {
+  CSS,
   DndContext,
   type DragEndEvent,
   useDraggable,
   useDroppable,
-} from '@dnd-kit/core';
-import { CSS } from '@dnd-kit/utilities';
-import type React from 'react';
-import { type ReactNode, useMemo, useState } from 'react';
+} from '../../../adapters/dnd';
 import { cn } from '../../../utils/cn';
 
 const DndContextCompat = DndContext as unknown as React.ComponentType<

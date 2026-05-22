@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion';
 import type { PropsWithChildren } from 'react';
+import { motion } from '../adapters/motion';
 
 export function Bounce({ children, ...props }: PropsWithChildren<any>) {
   return (

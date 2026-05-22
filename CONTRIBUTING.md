@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- Node `>=22 <23`
+- Node `>=24`
 - pnpm `11.x`
 
 ## Setup

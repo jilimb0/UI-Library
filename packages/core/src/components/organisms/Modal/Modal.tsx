@@ -1,9 +1,11 @@
-import * as Dialog from '@radix-ui/react-dialog';
 import type { ComponentPropsWithoutRef, ReactNode } from 'react';
+import { RadixDialog as Dialog } from '../../../adapters/radix';
 import { cn } from '../../../utils/cn';
 
 type ModalRootProps = ComponentPropsWithoutRef<typeof Dialog.Root>;
-type ModalContentProps = ComponentPropsWithoutRef<typeof Dialog.Content>;
+type ModalContentProps = ComponentPropsWithoutRef<typeof Dialog.Content> & {
+  title?: string;
+};
 
 function ModalRoot(props: ModalRootProps) {
   return <Dialog.Root {...props} />;
@@ -17,7 +19,12 @@ function ModalClose(props: ComponentPropsWithoutRef<typeof Dialog.Close>) {
   return <Dialog.Close {...props} />;
 }
 
-function ModalContent({ className, children, ...props }: ModalContentProps) {
+function ModalContent({
+  className,
+  children,
+  title,
+  ...props
+}: ModalContentProps) {
   return (
     <Dialog.Portal>
       <Dialog.Overlay className="fixed inset-0 z-40 bg-black/50" />
@@ -28,6 +35,11 @@ function ModalContent({ className, children, ...props }: ModalContentProps) {
         )}
         {...props}
       >
+        {title ? (
+          <Dialog.Title className="mb-4 border-b border-slate-200 pb-3 text-lg font-semibold text-slate-900">
+            {title}
+          </Dialog.Title>
+        ) : null}
         {children}
       </Dialog.Content>
     </Dialog.Portal>

@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^12.1.2",
-    "@types/react": "^19.2.14",
+    "@types/react": "catalog:",
     "rollup": "^4.34.8",
     "typescript": "^6.0.3"
   }

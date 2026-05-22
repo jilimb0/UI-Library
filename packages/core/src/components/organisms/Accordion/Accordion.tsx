@@ -1,5 +1,5 @@
-import * as RadixAccordion from '@radix-ui/react-accordion';
 import type { ComponentPropsWithoutRef } from 'react';
+import { RadixAccordion } from '../../../adapters/radix';
 import { cn } from '../../../utils/cn';
 
 function AccordionRoot({

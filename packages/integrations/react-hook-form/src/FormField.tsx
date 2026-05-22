@@ -5,6 +5,7 @@ import {
   type Control,
   type FieldValues,
   type Path,
+  type UseControllerProps,
   useController,
 } from 'react-hook-form';
 
@@ -22,7 +23,9 @@ const FieldWrapper = Field as React.ForwardRefExoticComponent<
 
 export type FormFieldProps<T extends FieldValues> = {
   name: Path<T>;
-  control: Control<T>;
+  // Use controller-derived control type to reduce cross-package type identity conflicts
+  // when multiple react-hook-form instances exist in a monorepo graph.
+  control: UseControllerProps<T>['control'] | Control<T>;
   label?: ReactNode;
   description?: ReactNode;
   placeholder?: string;

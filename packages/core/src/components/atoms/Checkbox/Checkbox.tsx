@@ -64,13 +64,16 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
 
           <CheckIcon
             className={cn(
-              'pointer-events-none absolute inset-0 m-auto text-white opacity-0 peer-checked:opacity-100',
+              'pointer-events-none absolute inset-0 m-auto block shrink-0 text-white opacity-0 peer-checked:opacity-100',
               {
                 'h-3 w-3': size === 'sm',
                 'h-4 w-4': size === 'md',
                 'h-5 w-5': size === 'lg',
               }
             )}
+            width={size === 'sm' ? 12 : size === 'md' ? 16 : 20}
+            height={size === 'sm' ? 12 : size === 'md' ? 16 : 20}
+            preserveAspectRatio="xMidYMid meet"
           />
         </div>
 

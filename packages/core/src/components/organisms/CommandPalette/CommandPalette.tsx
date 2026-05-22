@@ -1,7 +1,7 @@
-import * as Dialog from '@radix-ui/react-dialog';
 import { Command } from 'cmdk';
 import type React from 'react';
 import type { ReactNode } from 'react';
+import { RadixDialog as Dialog } from '../../../adapters/radix';
 
 export interface CommandPaletteItem {
   id: string;

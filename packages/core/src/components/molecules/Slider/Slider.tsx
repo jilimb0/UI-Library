@@ -1,4 +1,4 @@
-import * as RadixSlider from '@radix-ui/react-slider';
+import { RadixSlider } from '../../../adapters/radix';
 
 export interface SliderProps {
   value: number[];

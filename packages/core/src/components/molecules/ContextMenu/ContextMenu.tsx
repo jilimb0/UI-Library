@@ -1,5 +1,5 @@
-import * as RadixContextMenu from '@radix-ui/react-context-menu';
 import type { ReactNode } from 'react';
+import { RadixContextMenu } from '../../../adapters/radix';
 
 export interface ContextMenuItem {
   id: string;

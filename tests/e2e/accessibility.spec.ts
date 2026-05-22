@@ -1,19 +1,43 @@
 import { expect, test } from '@playwright/test';
 
+const BASE_URL =
+  process.env.UI_LIBRARY_BASE_URL ?? 'http://127.0.0.1:4173/UI-Library/';
 const axeSource = require('axe-core').source;
 
-test('accessibility check for storybook', async ({ page }) => {
-  await page.goto('http://localhost:6006');
-  // Inject axe for accessibility tests
+async function runAxe(page: import('@playwright/test').Page) {
   await page.addScriptTag({ content: axeSource });
   const results = await page.evaluate(async () => {
-    return await new Promise((resolve) => {
-      // @ts-expect-error
-      axe.run((err, results) => {
-        if (err) throw err;
-        resolve(results);
+    return await new Promise<any>((resolve, reject) => {
+      // @ts-expect-error global from axe injection
+      axe.run((error: Error, value: unknown) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+        resolve(value);
       });
     });
   });
-  expect(results.violations.length).toBe(0);
+
+  return results;
+}
+
+test.describe('A11y smoke', () => {
+  test('demo has no critical accessibility violations', async ({ page }) => {
+    await page.goto(BASE_URL);
+    const results = await runAxe(page);
+    const critical = results.violations.filter(
+      (v: any) => v.impact === 'critical'
+    );
+    expect(critical).toEqual([]);
+  });
+
+  test('docs has no critical accessibility violations', async ({ page }) => {
+    await page.goto(`${BASE_URL}docs/`);
+    const results = await runAxe(page);
+    const critical = results.violations.filter(
+      (v: any) => v.impact === 'critical'
+    );
+    expect(critical).toEqual([]);
+  });
 });

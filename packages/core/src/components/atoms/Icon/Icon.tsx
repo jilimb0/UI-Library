@@ -1,3 +1,4 @@
+import { type ComponentType, forwardRef } from 'react';
 import {
   ArrowLeft,
   ArrowRight,
@@ -14,8 +15,7 @@ import {
   Star,
   User,
   X,
-} from 'lucide-react';
-import { type ComponentType, forwardRef } from 'react';
+} from '../../../adapters/icons';
 
 export type LucideIconName =
   | 'arrow-right'

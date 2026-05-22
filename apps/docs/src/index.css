@@ -93,7 +93,7 @@ select {
 .docs-category-item__description,
 .docs-install__label,
 .docs-summary-key {
-  color: var(--color-muted, #7a7974);
+  color: var(--muted-foreground, #5b564e);
 }
 
 .docs-main {
@@ -249,6 +249,7 @@ select {
 .docs-category-item__title {
   margin: 0 0 6px;
   font-weight: 700;
+  color: var(--color-foreground, #28251d);
 }
 
 .docs-category-item__description {

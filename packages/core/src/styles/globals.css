@@ -2,7 +2,7 @@
   --background: var(--color-background, #f7f6f2);
   --foreground: var(--color-foreground, #28251d);
   --muted: var(--color-muted, #f1efe9);
-  --muted-foreground: var(--color-neutral-500, #746f66);
+  --muted-foreground: var(--color-neutral-600, #5b564e);
   --border: var(--color-border, #dfdcd3);
   --primary: var(--color-primary, #1f8f8b);
   --primary-foreground: var(--color-background, #f7f6f2);
@@ -74,7 +74,7 @@
     --background: var(--color-background, #171614);
     --foreground: var(--color-foreground, #ede9e1);
     --muted: var(--color-muted, #22201d);
-    --muted-foreground: var(--color-neutral-300, #c7c2b7);
+    --muted-foreground: var(--color-neutral-200, #dfdcd3);
     --border: var(--color-border, #3a3732);
     --primary: var(--color-primary, #4faea8);
     --primary-foreground: var(--color-background, #171614);
@@ -103,7 +103,7 @@
   --background: var(--color-background, #171614);
   --foreground: var(--color-foreground, #ede9e1);
   --muted: var(--color-muted, #22201d);
-  --muted-foreground: var(--color-neutral-300, #c7c2b7);
+  --muted-foreground: var(--color-neutral-200, #dfdcd3);
   --border: var(--color-border, #3a3732);
   --primary: var(--color-primary, #4faea8);
   --primary-foreground: var(--color-background, #171614);

@@ -1,5 +1,5 @@
-import * as RadixSwitch from '@radix-ui/react-switch';
 import { forwardRef, useId } from 'react';
+import { RadixSwitch } from '../../../adapters/radix';
 import { cn } from '../../../utils/cn';
 
 export interface SwitchProps extends RadixSwitch.SwitchProps {
