@@ -44,6 +44,16 @@ Release channels: `pnpm publish:canary` / `pnpm publish:stable` (see [CANARY_REL
 
 The library targets [v1.0 self-owned](docs/guides/self-owned-platform.md): UI primitives and behavior live in `@ui-construction-library/*`. See [dependency policy](docs/guides/dependency-policy.md).
 
+## Security scanning (CodeQL)
+
+CodeQL runs automatically when you change code under `packages/`, `apps/`, `tools/`, or this workflow file:
+
+- **Pull request** to `main` — scan runs before merge; new findings appear on the PR Security tab.
+- **Push** to `main` — rescan runs after merge; fixed issues (for example ReDoS in `slugify`) are marked **Fixed** in [Security → Code scanning](https://github.com/jilimb0/UI-Library/security/code-scanning).
+- **Weekly** schedule and **manual** run: Actions → CodeQL → Run workflow.
+
+You do not need to dismiss alerts by hand after a fix once a successful CodeQL run completes on `main`.
+
 ## Required checks
 
 ```bash

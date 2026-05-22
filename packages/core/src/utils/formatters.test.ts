@@ -1,9 +1,9 @@
+import { slugify } from '@ui-construction-library/utils';
 import {
   formatCurrency,
   formatDate,
   formatNumber,
   formatRelativeTime,
-  slugify,
   truncateText,
 } from './formatters';
 
