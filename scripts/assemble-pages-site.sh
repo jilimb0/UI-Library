@@ -11,11 +11,9 @@ SITE_DIR="${PAGES_DIR}/${REPO_NAME}"
 rm -rf "$PAGES_DIR"
 mkdir -p "${SITE_DIR}/docs" "${SITE_DIR}/storybook"
 
-pnpm --filter "^@ui-app/demo-showcase" run build
-pnpm --filter "^@ui-app/docs" run build
-pnpm --filter "^@ui-app/storybook" run build
+pnpm --filter @ui-construction-library/core build
 
-STORYBOOK_BASE_PATH="/${REPO_NAME}/storybook/" pnpm build-storybook
+STORYBOOK_BASE_PATH="/${REPO_NAME}/storybook/" pnpm --filter @ui-app/storybook build-storybook
 DOCS_BASE_PATH="/${REPO_NAME}/docs/" pnpm --filter @ui-app/docs build
 DEMO_BASE_PATH="/${REPO_NAME}/" pnpm --filter @ui-app/demo-showcase build
 
