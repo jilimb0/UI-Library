@@ -15,6 +15,7 @@ export type SemanticColors = {
   background: string;
   foreground: string;
   muted: string;
+  mutedForeground: string;
   border: string;
   primary: string;
   secondary: string;
@@ -117,6 +118,7 @@ export const semanticLightColors: SemanticColors = {
   background: colors.neutral[50],
   foreground: '#28251d',
   muted: '#f1efe9',
+  mutedForeground: colors.neutral[600],
   border: colors.neutral[200],
   primary: colors.primary[500],
   secondary: colors.neutral[600],
@@ -135,6 +137,7 @@ export const semanticDarkColors: SemanticColors = {
   background: '#171614',
   foreground: '#ede9e1',
   muted: '#22201d',
+  mutedForeground: colors.neutral[300],
   border: '#3a3732',
   primary: colors.primary[400],
   secondary: colors.neutral[300],

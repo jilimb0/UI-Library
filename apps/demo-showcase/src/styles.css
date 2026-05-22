@@ -105,13 +105,21 @@ body {
 .brand-subtitle,
 .section-description,
 .text-muted,
-.hero-stat-label,
 .command-label {
-  color: var(--color-muted, #7a7974);
+  color: var(--muted-foreground, #5b564e);
 }
 
 .brand-subtitle {
   font-size: 13px;
+}
+
+.hero-stat-label {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-primary, #01696f);
 }
 
 .nav-link {
@@ -183,6 +191,7 @@ body {
   border-radius: 24px;
   background: rgba(249, 248, 245, 0.9);
   box-shadow: 0 18px 48px rgba(40, 37, 29, 0.08);
+  color: var(--foreground, var(--color-foreground, #28251d));
 }
 
 .hero-copy {
@@ -241,9 +250,11 @@ body {
   width: fit-content;
 }
 
+.hero-install code,
 .install-command code {
   font-family: 'IBM Plex Mono', 'SFMono-Regular', monospace;
   font-size: 14px;
+  color: var(--foreground, var(--color-foreground, #28251d));
 }
 
 .hero-cta {
@@ -273,6 +284,7 @@ body {
   margin: 0;
   font-size: 15px;
   line-height: 1.5;
+  color: var(--foreground, var(--color-foreground, #28251d));
 }
 
 .feature-grid--three {
@@ -415,6 +427,24 @@ html[data-theme='dark'] .hero-highlight-item {
 html[data-theme='dark'] .hero-highlight-item {
   background: rgba(79, 152, 163, 0.08);
   border-color: rgba(79, 152, 163, 0.18);
+}
+
+html[data-theme='dark'] .brand-subtitle,
+html[data-theme='dark'] .section-description,
+html[data-theme='dark'] .text-muted,
+html[data-theme='dark'] .command-label {
+  color: var(--muted-foreground, #c7c2b7);
+}
+
+html[data-theme='dark'] .hero-stat-label,
+html[data-theme='dark'] .eyebrow {
+  color: var(--color-primary, #4faea8);
+}
+
+html[data-theme='dark'] .hero-stat-value,
+html[data-theme='dark'] .hero-install code,
+html[data-theme='dark'] .install-command code {
+  color: var(--foreground, var(--color-foreground, #ede9e1));
 }
 
 html[data-theme='dark'] .nav-link:hover {
