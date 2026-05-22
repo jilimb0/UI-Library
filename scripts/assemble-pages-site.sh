@@ -11,10 +11,16 @@ SITE_DIR="${PAGES_DIR}/${REPO_NAME}"
 rm -rf "$PAGES_DIR"
 mkdir -p "${SITE_DIR}/docs" "${SITE_DIR}/storybook"
 
-pnpm --filter @ui-construction-library/core build
+echo "[assemble] workspace packages (core and dependencies)..."
+pnpm turbo run build --filter="@ui-construction-library/core..."
 
+echo "[assemble] storybook..."
 STORYBOOK_BASE_PATH="/${REPO_NAME}/storybook/" pnpm --filter @ui-app/storybook build-storybook
+
+echo "[assemble] docs..."
 DOCS_BASE_PATH="/${REPO_NAME}/docs/" pnpm --filter @ui-app/docs build
+
+echo "[assemble] demo..."
 DEMO_BASE_PATH="/${REPO_NAME}/" pnpm --filter @ui-app/demo-showcase build
 
 cp -R ./apps/demo-showcase/dist/. "${SITE_DIR}/"
