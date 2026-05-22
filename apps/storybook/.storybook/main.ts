@@ -49,6 +49,14 @@ const config: StorybookConfig = {
           __dirname,
           '../../../packages/motion/src/index.ts'
         ),
+        '@ui-construction-library/primitives': resolve(
+          __dirname,
+          '../../../packages/primitives/src/index.ts'
+        ),
+        '@ui-construction-library/dnd': resolve(
+          __dirname,
+          '../../../packages/dnd/src/index.tsx'
+        ),
       },
     },
   }),
