@@ -1,3 +1,9 @@
+@import "tailwindcss";
+@source "../../../packages/core/src/**/*.{js,ts,jsx,tsx}";
+@source "./**/*.{js,ts,jsx,tsx}";
+@import "@ui-construction-library/core-styles/globals.css";
+@import "@ui-construction-library/core-styles/components.css";
+
 *, *::before, *::after {
   box-sizing: border-box;
 }
@@ -39,7 +45,11 @@ body {
 .showcase-shell {
   width: min(1200px, calc(100% - 32px));
   margin: 0 auto;
-  padding: 32px 0 48px;
+  padding: 32px 0 80px;
+}
+
+#components.panel {
+  padding-bottom: 32px;
 }
 
 .site-nav {
@@ -207,13 +217,13 @@ body {
   border: 1px solid rgba(40, 37, 29, 0.08);
 }
 
-.hero-surface-grid {
+.hero-highlights-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
 }
 
-.hero-surface-item {
+.hero-highlight-item {
   padding: 14px;
   border-radius: 18px;
   background: rgba(1, 105, 111, 0.05);
@@ -371,7 +381,7 @@ body {
     border-radius: 16px;
   }
 
-  .hero-surface-grid,
+  .hero-highlights-grid,
   .hero-stats-grid,
   .theme-token-preview {
     grid-template-columns: 1fr;
@@ -396,13 +406,13 @@ html[data-theme='dark'] .motion-band,
 html[data-theme='dark'] .observer-band,
 html[data-theme='dark'] .floating-inspector,
 html[data-theme='dark'] .hero-proof-item,
-html[data-theme='dark'] .hero-surface-item {
+html[data-theme='dark'] .hero-highlight-item {
   background: rgba(28, 27, 25, 0.9);
   border-color: rgba(205, 204, 202, 0.1);
   box-shadow: 0 18px 48px rgba(0, 0, 0, 0.25);
 }
 
-html[data-theme='dark'] .hero-surface-item {
+html[data-theme='dark'] .hero-highlight-item {
   background: rgba(79, 152, 163, 0.08);
   border-color: rgba(79, 152, 163, 0.18);
 }

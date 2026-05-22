@@ -50,13 +50,8 @@ export function Pagination({
   let ellipsisCount = 0;
 
   return (
-    <div
-      className={cn(
-        'mt-4 flex flex-wrap items-center justify-between gap-3',
-        className
-      )}
-    >
-      <div className="flex items-center gap-2">
+    <div className={cn('pagination', className)}>
+      <div className="pagination__controls">
         <button
           type="button"
           onClick={() => canPrev && onPageChange(page - 1)}
@@ -66,7 +61,7 @@ export function Pagination({
           Prev
         </button>
 
-        <div className="flex items-center gap-1">
+        <div className="pagination__pages">
           {visiblePages.map((item) => {
             if (item === 'ellipsis') {
               ellipsisCount += 1;

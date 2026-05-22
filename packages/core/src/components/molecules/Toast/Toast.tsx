@@ -15,14 +15,7 @@ const Toast = forwardRef<HTMLDivElement, ToastProps>(
     }, [duration, onAnimationEnd]);
 
     return (
-      <div
-        ref={ref}
-        className={cn(
-          'rounded-md bg-gray-800 p-3 text-white shadow-md',
-          className
-        )}
-        {...props}
-      >
+      <div ref={ref} className={cn('toast', className)} {...props}>
         {children}
       </div>
     );

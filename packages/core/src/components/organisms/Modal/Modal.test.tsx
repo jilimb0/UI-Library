@@ -28,7 +28,7 @@ describe('Modal', () => {
         </Modal.Content>
       </Modal>
     );
-    const overlay = document.querySelector('.fixed.inset-0');
+    const overlay = document.querySelector('.modal-backdrop');
     if (overlay) await user.click(overlay as HTMLElement);
     await waitFor(() => expect(onOpenChange).toHaveBeenCalled());
   });

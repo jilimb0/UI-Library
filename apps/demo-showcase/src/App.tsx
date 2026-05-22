@@ -36,7 +36,8 @@ import {
   useToggle,
 } from '@ui-construction-library/core';
 import { FormField } from '@ui-construction-library/react-hook-form';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useForm } from 'react-hook-form';
 
 const GITHUB_URL = 'https://github.com/jilimb0/UI-Library';
@@ -61,27 +62,6 @@ const heroProofPoints = [
   'ThemeProvider with runtime light/dark switching',
   'Typed primitives, forms, data and motion utilities',
   'Monorepo packages for tokens, icons and integrations',
-] as const;
-
-const showcaseSections = [
-  {
-    title: 'Theme system',
-    description: 'Live light/dark switching with token-driven CSS variables.',
-  },
-  {
-    title: 'Forms',
-    description:
-      'React Hook Form integration wired to real inputs and validation flows.',
-  },
-  {
-    title: 'Motion',
-    description: 'Fade and slide primitives powered by Framer Motion props.',
-  },
-  {
-    title: 'Data UI',
-    description:
-      'Tables, navigation, overlays and workflow-friendly product components.',
-  },
 ] as const;
 
 const integrationPackages = [
@@ -323,19 +303,11 @@ function HeroSection() {
           title="A system for shipping product surfaces, not only isolated primitives"
           description="The monorepo ties together tokens, icons, core UI, runtime theming and framework integrations. That makes the public demo useful in sales calls, evaluation flows and internal adoption discussions."
         />
-        <div className="hero-stats-grid">
+        <div className="hero-highlights-grid">
           {packageHighlights.map((item) => (
-            <div key={item.label} className="hero-stat">
+            <div key={item.label} className="hero-highlight-item">
               <Text className="hero-stat-label">{item.label}</Text>
               <Text className="hero-stat-value">{item.value}</Text>
-            </div>
-          ))}
-        </div>
-        <div className="hero-surface-grid">
-          {showcaseSections.map((section) => (
-            <div key={section.title} className="hero-surface-item">
-              <Text className="hero-stat-label">{section.title}</Text>
-              <Text className="text-muted">{section.description}</Text>
             </div>
           ))}
         </div>
@@ -475,12 +447,6 @@ function ComponentGalleryCard() {
   >('all');
   const [modalOpen, setModalOpen] = useState(false);
   const [toastVisible, setToastVisible] = useState(false);
-
-  useEffect(() => {
-    if (!toastVisible) return;
-    const timeout = window.setTimeout(() => setToastVisible(false), 2400);
-    return () => window.clearTimeout(timeout);
-  }, [toastVisible]);
 
   const tableColumns = useMemo(
     () => [
@@ -634,27 +600,35 @@ function ComponentGalleryCard() {
               language and token layer.
             </Text>
           </Modal.Body>
+          <Modal.Footer>
+            <Modal.Close asChild>
+              <Button variant="outline">Close</Button>
+            </Modal.Close>
+          </Modal.Footer>
         </Modal.Content>
       </Modal>
 
-      {toastVisible ? (
-        <Toast
-          className="fixed bottom-6 right-6 z-[70] max-w-sm"
-          onAnimationEnd={() => setToastVisible(false)}
-        >
-          Toast feedback from the same UI kit.
-        </Toast>
-      ) : null}
+      {toastVisible
+        ? createPortal(
+            <Toast onAnimationEnd={() => setToastVisible(false)}>
+              Toast feedback from the same UI kit.
+            </Toast>,
+            document.body
+          )
+        : null}
     </Card>
   );
 }
 
 function MotionAndHooksCard() {
-  const [asyncMessage, setAsyncMessage] = useState('Run async demo');
-  const asyncState = useAsync(async () => {
+  const runAsyncDemo = useCallback(async () => {
     await new Promise((resolve) => setTimeout(resolve, 600));
     return 'Async hook resolved a demo payload.';
-  });
+  }, []);
+  const { run, loading } = useAsync(runAsyncDemo);
+  const [asyncMessage, setAsyncMessage] = useState(
+    'Click "Run async" to fetch demo data.'
+  );
   const [search, setSearch] = useState('tokens');
   const debouncedSearch = useDebounce(search, 300);
   const previousSearch = usePrevious(search);
@@ -664,12 +638,11 @@ function MotionAndHooksCard() {
   const floatingRef = useRef<HTMLDivElement | null>(null);
   const { isIntersecting, targetRef } = useIntersectionObserver();
 
-  useEffect(() => {
-    asyncState
-      .run()
+  const handleRunAsync = () => {
+    run()
       .then((result) => setAsyncMessage(result))
       .catch(() => setAsyncMessage('Async hook failed.'));
-  }, [asyncState]);
+  };
 
   useClickOutside(floatingRef, () => {
     if (!toggled) return;
@@ -686,9 +659,17 @@ function MotionAndHooksCard() {
 
       <div className="stack">
         <div className="feature-grid feature-grid--three">
-          <Card className="compact-panel">
+          <Card className="compact-panel stack-tight">
             <Text className="eyebrow">useAsync</Text>
-            <Text>{asyncState.loading ? 'Loading…' : asyncMessage}</Text>
+            <Text>{asyncMessage}</Text>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleRunAsync}
+              disabled={loading}
+            >
+              {loading ? 'Running…' : 'Run async'}
+            </Button>
           </Card>
           <Card className="compact-panel">
             <Text className="eyebrow">useDebounce</Text>

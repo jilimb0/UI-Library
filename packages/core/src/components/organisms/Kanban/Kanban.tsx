@@ -133,7 +133,7 @@ export function Kanban({
 
   return (
     <DndContextCompat onDragEnd={onDragEnd}>
-      <div className={cn('grid gap-4 sm:grid-cols-3', className)}>
+      <div className={cn('kanban-board', className)}>
         {state.map((column) => (
           <DroppableColumn key={column.id} id={column.id} title={column.title}>
             {column.cards.map((card) => (

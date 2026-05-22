@@ -1,5 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Home, Settings, Users } from '@ui-construction-library/icons';
+import {
+  HomeIcon,
+  SettingsIcon,
+  UsersIcon,
+} from '@ui-construction-library/icons';
 import { Sidebar } from './Sidebar';
 
 const meta: Meta<typeof Sidebar> = {
@@ -20,16 +24,20 @@ export const Default: Story = {
           {
             key: 'home',
             label: 'Home',
-            icon: <Home size={14} />,
+            icon: <HomeIcon width={14} height={14} />,
             active: true,
           },
           {
             key: 'users',
             label: 'Users',
-            icon: <Users size={14} />,
+            icon: <UsersIcon width={14} height={14} />,
             badge: 12,
           },
-          { key: 'settings', label: 'Settings', icon: <Settings size={14} /> },
+          {
+            key: 'settings',
+            label: 'Settings',
+            icon: <SettingsIcon width={14} height={14} />,
+          },
         ],
       },
     ],

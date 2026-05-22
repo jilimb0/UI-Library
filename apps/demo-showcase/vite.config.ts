@@ -1,10 +1,11 @@
 import path from 'node:path';
+import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
   base: process.env.DEMO_BASE_PATH || '/demo/',
-  plugins: [react()],
+  plugins: [react(), tailwindcss()],
   resolve: {
     dedupe: ['react', 'react-dom'],
     alias: {
@@ -32,6 +33,18 @@ export default defineConfig({
       '@ui-construction-library/react-hook-form': path.resolve(
         __dirname,
         '../../packages/integrations/react-hook-form/src'
+      ),
+      '@ui-construction-library/core-styles': path.resolve(
+        __dirname,
+        '../../packages/core/src/styles'
+      ),
+      '@ui-construction-library/tokens': path.resolve(
+        __dirname,
+        '../../packages/tokens/src'
+      ),
+      '@ui-construction-library/utils': path.resolve(
+        __dirname,
+        '../../packages/utils/src'
       ),
     },
   },

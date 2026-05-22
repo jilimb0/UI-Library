@@ -27,12 +27,9 @@ function ModalContent({
 }: ModalContentProps) {
   return (
     <Dialog.Portal>
-      <Dialog.Overlay className="fixed inset-0 z-40 bg-black/50" />
+      <Dialog.Overlay className="modal-backdrop" />
       <Dialog.Content
-        className={cn(
-          'fixed left-1/2 top-1/2 z-50 w-full max-w-lg -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white p-6 shadow-xl focus:outline-none',
-          className
-        )}
+        className={cn('modal-content focus:outline-none', className)}
         {...props}
       >
         {title ? (
