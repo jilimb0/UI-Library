@@ -22,8 +22,8 @@ import { useMemo, useState } from 'react';
 declare const __CORE_PACKAGE_VERSION__: string;
 
 const GITHUB_URL = 'https://github.com/jilimb0/UI-Library';
-const STORYBOOK_URL = 'https://jilimb0.github.io/UI-Library/storybook/';
-const DEMO_URL = 'https://ui-library-showcase.netlify.app';
+const STORYBOOK_URL = '../storybook/';
+const DEMO_URL = '../';
 const VERSION = __CORE_PACKAGE_VERSION__;
 const INSTALL_COMMAND = 'pnpm add @ui-construction-library/core';
 

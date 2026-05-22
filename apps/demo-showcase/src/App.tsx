@@ -40,8 +40,8 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 const GITHUB_URL = 'https://github.com/jilimb0/UI-Library';
-const DOCS_URL = 'https://stunning-froyo-3c3fbb.netlify.app';
-const STORYBOOK_URL = 'https://jilimb0.github.io/UI-Library/storybook/';
+const DOCS_URL = './docs/';
+const STORYBOOK_URL = './storybook/';
 const INSTALL_COMMAND = 'pnpm add @ui-construction-library/core';
 
 const packageHighlights = [
