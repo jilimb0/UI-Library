@@ -8,21 +8,78 @@ const meta: Meta<typeof Button> = {
   argTypes: {
     variant: {
       control: { type: 'select' },
-      options: ['primary', 'secondary', 'danger'],
+      options: [
+        'default',
+        'secondary',
+        'outline',
+        'ghost',
+        'link',
+        'destructive',
+      ],
     },
     size: {
       control: { type: 'select' },
-      options: ['sm', 'md', 'lg'],
+      options: ['default', 'sm', 'lg', 'icon'],
     },
   },
 };
 
 export default meta;
 
-export const Primary: StoryObj<typeof Button> = {
+type Story = StoryObj<typeof Button>;
+
+export const Primary: Story = {
   args: {
-    children: 'Primary Button',
+    children: 'Primary',
     variant: 'default',
-    size: 'md',
+    size: 'default',
+  },
+};
+
+export const Secondary: Story = {
+  args: {
+    children: 'Secondary',
+    variant: 'secondary',
+    size: 'default',
+  },
+};
+
+export const Outline: Story = {
+  args: {
+    children: 'Outline',
+    variant: 'outline',
+    size: 'default',
+  },
+};
+
+export const Ghost: Story = {
+  args: {
+    children: 'Ghost',
+    variant: 'ghost',
+    size: 'default',
+  },
+};
+
+export const Destructive: Story = {
+  args: {
+    children: 'Destructive',
+    variant: 'destructive',
+    size: 'default',
+  },
+};
+
+export const Disabled: Story = {
+  args: {
+    children: 'Disabled',
+    variant: 'default',
+    disabled: true,
+  },
+};
+
+export const Loading: Story = {
+  args: {
+    children: 'Loading',
+    variant: 'default',
+    loading: true,
   },
 };

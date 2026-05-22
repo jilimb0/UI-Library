@@ -22,6 +22,7 @@ import {
   Progress,
   RadioButton,
   Select,
+  Spinner,
   Text,
   TextArea,
   ThemeProvider,
@@ -621,12 +622,22 @@ function ComponentGalleryCard() {
   );
 }
 
+type AsyncDemoStatus = 'idle' | 'loading' | 'success' | 'error';
+
+const ASYNC_STATUS_LABEL: Record<AsyncDemoStatus, string> = {
+  idle: 'Idle',
+  loading: 'Loading',
+  success: 'Success',
+  error: 'Error',
+};
+
 function MotionAndHooksCard() {
   const runAsyncDemo = useCallback(async () => {
-    await new Promise((resolve) => setTimeout(resolve, 600));
+    await new Promise((resolve) => setTimeout(resolve, 900));
     return 'Async hook resolved a demo payload.';
   }, []);
   const { run, loading } = useAsync(runAsyncDemo);
+  const [asyncStatus, setAsyncStatus] = useState<AsyncDemoStatus>('idle');
   const [asyncMessage, setAsyncMessage] = useState(
     'Click "Run async" to fetch demo data.'
   );
@@ -639,10 +650,20 @@ function MotionAndHooksCard() {
   const floatingRef = useRef<HTMLDivElement | null>(null);
   const { isIntersecting, targetRef } = useIntersectionObserver();
 
-  const handleRunAsync = () => {
-    run()
-      .then((result) => setAsyncMessage(result))
-      .catch(() => setAsyncMessage('Async hook failed.'));
+  const handleRunAsync = async () => {
+    setAsyncStatus('loading');
+    setAsyncMessage('Fetching demo payload…');
+
+    try {
+      const result = await run();
+      setAsyncMessage(result);
+      setAsyncStatus('success');
+    } catch (err) {
+      setAsyncMessage(
+        err instanceof Error ? err.message : 'Async hook failed. Try again.'
+      );
+      setAsyncStatus('error');
+    }
   };
 
   useClickOutside(floatingRef, () => {
@@ -662,12 +683,34 @@ function MotionAndHooksCard() {
         <div className="feature-grid feature-grid--three">
           <Card className="compact-panel stack-tight">
             <Text className="eyebrow">useAsync</Text>
+            <div
+              className="row wrap-row"
+              style={{ alignItems: 'center', gap: 10 }}
+              role="status"
+              aria-live="polite"
+            >
+              <Badge
+                variant={
+                  asyncStatus === 'success'
+                    ? 'success'
+                    : asyncStatus === 'error'
+                      ? 'error'
+                      : asyncStatus === 'loading'
+                        ? 'warning'
+                        : 'default'
+                }
+              >
+                {ASYNC_STATUS_LABEL[asyncStatus]}
+              </Badge>
+              {loading ? <Spinner size={20} /> : null}
+            </div>
             <Text>{asyncMessage}</Text>
             <Button
               variant="outline"
               size="sm"
-              onClick={handleRunAsync}
+              onClick={() => void handleRunAsync()}
               disabled={loading}
+              loading={loading}
             >
               {loading ? 'Running…' : 'Run async'}
             </Button>
