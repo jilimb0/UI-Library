@@ -56,10 +56,4 @@ export function truncateText(
   return text.substring(0, maxLength - suffix.length) + suffix;
 }
 
-export function slugify(text: string): string {
-  return text
-    .toLowerCase()
-    .replace(/[^\w\s-]/g, '')
-    .replace(/[\s_-]+/g, '-')
-    .replace(/^-+|-+$/g, '');
-}
+export { slugify } from '@ui-construction-library/utils';
