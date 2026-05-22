@@ -9,7 +9,7 @@
     "chromatic": "npx chromatic --project-token=chpt_0c4428a8b40c003"
   },
   "dependencies": {
-    "@ui-construction-library/core": "0.1.0",
+    "@ui-construction-library/core": "workspace:^0.1.1",
     "react": "catalog:",
     "react-dom": "catalog:"
   },

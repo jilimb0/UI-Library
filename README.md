@@ -38,3 +38,7 @@ pnpm build
 ```bash
 pnpm release:preflight
 ```
+
+## Platform direction
+
+The [Self-Owned Platform program](docs/guides/self-owned-platform.md) documents **L3 (v1.0 self-owned)** maturity — owned primitives, CI gates, and [certification](docs/release/v1-self-owned-certification.md). Run `pnpm validate:platform` before release. Dependency rules: [policy](docs/guides/dependency-policy.md) · [inventory](docs/guides/dependency-inventory.md).

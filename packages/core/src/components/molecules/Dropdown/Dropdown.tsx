@@ -1,5 +1,12 @@
 import { ChevronDownIcon } from '@ui-construction-library/icons';
-import { type FC, type ReactNode, useEffect, useRef, useState } from 'react';
+import {
+  type FC,
+  type ReactNode,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+} from 'react';
 
 interface DropdownItem {
   id: number | string;
@@ -12,6 +19,8 @@ interface DropdownProps {
   onChange?: (value: string) => void;
   placeholder?: string;
   disabled?: boolean;
+  /** Visible label for the menu button (required for accessible forms). */
+  label?: string;
   /** Custom icon rendered as the dropdown arrow. Defaults to ChevronDownIcon. */
   icon?: ReactNode;
 }
@@ -21,8 +30,10 @@ export const Dropdown: FC<DropdownProps> = ({
   onChange,
   placeholder = 'Select...',
   disabled = false,
+  label,
   icon,
 }) => {
+  const buttonId = useId();
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState<DropdownItem | null>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -99,8 +110,17 @@ export const Dropdown: FC<DropdownProps> = ({
 
   return (
     <div className="relative inline-block text-left">
+      {label ? (
+        <span
+          id={`${buttonId}-label`}
+          className="mb-1 block text-sm font-medium"
+        >
+          {label}
+        </span>
+      ) : null}
       <button
         type="button"
+        id={buttonId}
         ref={buttonRef}
         disabled={disabled}
         className={`inline-flex justify-between items-center w-48 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
@@ -108,6 +128,7 @@ export const Dropdown: FC<DropdownProps> = ({
         }`}
         aria-haspopup="true"
         aria-expanded={isOpen}
+        aria-labelledby={label ? `${buttonId}-label` : undefined}
         onClick={toggleDropdown}
       >
         <span>{selected ? selected.label : placeholder}</span>
@@ -122,7 +143,7 @@ export const Dropdown: FC<DropdownProps> = ({
           role="menu"
           className="absolute z-10 mt-1 max-h-60 w-48 overflow-auto rounded-md border border-gray-300 bg-white shadow-lg focus:outline-none"
           tabIndex={-1}
-          aria-labelledby="dropdown-button"
+          aria-labelledby={label ? `${buttonId}-label` : buttonId}
         >
           {items.map((item) => (
             <div

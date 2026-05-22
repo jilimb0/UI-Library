@@ -1,66 +1,34 @@
-import { type ComponentType, forwardRef } from 'react';
 import {
-  ArrowLeft,
-  ArrowRight,
-  Bell,
-  Check,
-  ChevronDown,
-  ChevronUp,
-  Heart,
-  Home,
-  type LucideProps,
-  Mail,
-  Search,
-  Settings,
-  Star,
-  User,
-  X,
-} from '../../../adapters/icons';
+  type IconName,
+  type IconProps,
+  iconRegistry,
+} from '@ui-construction-library/icons';
+import { type ComponentType, forwardRef } from 'react';
 
-export type LucideIconName =
-  | 'arrow-right'
-  | 'arrow-left'
-  | 'chevron-down'
-  | 'chevron-up'
-  | 'check'
-  | 'x'
-  | 'search'
-  | 'settings'
-  | 'user'
-  | 'home'
-  | 'mail'
-  | 'bell'
-  | 'star'
-  | 'heart';
+export type { IconName };
+/** @deprecated Use IconName */
+export type LucideIconName = IconName;
 
-type IconComponent = ComponentType<LucideProps>;
-
-const lucideIconMap: Record<LucideIconName, IconComponent> = {
-  'arrow-right': ArrowRight,
-  'arrow-left': ArrowLeft,
-  'chevron-down': ChevronDown,
-  'chevron-up': ChevronUp,
-  check: Check,
-  x: X,
-  search: Search,
-  settings: Settings,
-  user: User,
-  home: Home,
-  mail: Mail,
-  bell: Bell,
-  star: Star,
-  heart: Heart,
-};
-
-export interface IconProps extends Omit<LucideProps, 'ref'> {
-  name?: LucideIconName;
-  as?: IconComponent;
+export interface UIIconProps extends Omit<IconProps, 'ref'> {
+  name?: IconName;
+  as?: ComponentType<IconProps>;
+  /** Lucide-compat: maps to width and height */
+  size?: number | string;
 }
 
-const Icon = forwardRef<SVGSVGElement, IconProps>(
-  ({ name = 'check', as, ...props }, ref) => {
-    const ResolvedIcon = as ?? lucideIconMap[name];
-    return <ResolvedIcon ref={ref} data-testid="icon-svg" {...props} />;
+const Icon = forwardRef<SVGSVGElement, UIIconProps>(
+  ({ name = 'check', as, size, width, height, ...props }, ref) => {
+    const ResolvedIcon = as ?? iconRegistry[name];
+    const dimension = size ?? width ?? height;
+    return (
+      <ResolvedIcon
+        ref={ref}
+        data-testid="icon-svg"
+        width={width ?? dimension}
+        height={height ?? dimension}
+        {...props}
+      />
+    );
   }
 );
 

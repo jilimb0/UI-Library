@@ -15,6 +15,7 @@ on:
       - 'package.json'
       - 'pnpm-workspace.yaml'
       - 'turbo.json'
+      - 'scripts/assemble-pages-site.sh'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -40,35 +41,14 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - name: Build workspace
-        run: pnpm build
-
-      - name: Build Storybook
-        run: pnpm build-storybook
-        env:
-          STORYBOOK_BASE_PATH: /${{ github.event.repository.name }}/storybook/
-
-      - name: Build docs
-        run: pnpm --filter @ui-app/docs build
-        env:
-          DOCS_BASE_PATH: /${{ github.event.repository.name }}/docs/
-
-      - name: Build demo showcase
-        run: pnpm --filter @ui-app/demo-showcase build
-        env:
-          DEMO_BASE_PATH: /${{ github.event.repository.name }}/
-
       - name: Assemble Pages site
-        run: |
-          rm -rf ./.pages
-          mkdir -p ./.pages/docs ./.pages/storybook
-          cp -R ./apps/demo-showcase/dist/. ./.pages/
-          cp -R ./apps/docs/dist/. ./.pages/docs/
-          cp -R ./apps/storybook/storybook-static/. ./.pages/storybook/
+        run: ./scripts/assemble-pages-site.sh
+        env:
+          GITHUB_REPOSITORY_NAME: ${{ github.event.repository.name }}
 
       - uses: actions/upload-pages-artifact@v5
         with:
-          path: ./.pages
+          path: ./.pages/${{ github.event.repository.name }}
 
   deploy:
     runs-on: ubuntu-latest

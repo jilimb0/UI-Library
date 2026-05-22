@@ -4,6 +4,12 @@ set -euo pipefail
 echo "[preflight] install"
 pnpm install --frozen-lockfile
 
+echo "[preflight] dependency policy"
+pnpm check:deps
+
+echo "[preflight] api snapshot"
+pnpm check:api
+
 echo "[preflight] lint"
 pnpm lint
 

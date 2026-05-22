@@ -9,11 +9,14 @@ on:
     paths:
       - 'packages/**'
       - 'apps/**'
+      - 'scripts/**'
+      - 'tests/**'
       - 'pnpm-lock.yaml'
       - 'package.json'
       - 'pnpm-workspace.yaml'
       - 'turbo.json'
       - '.github/workflows/ci.yml'
+      - 'playwright.config.ts'
 
 jobs:
   ci:
@@ -27,10 +30,17 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm check:deps
+      - run: pnpm check:api
       - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm test
       - run: pnpm build
+      - run: pnpm check:security
+        continue-on-error: true
+      - run: pnpm exec playwright install chromium --with-deps
+      - run: pnpm check:e2e
+        env:
+          CI: true
       - name: Upload coverage
         uses: codecov/codecov-action@v5
         with:

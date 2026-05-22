@@ -1,7 +1,8 @@
 import { expect, test } from '@playwright/test';
 
+const port = process.env.PORT ?? '4173';
 const BASE_URL =
-  process.env.UI_LIBRARY_BASE_URL ?? 'http://127.0.0.1:4173/UI-Library/';
+  process.env.UI_LIBRARY_BASE_URL ?? `http://127.0.0.1:${port}/UI-Library/`;
 const axeSource = require('axe-core').source;
 
 async function runAxe(page: import('@playwright/test').Page) {
@@ -27,7 +28,7 @@ test.describe('A11y smoke', () => {
     await page.goto(BASE_URL);
     const results = await runAxe(page);
     const critical = results.violations.filter(
-      (v: any) => v.impact === 'critical'
+      (v: { impact?: string }) => v.impact === 'critical'
     );
     expect(critical).toEqual([]);
   });
@@ -36,7 +37,7 @@ test.describe('A11y smoke', () => {
     await page.goto(`${BASE_URL}docs/`);
     const results = await runAxe(page);
     const critical = results.violations.filter(
-      (v: any) => v.impact === 'critical'
+      (v: { impact?: string }) => v.impact === 'critical'
     );
     expect(critical).toEqual([]);
   });

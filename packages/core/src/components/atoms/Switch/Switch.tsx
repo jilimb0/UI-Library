@@ -1,8 +1,9 @@
+import type { SwitchProps as PrimitiveSwitchProps } from '@ui-construction-library/primitives';
 import { forwardRef, useId } from 'react';
 import { RadixSwitch } from '../../../adapters/radix';
 import { cn } from '../../../utils/cn';
 
-export interface SwitchProps extends RadixSwitch.SwitchProps {
+export interface SwitchProps extends PrimitiveSwitchProps {
   label?: string;
   description?: string;
   size?: 'sm' | 'md' | 'lg';

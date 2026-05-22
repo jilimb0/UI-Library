@@ -17,10 +17,9 @@ export function SlideIn({
 
   return (
     <motion.div
-      initial="hidden"
-      animate="visible"
-      exit="hidden"
-      variants={variants}
+      initial={variants.hidden}
+      animate={variants.visible}
+      exit={variants.hidden}
       transition={{ duration: 0.3 }}
       {...props}
     >

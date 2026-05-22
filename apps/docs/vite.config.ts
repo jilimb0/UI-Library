@@ -11,6 +11,7 @@ export default defineConfig({
     __CORE_PACKAGE_VERSION__: JSON.stringify(corePackageJson.version),
   },
   resolve: {
+    dedupe: ['react', 'react-dom'],
     alias: {
       '@ui-construction-library/core-styles': path.resolve(
         __dirname,

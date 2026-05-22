@@ -8,7 +8,7 @@ echo "[release] version packages (changesets)"
 pnpm version-packages
 
 echo "[release] sync versions into apps"
-node scripts/sync-app-versions.js
+pnpm sync-versions
 
 echo "[release] install (update lockfile)"
 pnpm install

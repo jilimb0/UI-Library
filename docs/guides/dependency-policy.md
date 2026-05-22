@@ -1,5 +1,7 @@
 # Dependency Policy
 
+Part of the [Self-Owned Platform program](./self-owned-platform.md). Full register: [dependency inventory](./dependency-inventory.md).
+
 ## Goal
 Reduce vendor lock-in while keeping release velocity and accessibility quality.
 
@@ -39,8 +41,9 @@ Policy:
 
 ## Independence Rules
 1. App workspaces (`apps/*`) should import from `@ui-construction-library/*` only for UI concerns.
-2. External UI primitives must enter through `packages/core` adapters/components.
-3. New external dependency requires:
+2. Tier-1 UI primitives in `packages/core` must enter only through `packages/core/src/adapters/*` (see [ADR-0001](../adr/0001-adapter-boundary-for-external-ui.md)).
+3. `pnpm check:deps` must pass before merge.
+4. New external dependency requires:
 - documented reason,
 - owner,
 - fallback/exit strategy,

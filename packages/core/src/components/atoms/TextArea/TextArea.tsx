@@ -1,5 +1,5 @@
 import { cva, type VariantProps } from 'class-variance-authority';
-import { forwardRef, type TextareaHTMLAttributes } from 'react';
+import { forwardRef, type TextareaHTMLAttributes, useId } from 'react';
 import { cn } from '../../../utils/cn';
 
 const textareaVariants = cva(
@@ -23,18 +23,31 @@ const textareaVariants = cva(
   }
 );
 
-interface TextAreaProps
+export interface TextAreaProps
   extends TextareaHTMLAttributes<HTMLTextAreaElement>,
-    VariantProps<typeof textareaVariants> {}
+    VariantProps<typeof textareaVariants> {
+  label?: string;
+}
 
 const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
-  ({ className, size, variant, ...props }, ref) => {
+  ({ className, size, variant, label, id, ...props }, ref) => {
+    const generatedId = useId();
+    const fieldId = id ?? generatedId;
+
     return (
-      <textarea
-        className={cn(textareaVariants({ size, variant, className }))}
-        ref={ref}
-        {...props}
-      />
+      <div className="flex w-full flex-col gap-1">
+        {label ? (
+          <label htmlFor={fieldId} className="text-sm font-medium">
+            {label}
+          </label>
+        ) : null}
+        <textarea
+          id={fieldId}
+          className={cn(textareaVariants({ size, variant, className }))}
+          ref={ref}
+          {...props}
+        />
+      </div>
     );
   }
 );

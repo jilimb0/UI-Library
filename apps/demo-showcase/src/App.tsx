@@ -298,19 +298,22 @@ function HeroSection() {
           ))}
         </div>
         <div className="hero-cta wrap-row">
-          <Link href={DOCS_URL}>
-            <Button size="lg">Open docs</Button>
-          </Link>
-          <Link href={STORYBOOK_URL}>
-            <Button variant="outline" size="lg">
-              Open Storybook
-            </Button>
-          </Link>
-          <Link href={GITHUB_URL} target="_blank" rel="noopener noreferrer">
-            <Button variant="ghost" size="lg">
-              View GitHub
-            </Button>
-          </Link>
+          <Button as="a" href={DOCS_URL} size="lg">
+            Open docs
+          </Button>
+          <Button as="a" href={STORYBOOK_URL} variant="outline" size="lg">
+            Open Storybook
+          </Button>
+          <Button
+            as="a"
+            href={GITHUB_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            variant="ghost"
+            size="lg"
+          >
+            View GitHub
+          </Button>
         </div>
       </div>
 
@@ -554,8 +557,8 @@ function ComponentGalleryCard() {
             ]}
           />
           <div className="stack-tight">
-            <Text className="eyebrow">Framework</Text>
             <Dropdown
+              label="Framework"
               items={[
                 { id: 'react', label: 'React', value: 'react' },
                 { id: 'next', label: 'Next.js', value: 'next' },
@@ -567,6 +570,7 @@ function ComponentGalleryCard() {
             <Text className="text-muted">Selected: {dropdownValue || '—'}</Text>
           </div>
           <DatePicker
+            label="Target date"
             selectedDate={selectedDate}
             onChange={(date) => setSelectedDate(date)}
           />
@@ -583,7 +587,11 @@ function ComponentGalleryCard() {
 
         <div className="stack-tight">
           <Text className="eyebrow">Notes</Text>
-          <TextArea placeholder="Describe your adoption scenario…" rows={4} />
+          <TextArea
+            label="Notes"
+            placeholder="Describe your adoption scenario…"
+            rows={4}
+          />
         </div>
 
         <div className="row wrap-row">
@@ -604,10 +612,10 @@ function ComponentGalleryCard() {
             Kanban workflow powered by the core organism layer
           </Heading>
           <Text className="text-muted">
-            The library already includes a Kanban organism built on top of
-            @dnd-kit. This public demo now exposes it directly so teams can
-            evaluate drag-and-drop workflow patterns instead of only reading
-            that DnD support exists.
+            The library already includes a Kanban organism built on the owned
+            drag-and-drop layer. This public demo now exposes it directly so
+            teams can evaluate drag-and-drop workflow patterns instead of only
+            reading that DnD support exists.
           </Text>
           <Kanban
             columns={kanbanColumns.map((column) => ({

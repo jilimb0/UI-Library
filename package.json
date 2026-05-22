@@ -22,7 +22,14 @@
     "lint:fix": "biome check --write .",
     "format": "biome format --write .",
     "typecheck": "turbo run typecheck",
-    "check:deps": "./scripts/check-dependency-boundaries.sh",
+    "check:deps": "./scripts/check-dependency-boundaries.sh && ./scripts/check-app-dependency-policy.sh",
+    "check:api": "./scripts/check-api-snapshot.sh",
+    "playwright:install": "playwright install chromium",
+    "check:e2e": "pnpm playwright:install && playwright test",
+    "check:security": "pnpm audit --audit-level=high",
+    "check:perf": "pnpm exec vitest run --config tests/performance/vitest.config.js",
+    "publish:canary": "./scripts/publish-canary.sh",
+    "publish:stable": "./scripts/publish-stable.sh",
     "storybook": "turbo run storybook",
     "build-storybook": "pnpm --filter @ui-app/storybook build-storybook",
     "demo:dev": "pnpm --filter @ui-app/demo-showcase dev",
@@ -35,7 +42,8 @@
     "sync-versions": "node scripts/sync-app-versions.js",
     "sync-versions:dry": "node scripts/sync-app-versions.js --dry-run",
     "release": "turbo run build && changeset publish",
-    "validate": "pnpm check:deps && pnpm lint && pnpm typecheck && pnpm test && pnpm build",
+    "validate": "pnpm check:deps && pnpm check:api && pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm check:perf",
+    "validate:platform": "pnpm validate && pnpm check:e2e",
     "prepare": "husky"
   },
   "lint-staged": {
@@ -78,8 +86,11 @@
   "devDependencies": {
     "@biomejs/biome": "2.4.15",
     "@changesets/cli": "^2.27.0",
+    "@playwright/test": "^1.58.2",
     "husky": "^9.1.7",
     "lint-staged": "^17.0.4",
+    "resolve": "1.22.12",
+    "serve": "^14.2.4",
     "turbo": "^2.9.14",
     "typescript": "^5.6.3",
     "vitest": "catalog:"

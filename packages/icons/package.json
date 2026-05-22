@@ -15,17 +15,14 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
-    "build": "rollup -c",
+    "build": "pnpm build:icons && rollup -c",
     "build:icons": "node scripts/build-icons.js",
     "typecheck": "tsc --noEmit",
     "lint": "biome check src"
   },
   "peerDependencies": {
-    "lucide-react": ">=0.400.0",
     "react": ">=18.0.0"
   },
   "devDependencies": {

@@ -1,0 +1,44 @@
+{
+  "name": "@ui-construction-library/motion",
+  "version": "0.1.0",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "rollup -c",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check src",
+    "test": "echo \"@ui-construction-library/motion: no tests yet\""
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@rollup/plugin-commonjs": "^29.0.2",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-typescript": "^12.1.2",
+    "@testing-library/react": "^16.3.2",
+    "happy-dom": "^20.8.9",
+    "rollup": "^4.34.8",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "typescript": "^6.0.3",
+    "vitest": "catalog:"
+  },
+  "license": "MIT",
+  "type": "module"
+}

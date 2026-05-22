@@ -1,6 +1,5 @@
-import { Field, Input } from '@ui-construction-library/core';
-import type React from 'react';
-import type { HTMLAttributes, ReactNode } from 'react';
+import { Input } from '@ui-construction-library/core';
+import type { ReactNode } from 'react';
 import {
   type Control,
   type FieldValues,
@@ -8,18 +7,6 @@ import {
   type UseControllerProps,
   useController,
 } from 'react-hook-form';
-
-// Local type mirror to avoid resolving stale .d.ts/.js from @ui-construction-library/core src
-interface FieldWrapperProps extends HTMLAttributes<HTMLDivElement> {
-  label?: ReactNode;
-  error?: ReactNode;
-  description?: ReactNode;
-  children?: ReactNode;
-}
-
-const FieldWrapper = Field as React.ForwardRefExoticComponent<
-  FieldWrapperProps & React.RefAttributes<HTMLDivElement>
->;
 
 export type FormFieldProps<T extends FieldValues> = {
   name: Path<T>;
@@ -43,13 +30,24 @@ export function FormField<T extends FieldValues>({
 }: FormFieldProps<T>) {
   const { field, fieldState } = useController({ name, control });
 
+  const labelText = typeof label === 'string' ? label : undefined;
+  const descriptionText =
+    typeof description === 'string' ? description : undefined;
+
   return (
-    <FieldWrapper
-      label={label}
-      description={description}
-      error={fieldState.error?.message}
-    >
-      <Input {...inputProps} {...field} />
-    </FieldWrapper>
+    <div className="flex flex-col space-y-1">
+      <Input
+        label={labelText}
+        description={descriptionText}
+        variant={fieldState.error ? 'error' : undefined}
+        {...inputProps}
+        {...field}
+      />
+      {fieldState.error?.message ? (
+        <p className="text-xs text-red-600" role="alert">
+          {fieldState.error.message}
+        </p>
+      ) : null}
+    </div>
   );
 }

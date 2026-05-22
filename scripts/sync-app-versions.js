@@ -1,9 +1,12 @@
 #!/usr/bin/env node
 
 // Syncs @ui-construction-library/* versions in apps/*/package.json
-// to match the currently published versions in packages/*/package.json.
+// to match packages/*/package.json after `changeset version`.
 //
-// Run after `changeset version` to keep apps in sync.
+// Apps stay on the pnpm workspace protocol (workspace:^x.y.z) so installs
+// resolve to local packages — not the npm registry (which may not have the
+// new version until after publish).
+//
 // Usage: node scripts/sync-app-versions.js [--dry-run]
 
 import { readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
@@ -14,18 +17,12 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '..');
 const dryRun = process.argv.includes('--dry-run');
 
-// --- 1. Collect published package versions from packages/*/package.json ---
-
 function getPackageJsonPaths(dir) {
   const results = [];
   for (const entry of readdirSync(dir)) {
     const full = resolve(dir, entry);
     if (statSync(full).isDirectory()) {
-      const pkgPath = resolve(full, 'package.json');
-      try {
-        results.push(pkgPath);
-      } catch {}
-      // one level deeper (integrations)
+      results.push(resolve(full, 'package.json'));
       for (const sub of readdirSync(full)) {
         const subFull = resolve(full, sub);
         if (statSync(subFull).isDirectory()) {
@@ -45,7 +42,30 @@ function readJson(path) {
   }
 }
 
-// Build map: { "@ui-construction-library/core": "0.2.0", ... }
+/**
+ * @param {string} current
+ * @param {string} packageVersion
+ * @returns {string | null} new version string, or null if unchanged
+ */
+function resolveAppDepVersion(current, packageVersion) {
+  const target = `workspace:^${packageVersion}`;
+
+  if (current === target) {
+    return null;
+  }
+
+  // workspace:*, workspace:^old, or mistaken bare semver from older sync
+  if (
+    current.startsWith('workspace:') ||
+    /^\d/.test(current) ||
+    current === '*'
+  ) {
+    return target;
+  }
+
+  return null;
+}
+
 const publishedVersions = {};
 for (const pkgPath of getPackageJsonPaths(resolve(root, 'packages'))) {
   const pkg = readJson(pkgPath);
@@ -54,12 +74,10 @@ for (const pkgPath of getPackageJsonPaths(resolve(root, 'packages'))) {
   }
 }
 
-console.log('\n📦 Published package versions:');
+console.log('\n📦 Workspace package versions:');
 for (const [name, ver] of Object.entries(publishedVersions)) {
   console.log(`  ${name}: ${ver}`);
 }
-
-// --- 2. Update apps/*/package.json ---
 
 const appsDir = resolve(root, 'apps');
 let totalUpdates = 0;
@@ -75,11 +93,13 @@ for (const appName of readdirSync(appsDir)) {
   for (const field of depFields) {
     if (!pkg[field]) continue;
     for (const [dep, ver] of Object.entries(pkg[field])) {
-      if (publishedVersions[dep] && ver !== publishedVersions[dep]) {
-        console.log(
-          `\n  ${appName}: ${dep}  ${ver} → ${publishedVersions[dep]}`
-        );
-        pkg[field][dep] = publishedVersions[dep];
+      const packageVersion = publishedVersions[dep];
+      if (!packageVersion) continue;
+
+      const next = resolveAppDepVersion(ver, packageVersion);
+      if (next) {
+        console.log(`\n  ${appName}: ${dep}  ${ver} → ${next}`);
+        pkg[field][dep] = next;
         changed = true;
         totalUpdates++;
       }
@@ -87,12 +107,7 @@ for (const appName of readdirSync(appsDir)) {
   }
 
   if (changed && !dryRun) {
-    writeFileSync(
-      pkgPath,
-      `${JSON.stringify(pkg, null, 2)}
-`,
-      'utf-8'
-    );
+    writeFileSync(pkgPath, `${JSON.stringify(pkg, null, 2)}\n`, 'utf-8');
     console.log(`  ✅ Written: apps/${appName}/package.json`);
   }
 }

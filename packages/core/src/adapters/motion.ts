@@ -1,1 +1,1 @@
-export { motion } from 'framer-motion';
+export { motion } from '@ui-construction-library/motion';

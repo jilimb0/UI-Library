@@ -6,6 +6,7 @@ export default defineConfig({
   base: process.env.DEMO_BASE_PATH || '/demo/',
   plugins: [react()],
   resolve: {
+    dedupe: ['react', 'react-dom'],
     alias: {
       '@': path.resolve(__dirname, './src'),
       '@ui-construction-library/core': path.resolve(
@@ -15,6 +16,18 @@ export default defineConfig({
       '@ui-construction-library/icons': path.resolve(
         __dirname,
         '../../packages/icons/src'
+      ),
+      '@ui-construction-library/primitives': path.resolve(
+        __dirname,
+        '../../packages/primitives/src'
+      ),
+      '@ui-construction-library/motion': path.resolve(
+        __dirname,
+        '../../packages/motion/src'
+      ),
+      '@ui-construction-library/dnd': path.resolve(
+        __dirname,
+        '../../packages/dnd/src/index.tsx'
       ),
       '@ui-construction-library/react-hook-form': path.resolve(
         __dirname,
@@ -27,9 +40,12 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id) {
-          if (id.includes('node_modules/react')) return 'react-vendor';
-          if (id.includes('node_modules/lucide-react')) return 'icons-vendor';
-          if (id.includes('node_modules/@radix-ui')) return 'radix-vendor';
+          if (
+            id.includes('node_modules/react-dom') ||
+            id.includes('node_modules/react/')
+          ) {
+            return 'react-vendor';
+          }
           return undefined;
         },
       },

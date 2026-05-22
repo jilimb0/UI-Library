@@ -17,6 +17,8 @@ interface DatePickerProps {
   onChange: (date: Date) => void;
   timezone?: string;
   initialMonth?: Date;
+  /** Accessible name for the calendar widget. */
+  label?: string;
 }
 
 const DatePicker: FC<DatePickerProps> = ({
@@ -24,6 +26,7 @@ const DatePicker: FC<DatePickerProps> = ({
   onChange,
   // timezone,
   initialMonth,
+  label = 'Select date',
 }) => {
   const [currentMonth, setCurrentMonth] = useState(initialMonth ?? new Date());
 
@@ -63,7 +66,8 @@ const DatePicker: FC<DatePickerProps> = ({
   }
 
   return (
-    <div>
+    <fieldset>
+      <legend className="mb-2 text-sm font-medium">{label}</legend>
       <div className="flex justify-between items-center mb-2">
         <button
           type="button"
@@ -89,7 +93,7 @@ const DatePicker: FC<DatePickerProps> = ({
         </thead>
         <tbody>{rows}</tbody>
       </table>
-    </div>
+    </fieldset>
   );
 };
 

@@ -36,6 +36,10 @@ export interface ButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   as?: ElementType;
+  /** When `as="a"`, pass the link target. */
+  href?: string;
+  target?: string;
+  rel?: string;
   loading?: boolean;
   leftIcon?: ReactNode;
   rightIcon?: ReactNode;

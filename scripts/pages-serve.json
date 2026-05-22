@@ -1,0 +1,17 @@
+{
+  "cleanUrls": false,
+  "rewrites": [
+    { "source": "/UI-Library", "destination": "/UI-Library/index.html" },
+    { "source": "/UI-Library/", "destination": "/UI-Library/index.html" },
+    { "source": "/UI-Library/docs", "destination": "/UI-Library/docs/index.html" },
+    { "source": "/UI-Library/docs/", "destination": "/UI-Library/docs/index.html" },
+    {
+      "source": "/UI-Library/storybook",
+      "destination": "/UI-Library/storybook/index.html"
+    },
+    {
+      "source": "/UI-Library/storybook/",
+      "destination": "/UI-Library/storybook/index.html"
+    }
+  ]
+}

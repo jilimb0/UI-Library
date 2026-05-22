@@ -2,13 +2,40 @@
 
 ## Monorepo layout
 
-- `apps/*`: playground/docs/storybook apps
-- `packages/tokens`: design token source of truth
-- `packages/core`: component library (atoms/molecules/organisms/templates)
-- `packages/icons`: icon package
-- `packages/integrations/*`: framework-specific adapters
+- `apps/*` — playground, docs, storybook, demo-showcase (consumption surfaces)
+- `packages/tokens` — design token source of truth (**foundation**)
+- `packages/core` — component library: atoms, molecules, organisms, templates (**components**)
+- `packages/core/src/adapters` — Tier-1 external UI runtime boundary (L1; see ADR-0001)
+- `packages/icons` — icon package (migrating to owned SVG set)
+- `packages/integrations/*` — optional framework adapters (**integrations**)
+- `packages/utils` — shared utilities
+- `.github/workflows`, `scripts/` — **ops** (CI, release, boundary checks)
 
-## UI layers
+Planned extractions (platform program): `primitives`, `motion`, `dnd`, `a11y` packages under `packages/`.
+
+## Target layer model
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  ops: CI, security, release, reproducible builds        │
+├─────────────────────────────────────────────────────────┤
+│  integrations: Next, TanStack, i18n, RHF (optional)   │
+├─────────────────────────────────────────────────────────┤
+│  components: atoms → molecules → organisms → templates│
+│              (@ui-construction-library/core)            │
+├─────────────────────────────────────────────────────────┤
+│  primitives: headless, a11y-first (future package)      │
+├─────────────────────────────────────────────────────────┤
+│  foundation: tokens, theming, motion tokens             │
+│              (@ui-construction-library/tokens)          │
+└─────────────────────────────────────────────────────────┘
+```
+
+**Import contract:** app code uses `@ui-construction-library/*` for UI. External UI libraries are not part of the public app contract.
+
+See [Self-Owned Platform](./self-owned-platform.md) for maturity levels (L1 → L3).
+
+## UI layers (current)
 
 1. **Atoms**: visual primitives (`Button`, `Input`, `Icon`, etc.)
 2. **Molecules**: composed controls (`Pagination`, `ComboBox`, `SearchInput`, etc.)
@@ -27,6 +54,17 @@
 - Compound pattern for complex UI:
   - `Modal`, `Tabs`, `Accordion`
 
+## External runtime boundary (L1)
+
+Tier-1 dependencies (`@radix-ui/*`, `@dnd-kit/*`, `framer-motion`, `lucide-react` in core) are imported only from:
+
+- `packages/core/src/adapters/radix.ts`
+- `packages/core/src/adapters/dnd.ts`
+- `packages/core/src/adapters/motion.ts`
+- `packages/core/src/adapters/icons.ts`
+
+Enforced by `pnpm check:deps`. Details: [ADR-0001](../adr/0001-adapter-boundary-for-external-ui.md).
+
 ## Theming
 
 - `@ui-construction-library/tokens` provides:
@@ -38,7 +76,17 @@
 
 ## Integrations
 
-- `integration-next`: Next.js wrappers
-- `integration-tanstack-query`: async DataTable
-- `integration-tanstack-router`: router adapters
-- `integration-i18n`: translation provider/hook
+Optional; they must not be required for core library readiness.
+
+- `integration-next` — Next.js wrappers
+- `integration-tanstack-query` — async DataTable
+- `integration-tanstack-router` — router adapters
+- `integration-i18n` — translation provider/hook
+- `react-hook-form` — form field bindings
+
+## Related docs
+
+- [Dependency policy](./dependency-policy.md)
+- [Dependency inventory](./dependency-inventory.md)
+- [Package ownership](../ownership/PACKAGE_OWNERSHIP.md)
+- [Roadmap progress](./roadmap-progress.md)
