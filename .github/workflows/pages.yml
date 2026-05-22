@@ -56,7 +56,7 @@ jobs:
       - name: Build demo showcase
         run: pnpm --filter @ui-app/demo-showcase build
         env:
-          DEMO_BASE_PATH: /${{ github.event.repository.name }}/demo/
+          DEMO_BASE_PATH: /${{ github.event.repository.name }}/
 
       - name: Assemble Pages site
         run: |
