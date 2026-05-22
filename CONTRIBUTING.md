@@ -70,11 +70,23 @@ E2E (builds Pages preview, installs Chromium if needed):
 pnpm check:e2e
 ```
 
+## Public apps (demo, docs, Storybook)
+
+All three surfaces share the same integration pattern:
+
+1. **Styles** — `@import "@ui-construction-library/core/styles"` in the app CSS entry (includes globals, components, utilities, animations).
+2. **Vite** — `libraryAliases()` from `tools/vite/library-aliases.ts` (source aliases to `packages/*/src`, not only `dist`).
+3. **Tailwind** — `@source` directives pointing at `packages/core/src` and the app `src` tree.
+4. **Theme** — wrap the app in `ThemeProvider` from `@ui-construction-library/core`.
+5. **Cross-site nav** — `CrossSiteNav` with `current` set to `'demo' | 'docs' | 'storybook'`.
+
+When adding a component story, colocate `*.stories.tsx` beside the component and use the title prefix `Components/Atoms| Molecules| Organisms/<Name>`. Tag stories with `autodocs` when props should appear in Storybook Docs.
+
 ## Component checklist
 
 - [ ] Component exported from layer index
 - [ ] Public API typed and documented
-- [ ] Story coverage for states/variants
+- [ ] Colocated story under `Components/{Atoms|Molecules|Organisms}/<Name>` with `tags: ['autodocs']` when useful
 - [ ] Accessibility semantics verified
 - [ ] Tests added/updated
 

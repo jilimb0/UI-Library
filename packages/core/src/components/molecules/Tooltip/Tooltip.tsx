@@ -10,12 +10,12 @@ export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
     return (
       <div
         ref={ref}
-        className={cn('relative group inline-block', className)}
+        className={cn('tooltip-trigger', className)}
         data-tooltip-trigger
         {...props}
       >
         {children}
-        <div className="absolute bottom-full mb-2 hidden rounded bg-black px-2 py-1 text-xs text-white group-hover:block">
+        <div className="tooltip-bubble" role="tooltip">
           {content}
         </div>
       </div>

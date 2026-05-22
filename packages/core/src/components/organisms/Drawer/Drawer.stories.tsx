@@ -4,8 +4,9 @@ import { Button } from '../../atoms/Button';
 import { Drawer } from './Drawer';
 
 const meta: Meta<typeof Drawer> = {
-  title: 'Organisms/Drawer',
+  title: 'Components/Organisms/Drawer',
   component: Drawer,
+  tags: ['autodocs'],
 };
 
 export default meta;

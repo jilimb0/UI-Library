@@ -56,7 +56,7 @@ export function Pagination({
           type="button"
           onClick={() => canPrev && onPageChange(page - 1)}
           disabled={!canPrev}
-          className="inline-flex items-center justify-center rounded border border-slate-300 px-3 py-1.5 text-sm disabled:opacity-50"
+          className="pagination-btn"
         >
           Prev
         </button>
@@ -68,7 +68,7 @@ export function Pagination({
               return (
                 <span
                   key={`ellipsis-${ellipsisCount}`}
-                  className="px-2 text-slate-500"
+                  className="pagination-ellipsis"
                 >
                   ...
                 </span>
@@ -83,10 +83,8 @@ export function Pagination({
                 onClick={() => onPageChange(item)}
                 aria-current={isActive ? 'page' : undefined}
                 className={cn(
-                  'inline-flex min-w-8 items-center justify-center rounded border px-2 py-1 text-sm',
-                  isActive
-                    ? 'border-blue-600 bg-blue-600 text-white'
-                    : 'border-slate-300 text-slate-700'
+                  'pagination-btn',
+                  isActive && 'pagination-btn--active'
                 )}
               >
                 {item}
@@ -99,23 +97,23 @@ export function Pagination({
           type="button"
           onClick={() => canNext && onPageChange(page + 1)}
           disabled={!canNext}
-          className="inline-flex items-center justify-center rounded border border-slate-300 px-3 py-1.5 text-sm disabled:opacity-50"
+          className="pagination-btn"
         >
           Next
         </button>
       </div>
 
-      <span className="text-sm text-slate-600">
+      <span className="pagination-meta">
         Page {page} of {totalPages}
       </span>
 
       {onPageSizeChange && typeof pageSize === 'number' ? (
-        <label className="flex items-center gap-2 text-sm text-slate-600">
+        <label className="inline-cluster pagination-meta">
           Page size
           <select
             value={pageSize}
             onChange={handlePageSize}
-            className="rounded border border-slate-300 px-2 py-1"
+            className="pagination-select"
           >
             {pageSizeOptions.map((option) => (
               <option key={option} value={option}>

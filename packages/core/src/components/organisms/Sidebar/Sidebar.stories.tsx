@@ -7,8 +7,9 @@ import {
 import { Sidebar } from './Sidebar';
 
 const meta: Meta<typeof Sidebar> = {
-  title: 'Organisms/Sidebar',
+  title: 'Components/Organisms/Sidebar',
   component: Sidebar,
+  tags: ['autodocs'],
 };
 
 export default meta;

@@ -1,8 +1,7 @@
 @import "tailwindcss";
 @source "../../../packages/core/src/**/*.{js,ts,jsx,tsx}";
 @source "./**/*.{js,ts,jsx,tsx}";
-@import "@ui-construction-library/core-styles/globals.css";
-@import "@ui-construction-library/core-styles/components.css";
+@import "@ui-construction-library/core/styles";
 
 *, *::before, *::after {
   box-sizing: border-box;

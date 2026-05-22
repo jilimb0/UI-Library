@@ -2,8 +2,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { RadioButton } from './RadioButton';
 
 const meta: Meta<typeof RadioButton> = {
-  title: 'Atoms/RadioButton',
+  title: 'Components/Atoms/RadioButton',
   component: RadioButton,
+  tags: ['autodocs'],
 };
 
 export default meta;

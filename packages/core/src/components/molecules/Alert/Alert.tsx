@@ -6,10 +6,10 @@ export interface AlertProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const alertVariants = {
-  default: 'bg-blue-100 text-blue-800',
-  success: 'bg-green-100 text-green-800',
-  warning: 'bg-yellow-100 text-yellow-800',
-  error: 'bg-red-100 text-red-800',
+  default: 'alert--default',
+  success: 'alert--success',
+  warning: 'alert--warning',
+  error: 'alert--error',
 };
 
 export const Alert = forwardRef<HTMLDivElement, AlertProps>(
@@ -17,7 +17,7 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(
     return (
       <div
         ref={ref}
-        className={cn('rounded-md p-4', alertVariants[variant], className)}
+        className={cn('alert', alertVariants[variant], className)}
         {...props}
       />
     );

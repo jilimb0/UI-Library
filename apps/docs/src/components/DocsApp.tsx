@@ -5,6 +5,7 @@ import {
   Button,
   Card,
   CommandPalette,
+  CrossSiteNav,
   DataTable,
   DatePicker,
   Heading,
@@ -420,6 +421,13 @@ function DocsContent() {
       </header>
 
       <main className="docs-main">
+        <CrossSiteNav
+          current="docs"
+          demoHref={DEMO_URL}
+          storybookHref={STORYBOOK_URL}
+          docsHref="#"
+        />
+
         <section className="docs-hero">
           <div className="docs-hero__content">
             <div className="docs-badges">

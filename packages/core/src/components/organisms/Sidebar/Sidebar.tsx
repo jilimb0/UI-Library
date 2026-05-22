@@ -42,43 +42,39 @@ export function Sidebar({
   return (
     <aside
       className={cn(
-        'flex h-full min-h-[400px] flex-col border-r border-slate-200 bg-white transition-all',
-        collapsed ? 'w-20' : 'w-72',
+        'sidebar',
+        collapsed ? 'sidebar--collapsed' : 'sidebar--expanded',
         className
       )}
     >
       {collapsible ? (
-        <div className="flex justify-end p-2">
+        <div className="sidebar__toolbar">
           <button
             type="button"
             onClick={() => setCollapsed((v) => !v)}
-            className="rounded border border-slate-300 px-2 py-1 text-xs"
+            className="button button--outline button--sm"
           >
             {collapsed ? 'Expand' : 'Collapse'}
           </button>
         </div>
       ) : null}
 
-      <nav className="flex-1 space-y-4 p-3">
+      <nav className="sidebar__nav">
         {groups.map((group) => (
           <div key={group.key}>
             {!collapsed && group.label ? (
-              <div className="mb-1 px-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
-                {group.label}
-              </div>
+              <div className="sidebar__group-label">{group.label}</div>
             ) : null}
 
-            <div className="space-y-1">
+            <div className="stack-vertical" style={{ gap: '0.25rem' }}>
               {group.items.map((item) => (
                 <button
                   key={item.key}
                   type="button"
                   onClick={item.onClick}
                   className={cn(
-                    'flex w-full items-center rounded-md px-2 py-2 text-sm transition-colors',
-                    item.active
-                      ? 'bg-blue-50 text-blue-700'
-                      : 'text-slate-700 hover:bg-slate-100'
+                    'sidebar__item',
+                    item.active && 'sidebar__item--active'
                   )}
                 >
                   {item.icon ? (
@@ -88,9 +84,7 @@ export function Sidebar({
                     <span className="flex-1 text-left">{item.label}</span>
                   ) : null}
                   {!collapsed && hasBadges && item.badge !== undefined ? (
-                    <span className="rounded-full bg-slate-200 px-2 py-0.5 text-xs text-slate-700">
-                      {item.badge}
-                    </span>
+                    <span className="sidebar__badge">{item.badge}</span>
                   ) : null}
                 </button>
               ))}

@@ -38,7 +38,7 @@ export function FileUpload({
   };
 
   return (
-    <div className={cn('space-y-2', className)}>
+    <div className={cn('stack-vertical', className)}>
       <label
         onDragOver={(e) => {
           e.preventDefault();
@@ -46,17 +46,12 @@ export function FileUpload({
         }}
         onDragLeave={() => setIsOver(false)}
         onDrop={onDrop}
-        className={cn(
-          'flex cursor-pointer flex-col items-center justify-center rounded-md border border-dashed px-4 py-8 text-center',
-          isOver ? 'border-blue-500 bg-blue-50' : 'border-slate-300 bg-slate-50'
-        )}
+        className={cn('file-upload-zone', isOver && 'file-upload-zone--active')}
       >
-        <span className="text-sm text-slate-700">
+        <span className="field-label">
           Drag & drop files here, or click to browse
         </span>
-        <span className="mt-1 text-xs text-slate-500">
-          Max size: {maxSizeMb}MB
-        </span>
+        <span className="field-hint">Max size: {maxSizeMb}MB</span>
         <input
           className="hidden"
           type="file"
@@ -67,11 +62,11 @@ export function FileUpload({
       </label>
 
       {files.length > 0 ? (
-        <ul className="space-y-1 text-sm text-slate-700">
+        <ul className="stack-vertical">
           {files.map((file) => (
             <li
               key={`${file.name}-${file.lastModified}`}
-              className="rounded border border-slate-200 px-2 py-1"
+              className="file-upload-list__item"
             >
               {file.name}
             </li>

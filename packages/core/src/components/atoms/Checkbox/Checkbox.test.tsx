@@ -27,13 +27,13 @@ describe('Checkbox', () => {
 
   it('supports all sizes', () => {
     const { rerender } = render(<Checkbox size="sm" />);
-    expect(screen.getByRole('checkbox')).toHaveClass('h-4', 'w-4');
+    expect(screen.getByRole('checkbox')).toHaveClass('checkbox-box--sm');
 
     rerender(<Checkbox size="md" />);
-    expect(screen.getByRole('checkbox')).toHaveClass('h-5', 'w-5');
+    expect(screen.getByRole('checkbox')).toHaveClass('checkbox-box');
 
     rerender(<Checkbox size="lg" />);
-    expect(screen.getByRole('checkbox')).toHaveClass('h-6', 'w-6');
+    expect(screen.getByRole('checkbox')).toHaveClass('checkbox-box--lg');
   });
 
   it('is accessible', async () => {

@@ -39,37 +39,34 @@ export function Calendar({ events = [], className }: CalendarProps) {
   }, [currentMonth]);
 
   return (
-    <div
-      className={cn(
-        'rounded-lg border border-slate-200 bg-white p-4',
-        className
-      )}
-    >
-      <div className="mb-4 flex items-center justify-between">
+    <div className={cn('calendar-panel', className)}>
+      <div className="calendar-nav">
         <button
           type="button"
-          className="rounded border px-2 py-1"
+          className="button button--outline button--sm"
           onClick={() => setCurrentMonth((m) => addMonths(m, -1))}
         >
           Prev
         </button>
-        <h3 className="text-lg font-semibold">
+        <h3 className="modal-title">
           {formatCalendar(currentMonth, 'MMMM yyyy')}
         </h3>
         <button
           type="button"
-          className="rounded border px-2 py-1"
+          className="button button--outline button--sm"
           onClick={() => setCurrentMonth((m) => addMonths(m, 1))}
         >
           Next
         </button>
       </div>
-      <div className="grid grid-cols-7 gap-2 text-xs font-medium text-slate-500">
+      <div className="calendar-grid">
         {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((d) => (
-          <div key={d}>{d}</div>
+          <div key={d} className="calendar-weekday">
+            {d}
+          </div>
         ))}
       </div>
-      <div className="mt-2 grid grid-cols-7 gap-2">
+      <div className="calendar-grid">
         {days.map((day) => {
           const inMonth = isSameMonth(day, currentMonth);
           const dayEvents = events.filter(
@@ -79,19 +76,16 @@ export function Calendar({ events = [], className }: CalendarProps) {
             <div
               key={day.toISOString()}
               className={cn(
-                'min-h-20 rounded border p-1',
-                inMonth ? 'bg-white' : 'bg-slate-50 text-slate-400'
+                'calendar-cell',
+                !inMonth && 'calendar-cell--outside'
               )}
             >
-              <div className="text-xs font-medium">
+              <div className="calendar-cell__day">
                 {formatCalendar(day, 'd')}
               </div>
-              <div className="mt-1 space-y-1">
+              <div className="stack-vertical" style={{ gap: '0.25rem' }}>
                 {dayEvents.slice(0, 2).map((event) => (
-                  <div
-                    key={event.id}
-                    className="truncate rounded bg-blue-50 px-1 text-[10px] text-blue-700"
-                  >
+                  <div key={event.id} className="calendar-cell__event">
                     {event.title}
                   </div>
                 ))}

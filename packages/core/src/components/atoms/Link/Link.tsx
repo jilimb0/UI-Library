@@ -2,8 +2,8 @@ import { type AnchorHTMLAttributes, forwardRef } from 'react';
 import { cn } from '../../../utils/cn';
 
 const linkVariants = {
-  default: 'text-primary underline hover:text-primary/80',
-  subtle: 'text-muted-foreground underline hover:text-muted-foreground/80',
+  default: 'link',
+  subtle: 'link link--subtle',
 };
 
 export interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {

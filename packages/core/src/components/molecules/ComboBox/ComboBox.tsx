@@ -75,13 +75,13 @@ export function ComboBox({
         }}
         onKeyDown={onKeyDown}
         placeholder={placeholder}
-        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-blue-500"
+        className="input"
       />
 
       {open ? (
-        <ul className="absolute z-20 mt-1 max-h-56 w-full overflow-auto rounded-md border border-slate-200 bg-white shadow-lg">
+        <ul className="dropdown-menu absolute z-20 max-h-56 w-full overflow-auto">
           {filtered.length === 0 ? (
-            <li className="px-3 py-2 text-sm text-slate-500">No results</li>
+            <li className="dropdown-menu__item field-hint">No results</li>
           ) : (
             filtered.map((option, index) => (
               <li key={option.value}>
@@ -93,10 +93,8 @@ export function ComboBox({
                     setOpen(false);
                   }}
                   className={cn(
-                    'w-full px-3 py-2 text-left text-sm',
-                    index === highlightedIndex
-                      ? 'bg-blue-50 text-blue-700'
-                      : 'text-slate-700 hover:bg-slate-50'
+                    'dropdown-menu__item w-full text-left',
+                    index === highlightedIndex && 'dropdown-menu__item--active'
                   )}
                 >
                   {option.label}

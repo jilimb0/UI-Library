@@ -3,8 +3,9 @@ import { Button } from '../../atoms/Button';
 import { EmptyState } from './EmptyState';
 
 const meta: Meta<typeof EmptyState> = {
-  title: 'Organisms/EmptyState',
+  title: 'Components/Organisms/EmptyState',
   component: EmptyState,
+  tags: ['autodocs'],
 };
 
 export default meta;

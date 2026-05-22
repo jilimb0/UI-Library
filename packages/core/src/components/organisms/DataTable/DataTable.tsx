@@ -74,13 +74,13 @@ function DataTable<T>({
 
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full border-collapse border border-gray-200">
+      <table className="table">
         <thead>
           <tr>
             {columns.map((col) => (
               <th
                 key={col.key}
-                className="cursor-pointer border border-gray-300 px-4 py-2"
+                className={col.sortable ? 'cursor-pointer' : undefined}
                 style={{ width: col.width }}
                 onClick={() => col.sortable && handleSort(col.key)}
               >
@@ -96,9 +96,9 @@ function DataTable<T>({
         </thead>
         <tbody>
           {displayedData.map((item, _idx) => (
-            <tr key={JSON.stringify(item)} className="border border-gray-300">
+            <tr key={JSON.stringify(item)}>
               {columns.map((col) => (
-                <td key={col.key} className="border border-gray-300 px-4 py-2">
+                <td key={col.key}>
                   {col.render
                     ? col.render(item)
                     : String(item[col.key as keyof T])}

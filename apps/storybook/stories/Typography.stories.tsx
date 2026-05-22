@@ -1,27 +1,35 @@
 import type { Meta } from '@storybook/react';
-import { StorybookSiteNav } from './StorybookSiteNav';
+import { Heading, Text } from '@ui-construction-library/core';
 
-const meta: Meta = { title: 'Design System/Typography' };
+const meta: Meta = { title: 'Design System/Typography', tags: ['autodocs'] };
 export default meta;
 
+const scale = [
+  { label: 'Heading 1', as: 'h1' as const, size: 'var(--text-5xl)' },
+  { label: 'Heading 2', as: 'h2' as const, size: 'var(--text-3xl)' },
+  { label: 'Heading 3', as: 'h3' as const, size: 'var(--text-2xl)' },
+  { label: 'Body', as: 'p' as const, size: 'var(--text-base)' },
+  { label: 'Small', as: 'p' as const, size: 'var(--text-sm)', muted: true },
+] as const;
+
 export const Scale = () => (
-  <div
-    style={{
-      display: 'flex',
-      flexDirection: 'column',
-      gap: 12,
-      fontFamily: 'sans-serif',
-    }}
-  >
-    <StorybookSiteNav />
-    <h1 style={{ fontSize: 36, fontWeight: 700, margin: 0 }}>Heading 1</h1>
-    <h2 style={{ fontSize: 28, fontWeight: 600, margin: 0 }}>Heading 2</h2>
-    <h3 style={{ fontSize: 22, fontWeight: 500, margin: 0 }}>Heading 3</h3>
-    <p style={{ fontSize: 16, margin: 0, color: '#374151' }}>
-      Body text — regular paragraph
-    </p>
-    <p style={{ fontSize: 14, margin: 0, color: '#6b7280' }}>
-      Small text — secondary info
-    </p>
-  </div>
+  <section className="stack-vertical" style={{ gap: 16 }}>
+    {scale.map(({ label, as, size, muted }) => (
+      <div key={label} className="stack-vertical" style={{ gap: 4 }}>
+        <Text className="field-label">{label}</Text>
+        {as.startsWith('h') ? (
+          <Heading as={as} style={{ fontSize: size, margin: 0 }}>
+            {label} — {size}
+          </Heading>
+        ) : (
+          <Text
+            className={muted ? 'field-hint' : undefined}
+            style={{ fontSize: size, margin: 0 }}
+          >
+            {label} — {size}
+          </Text>
+        )}
+      </div>
+    ))}
+  </section>
 );

@@ -16,17 +16,13 @@ export function SidebarLayout({
 }: SidebarLayoutProps) {
   return (
     <div
-      className={cn(
-        'grid min-h-screen grid-cols-1 md:grid-cols-[260px_1fr]',
-        className
-      )}
+      className={cn('layout-shell', className)}
+      style={{ display: 'grid', gridTemplateColumns: 'auto minmax(0, 1fr)' }}
     >
-      <aside
-        className={cn('border-r border-slate-200 bg-white', sidebarClassName)}
-      >
+      <aside className={cn('layout-sidebar', sidebarClassName)}>
         {sidebar}
       </aside>
-      <main className="p-4 md:p-6">{children}</main>
+      <main className="layout-main">{children}</main>
     </div>
   );
 }

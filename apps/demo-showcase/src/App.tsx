@@ -4,6 +4,7 @@ import {
   Button,
   Card,
   Checkbox,
+  CrossSiteNav,
   DataTable,
   DatePicker,
   Dropdown,
@@ -844,6 +845,11 @@ function ShowcasePage() {
       <HeaderBar />
       <main className="showcase-shell stack-xl">
         <HeroSection />
+        <CrossSiteNav
+          current="demo"
+          docsHref={DOCS_URL}
+          storybookHref={STORYBOOK_URL}
+        />
         <ArchitectureSection />
         <div className="feature-grid feature-grid--dual">
           <ThemePlaygroundCard />

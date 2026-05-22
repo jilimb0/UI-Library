@@ -3,6 +3,7 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import corePackageJson from '../../packages/core/package.json';
+import { libraryAliases } from '../../tools/vite/library-aliases';
 
 export default defineConfig({
   base: process.env.DOCS_BASE_PATH || '/docs/',
@@ -13,26 +14,7 @@ export default defineConfig({
   resolve: {
     dedupe: ['react', 'react-dom'],
     alias: {
-      '@ui-construction-library/core-styles': path.resolve(
-        __dirname,
-        '../../packages/core/src/styles'
-      ),
-      '@ui-construction-library/core': path.resolve(
-        __dirname,
-        '../../packages/core/src'
-      ),
-      '@ui-construction-library/icons': path.resolve(
-        __dirname,
-        '../../packages/icons/src'
-      ),
-      '@ui-construction-library/tokens': path.resolve(
-        __dirname,
-        '../../packages/tokens/src'
-      ),
-      '@ui-construction-library/utils': path.resolve(
-        __dirname,
-        '../../packages/utils/src'
-      ),
+      ...libraryAliases(),
       '@': path.resolve(__dirname, './src'),
     },
   },

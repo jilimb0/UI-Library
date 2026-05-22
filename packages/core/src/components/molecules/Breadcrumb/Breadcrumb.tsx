@@ -20,17 +20,14 @@ export function Breadcrumb({
   className,
 }: BreadcrumbProps) {
   return (
-    <nav
-      aria-label="Breadcrumb"
-      className={cn('text-sm text-slate-600', className)}
-    >
-      <ol className="flex flex-wrap items-center gap-2">
+    <nav aria-label="Breadcrumb" className={cn('breadcrumb', className)}>
+      <ol className="inline-cluster">
         {items.map((item, index) => {
           const content = item.href ? (
             <a
               href={item.href}
               onClick={item.onClick}
-              className="hover:text-slate-900"
+              className="breadcrumb__link"
             >
               {item.label}
             </a>
@@ -38,25 +35,22 @@ export function Breadcrumb({
             <button
               type="button"
               onClick={item.onClick}
-              className="hover:text-slate-900"
+              className="breadcrumb__link"
             >
               {item.label}
             </button>
           );
 
           return (
-            <li
-              key={item.href ?? String(index)}
-              className="inline-flex items-center gap-2"
-            >
+            <li key={item.href ?? String(index)} className="inline-cluster">
               <span
-                className={cn(item.current && 'font-semibold text-slate-900')}
+                className={cn(item.current && 'breadcrumb__current')}
                 aria-current={item.current ? 'page' : undefined}
               >
                 {content}
               </span>
               {index < items.length - 1 ? (
-                <span className="text-slate-400">{separator}</span>
+                <span className="pagination-ellipsis">{separator}</span>
               ) : null}
             </li>
           );

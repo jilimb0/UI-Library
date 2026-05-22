@@ -11,6 +11,7 @@ import {
   subMonths,
 } from '@ui-construction-library/utils';
 import { type FC, type ReactElement, useState } from 'react';
+import { cn } from '../../../utils/cn';
 
 interface DatePickerProps {
   selectedDate: Date | null;
@@ -24,7 +25,6 @@ interface DatePickerProps {
 const DatePicker: FC<DatePickerProps> = ({
   selectedDate,
   onChange,
-  // timezone,
   initialMonth,
   label = 'Select date',
 }) => {
@@ -42,16 +42,16 @@ const DatePicker: FC<DatePickerProps> = ({
   while (day <= endDate) {
     for (let i = 0; i < 7; i++) {
       const cloneDay = day;
+      const isOutside = !isSameMonth(cloneDay, currentMonth);
+      const isSelected = isSameDay(cloneDay, selectedDate || new Date());
       days.push(
         <td
           key={cloneDay.toString()}
-          className={`${
-            !isSameMonth(cloneDay, currentMonth) ? 'text-gray-400' : ''
-          } ${
-            isSameDay(cloneDay, selectedDate || new Date())
-              ? 'bg-blue-500 text-white'
-              : ''
-          } cursor-pointer p-2 text-center`}
+          className={cn(
+            'date-picker__day',
+            isOutside && 'date-picker__day--outside',
+            isSelected && 'date-picker__day--selected'
+          )}
           onClick={() => onChange(cloneDay)}
           onKeyDown={(e) => e.key === 'Enter' && onChange(cloneDay)}
         >
@@ -65,11 +65,12 @@ const DatePicker: FC<DatePickerProps> = ({
   }
 
   return (
-    <fieldset>
-      <legend className="mb-2 text-sm font-medium">{label}</legend>
-      <div className="flex justify-between items-center mb-2">
+    <fieldset className="date-picker">
+      <legend className="field-label">{label}</legend>
+      <div className="date-picker__nav">
         <button
           type="button"
+          className="button button--outline button--sm"
           onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
         >
           Prev
@@ -77,12 +78,13 @@ const DatePicker: FC<DatePickerProps> = ({
         <span>{formatCalendar(currentMonth, 'MMMM yyyy')}</span>
         <button
           type="button"
+          className="button button--outline button--sm"
           onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
         >
           Next
         </button>
       </div>
-      <table className="w-full border-collapse">
+      <table className="date-picker__table">
         <thead>
           <tr>
             {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(

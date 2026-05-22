@@ -12,22 +12,16 @@ export interface AvatarProps extends ImgHTMLAttributes<HTMLImageElement> {
 }
 
 const sizeClasses = {
-  sm: 'h-6 w-6',
-  md: 'h-10 w-10',
-  lg: 'h-16 w-16',
+  sm: 'avatar--sm',
+  md: 'avatar--md',
+  lg: 'avatar--lg',
 };
 
 const Avatar = forwardRef<HTMLImageElement, AvatarProps>(
   ({ fallback, size = 'md', className, ...props }, ref) => {
     const [isError, setIsError] = useState(false);
     return (
-      <div
-        className={cn(
-          'relative overflow-hidden rounded-full bg-gray-100',
-          sizeClasses[size],
-          className
-        )}
-      >
+      <div className={cn('avatar', sizeClasses[size], className)}>
         {!isError && (
           <img
             ref={ref}

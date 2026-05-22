@@ -39,20 +39,22 @@ const Field = forwardRef<HTMLDivElement, FieldProps>(
     return (
       <div
         ref={ref}
-        className={cn('flex flex-col space-y-1', className)}
+        className={cn('stack-vertical', className)}
+        style={{ gap: '0.375rem' }}
         {...props}
       >
         {label && (
-          <label
-            className="block text-sm font-medium text-gray-700"
-            htmlFor={labelFor}
-          >
+          <label className="field-label" htmlFor={labelFor}>
             {label}
           </label>
         )}
         {control}
-        {description && <p className="text-xs text-gray-500">{description}</p>}
-        {error && <p className="text-xs text-red-600">{error}</p>}
+        {description && <p className="field-hint">{description}</p>}
+        {error && (
+          <p className="field-hint" style={{ color: 'var(--error)' }}>
+            {error}
+          </p>
+        )}
       </div>
     );
   }

@@ -15,7 +15,7 @@ export function Popover({ trigger, content, side = 'bottom' }: PopoverProps) {
         <PrimitivePopover.Content
           side={side}
           sideOffset={8}
-          className="z-50 rounded-md border border-slate-200 bg-white p-3 shadow-lg"
+          className="popover"
         >
           {content}
         </PrimitivePopover.Content>

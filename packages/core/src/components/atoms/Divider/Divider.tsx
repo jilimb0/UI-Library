@@ -16,10 +16,8 @@ export function Divider({
     return (
       <hr
         aria-orientation="vertical"
-        className={cn(
-          'h-full min-h-4 w-px bg-slate-200 border-none',
-          className
-        )}
+        className={cn('divider', className)}
+        style={{ width: '1px', height: '100%', minHeight: '1rem' }}
         {...(props as HTMLAttributes<HTMLHRElement>)}
       />
     );
@@ -29,7 +27,7 @@ export function Divider({
     return (
       <hr
         aria-orientation="horizontal"
-        className={cn('h-px w-full bg-slate-200 border-none', className)}
+        className={cn('divider', className)}
         {...(props as HTMLAttributes<HTMLHRElement>)}
       />
     );
@@ -38,14 +36,15 @@ export function Divider({
   return (
     <div
       role="presentation"
-      className={cn('flex w-full items-center gap-3 text-slate-500', className)}
+      className={cn('inline-cluster', className)}
+      style={{ width: '100%' }}
       {...props}
     >
-      <hr className="flex-1 border-none bg-slate-200 h-px" />
-      <span className="text-xs font-medium uppercase tracking-wide">
+      <hr className="divider" style={{ flex: 1 }} />
+      <span className="field-hint" style={{ textTransform: 'uppercase' }}>
         {label}
       </span>
-      <hr className="flex-1 border-none bg-slate-200 h-px" />
+      <hr className="divider" style={{ flex: 1 }} />
     </div>
   );
 }

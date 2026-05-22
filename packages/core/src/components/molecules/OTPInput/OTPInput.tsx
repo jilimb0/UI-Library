@@ -12,13 +12,14 @@ export function OTPInput({ length = 6, value, onChange }: OTPInputProps) {
   const slotKeys = Array.from({ length }, (_, i) => `otp-slot-${i}`);
 
   return (
-    <div className="flex gap-2">
+    <div className="otp-input">
       {slotKeys.map((slotKey, i) => (
         <input
           key={slotKey}
           ref={(el) => {
             refs.current[i] = el;
           }}
+          className="otp-input__slot"
           value={chars[i]?.trim() ?? ''}
           maxLength={1}
           inputMode="numeric"
@@ -33,7 +34,6 @@ export function OTPInput({ length = 6, value, onChange }: OTPInputProps) {
             if (e.key === 'Backspace' && !chars[i] && refs.current[i - 1])
               refs.current[i - 1]?.focus();
           }}
-          className="h-10 w-10 rounded border border-slate-300 text-center text-lg"
         />
       ))}
     </div>

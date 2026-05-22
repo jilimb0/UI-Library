@@ -23,7 +23,7 @@ export function ColorPicker({ value = '#3b82f6', onChange }: ColorPickerProps) {
   const rgb = useMemo(() => hexToRgb(color), [color]);
 
   return (
-    <div className="space-y-2">
+    <div className="stack-vertical">
       <input
         type="color"
         value={color}
@@ -31,7 +31,7 @@ export function ColorPicker({ value = '#3b82f6', onChange }: ColorPickerProps) {
           setColor(e.target.value);
           onChange?.(e.target.value);
         }}
-        className="h-10 w-16 cursor-pointer rounded border border-slate-300"
+        className="color-picker__input"
       />
       <input
         type="text"
@@ -40,9 +40,9 @@ export function ColorPicker({ value = '#3b82f6', onChange }: ColorPickerProps) {
           setColor(e.target.value);
           onChange?.(e.target.value);
         }}
-        className="w-full rounded border border-slate-300 px-2 py-1 text-sm"
+        className="input"
       />
-      <div className="text-xs text-slate-600">
+      <div className="field-hint">
         rgb({rgb.r}, {rgb.g}, {rgb.b})
       </div>
     </div>

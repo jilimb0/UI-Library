@@ -7,6 +7,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import { cn } from '../../../utils/cn';
 
 interface DropdownItem {
   id: number | string;
@@ -111,10 +112,7 @@ export const Dropdown: FC<DropdownProps> = ({
   return (
     <div className="relative inline-block text-left">
       {label ? (
-        <span
-          id={`${buttonId}-label`}
-          className="mb-1 block text-sm font-medium"
-        >
+        <span id={`${buttonId}-label`} className="field-label">
           {label}
         </span>
       ) : null}
@@ -123,9 +121,8 @@ export const Dropdown: FC<DropdownProps> = ({
         id={buttonId}
         ref={buttonRef}
         disabled={disabled}
-        className={`inline-flex justify-between items-center w-48 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
-          disabled ? 'cursor-not-allowed bg-gray-100' : 'cursor-pointer'
-        }`}
+        className={cn('dropdown-trigger', disabled && 'opacity-50')}
+        style={{ maxWidth: '12rem' }}
         aria-haspopup="true"
         aria-expanded={isOpen}
         aria-labelledby={label ? `${buttonId}-label` : undefined}
@@ -141,7 +138,7 @@ export const Dropdown: FC<DropdownProps> = ({
         <div
           ref={menuRef}
           role="menu"
-          className="absolute z-10 mt-1 max-h-60 w-48 overflow-auto rounded-md border border-gray-300 bg-white shadow-lg focus:outline-none"
+          className="dropdown-menu absolute z-10 max-h-60 w-full overflow-auto"
           tabIndex={-1}
           aria-labelledby={label ? `${buttonId}-label` : buttonId}
         >
@@ -150,7 +147,7 @@ export const Dropdown: FC<DropdownProps> = ({
               key={item.id}
               role="menuitem"
               tabIndex={-1}
-              className="cursor-pointer px-4 py-2 hover:bg-blue-600 hover:text-white focus:bg-blue-600 focus:text-white"
+              className="dropdown-menu__item"
               onClick={() => handleSelect(item)}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') handleSelect(item);

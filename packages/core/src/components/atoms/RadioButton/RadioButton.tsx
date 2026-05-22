@@ -11,25 +11,20 @@ export const RadioButton = forwardRef<HTMLInputElement, RadioButtonProps>(
   ({ className, label, description, ...props }, ref) => {
     const id = useId();
     return (
-      <div className="flex items-start gap-2">
+      <div className="control-field">
         <input
           id={id}
           ref={ref}
           type="radio"
-          className={cn(
-            'mt-1 h-4 w-4 border-slate-300 text-blue-600 focus:ring-blue-600',
-            className
-          )}
+          className={cn('radio-input', className)}
           {...props}
         />
         {(label || description) && (
-          <label htmlFor={id} className="cursor-pointer">
-            {label && (
-              <div className="text-sm font-medium text-slate-900">{label}</div>
-            )}
-            {description && (
-              <div className="text-sm text-slate-600">{description}</div>
-            )}
+          <label htmlFor={id} className="control-stack">
+            {label ? <span className="field-label">{label}</span> : null}
+            {description ? (
+              <span className="field-hint">{description}</span>
+            ) : null}
           </label>
         )}
       </div>

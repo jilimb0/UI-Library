@@ -24,26 +24,23 @@ export function Drawer({
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 z-40 bg-black/40" />
+        <Dialog.Overlay className="modal-backdrop" />
         <Dialog.Content
           className={cn(
-            'fixed z-50 bg-white p-4 shadow-xl focus:outline-none',
-            side === 'left' && 'inset-y-0 left-0 h-full w-full max-w-md',
-            side === 'right' && 'inset-y-0 right-0 h-full w-full max-w-md',
-            side === 'bottom' &&
-              'bottom-0 left-0 right-0 max-h-[80vh] w-full rounded-t-xl',
+            'drawer-content',
+            side === 'left' && 'drawer-content--left',
+            side === 'right' && 'drawer-content--right',
+            side === 'bottom' && 'drawer-content--bottom',
             className
           )}
         >
           {(title || description) && (
-            <div className="mb-4 border-b border-slate-200 pb-3">
+            <div className="drawer-header">
               {title ? (
-                <Dialog.Title className="text-lg font-semibold text-slate-900">
-                  {title}
-                </Dialog.Title>
+                <Dialog.Title className="drawer-title">{title}</Dialog.Title>
               ) : null}
               {description ? (
-                <Dialog.Description className="mt-1 text-sm text-slate-600">
+                <Dialog.Description className="drawer-description">
                   {description}
                 </Dialog.Description>
               ) : null}

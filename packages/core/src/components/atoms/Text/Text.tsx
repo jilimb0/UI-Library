@@ -2,20 +2,20 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import type { ElementType, HTMLAttributes } from 'react';
 import { cn } from '../../../utils/cn';
 
-const textVariants = cva('text-foreground', {
+const textVariants = cva('text', {
   variants: {
     size: {
-      xs: 'text-xs',
-      sm: 'text-sm',
-      base: 'text-base',
-      lg: 'text-lg',
-      xl: 'text-xl',
+      xs: 'text--xs',
+      sm: 'text--sm',
+      base: '',
+      lg: 'text--lg',
+      xl: 'text--xl',
     },
     weight: {
-      normal: 'font-normal',
-      medium: 'font-medium',
-      semibold: 'font-semibold',
-      bold: 'font-bold',
+      normal: '',
+      medium: '',
+      semibold: '',
+      bold: '',
     },
   },
   defaultVariants: {

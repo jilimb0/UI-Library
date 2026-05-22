@@ -13,11 +13,9 @@ export function StackedLayout({
   className,
 }: StackedLayoutProps) {
   return (
-    <div className={cn('min-h-screen bg-slate-50', className)}>
-      {navbar ? (
-        <header className="border-b border-slate-200 bg-white">{navbar}</header>
-      ) : null}
-      <main className="p-4 md:p-6">{children}</main>
+    <div className={cn('layout-shell', className)}>
+      {navbar ? <header className="layout-header">{navbar}</header> : null}
+      <main className="layout-main">{children}</main>
     </div>
   );
 }

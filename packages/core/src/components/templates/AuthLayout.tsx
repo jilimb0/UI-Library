@@ -17,23 +17,14 @@ export function AuthLayout({
   className,
 }: AuthLayoutProps) {
   return (
-    <div
-      className={cn(
-        'flex min-h-screen items-center justify-center bg-slate-100 p-4',
-        className
-      )}
-    >
-      <div className="w-full max-w-md rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        {logo ? <div className="mb-4 flex justify-center">{logo}</div> : null}
-        {title ? (
-          <h1 className="text-center text-2xl font-semibold text-slate-900">
-            {title}
-          </h1>
-        ) : null}
+    <div className={cn('layout-auth', className)}>
+      <div className="auth-card">
+        {logo ? <div className="empty-state__action">{logo}</div> : null}
+        {title ? <h1 className="empty-state__title">{title}</h1> : null}
         {subtitle ? (
-          <p className="mt-2 text-center text-sm text-slate-600">{subtitle}</p>
+          <p className="empty-state__description">{subtitle}</p>
         ) : null}
-        <div className="mt-6">{children}</div>
+        <div className="form-stack">{children}</div>
       </div>
     </div>
   );

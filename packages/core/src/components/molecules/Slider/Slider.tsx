@@ -24,15 +24,15 @@ export function Slider({
       min={min}
       max={max}
       step={step}
-      className="relative flex h-5 w-full items-center"
+      className="slider"
     >
-      <PrimitiveSlider.Track className="relative h-1 w-full rounded-full bg-slate-200">
-        <PrimitiveSlider.Range className="absolute h-full rounded-full bg-blue-500" />
+      <PrimitiveSlider.Track className="slider__track">
+        <PrimitiveSlider.Range className="slider__range" />
       </PrimitiveSlider.Track>
       {thumbKeys.map((thumbKey, i) => (
         <PrimitiveSlider.Thumb
           key={thumbKey}
-          className="block h-4 w-4 rounded-full border border-blue-500 bg-white shadow"
+          className="slider__thumb"
           aria-label={`Thumb ${i + 1}`}
         />
       ))}

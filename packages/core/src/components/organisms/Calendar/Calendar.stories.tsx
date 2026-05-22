@@ -2,8 +2,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Calendar } from './Calendar';
 
 const meta: Meta<typeof Calendar> = {
-  title: 'Organisms/Calendar',
+  title: 'Components/Organisms/Calendar',
   component: Calendar,
+  tags: ['autodocs'],
 };
 
 export default meta;

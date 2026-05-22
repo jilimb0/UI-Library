@@ -2,8 +2,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Kanban } from './Kanban';
 
 const meta: Meta<typeof Kanban> = {
-  title: 'Organisms/Kanban',
+  title: 'Components/Organisms/Kanban',
   component: Kanban,
+  tags: ['autodocs'],
 };
 
 export default meta;

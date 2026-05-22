@@ -7,6 +7,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import { cn } from '../../../utils/cn';
 
 export interface CommandPaletteItem {
   id: string;
@@ -97,8 +98,8 @@ export function CommandPalette({
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 z-40 bg-black/40" />
-        <Dialog.Content className="fixed left-1/2 top-20 z-50 w-full max-w-xl -translate-x-1/2 rounded-lg bg-white p-2 shadow-xl">
+        <Dialog.Overlay className="modal-backdrop" />
+        <Dialog.Content className="command-palette">
           <input
             ref={inputRef}
             type="search"
@@ -106,7 +107,7 @@ export function CommandPalette({
             aria-expanded
             aria-controls="command-palette-list"
             aria-autocomplete="list"
-            className="w-full border-b border-slate-200 px-3 py-2 text-sm outline-none"
+            className="command-palette__input"
             placeholder="Type a command..."
             value={query}
             onChange={(event) => {
@@ -118,16 +119,14 @@ export function CommandPalette({
           <div
             id="command-palette-list"
             role="listbox"
-            className="max-h-80 overflow-auto p-1"
+            className="command-palette__list"
           >
             {flatItems.length === 0 ? (
-              <p className="px-3 py-2 text-sm text-slate-500">No results.</p>
+              <p className="command-palette__empty">No results.</p>
             ) : (
               filtered.map((group) => (
                 <div key={group.heading} role="presentation">
-                  <p className="px-3 py-1 text-xs font-semibold text-slate-500">
-                    {group.heading}
-                  </p>
+                  <p className="command-palette__heading">{group.heading}</p>
                   {group.items.map((item) => {
                     const index = itemOffset++;
                     const active = index === activeIndex;
@@ -137,9 +136,10 @@ export function CommandPalette({
                         type="button"
                         role="option"
                         aria-selected={active}
-                        className={`flex w-full cursor-pointer items-center gap-2 rounded px-3 py-2 text-left text-sm ${
-                          active ? 'bg-slate-100' : ''
-                        }`}
+                        className={cn(
+                          'command-palette__item',
+                          active && 'dropdown-menu__item--active'
+                        )}
                         onMouseEnter={() => setActiveIndex(index)}
                         onClick={() => selectItem(item)}
                       >

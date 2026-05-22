@@ -15,7 +15,7 @@ function AccordionItem({
 }: ComponentPropsWithoutRef<typeof PrimitiveAccordion.Item>) {
   return (
     <PrimitiveAccordion.Item
-      className={cn('border-b border-slate-200', className)}
+      className={cn('accordion-item', className)}
       {...props}
     />
   );
@@ -28,10 +28,7 @@ function AccordionTrigger({
   return (
     <PrimitiveAccordion.Header>
       <PrimitiveAccordion.Trigger
-        className={cn(
-          'flex w-full items-center justify-between py-3 text-left text-sm font-medium',
-          className
-        )}
+        className={cn('accordion-trigger', className)}
         {...props}
       />
     </PrimitiveAccordion.Header>
@@ -44,7 +41,7 @@ function AccordionContent({
 }: ComponentPropsWithoutRef<typeof PrimitiveAccordion.Content>) {
   return (
     <PrimitiveAccordion.Content
-      className={cn('pb-3 text-sm text-slate-600', className)}
+      className={cn('accordion-content', className)}
       {...props}
     />
   );

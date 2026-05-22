@@ -28,30 +28,30 @@ function TreeBranch({
   return (
     <li>
       <div
-        className="flex items-center gap-2"
+        className="tree-view__row"
         style={{ paddingLeft: `${depth * 12}px` }}
       >
         {hasChildren ? (
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
-            className="w-5 text-left text-slate-500"
+            className="tree-view__toggle"
           >
             {open ? '▾' : '▸'}
           </button>
         ) : (
-          <span className="w-5" />
+          <span className="tree-view__toggle" aria-hidden />
         )}
         <button
           type="button"
           onClick={() => onSelect?.(node)}
-          className="rounded px-1 py-0.5 text-sm text-slate-700 hover:bg-slate-100"
+          className="tree-view__node"
         >
           {node.label}
         </button>
       </div>
       {hasChildren && open ? (
-        <ul>
+        <ul className="tree-view">
           {node.children?.map((child) => (
             <TreeBranch
               key={child.id}
@@ -68,7 +68,7 @@ function TreeBranch({
 
 export function TreeView({ nodes, onSelect, className }: TreeViewProps) {
   return (
-    <ul className={cn('space-y-1', className)}>
+    <ul className={cn('tree-view', className)}>
       {nodes.map((node) => (
         <TreeBranch key={node.id} node={node} depth={0} onSelect={onSelect} />
       ))}

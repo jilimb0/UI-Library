@@ -33,9 +33,7 @@ function ModalContent({
         {...props}
       >
         {title ? (
-          <Dialog.Title className="mb-4 border-b border-slate-200 pb-3 text-lg font-semibold text-slate-900">
-            {title}
-          </Dialog.Title>
+          <Dialog.Title className="modal-title">{title}</Dialog.Title>
         ) : null}
         {children}
       </Dialog.Content>
@@ -50,11 +48,7 @@ function ModalHeader({
   className?: string;
   children: ReactNode;
 }) {
-  return (
-    <div className={cn('mb-4 border-b border-slate-200 pb-3', className)}>
-      {children}
-    </div>
-  );
+  return <div className={cn('modal-header', className)}>{children}</div>;
 }
 
 function ModalBody({
@@ -64,7 +58,7 @@ function ModalBody({
   className?: string;
   children: ReactNode;
 }) {
-  return <div className={cn('py-1', className)}>{children}</div>;
+  return <div className={cn('modal-body', className)}>{children}</div>;
 }
 
 function ModalFooter({
@@ -74,11 +68,7 @@ function ModalFooter({
   className?: string;
   children: ReactNode;
 }) {
-  return (
-    <div className={cn('mt-5 flex items-center justify-end gap-2', className)}>
-      {children}
-    </div>
-  );
+  return <div className={cn('modal-footer', className)}>{children}</div>;
 }
 
 export const Modal = Object.assign(ModalRoot, {

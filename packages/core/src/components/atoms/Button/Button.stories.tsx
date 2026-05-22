@@ -22,7 +22,7 @@ export default meta;
 export const Primary: StoryObj<typeof Button> = {
   args: {
     children: 'Primary Button',
-    variant: 'primary',
+    variant: 'default',
     size: 'md',
   },
 };

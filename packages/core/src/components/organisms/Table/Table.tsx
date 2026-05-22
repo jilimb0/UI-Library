@@ -7,11 +7,7 @@ export interface TableProps extends TableHTMLAttributes<HTMLTableElement> {
 export const Table = forwardRef<HTMLTableElement, TableProps>(
   ({ children, ...props }, ref) => {
     return (
-      <table
-        ref={ref}
-        className="min-w-full divide-y divide-gray-200"
-        {...props}
-      >
+      <table ref={ref} className="table" {...props}>
         {children}
       </table>
     );

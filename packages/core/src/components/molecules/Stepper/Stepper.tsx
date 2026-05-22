@@ -26,8 +26,8 @@ export function Stepper({
   return (
     <div
       className={cn(
-        'flex gap-3',
-        orientation === 'horizontal' ? 'flex-row items-center' : 'flex-col',
+        'stepper',
+        orientation === 'vertical' && 'stepper--vertical',
         className
       )}
     >
@@ -42,31 +42,21 @@ export function Stepper({
             type="button"
             disabled={disabled}
             onClick={() => onStepChange?.(index)}
-            className={cn(
-              'flex items-start gap-2 text-left disabled:cursor-not-allowed disabled:opacity-50',
-              orientation === 'horizontal' ? 'min-w-[120px]' : 'w-full'
-            )}
+            className="stepper__step"
           >
             <span
               className={cn(
-                'inline-flex h-7 w-7 items-center justify-center rounded-full border text-xs font-semibold',
-                isCompleted && 'border-green-600 bg-green-600 text-white',
-                isActive && 'border-blue-600 bg-blue-600 text-white',
-                !isActive &&
-                  !isCompleted &&
-                  'border-slate-300 bg-white text-slate-700'
+                'stepper__indicator',
+                isCompleted && 'stepper__indicator--done',
+                isActive && 'stepper__indicator--active'
               )}
             >
               {index + 1}
             </span>
-            <span>
-              <span className="block text-sm font-medium text-slate-900">
-                {step.label}
-              </span>
+            <span className="control-stack">
+              <span className="field-label">{step.label}</span>
               {step.description ? (
-                <span className="block text-xs text-slate-500">
-                  {step.description}
-                </span>
+                <span className="field-hint">{step.description}</span>
               ) : null}
             </span>
           </button>

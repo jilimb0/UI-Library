@@ -16,7 +16,7 @@ export function Rating({
   onChange,
 }: RatingProps) {
   return (
-    <div className="inline-flex items-center gap-1">
+    <div className="rating">
       {Array.from({ length: max }, (_, i) => {
         const index = i + 1;
         const active = value >= index;
@@ -27,9 +27,15 @@ export function Rating({
             type="button"
             onClick={() => onChange?.(index)}
             className={cn(
-              'text-xl transition-colors',
-              active || half ? 'text-amber-500' : 'text-slate-300'
+              'rating__button',
+              (active || half) && 'stepper__indicator--active'
             )}
+            style={{
+              background: 'transparent',
+              border: 0,
+              fontSize: '1.25rem',
+              color: active || half ? 'var(--warning)' : 'var(--border)',
+            }}
             aria-label={`Rate ${index}`}
           >
             {icon === 'heart' ? '♥' : '★'}

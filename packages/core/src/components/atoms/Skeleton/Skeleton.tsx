@@ -6,10 +6,6 @@ export function Skeleton({
   ...props
 }: HTMLAttributes<HTMLDivElement>) {
   return (
-    <div
-      aria-busy="true"
-      className={cn('animate-pulse rounded-md bg-slate-200', className)}
-      {...props}
-    />
+    <div aria-busy="true" className={cn('skeleton', className)} {...props} />
   );
 }

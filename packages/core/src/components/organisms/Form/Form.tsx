@@ -19,6 +19,7 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(
       <form
         ref={ref}
         onSubmit={handleSubmit}
+        className="form-stack"
         data-testid="form"
         aria-label="form"
         {...props}

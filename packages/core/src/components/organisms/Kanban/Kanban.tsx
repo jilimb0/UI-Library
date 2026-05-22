@@ -44,11 +44,13 @@ function DraggableCard({ card }: { card: KanbanCard }) {
       style={style}
       {...listeners}
       {...attributes}
-      className="cursor-grab rounded border border-slate-200 bg-white p-3 shadow-sm"
+      className="kanban-card cursor-grab"
     >
-      <div className="text-sm font-medium text-slate-900">{card.title}</div>
+      <div className="field-label" style={{ textTransform: 'none' }}>
+        {card.title}
+      </div>
       {card.description ? (
-        <div className="mt-1 text-xs text-slate-600">{card.description}</div>
+        <div className="field-hint">{card.description}</div>
       ) : null}
     </div>
   );
@@ -68,14 +70,9 @@ function DroppableColumn({
   return (
     <section
       ref={setNodeRef}
-      className={cn(
-        'min-h-40 rounded-lg border p-3',
-        isOver
-          ? 'border-blue-400 bg-blue-50/40'
-          : 'border-slate-200 bg-slate-50'
-      )}
+      className={cn('kanban-column', isOver && 'kanban-column--active')}
     >
-      <h3 className="mb-3 text-sm font-semibold text-slate-900">{title}</h3>
+      <h3 className="kanban-column__title">{title}</h3>
       <div className="space-y-2">{children}</div>
     </section>
   );

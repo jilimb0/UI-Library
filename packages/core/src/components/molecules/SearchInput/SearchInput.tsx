@@ -30,14 +30,23 @@ export function SearchInput({
 
   return (
     <div className="relative w-full">
-      <span className="pointer-events-none absolute left-3 top-2.5 text-slate-400">
+      <span
+        className="field-hint"
+        style={{
+          pointerEvents: 'none',
+          position: 'absolute',
+          left: '0.75rem',
+          top: '50%',
+          transform: 'translateY(-50%)',
+        }}
+      >
         ⌕
       </span>
       <input
         value={inner}
         onChange={handle}
         placeholder={placeholder}
-        className="w-full rounded-md border border-slate-300 py-2 pl-9 pr-9 text-sm"
+        className="search-input"
       />
       {inner ? (
         <button
@@ -46,7 +55,7 @@ export function SearchInput({
             setInner('');
             onChange?.('');
           }}
-          className="absolute right-2 top-2 rounded p-1 text-slate-500 hover:bg-slate-100"
+          className="button button--ghost button--sm"
         >
           ×
         </button>

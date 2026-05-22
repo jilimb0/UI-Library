@@ -11,13 +11,7 @@ function TabsList({
   ...props
 }: ComponentPropsWithoutRef<typeof PrimitiveTabs.List>) {
   return (
-    <PrimitiveTabs.List
-      className={cn(
-        'inline-flex items-center gap-1 rounded-md bg-slate-100 p-1',
-        className
-      )}
-      {...props}
-    />
+    <PrimitiveTabs.List className={cn('tabs-list', className)} {...props} />
   );
 }
 
@@ -27,10 +21,7 @@ function TabsTrigger({
 }: ComponentPropsWithoutRef<typeof PrimitiveTabs.Trigger>) {
   return (
     <PrimitiveTabs.Trigger
-      className={cn(
-        'rounded px-3 py-1.5 text-sm font-medium text-slate-700 data-[state=active]:bg-white data-[state=active]:text-slate-900 data-[state=active]:shadow-sm',
-        className
-      )}
+      className={cn('tabs-trigger', className)}
       {...props}
     />
   );
@@ -40,7 +31,12 @@ function TabsContent({
   className,
   ...props
 }: ComponentPropsWithoutRef<typeof PrimitiveTabs.Content>) {
-  return <PrimitiveTabs.Content className={cn('mt-4', className)} {...props} />;
+  return (
+    <PrimitiveTabs.Content
+      className={cn('tabs-content', className)}
+      {...props}
+    />
+  );
 }
 
 export const Tabs = Object.assign(TabsRoot, {

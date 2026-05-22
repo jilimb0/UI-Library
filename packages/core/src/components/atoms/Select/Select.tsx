@@ -9,21 +9,18 @@ import {
 } from 'react';
 import { cn } from '../../../utils/cn';
 
-export const selectVariants = cva(
-  'flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 appearance-none pr-8',
-  {
-    variants: {
-      size: {
-        default: 'h-9',
-        sm: 'h-8 px-2 text-xs',
-        lg: 'h-10 px-4',
-      },
+export const selectVariants = cva('select', {
+  variants: {
+    size: {
+      default: '',
+      sm: 'select--sm',
+      lg: 'select--lg',
     },
-    defaultVariants: {
-      size: 'default',
-    },
-  }
-);
+  },
+  defaultVariants: {
+    size: 'default',
+  },
+});
 
 type Option = { value: string; label: string };
 
@@ -69,11 +66,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     return (
       <div className="flex flex-col space-y-1">
         {label && (
-          <label
-            id={labelId}
-            htmlFor={selectId}
-            className="text-sm font-medium"
-          >
+          <label id={labelId} htmlFor={selectId} className="field-label">
             {label}
           </label>
         )}
@@ -100,7 +93,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           </span>
         </div>
         {(description || (error && errorMessage)) && (
-          <p id={descriptionId} className="text-xs text-muted-foreground">
+          <p id={descriptionId} className="field-hint">
             {error && errorMessage ? errorMessage : description}
           </p>
         )}
