@@ -4,36 +4,14 @@ import {
   semanticLightColors,
 } from '@ui-construction-library/tokens';
 
-type ColorScale = Record<
-  50 | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900,
-  string
->;
-type ColorTokens = {
-  primary: ColorScale;
-  neutral: ColorScale;
-  success: ColorScale;
-  error: ColorScale;
-  warning: ColorScale;
-  info: ColorScale;
-};
-type SemanticColors = Record<
-  | 'background'
-  | 'foreground'
-  | 'muted'
-  | 'border'
-  | 'primary'
-  | 'secondary'
-  | 'success'
-  | 'warning'
-  | 'error'
-  | 'info',
-  string
->;
+export type ThemeMode = 'light' | 'dark';
+export type LibraryThemeColors = typeof colors;
+export type LibraryThemeSemantic = typeof semanticLightColors;
 
 export interface ThemeDefinition {
-  mode: 'light' | 'dark';
-  colors: ColorTokens;
-  semantic: SemanticColors;
+  mode: ThemeMode;
+  colors: LibraryThemeColors;
+  semantic: LibraryThemeSemantic;
 }
 
 export const lightTheme: ThemeDefinition = {
@@ -46,4 +24,9 @@ export const darkTheme: ThemeDefinition = {
   mode: 'dark',
   colors,
   semantic: semanticDarkColors,
+};
+
+export const themes: Record<ThemeMode, ThemeDefinition> = {
+  light: lightTheme,
+  dark: darkTheme,
 };

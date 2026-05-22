@@ -1,0 +1,19 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "baseUrl": "."
+  },
+  "include": [
+    "stories/**/*",
+    ".storybook/**/*",
+    "../../packages/core/src/**/*",
+    "../../packages/icons/src/**/*",
+    "../../packages/tokens/src/**/*",
+    "../../packages/utils/src/**/*"
+  ],
+  "exclude": [
+    "storybook-static",
+    "node_modules"
+  ]
+}

@@ -9,22 +9,85 @@ import {
 } from 'react';
 
 const THEME_STORAGE_KEY = 'ui-library-theme';
+const THEME_STYLE_TAG_ID = 'ui-lib-theme-variables';
 
-interface ThemeContextValue {
-  theme: 'light' | 'dark';
-  setTheme: (theme: 'light' | 'dark') => void;
+type ThemeMode = 'light' | 'dark';
+
+export interface ThemeContextValue {
+  theme: ThemeMode;
+  setTheme: (theme: ThemeMode) => void;
 }
 
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
 export interface ThemeProviderProps {
-  defaultTheme?: 'light' | 'dark';
-  theme?: 'light' | 'dark';
+  defaultTheme?: ThemeMode;
+  theme?: ThemeMode;
   customTokens?: {
     colors?: Record<string, Record<string, string>>;
     semantic?: Record<string, string>;
   };
   children: ReactNode;
+}
+
+function getStoredTheme(): ThemeMode | null {
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
+  const storedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
+  return storedTheme === 'light' || storedTheme === 'dark' ? storedTheme : null;
+}
+
+function getInitialTheme(defaultTheme: ThemeMode): ThemeMode {
+  return getStoredTheme() ?? defaultTheme;
+}
+
+function ensureThemeStyleTag(): HTMLStyleElement | null {
+  if (typeof document === 'undefined') {
+    return null;
+  }
+
+  let styleTag = document.getElementById(
+    THEME_STYLE_TAG_ID
+  ) as HTMLStyleElement | null;
+
+  if (!styleTag) {
+    styleTag = document.createElement('style');
+    styleTag.id = THEME_STYLE_TAG_ID;
+    document.head.appendChild(styleTag);
+  }
+
+  return styleTag;
+}
+
+function applyThemeToDocument(
+  theme: ThemeMode,
+  customTokens?: ThemeProviderProps['customTokens']
+) {
+  if (typeof document === 'undefined') {
+    return;
+  }
+
+  document.documentElement.setAttribute('data-theme', theme);
+
+  const styleTag = ensureThemeStyleTag();
+  if (!styleTag) {
+    return;
+  }
+
+  styleTag.textContent = generateCSSVariables({
+    mode: theme,
+    ...customTokens,
+  });
+}
+
+function persistTheme(theme: ThemeMode, isControlled: boolean) {
+  if (typeof window === 'undefined' || isControlled) {
+    return;
+  }
+
+  window.localStorage.setItem(THEME_STORAGE_KEY, theme);
 }
 
 const ThemeProvider: FC<ThemeProviderProps> = ({
@@ -33,39 +96,15 @@ const ThemeProvider: FC<ThemeProviderProps> = ({
   customTokens,
   children,
 }) => {
-  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
-    if (typeof window === 'undefined') {
-      return defaultTheme;
-    }
-
-    const storedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
-    return storedTheme === 'light' || storedTheme === 'dark'
-      ? storedTheme
-      : defaultTheme;
-  });
+  const [theme, setTheme] = useState<ThemeMode>(() =>
+    getInitialTheme(defaultTheme)
+  );
 
   const resolvedTheme = controlledTheme ?? theme;
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', resolvedTheme);
-    const cssVariables = generateCSSVariables({
-      mode: resolvedTheme,
-      ...customTokens,
-    });
-    const styleTagId = 'ui-lib-theme-variables';
-    let styleTag = document.getElementById(
-      styleTagId
-    ) as HTMLStyleElement | null;
-    if (!styleTag) {
-      styleTag = document.createElement('style');
-      styleTag.id = styleTagId;
-      document.head.appendChild(styleTag);
-    }
-    styleTag.textContent = cssVariables;
-
-    if (typeof window !== 'undefined' && !controlledTheme) {
-      window.localStorage.setItem(THEME_STORAGE_KEY, resolvedTheme);
-    }
+    applyThemeToDocument(resolvedTheme, customTokens);
+    persistTheme(resolvedTheme, Boolean(controlledTheme));
   }, [resolvedTheme, customTokens, controlledTheme]);
 
   return (

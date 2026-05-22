@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  base: process.env.DEMO_BASE_PATH || '/',
+  base: process.env.DEMO_BASE_PATH || '/demo/',
   plugins: [react()],
   resolve: {
     alias: {

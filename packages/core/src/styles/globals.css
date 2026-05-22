@@ -1,5 +1,132 @@
+:root {
+  --background: var(--color-background, #f7f6f2);
+  --foreground: var(--color-foreground, #28251d);
+  --muted: var(--color-muted, #f1efe9);
+  --muted-foreground: var(--color-neutral-500, #746f66);
+  --border: var(--color-border, #dfdcd3);
+  --primary: var(--color-primary, #1f8f8b);
+  --primary-foreground: var(--color-background, #f7f6f2);
+  --secondary: var(--color-secondary, #5b564e);
+  --secondary-foreground: var(--color-background, #f7f6f2);
+  --success: var(--color-success, #437a22);
+  --success-foreground: var(--color-background, #f7f6f2);
+  --warning: var(--color-warning, #964219);
+  --warning-foreground: var(--color-background, #f7f6f2);
+  --error: var(--color-error, #a12c7b);
+  --error-foreground: var(--color-background, #f7f6f2);
+  --info: var(--color-info, #006494);
+  --info-foreground: var(--color-background, #f7f6f2);
+  --card: var(--color-card, #fbfaf7);
+  --card-foreground: var(--color-foreground, #28251d);
+  --popover: var(--color-popover, #fffdf9);
+  --popover-foreground: var(--color-foreground, #28251d);
+  --accent: var(--color-accent, #ece9e2);
+  --accent-foreground: var(--color-foreground, #28251d);
+  --input: var(--color-input, #dfdcd3);
+  --ring: var(--color-ring, #4faea8);
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-serif: 'Source Serif 4', ui-serif, Georgia, Cambria, 'Times New Roman', serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+  --text-xs: var(--font-size-xs, clamp(0.75rem, 0.72rem + 0.12vw, 0.875rem));
+  --text-sm: var(--font-size-sm, clamp(0.875rem, 0.84rem + 0.16vw, 1rem));
+  --text-base: var(--font-size-base, clamp(1rem, 0.96rem + 0.22vw, 1.125rem));
+  --text-lg: var(--font-size-lg, clamp(1.125rem, 1.04rem + 0.36vw, 1.375rem));
+  --text-xl: var(--font-size-xl, clamp(1.25rem, 1.08rem + 0.72vw, 1.75rem));
+  --text-2xl: var(--font-size-2xl, clamp(1.5rem, 1.18rem + 1.24vw, 2.375rem));
+  --text-3xl: var(--font-size-3xl, clamp(1.875rem, 1.28rem + 2.1vw, 3rem));
+  --text-4xl: var(--font-size-4xl, clamp(2.25rem, 1.4rem + 3vw, 4rem));
+  --text-5xl: var(--font-size-5xl, clamp(3rem, 1.8rem + 4vw, 5rem));
+  --text-6xl: var(--font-size-6xl, clamp(3.75rem, 2.4rem + 4.8vw, 6rem));
+  --spacing-0: 0px;
+  --spacing-0-5: 0.125rem;
+  --spacing-1: 0.25rem;
+  --spacing-1-5: 0.375rem;
+  --spacing-2: 0.5rem;
+  --spacing-2-5: 0.625rem;
+  --spacing-3: 0.75rem;
+  --spacing-3-5: 0.875rem;
+  --spacing-4: 1rem;
+  --spacing-5: 1.25rem;
+  --spacing-6: 1.5rem;
+  --spacing-7: 1.75rem;
+  --spacing-8: 2rem;
+  --spacing-9: 2.25rem;
+  --spacing-10: 2.5rem;
+  --spacing-11: 2.75rem;
+  --spacing-12: 3rem;
+  --spacing-14: 3.5rem;
+  --spacing-16: 4rem;
+  --spacing-20: 5rem;
+  --spacing-24: 6rem;
+  --spacing-28: 7rem;
+  --spacing-32: 8rem;
+  --spacing-36: 9rem;
+  --spacing-40: 10rem;
+  --spacing-44: 11rem;
+  --spacing-48: 12rem;
+  --spacing-56: 14rem;
+  --spacing-64: 16rem;
+  --radius: 0.75rem;
+}
 
-/* CSS Reset */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --background: var(--color-background, #171614);
+    --foreground: var(--color-foreground, #ede9e1);
+    --muted: var(--color-muted, #22201d);
+    --muted-foreground: var(--color-neutral-300, #c7c2b7);
+    --border: var(--color-border, #3a3732);
+    --primary: var(--color-primary, #4faea8);
+    --primary-foreground: var(--color-background, #171614);
+    --secondary: var(--color-secondary, #c7c2b7);
+    --secondary-foreground: var(--color-background, #171614);
+    --success: var(--color-success, #6daa45);
+    --success-foreground: var(--color-background, #171614);
+    --warning: var(--color-warning, #bb653b);
+    --warning-foreground: var(--color-background, #171614);
+    --error: var(--color-error, #d163a7);
+    --error-foreground: var(--color-background, #171614);
+    --info: var(--color-info, #5591c7);
+    --info-foreground: var(--color-background, #171614);
+    --card: var(--color-card, #1d1b18);
+    --card-foreground: var(--color-foreground, #ede9e1);
+    --popover: var(--color-popover, #1f1c19);
+    --popover-foreground: var(--color-foreground, #ede9e1);
+    --accent: var(--color-accent, #26231f);
+    --accent-foreground: var(--color-foreground, #ede9e1);
+    --input: var(--color-input, #3a3732);
+    --ring: var(--color-ring, #7fcac3);
+  }
+}
+
+:root[data-theme='dark'] {
+  --background: var(--color-background, #171614);
+  --foreground: var(--color-foreground, #ede9e1);
+  --muted: var(--color-muted, #22201d);
+  --muted-foreground: var(--color-neutral-300, #c7c2b7);
+  --border: var(--color-border, #3a3732);
+  --primary: var(--color-primary, #4faea8);
+  --primary-foreground: var(--color-background, #171614);
+  --secondary: var(--color-secondary, #c7c2b7);
+  --secondary-foreground: var(--color-background, #171614);
+  --success: var(--color-success, #6daa45);
+  --success-foreground: var(--color-background, #171614);
+  --warning: var(--color-warning, #bb653b);
+  --warning-foreground: var(--color-background, #171614);
+  --error: var(--color-error, #d163a7);
+  --error-foreground: var(--color-background, #171614);
+  --info: var(--color-info, #5591c7);
+  --info-foreground: var(--color-background, #171614);
+  --card: var(--color-card, #1d1b18);
+  --card-foreground: var(--color-foreground, #ede9e1);
+  --popover: var(--color-popover, #1f1c19);
+  --popover-foreground: var(--color-foreground, #ede9e1);
+  --accent: var(--color-accent, #26231f);
+  --accent-foreground: var(--color-foreground, #ede9e1);
+  --input: var(--color-input, #3a3732);
+  --ring: var(--color-ring, #7fcac3);
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -7,158 +134,18 @@
 }
 
 html {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: var(--font-sans);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  /* Dark/Light mode */
   color-scheme: light dark;
   background-color: var(--background);
   color: var(--foreground);
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-:root {
-  /* ── Core surfaces ── */
-  --background: #f8fafc;
-  --foreground: #0f172a;
-
-  /* ── Typography ── */
-  --font-sans: system-ui, sans-serif;
-  --font-base-size: 16px;
-
-  /* ── Spacing ── */
-  --spacing-1: 0.25rem;
-  --spacing-2: 0.5rem;
-  --spacing-3: 0.75rem;
-  --spacing-4: 1rem;
-
-  /* ── Tailwind semantic CSS vars (used by cva-based components) ── */
-
-  /* primary */
-  --primary: #3b82f6;
-  --primary-foreground: #ffffff;
-
-  /* secondary */
-  --secondary: #f1f5f9;
-  --secondary-foreground: #0f172a;
-
-  /* destructive */
-  --destructive: #ef4444;
-  --destructive-foreground: #ffffff;
-
-  /* muted */
-  --muted: #f1f5f9;
-  --muted-foreground: #64748b;
-
-  /* accent */
-  --accent: #f1f5f9;
-  --accent-foreground: #0f172a;
-
-  /* card */
-  --card: #ffffff;
-  --card-foreground: #0f172a;
-
-  /* popover */
-  --popover: #ffffff;
-  --popover-foreground: #0f172a;
-
-  /* border / input / ring */
-  --border: #e2e8f0;
-  --input: #e2e8f0;
-  --ring: #3b82f6;
-
-  /* radius */
-  --radius: 0.375rem;
-
-  /* status colours */
-  --success: #10b981;
-  --success-foreground: #ffffff;
-  --warning: #f59e0b;
-  --warning-foreground: #ffffff;
-  --error: #ef4444;
-  --error-foreground: #ffffff;
-  --info: #06b6d4;
-  --info-foreground: #ffffff;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --background: #0f172a;
-    --foreground: #f8fafc;
-
-    --primary: #60a5fa;
-    --primary-foreground: #0f172a;
-
-    --secondary: #1e293b;
-    --secondary-foreground: #f8fafc;
-
-    --destructive: #f87171;
-    --destructive-foreground: #0f172a;
-
-    --muted: #1e293b;
-    --muted-foreground: #94a3b8;
-
-    --accent: #1e293b;
-    --accent-foreground: #f8fafc;
-
-    --card: #1e293b;
-    --card-foreground: #f8fafc;
-
-    --popover: #1e293b;
-    --popover-foreground: #f8fafc;
-
-    --border: #334155;
-    --input: #334155;
-    --ring: #60a5fa;
-
-    --success: #34d399;
-    --success-foreground: #0f172a;
-    --warning: #fbbf24;
-    --warning-foreground: #0f172a;
-    --error: #f87171;
-    --error-foreground: #0f172a;
-    --info: #22d3ee;
-    --info-foreground: #0f172a;
-  }
-}
-
-[data-theme="dark"] {
-  --background: #0f172a;
-  --foreground: #f8fafc;
-
-  --primary: #60a5fa;
-  --primary-foreground: #0f172a;
-
-  --secondary: #1e293b;
-  --secondary-foreground: #f8fafc;
-
-  --destructive: #f87171;
-  --destructive-foreground: #0f172a;
-
-  --muted: #1e293b;
-  --muted-foreground: #94a3b8;
-
-  --accent: #1e293b;
-  --accent-foreground: #f8fafc;
-
-  --card: #1e293b;
-  --card-foreground: #f8fafc;
-
-  --popover: #1e293b;
-  --popover-foreground: #f8fafc;
-
-  --border: #334155;
-  --input: #334155;
-  --ring: #60a5fa;
-
-  --success: #34d399;
-  --success-foreground: #0f172a;
-  --warning: #fbbf24;
-  --warning-foreground: #0f172a;
-  --error: #f87171;
-  --error-foreground: #0f172a;
-  --info: #22d3ee;
-  --info-foreground: #0f172a;
+body {
+  font-size: var(--text-base);
+  background: var(--background);
+  color: var(--foreground);
 }

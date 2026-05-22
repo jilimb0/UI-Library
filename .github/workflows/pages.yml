@@ -1,0 +1,179 @@
+name: Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/demo-showcase/**'
+      - 'apps/docs/**'
+      - 'apps/storybook/**'
+      - 'packages/**'
+      - 'pnpm-lock.yaml'
+      - 'package.json'
+      - 'pnpm-workspace.yaml'
+      - 'turbo.json'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build workspace
+        run: pnpm build
+
+      - name: Build Storybook
+        run: pnpm build-storybook
+        env:
+          STORYBOOK_BASE_PATH: /${{ github.event.repository.name }}/storybook/
+
+      - name: Build docs
+        run: pnpm --filter @ui-app/docs build
+        env:
+          DOCS_BASE_PATH: /${{ github.event.repository.name }}/docs/
+
+      - name: Build demo showcase
+        run: pnpm --filter @ui-app/demo-showcase build
+        env:
+          DEMO_BASE_PATH: /${{ github.event.repository.name }}/demo/
+
+      - name: Assemble Pages site
+        run: |
+          rm -rf ./.pages
+          mkdir -p ./.pages/storybook ./.pages/docs ./.pages/demo
+          cp -R ./apps/storybook/storybook-static/. ./.pages/storybook/
+          cp -R ./apps/docs/dist/. ./.pages/docs/
+          cp -R ./apps/demo-showcase/dist/. ./.pages/demo/
+          cat > ./.pages/index.html <<'HTML'
+          <!doctype html>
+          <html lang="en">
+            <head>
+              <meta charset="UTF-8" />
+              <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+              <title>UI Library</title>
+              <style>
+                :root {
+                  color-scheme: light dark;
+                  --surface: rgba(255,255,255,0.08);
+                  --surface-border: rgba(255,255,255,0.14);
+                  --text: #f8fafc;
+                  --muted: #cbd5e1;
+                  --accent: #38bdf8;
+                }
+                * { box-sizing: border-box; }
+                body {
+                  margin: 0;
+                  min-height: 100vh;
+                  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+                  background:
+                    radial-gradient(circle at top, rgba(56,189,248,0.18), transparent 30%),
+                    linear-gradient(180deg, #020617 0%, #0f172a 100%);
+                  color: var(--text);
+                  display: grid;
+                  place-items: center;
+                  padding: 32px;
+                }
+                main { width: min(960px, 100%); }
+                h1 {
+                  font-size: clamp(2rem, 5vw, 4rem);
+                  line-height: 1.05;
+                  margin: 0 0 12px;
+                }
+                p {
+                  margin: 0;
+                  color: var(--muted);
+                  font-size: 1.05rem;
+                  max-width: 720px;
+                }
+                .grid {
+                  margin-top: 32px;
+                  display: grid;
+                  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                  gap: 16px;
+                }
+                a.card {
+                  display: block;
+                  text-decoration: none;
+                  color: inherit;
+                  padding: 20px;
+                  border-radius: 20px;
+                  background: var(--surface);
+                  border: 1px solid var(--surface-border);
+                  backdrop-filter: blur(10px);
+                  transition: transform .18s ease, border-color .18s ease, background .18s ease;
+                }
+                a.card:hover {
+                  transform: translateY(-2px);
+                  border-color: rgba(56,189,248,0.55);
+                  background: rgba(255,255,255,0.12);
+                }
+                .eyebrow {
+                  display: inline-block;
+                  margin-bottom: 14px;
+                  font-size: .82rem;
+                  letter-spacing: .08em;
+                  text-transform: uppercase;
+                  color: var(--accent);
+                }
+                h2 {
+                  margin: 0 0 8px;
+                  font-size: 1.25rem;
+                }
+                .card p { font-size: .98rem; }
+              </style>
+            </head>
+            <body>
+              <main>
+                <span class="eyebrow">UI Construction Library</span>
+                <h1>One Pages site for docs, demo, and Storybook.</h1>
+                <p>Use the sections below to browse product documentation, explore the demo showcase, or inspect isolated components in Storybook.</p>
+                <div class="grid">
+                  <a class="card" href="./docs/">
+                    <h2>Docs</h2>
+                    <p>Product-oriented documentation site for the library.</p>
+                  </a>
+                  <a class="card" href="./demo/">
+                    <h2>Demo</h2>
+                    <p>Interactive showcase with realistic UI examples and flows.</p>
+                  </a>
+                  <a class="card" href="./storybook/">
+                    <h2>Storybook</h2>
+                    <p>Component catalog, isolated stories, and visual reference.</p>
+                  </a>
+                </div>
+              </main>
+            </body>
+          </html>
+          HTML
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: ./.pages
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

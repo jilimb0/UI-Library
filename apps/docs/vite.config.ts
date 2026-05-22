@@ -5,6 +5,7 @@ import { defineConfig } from 'vite';
 import corePackageJson from '../../packages/core/package.json';
 
 export default defineConfig({
+  base: process.env.DOCS_BASE_PATH || '/docs/',
   plugins: [react(), tailwindcss()],
   define: {
     __CORE_PACKAGE_VERSION__: JSON.stringify(corePackageJson.version),

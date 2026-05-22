@@ -1,5 +1,5 @@
 [build]
-  command = "pnpm --filter docs build"
+  command = "pnpm --filter @ui-construction-library/core build && pnpm --filter @ui-app/docs build"
   publish = "apps/docs/dist"
 
 [build.environment]

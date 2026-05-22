@@ -7,6 +7,8 @@ import {
 } from './colors';
 import { motion } from './motion';
 import { opacity } from './opacity';
+import { spacing } from './spacing';
+import { typography } from './typography';
 
 export type ThemeName = 'light' | 'dark';
 
@@ -35,28 +37,59 @@ export function generateCSSVariables(theme: Theme = {}): string {
     mode === 'dark' ? semanticDarkColors : semanticLightColors;
   const semantic = { ...semanticBase, ...(theme.semantic ?? {}) };
 
-  const lines: string[] = [':root {'];
+  const rootLines: string[] = [];
 
   (Object.keys(mergedScales) as Array<keyof ColorTokens>).forEach(
     (scaleName) => {
       const scale = mergedScales[scaleName];
       Object.entries(scale).forEach(([tone, value]) => {
-        lines.push(toCSSVarLines(`color-${String(scaleName)}-${tone}`, value));
+        rootLines.push(
+          toCSSVarLines(`color-${String(scaleName)}-${tone}`, value)
+        );
       });
     }
   );
 
   (Object.keys(semantic) as Array<keyof SemanticColors>).forEach(
     (semanticName) => {
-      lines.push(
-        toCSSVarLines(`color-${String(semanticName)}`, semantic[semanticName])
+      const semanticValue = semantic[semanticName];
+      rootLines.push(
+        toCSSVarLines(`color-${String(semanticName)}`, semanticValue)
       );
+      rootLines.push(toCSSVarLines(String(semanticName), semanticValue));
     }
   );
 
+  Object.entries(spacing).forEach(([k, value]) => {
+    const safeKey = k.replace('.', '-');
+    rootLines.push(toCSSVarLines(`space-${safeKey}`, value));
+    rootLines.push(toCSSVarLines(`spacing-${safeKey}`, value));
+  });
+
+  Object.entries(typography.fontFamily).forEach(([k, value]) => {
+    rootLines.push(toCSSVarLines(`font-${k}`, value));
+  });
+
+  Object.entries(typography.fontSize).forEach(([k, value]) => {
+    rootLines.push(toCSSVarLines(`text-${k}`, value));
+    rootLines.push(toCSSVarLines(`font-size-${k}`, value));
+  });
+
+  Object.entries(typography.lineHeight).forEach(([k, value]) => {
+    rootLines.push(toCSSVarLines(`line-height-${k}`, value));
+  });
+
+  Object.entries(typography.letterSpacing).forEach(([k, value]) => {
+    rootLines.push(toCSSVarLines(`tracking-${k}`, value));
+  });
+
+  Object.entries(typography.fontWeight).forEach(([k, value]) => {
+    rootLines.push(toCSSVarLines(`font-weight-${k}`, value));
+  });
+
   (Object.keys(motion.duration) as Array<keyof typeof motion.duration>).forEach(
     (k) => {
-      lines.push(
+      rootLines.push(
         toCSSVarLines(`motion-duration-${String(k)}`, motion.duration[k])
       );
     }
@@ -64,14 +97,15 @@ export function generateCSSVariables(theme: Theme = {}): string {
 
   (Object.keys(motion.easing) as Array<keyof typeof motion.easing>).forEach(
     (k) => {
-      lines.push(toCSSVarLines(`motion-easing-${String(k)}`, motion.easing[k]));
+      rootLines.push(
+        toCSSVarLines(`motion-easing-${String(k)}`, motion.easing[k])
+      );
     }
   );
 
   Object.entries(opacity).forEach(([k, value]) => {
-    lines.push(toCSSVarLines(`opacity-${k}`, value));
+    rootLines.push(toCSSVarLines(`opacity-${k}`, value));
   });
 
-  lines.push('}');
-  return lines.join('\n');
+  return [':root {', ...rootLines, '}'].join('\n');
 }

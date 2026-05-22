@@ -22,7 +22,10 @@ import { useMemo, useState } from 'react';
 declare const __CORE_PACKAGE_VERSION__: string;
 
 const GITHUB_URL = 'https://github.com/jilimb0/UI-Library';
+const STORYBOOK_URL = 'https://jilimb0.github.io/UI-Library/storybook/';
+const DEMO_URL = 'https://ui-library-showcase.netlify.app';
 const VERSION = __CORE_PACKAGE_VERSION__;
+const INSTALL_COMMAND = 'pnpm add @ui-construction-library/core';
 
 type CategoryKey = 'atoms' | 'molecules' | 'organisms' | 'templates';
 
@@ -224,903 +227,483 @@ const COMPONENTS: ComponentDoc[] = [
         description: 'Selection callback.',
       },
     ],
-    code: `<DatePicker selectedDate={date} onChange={setDate} />`,
-  },
-  {
-    name: 'Tooltip',
-    category: 'molecules',
-    description: 'Contextual helper text for dense interfaces.',
-    props: [
-      { name: 'content', type: 'ReactNode', description: 'Tooltip body.' },
-      { name: 'children', type: 'ReactNode', description: 'Trigger element.' },
-    ],
-    code: `<Tooltip content="Search components"><Button variant="outline">?</Button></Tooltip>`,
-  },
-  {
-    name: 'Modal',
-    category: 'organisms',
-    description: 'Compound dialog API for confirmations and focused workflows.',
-    props: [
-      {
-        name: 'open',
-        type: 'boolean',
-        description: 'Controls dialog visibility.',
-      },
-      {
-        name: 'onOpenChange',
-        type: '(open: boolean) => void',
-        description: 'State sync callback.',
-      },
-    ],
-    code: `<Modal open={open} onOpenChange={setOpen}><Modal.Content>...</Modal.Content></Modal>`,
+    code: `<DatePicker selectedDate={value} onChange={setValue} />`,
   },
   {
     name: 'DataTable',
     category: 'organisms',
-    description: 'Sortable table for operational dashboards and admin panels.',
+    description: 'Typed data grid for structured records and sortable views.',
     props: [
-      { name: 'data', type: 'T[]', description: 'Array of row objects.' },
       {
         name: 'columns',
-        type: 'Column<T>[]',
-        description: 'Column definitions and renderers.',
+        type: 'ColumnDef[]',
+        description: 'Column configuration and renderers.',
       },
       {
-        name: 'pageSize',
-        type: 'number',
-        description: 'Rows rendered per page.',
+        name: 'data',
+        type: 'Record<string, unknown>[]',
+        description: 'Rows rendered by the table.',
       },
     ],
-    code: `<DataTable data={rows} columns={columns} pageSize={5} />`,
+    code: `<DataTable columns={columns} data={rows} />`,
   },
   {
-    name: 'Tabs',
+    name: 'CommandPalette',
     category: 'organisms',
-    description: 'Structured switching between related panels and states.',
+    description: 'Keyboard-first command launcher for fast navigation.',
     props: [
       {
-        name: 'defaultValue',
-        type: 'string',
-        description: 'Initially selected tab.',
+        name: 'open',
+        type: 'boolean',
+        description: 'Controls whether the palette is visible.',
       },
       {
-        name: 'onValueChange',
-        type: '(value: string) => void',
-        description: 'Selection callback.',
+        name: 'items',
+        type: 'CommandItem[]',
+        description: 'Available actions grouped into sections.',
       },
     ],
-    code: `<Tabs defaultValue="overview">...</Tabs>`,
+    code: `<CommandPalette open={open} items={commands} />`,
   },
   {
-    name: 'AuthLayout',
-    category: 'templates',
+    name: 'Timeline',
+    category: 'organisms',
     description:
-      'Focused authentication shell for sign in, sign up and password recovery flows.',
+      'Vertical progression view for activity history and milestones.',
     props: [
       {
-        name: 'children',
-        type: 'ReactNode',
-        description: 'Auth form content.',
-      },
-      {
-        name: 'aside',
-        type: 'ReactNode',
-        description: 'Optional branded supporting panel.',
+        name: 'items',
+        type: 'TimelineItem[]',
+        description: 'Chronological timeline data.',
       },
     ],
-    code: `<AuthLayout aside={<PromoPanel />}>{form}</AuthLayout>`,
-  },
-  {
-    name: 'DashboardLayout',
-    category: 'templates',
-    description: 'High-density app layout for admin tools and analytics views.',
-    props: [
-      { name: 'header', type: 'ReactNode', description: 'Top app bar.' },
-      { name: 'sidebar', type: 'ReactNode', description: 'Primary nav rail.' },
-      { name: 'children', type: 'ReactNode', description: 'Main page canvas.' },
-    ],
-    code: `<DashboardLayout header={<Header />} sidebar={<Sidebar />}>{content}</DashboardLayout>`,
-  },
-  {
-    name: 'DocsLayout',
-    category: 'templates',
-    description: 'Documentation shell with nav, content rail and metadata.',
-    props: [
-      {
-        name: 'children',
-        type: 'ReactNode',
-        description: 'Rendered page content.',
-      },
-      {
-        name: 'sidebar',
-        type: 'ReactNode',
-        description: 'Navigation or table of contents.',
-      },
-    ],
-    code: `<DocsLayout sidebar={<Sidebar />}>{content}</DocsLayout>`,
-  },
-  {
-    name: 'MarketingLayout',
-    category: 'templates',
-    description:
-      'Landing-page oriented shell for product pages and marketing flows.',
-    props: [
-      {
-        name: 'header',
-        type: 'ReactNode',
-        description: 'Brand and navigation row.',
-      },
-      {
-        name: 'footer',
-        type: 'ReactNode',
-        description: 'Closing CTA or site footer.',
-      },
-      {
-        name: 'children',
-        type: 'ReactNode',
-        description: 'Hero and page sections.',
-      },
-    ],
-    code: `<MarketingLayout header={<Header />} footer={<Footer />}>{content}</MarketingLayout>`,
-  },
-  {
-    name: 'SidebarLayout',
-    category: 'templates',
-    description:
-      'Classic rail-and-content composition for settings and documentation.',
-    props: [
-      {
-        name: 'sidebar',
-        type: 'ReactNode',
-        description: 'Persistent navigation rail.',
-      },
-      { name: 'children', type: 'ReactNode', description: 'Content viewport.' },
-    ],
-    code: `<SidebarLayout sidebar={<Sidebar />}>{content}</SidebarLayout>`,
-  },
-  {
-    name: 'StackedLayout',
-    category: 'templates',
-    description:
-      'Vertical layout with consistent page rhythm for content-heavy screens.',
-    props: [
-      {
-        name: 'header',
-        type: 'ReactNode',
-        description: 'Optional top section.',
-      },
-      {
-        name: 'children',
-        type: 'ReactNode',
-        description: 'Stacked page content.',
-      },
-    ],
-    code: `<StackedLayout header={<PageHeader />}>{content}</StackedLayout>`,
+    code: `<Timeline items={timelineItems} />`,
   },
 ];
 
-function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
-  return (
-    <Button
-      variant="outline"
-      size="sm"
-      onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-      aria-label="Toggle theme"
-    >
-      {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
-    </Button>
-  );
-}
+const TABLE_ROWS = [
+  {
+    package: '@ui-construction-library/core',
+    use: 'Core UI components',
+    status: 'stable',
+  },
+  {
+    package: '@ui-construction-library/tokens',
+    use: 'Design tokens and semantic theme values',
+    status: 'stable',
+  },
+  {
+    package: '@ui-construction-library/react-hook-form',
+    use: 'Form integration package',
+    status: 'ready',
+  },
+  {
+    package: '@ui-construction-library/icons',
+    use: 'Asset and icon layer',
+    status: 'stable',
+  },
+];
 
-function DocsHeader({
-  navOpen,
-  onToggleNav,
-}: {
-  navOpen: boolean;
-  onToggleNav: () => void;
-}) {
+const TIMELINE_ITEMS = [
+  {
+    id: 'install',
+    title: 'Install and wire ThemeProvider',
+    description:
+      'Start with the public core package and the bundled stylesheet export.',
+    timestamp: 'Step 1',
+  },
+  {
+    id: 'compose',
+    title: 'Compose product primitives',
+    description:
+      'Use atoms and molecules to build forms, navigation and cards.',
+    timestamp: 'Step 2',
+  },
+  {
+    id: 'scale',
+    title: 'Scale with data and patterns',
+    description:
+      'Adopt DataTable, Timeline, CommandPalette and templates when flows mature.',
+    timestamp: 'Step 3',
+  },
+];
+
+const COMMAND_GROUPS = [
+  {
+    heading: 'Navigation',
+    items: [
+      {
+        id: 'docs',
+        label: 'Open docs',
+        onSelect: () => window.location.assign('#reference'),
+      },
+      {
+        id: 'storybook',
+        label: 'Open Storybook',
+        onSelect: () =>
+          window.open(STORYBOOK_URL, '_blank', 'noopener,noreferrer'),
+      },
+      {
+        id: 'demo',
+        label: 'Open showcase demo',
+        onSelect: () => window.open(DEMO_URL, '_blank', 'noopener,noreferrer'),
+      },
+    ],
+  },
+  {
+    heading: 'Resources',
+    items: [
+      {
+        id: 'github',
+        label: 'View GitHub repository',
+        onSelect: () =>
+          window.open(GITHUB_URL, '_blank', 'noopener,noreferrer'),
+      },
+    ],
+  },
+];
+
+function DocsContent() {
+  const { theme, setTheme } = useTheme();
+  const [selectedCategory, setSelectedCategory] =
+    useState<CategoryKey>('atoms');
+  const [query, setQuery] = useState('');
+  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+  const [isPaletteOpen, setPaletteOpen] = useState(false);
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const filteredComponents = useMemo(
+    () =>
+      COMPONENTS.filter((component) => {
+        const matchesCategory = component.category === selectedCategory;
+        const search = query.trim().toLowerCase();
+        const haystack =
+          `${component.name} ${component.description}`.toLowerCase();
+
+        return matchesCategory && (!search || haystack.includes(search));
+      }),
+    [query, selectedCategory]
+  );
+
+  const selectedCategoryMeta = CATEGORY_META[selectedCategory];
+
   return (
-    <header className="sticky top-0 z-40 border-b border-[var(--border)] bg-[var(--card)]/90 backdrop-blur-sm">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center gap-3">
+    <div className="docs-shell">
+      <header className="docs-topbar">
+        <div className="docs-brand">
+          <Badge>Docs</Badge>
+          <Heading as="h1" className="docs-brand__title">
+            UI Construction Library
+          </Heading>
+          <Text className="docs-brand__meta">Version {VERSION}</Text>
+        </div>
+
+        <div className="docs-topbar__actions">
+          <Button variant="ghost" onClick={() => setPaletteOpen(true)}>
+            Open command menu
+          </Button>
           <Button
             variant="outline"
-            size="sm"
-            onClick={onToggleNav}
-            aria-label={navOpen ? 'Hide navigation' : 'Show navigation'}
+            onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
           >
-            {navOpen ? 'Hide nav' : 'Show nav'}
+            {theme === 'light' ? 'Dark mode' : 'Light mode'}
           </Button>
-          <Heading as="h1" className="!mb-0 !text-xl font-bold">
-            UI Library
-          </Heading>
-          <Badge>docs</Badge>
-          <Badge>v{VERSION}</Badge>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <Link href="#overview" className="text-sm">
-            Overview
+          <Link href={GITHUB_URL} target="_blank" rel="noopener noreferrer">
+            <Button>GitHub</Button>
           </Link>
-          <Link href="#components" className="text-sm">
-            Components
-          </Link>
-          <Link
-            href={GITHUB_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm"
-          >
-            GitHub
-          </Link>
-          <ThemeToggle />
         </div>
-      </div>
-    </header>
-  );
-}
+      </header>
 
-function DocsSidebar({
-  activeId,
-  navOpen,
-  onClose,
-}: {
-  activeId: string;
-  navOpen: boolean;
-  onClose: () => void;
-}) {
-  const groups = useMemo(() => {
-    return Object.entries(CATEGORY_META).map(([key, meta]) => ({
-      key: key as CategoryKey,
-      meta,
-      items: meta.inventory,
-    }));
-  }, []);
+      <main className="docs-main">
+        <section className="docs-hero">
+          <div className="docs-hero__content">
+            <div className="docs-badges">
+              <Badge>Core</Badge>
+              <Badge>Tokens</Badge>
+              <Badge>Integrations</Badge>
+              <Badge>Theme-ready</Badge>
+            </div>
+            <Heading as="h2" className="docs-hero__title">
+              Documentation for a composable React UI system built for real
+              product surfaces.
+            </Heading>
+            <Text className="docs-hero__description">
+              This site should work as both reference documentation and a
+              high-confidence entrypoint into the library. It explains the
+              package structure, install path, component categories and adoption
+              flow in one place.
+            </Text>
+            <div className="docs-install">
+              <Text className="docs-install__label">Install</Text>
+              <code>{INSTALL_COMMAND}</code>
+            </div>
+            <div className="docs-hero__actions">
+              <Link
+                href={STORYBOOK_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button>Open Storybook</Button>
+              </Link>
+              <Link href={DEMO_URL} target="_blank" rel="noopener noreferrer">
+                <Button variant="outline">Open showcase demo</Button>
+              </Link>
+            </div>
+          </div>
 
-  return (
-    <>
-      {navOpen ? (
-        <button
-          type="button"
-          className="fixed inset-0 z-30 bg-black/35 lg:hidden"
-          onClick={onClose}
-          aria-label="Close navigation"
-        />
-      ) : null}
-      <aside
-        className={`z-40 rounded-2xl border border-[var(--border)] bg-[var(--card)] p-4 shadow-xl transition-all lg:sticky lg:top-20 lg:block lg:h-[calc(100vh-6rem)] lg:overflow-auto lg:shadow-none ${
-          navOpen
-            ? 'fixed inset-y-20 left-4 w-[min(320px,calc(100vw-2rem))] overflow-auto'
-            : 'hidden lg:hidden'
-        }`}
-      >
-        <div className="mb-4 flex items-center justify-between gap-3">
-          <Text className="text-xs uppercase tracking-[0.16em] text-[var(--muted-foreground)]">
-            Navigation
-          </Text>
-          <Button variant="outline" size="sm" onClick={onClose}>
-            Close
-          </Button>
-        </div>
-        <div className="space-y-5">
-          {groups.map((group) => (
-            <div key={group.key} className="space-y-2">
-              <div className="flex items-center justify-between">
-                <Text className="text-sm font-semibold">
-                  {group.meta.title}
+          <Card className="docs-summary-card">
+            <Text className="docs-section-label">Why start here</Text>
+            <div className="docs-summary-grid">
+              <div>
+                <Text className="docs-summary-key">Components</Text>
+                <Text>
+                  Atoms, molecules, organisms and templates mapped to real
+                  product UI.
                 </Text>
-                <Badge>{group.items.length}</Badge>
               </div>
-              <div className="space-y-1">
-                {group.items.map((item) => {
-                  const isActive = activeId === item;
-                  return (
-                    <a
-                      key={item}
-                      href={`#${item}`}
-                      onClick={onClose}
-                      className={`block rounded-md px-3 py-2 text-sm no-underline transition-colors ${
-                        isActive
-                          ? 'bg-[var(--primary)] text-[var(--primary-foreground)]'
-                          : 'text-[var(--muted-foreground)] hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)]'
-                      }`}
-                    >
-                      {item}
-                    </a>
-                  );
-                })}
+              <div>
+                <Text className="docs-summary-key">Theme system</Text>
+                <Text>
+                  Public ThemeProvider and bundled styles export for docs and
+                  apps.
+                </Text>
+              </div>
+              <div>
+                <Text className="docs-summary-key">Integrations</Text>
+                <Text>
+                  Separate packages make the library practical beyond static
+                  demos.
+                </Text>
+              </div>
+              <div>
+                <Text className="docs-summary-key">Adoption</Text>
+                <Text>
+                  Install, compose primitives, then scale into patterns and
+                  templates.
+                </Text>
               </div>
             </div>
-          ))}
-        </div>
-      </aside>
-    </>
-  );
-}
-
-function HeroSection() {
-  return (
-    <section
-      id="overview"
-      className="rounded-3xl border border-[var(--border)] bg-[var(--card)] px-6 py-12 shadow-sm sm:px-8"
-    >
-      <Badge className="mb-4">Production-ready component docs</Badge>
-      <Heading
-        as="h2"
-        className="mb-4 max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl"
-      >
-        Documentation for atoms, molecules, organisms and templates.
-      </Heading>
-      <Text className="max-w-2xl text-base text-[var(--muted-foreground)] sm:text-lg">
-        Browse every category from a persistent sidebar, inspect component
-        props, copy starter snippets and preview live examples without leaving
-        the page.
-      </Text>
-      <div className="mt-8 flex flex-wrap gap-3">
-        <a href="#components">
-          <Button size="lg">Browse Components →</Button>
-        </a>
-        <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer">
-          <Button variant="outline" size="lg">
-            View on GitHub
-          </Button>
-        </a>
-      </div>
-    </section>
-  );
-}
-
-function CategoryCards() {
-  const categories = Object.entries(CATEGORY_META).map(([key, meta]) => ({
-    key: key as CategoryKey,
-    ...meta,
-    count: meta.inventory.length,
-  }));
-
-  return (
-    <section id="components" className="space-y-4">
-      <div>
-        <Heading as="h2" className="mb-2 text-3xl font-bold">
-          Components
-        </Heading>
-        <Text className="text-[var(--muted-foreground)]">
-          Real categories rendered from the current library structure, including
-          all six templates.
-        </Text>
-      </div>
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        {categories.map((category) => (
-          <Card key={category.key} className="flex h-full flex-col gap-3 p-5">
-            <div className="flex items-center justify-between">
-              <Heading as="h3" className="!mb-0 text-lg font-semibold">
-                {category.title}
-              </Heading>
-              <Badge>{category.count}</Badge>
-            </div>
-            <Text className="text-sm text-[var(--muted-foreground)]">
-              {category.description}
-            </Text>
-            <Text className="text-xs text-[var(--muted-foreground)]">
-              {category.inventory.join(', ')}
-            </Text>
-            <a
-              href={`#section-${category.key}`}
-              className="mt-auto text-sm font-medium text-[var(--primary)] no-underline"
-            >
-              Jump to section →
-            </a>
           </Card>
-        ))}
-      </div>
-    </section>
-  );
-}
+        </section>
 
-function DocsSearch() {
-  const [open, setOpen] = useState(false);
-  const searchGroups = Object.entries(CATEGORY_META).map(([key, meta]) => ({
-    heading: meta.title,
-    items: meta.inventory.map((componentName) => ({
-      id: componentName,
-      label: componentName,
-      keywords: [key, meta.description],
-      onSelect: () => {
-        window.location.hash = componentName;
-      },
-    })),
-  }));
+        <section className="docs-grid docs-grid--dual">
+          <Card className="docs-panel">
+            <Text className="docs-section-label">Navigation map</Text>
+            <Breadcrumb
+              items={[
+                { label: 'Docs', href: '#' },
+                {
+                  label: selectedCategoryMeta.title,
+                  href: `#${selectedCategory}`,
+                },
+                { label: 'Reference', href: '#reference' },
+              ]}
+            />
+            <Alert variant="default" title="Recommended entry flow">
+              Start with installation and ThemeProvider, then move through
+              atoms, composed patterns and integration packages.
+            </Alert>
+          </Card>
 
-  return (
-    <section className="space-y-4">
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[var(--border)] bg-[var(--card)] p-5">
-        <div>
-          <Heading as="h3" className="!mb-1 text-xl font-semibold">
-            Search components
-          </Heading>
-          <Text className="text-sm text-[var(--muted-foreground)]">
-            Command-style lookup grouped by category and powered by the library
-            itself.
-          </Text>
-        </div>
-        <Button variant="outline" onClick={() => setOpen(true)}>
-          Open Search
-        </Button>
-      </div>
+          <Card className="docs-panel">
+            <Text className="docs-section-label">Try a control</Text>
+            <DatePicker
+              selectedDate={selectedDate}
+              onChange={setSelectedDate}
+            />
+            <Text className="docs-panel__meta">
+              Interactive examples belong in docs so users can trust the package
+              beyond screenshots.
+            </Text>
+          </Card>
+        </section>
 
-      <CommandPalette
-        open={open}
-        onOpenChange={setOpen}
-        groups={searchGroups}
-      />
-    </section>
-  );
-}
-
-function ExamplePreview({ component }: { component: ComponentDoc }) {
-  const [date, setDate] = useState<Date | null>(new Date());
-  const [modalOpen, setModalOpen] = useState(false);
-
-  switch (component.name) {
-    case 'Button':
-      return (
-        <div className="flex flex-wrap gap-3">
-          <Button>Default</Button>
-          <Button variant="secondary">Secondary</Button>
-          <Button variant="outline">Outline</Button>
-        </div>
-      );
-    case 'Input':
-      return (
-        <Input
-          label="Project name"
-          placeholder="Aurora Dashboard"
-          description="Used for naming dashboards, kits and docs pages."
-        />
-      );
-    case 'Badge':
-      return (
-        <div className="flex gap-3">
-          <Badge>stable</Badge>
-          <Badge>beta</Badge>
-        </div>
-      );
-    case 'Card':
-      return (
-        <Card className="p-5">
-          <Heading as="h4" className="!mb-1 text-lg font-semibold">
-            Billing summary
-          </Heading>
-          <Text className="text-sm text-[var(--muted-foreground)]">
-            Reusable surface with hierarchy and actions.
-          </Text>
-        </Card>
-      );
-    case 'DatePicker':
-      return <DatePicker selectedDate={date} onChange={setDate} />;
-    case 'Tooltip':
-      return (
-        <Text className="text-sm text-[var(--muted-foreground)]">
-          Hover behavior is best experienced directly in the live docs build.
-        </Text>
-      );
-    case 'Modal':
-      return (
-        <>
-          <Button onClick={() => setModalOpen(true)}>Open Modal</Button>
-          <Modal open={modalOpen} onOpenChange={setModalOpen}>
-            <Modal.Content>
-              <Modal.Header>
-                <Modal.Title>Confirm release</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                <Text>Ship docs update to production?</Text>
-              </Modal.Body>
-              <Modal.Footer>
-                <Modal.Close asChild>
-                  <Button variant="secondary">Close</Button>
-                </Modal.Close>
-              </Modal.Footer>
-            </Modal.Content>
-          </Modal>
-        </>
-      );
-    case 'DataTable': {
-      const rows = [
-        { id: 1, package: 'core', focus: 'Primitives' },
-        { id: 2, package: 'motion', focus: 'Animations' },
-        { id: 3, package: 'themes', focus: 'Tokens' },
-      ];
-      const columns = [
-        { key: 'id', header: 'ID' },
-        { key: 'package', header: 'Package' },
-        { key: 'focus', header: 'Focus' },
-      ];
-      return <DataTable data={rows} columns={columns} pageSize={3} />;
-    }
-    case 'Tabs':
-      return (
-        <div className="space-y-3">
-          <Tabs defaultValue="overview">
-            <div className="flex gap-2">
-              <Button size="sm">Overview</Button>
-              <Button size="sm" variant="secondary">
-                Usage
+        <section className="docs-reference" id="reference">
+          <div className="docs-reference__header">
+            <div>
+              <Text className="docs-section-label">Reference</Text>
+              <Heading as="h2">Browse components by category</Heading>
+              <Text>
+                Filter the documented components, inspect their props and scan
+                the broader inventory available in each category.
+              </Text>
+            </div>
+            <div className="docs-reference__controls">
+              <Input
+                label="Filter components"
+                placeholder="Search Button, Input, DataTable…"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+              />
+              <Button variant="outline" onClick={() => setModalOpen(true)}>
+                Open quickstart
               </Button>
             </div>
-          </Tabs>
-          <Alert variant="success">
-            Tabs are ideal for progressive disclosure in docs.
-          </Alert>
-        </div>
-      );
-    case 'AuthLayout':
-      return (
-        <div className="grid gap-3 md:grid-cols-[1fr,0.8fr]">
-          <div className="rounded-xl border border-[var(--border)] p-4 text-sm text-[var(--muted-foreground)]">
-            Form area
           </div>
-          <div className="rounded-xl border border-[var(--border)] p-4 text-sm text-[var(--muted-foreground)]">
-            Aside panel
-          </div>
-        </div>
-      );
-    case 'DocsLayout':
-      return (
-        <div className="grid gap-3 md:grid-cols-[180px,1fr]">
-          <div className="rounded-xl border border-[var(--border)] p-3 text-sm text-[var(--muted-foreground)]">
-            Sidebar rail
-          </div>
-          <div className="rounded-xl border border-[var(--border)] p-3 text-sm text-[var(--muted-foreground)]">
-            Content canvas
-          </div>
-        </div>
-      );
-    case 'DashboardLayout':
-      return (
-        <div className="space-y-3">
-          <div className="rounded-xl border border-[var(--border)] p-3 text-sm text-[var(--muted-foreground)]">
-            Header
-          </div>
-          <div className="grid gap-3 md:grid-cols-[180px,1fr]">
-            <div className="rounded-xl border border-[var(--border)] p-3 text-sm text-[var(--muted-foreground)]">
-              Sidebar
-            </div>
-            <div className="rounded-xl border border-[var(--border)] p-3 text-sm text-[var(--muted-foreground)]">
-              Dashboard content
-            </div>
-          </div>
-        </div>
-      );
-    case 'MarketingLayout':
-      return (
-        <div className="space-y-3">
-          <div className="rounded-xl border border-[var(--border)] p-3 text-sm text-[var(--muted-foreground)]">
-            Header
-          </div>
-          <div className="rounded-xl border border-[var(--border)] p-4 text-sm text-[var(--muted-foreground)]">
-            Hero and marketing sections
-          </div>
-          <div className="rounded-xl border border-[var(--border)] p-3 text-sm text-[var(--muted-foreground)]">
-            Footer
-          </div>
-        </div>
-      );
-    case 'SidebarLayout':
-      return (
-        <div className="grid gap-3 md:grid-cols-[220px,1fr]">
-          <div className="rounded-xl border border-[var(--border)] p-3 text-sm text-[var(--muted-foreground)]">
-            Persistent sidebar
-          </div>
-          <div className="rounded-xl border border-[var(--border)] p-3 text-sm text-[var(--muted-foreground)]">
-            Main content area
-          </div>
-        </div>
-      );
-    case 'StackedLayout':
-      return (
-        <div className="space-y-3">
-          <div className="rounded-xl border border-[var(--border)] p-3 text-sm text-[var(--muted-foreground)]">
-            Header block
-          </div>
-          <div className="rounded-xl border border-[var(--border)] p-3 text-sm text-[var(--muted-foreground)]">
-            Stacked section 1
-          </div>
-          <div className="rounded-xl border border-[var(--border)] p-3 text-sm text-[var(--muted-foreground)]">
-            Stacked section 2
-          </div>
-        </div>
-      );
-    default:
-      return (
-        <Text className="text-sm text-[var(--muted-foreground)]">
-          Interactive preview coming soon.
-        </Text>
-      );
-  }
-}
 
-function PropsTable({ component }: { component: ComponentDoc }) {
-  return (
-    <div className="overflow-hidden rounded-2xl border border-[var(--border)]">
-      <table className="w-full border-collapse text-sm">
-        <thead className="bg-[var(--accent)] text-left">
-          <tr>
-            <th className="px-4 py-3 font-medium">Prop</th>
-            <th className="px-4 py-3 font-medium">Type</th>
-            <th className="px-4 py-3 font-medium">Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          {component.props.map((prop) => (
-            <tr key={prop.name} className="border-t border-[var(--border)]">
-              <td className="px-4 py-3 font-medium">{prop.name}</td>
-              <td className="px-4 py-3 text-[var(--muted-foreground)]">
-                {prop.type}
-              </td>
-              <td className="px-4 py-3 text-[var(--muted-foreground)]">
-                {prop.description}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
+          <div className="docs-grid docs-grid--sidebar">
+            <Card className="docs-panel">
+              <Text className="docs-section-label">Categories</Text>
+              <div className="docs-category-list">
+                {(Object.keys(CATEGORY_META) as CategoryKey[]).map(
+                  (category) => {
+                    const meta = CATEGORY_META[category];
+                    const isActive = category === selectedCategory;
 
-function CodeBlock({ code }: { code: string }) {
-  return (
-    <pre className="overflow-auto rounded-2xl border border-[var(--border)] bg-[var(--accent)] p-4 text-sm">
-      <code>{code}</code>
-    </pre>
-  );
-}
+                    return (
+                      <button
+                        key={category}
+                        type="button"
+                        className={`docs-category-item ${isActive ? 'docs-category-item--active' : ''}`}
+                        onClick={() => setSelectedCategory(category)}
+                      >
+                        <Text className="docs-category-item__title">
+                          {meta.title}
+                        </Text>
+                        <Text className="docs-category-item__description">
+                          {meta.description}
+                        </Text>
+                      </button>
+                    );
+                  }
+                )}
+              </div>
+            </Card>
 
-function ComponentSection({
-  category,
-  activeId,
-  onActive,
-}: {
-  category: CategoryKey;
-  activeId: string;
-  onActive: (id: string) => void;
-}) {
-  const items = CATEGORY_META[category].inventory;
-  const meta = CATEGORY_META[category];
-
-  return (
-    <section id={`section-${category}`} className="space-y-6">
-      <div>
-        <Heading as="h2" className="mb-2 text-3xl font-bold">
-          {meta.title}
-        </Heading>
-        <Text className="text-[var(--muted-foreground)]">
-          {meta.description}
-        </Text>
-        <Text className="mt-2 text-sm text-[var(--muted-foreground)]">
-          Available: {items.join(', ')}
-        </Text>
-      </div>
-
-      <div className="space-y-8">
-        {items.map((itemName) => {
-          const component = COMPONENTS.find((entry) => entry.name === itemName);
-
-          if (!component) {
-            return (
-              <article
-                key={itemName}
-                id={itemName}
-                className="space-y-4 rounded-3xl border border-[var(--border)] bg-[var(--card)] p-6"
-              >
-                <div className="space-y-2">
-                  <Breadcrumb
-                    items={[
-                      { label: 'Components', href: '#components' },
-                      { label: meta.title, href: `#section-${category}` },
-                      { label: itemName, href: `#${itemName}` },
-                    ]}
-                  />
-                  <Heading as="h3" className="!mb-0 text-2xl font-semibold">
-                    {itemName}
-                  </Heading>
-                  <Text className="text-[var(--muted-foreground)]">
-                    API reference for this component is still being written, but
-                    the component is part of the exported library inventory.
-                  </Text>
+            <div className="docs-stack">
+              <Card className="docs-panel">
+                <Text className="docs-section-label">Inventory</Text>
+                <Heading as="h3">{selectedCategoryMeta.title}</Heading>
+                <Text>{selectedCategoryMeta.description}</Text>
+                <div className="docs-chip-wrap">
+                  {selectedCategoryMeta.inventory.map((item) => (
+                    <Badge key={item}>{item}</Badge>
+                  ))}
                 </div>
-                <Alert>
-                  Documentation details for {itemName} are queued in the next
-                  pass.
-                </Alert>
-              </article>
-            );
-          }
+              </Card>
 
-          return (
-            <article
-              key={component.name}
-              id={component.name}
-              className={`space-y-5 rounded-3xl border p-6 transition-colors ${
-                activeId === component.name
-                  ? 'border-[var(--primary)] bg-[var(--card)]'
-                  : 'border-[var(--border)] bg-[var(--card)]'
-              }`}
-              onMouseEnter={() => onActive(component.name)}
-            >
-              <div className="space-y-2">
-                <Breadcrumb
-                  items={[
-                    { label: 'Components', href: '#components' },
-                    { label: meta.title, href: `#section-${category}` },
-                    { label: component.name, href: `#${component.name}` },
-                  ]}
-                />
-                <Heading as="h3" className="!mb-0 text-2xl font-semibold">
-                  {component.name}
-                </Heading>
-                <Text className="text-[var(--muted-foreground)]">
-                  {component.description}
+              <div className="docs-component-list">
+                {filteredComponents.map((component) => (
+                  <Card
+                    key={component.name}
+                    className="docs-panel docs-component-card"
+                  >
+                    <div className="docs-component-card__header">
+                      <div>
+                        <Text className="docs-section-label">
+                          {component.category}
+                        </Text>
+                        <Heading as="h3">{component.name}</Heading>
+                      </div>
+                      <Badge>{component.props.length} props</Badge>
+                    </div>
+                    <Text>{component.description}</Text>
+                    <DataTable
+                      columns={[
+                        { key: 'name', header: 'Prop' },
+                        { key: 'type', header: 'Type' },
+                        { key: 'description', header: 'Description' },
+                      ]}
+                      data={component.props}
+                    />
+                    <pre className="docs-code-block">
+                      <code>{component.code}</code>
+                    </pre>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="docs-grid docs-grid--dual">
+          <Card className="docs-panel">
+            <Text className="docs-section-label">Package surface</Text>
+            <DataTable
+              columns={[
+                { key: 'package', header: 'Package' },
+                { key: 'use', header: 'Use case' },
+                { key: 'status', header: 'Status' },
+              ]}
+              data={TABLE_ROWS}
+            />
+          </Card>
+
+          <Card className="docs-panel">
+            <Text className="docs-section-label">Adoption timeline</Text>
+            <Timeline items={TIMELINE_ITEMS} />
+          </Card>
+        </section>
+
+        <section className="docs-grid docs-grid--dual">
+          <Card className="docs-panel">
+            <Text className="docs-section-label">Command palette</Text>
+            <Text>
+              Keyboard-friendly navigation is part of the design language and
+              should be visible in docs, not hidden behind Storybook alone.
+            </Text>
+            <Button onClick={() => setPaletteOpen(true)}>
+              Launch command palette
+            </Button>
+          </Card>
+
+          <Card className="docs-panel">
+            <Text className="docs-section-label">Tabs</Text>
+            <Tabs defaultValue="install">
+              <Tabs.List>
+                <Tabs.Trigger value="install">Install</Tabs.Trigger>
+                <Tabs.Trigger value="theme">Theme</Tabs.Trigger>
+                <Tabs.Trigger value="integrate">Integrate</Tabs.Trigger>
+              </Tabs.List>
+
+              <Tabs.Content value="install">
+                <Text>Use the core package and bundled stylesheet export.</Text>
+              </Tabs.Content>
+
+              <Tabs.Content value="theme">
+                <Text>
+                  Wrap app surfaces in ThemeProvider and expose light/dark
+                  switching.
                 </Text>
-              </div>
+              </Tabs.Content>
 
-              <div className="grid gap-5 xl:grid-cols-[1.2fr,0.8fr]">
-                <div className="space-y-4">
-                  <Heading as="h4" className="!mb-0 text-lg font-semibold">
-                    Live example
-                  </Heading>
-                  <div className="rounded-2xl border border-[var(--border)] p-5">
-                    <ExamplePreview component={component} />
-                  </div>
-                </div>
-                <div className="space-y-4">
-                  <Heading as="h4" className="!mb-0 text-lg font-semibold">
-                    Copy snippet
-                  </Heading>
-                  <CodeBlock code={component.code} />
-                </div>
-              </div>
+              <Tabs.Content value="integrate">
+                <Text>
+                  Add form, router or i18n packages as your app architecture
+                  grows.
+                </Text>
+              </Tabs.Content>
+            </Tabs>
+          </Card>
+        </section>
+      </main>
 
-              <div className="space-y-4">
-                <Heading as="h4" className="!mb-0 text-lg font-semibold">
-                  Props
-                </Heading>
-                <PropsTable component={component} />
-              </div>
-            </article>
-          );
-        })}
-      </div>
-    </section>
-  );
-}
-
-function RoadmapSection() {
-  return (
-    <section className="space-y-4">
-      <div>
-        <Heading as="h2" className="mb-2 text-3xl font-bold">
-          Roadmap
-        </Heading>
-        <Text className="text-[var(--muted-foreground)]">
-          Remaining work is now focused on deepening per-component API coverage
-          rather than fixing structure.
-        </Text>
-      </div>
-      <Card className="p-6">
-        <Timeline
-          items={[
-            {
-              id: '1',
-              title: 'Inventory coverage',
-              description:
-                'Every exported component is now visible in navigation and category listings.',
-            },
-            {
-              id: '2',
-              title: 'Interactive docs',
-              description:
-                'Search, sidebar navigation and live examples cover the primary documentation flow.',
-            },
-            {
-              id: '3',
-              title: 'Reference depth',
-              description:
-                'Expand placeholder API sections into full examples and prop documentation.',
-            },
-          ]}
-        />
-      </Card>
-    </section>
-  );
-}
-
-function DocsShell() {
-  const [activeId, setActiveId] = useState(
-    CATEGORY_META.atoms.inventory[0] ?? 'Button'
-  );
-  const [navOpen, setNavOpen] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
-      <DocsHeader
-        navOpen={navOpen}
-        onToggleNav={() => setNavOpen((current) => !current)}
+      <CommandPalette
+        open={isPaletteOpen}
+        onOpenChange={setPaletteOpen}
+        groups={COMMAND_GROUPS}
       />
-      <div className="mx-auto flex max-w-7xl gap-6 px-4 py-6 sm:px-6 lg:px-8">
-        <DocsSidebar
-          activeId={activeId}
-          navOpen={navOpen}
-          onClose={() => setNavOpen(false)}
-        />
 
-        <main className="min-w-0 flex-1 space-y-8 pb-16">
-          <HeroSection />
-          <CategoryCards />
-          <DocsSearch />
-          <ComponentSection
-            category="atoms"
-            activeId={activeId}
-            onActive={setActiveId}
-          />
-          <ComponentSection
-            category="molecules"
-            activeId={activeId}
-            onActive={setActiveId}
-          />
-          <ComponentSection
-            category="organisms"
-            activeId={activeId}
-            onActive={setActiveId}
-          />
-          <ComponentSection
-            category="templates"
-            activeId={activeId}
-            onActive={setActiveId}
-          />
-          <RoadmapSection />
-        </main>
-      </div>
-
-      <footer className="border-t border-[var(--border)] py-8">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-          <Text className="text-sm text-[var(--muted-foreground)]">
-            © 2026 UI Construction Library
-          </Text>
-          <Text className="text-sm text-[var(--muted-foreground)]">
-            Version {VERSION}
-          </Text>
-          <Link
-            href={GITHUB_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm"
-          >
-            GitHub
-          </Link>
-        </div>
-      </footer>
+      <Modal open={isModalOpen} onOpenChange={setModalOpen}>
+        <Modal.Content title="Quickstart">
+          <Modal.Body>
+            <div className="docs-stack">
+              <Text>1. Install the core package.</Text>
+              <Text>2. Import the bundled stylesheet export.</Text>
+              <Text>3. Wrap your app with ThemeProvider.</Text>
+              <Text>4. Add integration packages when workflow needs grow.</Text>
+            </div>
+          </Modal.Body>
+        </Modal.Content>
+      </Modal>
     </div>
   );
 }
 
-function getSystemTheme(): 'light' | 'dark' {
-  if (
-    typeof window !== 'undefined' &&
-    window.matchMedia('(prefers-color-scheme: dark)').matches
-  ) {
-    return 'dark';
-  }
-  return 'light';
-}
-
-export function DocsApp() {
+export default function DocsApp() {
   return (
-    <ThemeProvider defaultTheme={getSystemTheme()}>
-      <DocsShell />
+    <ThemeProvider>
+      <DocsContent />
     </ThemeProvider>
   );
 }
-
-export default DocsApp;

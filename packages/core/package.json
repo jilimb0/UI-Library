@@ -20,7 +20,7 @@
       "require": "./dist/index.js",
       "types": "./dist/src/index.d.ts"
     },
-    "./styles": "./dist/styles.css"
+    "./styles": "./styles.css"
   },
   "scripts": {
     "build": "rollup -c",
