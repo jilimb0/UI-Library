@@ -36,14 +36,12 @@ Living register of **direct runtime and platform dependencies** with owner, crit
 
 `@ui-construction-library/core` has **zero** Tier-1 UI runtime dependencies.
 
-## Tier 1 — remaining in `core` (evaluated)
+## Tier 1 — former utilities (replaced)
 
-| Package | Used by | Owner | Status | Exit strategy |
-| --- | --- | --- | --- | --- |
-| `date-fns` | Calendar, DatePicker | core | keep | Utility; low lock-in |
-| `cmdk` | CommandPalette | core | keep | Optional fork later |
-
-**Adapter entry points (thin re-exports):** `packages/core/src/adapters/{radix,dnd,motion,icons}.ts` → owned packages
+| Former package | Replacement | Status |
+| --- | --- | --- |
+| `date-fns` | `@ui-construction-library/utils` (`date/calendar`) | **internal** |
+| `cmdk` | Owned `CommandPalette` in `core` | **internal** |
 
 ## Tier 2 — Utility / support (`core`)
 

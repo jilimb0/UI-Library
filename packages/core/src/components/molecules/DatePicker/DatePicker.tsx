@@ -3,13 +3,13 @@ import {
   addMonths,
   endOfMonth,
   endOfWeek,
-  format,
+  formatCalendar,
   isSameDay,
   isSameMonth,
   startOfMonth,
   startOfWeek,
   subMonths,
-} from 'date-fns';
+} from '@ui-construction-library/utils';
 import { type FC, type ReactElement, useState } from 'react';
 
 interface DatePickerProps {
@@ -35,7 +35,6 @@ const DatePicker: FC<DatePickerProps> = ({
   const startDate = startOfWeek(startMonth);
   const endDate = endOfWeek(endMonth);
 
-  const dateFormat = 'd';
   const rows: ReactElement[] = [];
   let days: ReactElement[] = [];
   let day = startDate;
@@ -56,7 +55,7 @@ const DatePicker: FC<DatePickerProps> = ({
           onClick={() => onChange(cloneDay)}
           onKeyDown={(e) => e.key === 'Enter' && onChange(cloneDay)}
         >
-          {format(cloneDay, dateFormat)}
+          {formatCalendar(cloneDay, 'd')}
         </td>
       );
       day = addDays(day, 1);
@@ -75,7 +74,7 @@ const DatePicker: FC<DatePickerProps> = ({
         >
           Prev
         </button>
-        <span>{format(currentMonth, 'MMMM yyyy')}</span>
+        <span>{formatCalendar(currentMonth, 'MMMM yyyy')}</span>
         <button
           type="button"
           onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
@@ -86,9 +85,11 @@ const DatePicker: FC<DatePickerProps> = ({
       <table className="w-full border-collapse">
         <thead>
           <tr>
-            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-              <th key={day}>{day}</th>
-            ))}
+            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(
+              (dayName) => (
+                <th key={dayName}>{dayName}</th>
+              )
+            )}
           </tr>
         </thead>
         <tbody>{rows}</tbody>

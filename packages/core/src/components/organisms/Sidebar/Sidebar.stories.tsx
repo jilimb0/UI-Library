@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Home, Settings, Users } from '../../../adapters/icons';
+import { Home, Settings, Users } from '@ui-construction-library/icons';
 import { Sidebar } from './Sidebar';
 
 const meta: Meta<typeof Sidebar> = {

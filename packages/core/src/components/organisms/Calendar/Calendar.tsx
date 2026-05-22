@@ -3,11 +3,12 @@ import {
   addMonths,
   endOfMonth,
   endOfWeek,
-  format,
+  formatCalendar,
   isSameMonth,
   startOfMonth,
   startOfWeek,
-} from 'date-fns';
+  toDateKey,
+} from '@ui-construction-library/utils';
 import { useMemo, useState } from 'react';
 import { cn } from '../../../utils/cn';
 
@@ -26,8 +27,8 @@ export function Calendar({ events = [], className }: CalendarProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
   const days = useMemo(() => {
-    const start = startOfWeek(startOfMonth(currentMonth), { weekStartsOn: 1 });
-    const end = endOfWeek(endOfMonth(currentMonth), { weekStartsOn: 1 });
+    const start = startOfWeek(startOfMonth(currentMonth), 1);
+    const end = endOfWeek(endOfMonth(currentMonth), 1);
     const result: Date[] = [];
     let cursor = start;
     while (cursor <= end) {
@@ -53,7 +54,7 @@ export function Calendar({ events = [], className }: CalendarProps) {
           Prev
         </button>
         <h3 className="text-lg font-semibold">
-          {format(currentMonth, 'MMMM yyyy')}
+          {formatCalendar(currentMonth, 'MMMM yyyy')}
         </h3>
         <button
           type="button"
@@ -72,7 +73,7 @@ export function Calendar({ events = [], className }: CalendarProps) {
         {days.map((day) => {
           const inMonth = isSameMonth(day, currentMonth);
           const dayEvents = events.filter(
-            (e) => format(e.date, 'yyyy-MM-dd') === format(day, 'yyyy-MM-dd')
+            (e) => toDateKey(e.date) === toDateKey(day)
           );
           return (
             <div
@@ -82,7 +83,9 @@ export function Calendar({ events = [], className }: CalendarProps) {
                 inMonth ? 'bg-white' : 'bg-slate-50 text-slate-400'
               )}
             >
-              <div className="text-xs font-medium">{format(day, 'd')}</div>
+              <div className="text-xs font-medium">
+                {formatCalendar(day, 'd')}
+              </div>
               <div className="mt-1 space-y-1">
                 {dayEvents.slice(0, 2).map((event) => (
                   <div

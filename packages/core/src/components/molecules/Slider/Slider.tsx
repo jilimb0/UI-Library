@@ -1,4 +1,4 @@
-import { RadixSlider } from '../../../adapters/radix';
+import { Slider as PrimitiveSlider } from '@ui-construction-library/primitives';
 
 export interface SliderProps {
   value: number[];
@@ -18,7 +18,7 @@ export function Slider({
   const thumbKeys = value.map((_, i) => `thumb-${i}`);
 
   return (
-    <RadixSlider.Root
+    <PrimitiveSlider.Root
       value={value}
       onValueChange={onValueChange}
       min={min}
@@ -26,16 +26,16 @@ export function Slider({
       step={step}
       className="relative flex h-5 w-full items-center"
     >
-      <RadixSlider.Track className="relative h-1 w-full rounded-full bg-slate-200">
-        <RadixSlider.Range className="absolute h-full rounded-full bg-blue-500" />
-      </RadixSlider.Track>
+      <PrimitiveSlider.Track className="relative h-1 w-full rounded-full bg-slate-200">
+        <PrimitiveSlider.Range className="absolute h-full rounded-full bg-blue-500" />
+      </PrimitiveSlider.Track>
       {thumbKeys.map((thumbKey, i) => (
-        <RadixSlider.Thumb
+        <PrimitiveSlider.Thumb
           key={thumbKey}
           className="block h-4 w-4 rounded-full border border-blue-500 bg-white shadow"
           aria-label={`Thumb ${i + 1}`}
         />
       ))}
-    </RadixSlider.Root>
+    </PrimitiveSlider.Root>
   );
 }

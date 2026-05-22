@@ -1,4 +1,15 @@
-export default {
+import { resolve } from 'node:path';
+import { defineConfig } from 'vitest/config';
+
+export default defineConfig({
+  resolve: {
+    alias: {
+      '@ui-construction-library/utils': resolve(
+        __dirname,
+        '../utils/src/index.ts'
+      ),
+    },
+  },
   test: {
     globals: true,
     environment: 'happy-dom',
@@ -14,4 +25,4 @@ export default {
       interopDefault: true,
     },
   },
-};
+});

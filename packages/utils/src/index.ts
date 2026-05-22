@@ -1,3 +1,4 @@
+export * from './date/calendar';
 export * from './date/format';
 export * from './date/parse';
 export * from './date/relative';

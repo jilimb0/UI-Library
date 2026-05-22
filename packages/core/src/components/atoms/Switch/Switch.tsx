@@ -1,6 +1,8 @@
-import type { SwitchProps as PrimitiveSwitchProps } from '@ui-construction-library/primitives';
+import {
+  Switch as PrimitiveSwitch,
+  type SwitchProps as PrimitiveSwitchProps,
+} from '@ui-construction-library/primitives';
 import { forwardRef, useId } from 'react';
-import { RadixSwitch } from '../../../adapters/radix';
 import { cn } from '../../../utils/cn';
 
 export interface SwitchProps extends PrimitiveSwitchProps {
@@ -19,7 +21,7 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
 
     return (
       <div className="inline-flex items-start gap-3">
-        <RadixSwitch.Root
+        <PrimitiveSwitch.Root
           id={switchId}
           ref={ref}
           disabled={disabled}
@@ -34,7 +36,7 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
           )}
           {...props}
         >
-          <RadixSwitch.Thumb
+          <PrimitiveSwitch.Thumb
             className={cn(
               'pointer-events-none block rounded-full bg-white shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-[100%] data-[state=unchecked]:translate-x-0',
               {
@@ -44,7 +46,7 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
               }
             )}
           />
-        </RadixSwitch.Root>
+        </PrimitiveSwitch.Root>
 
         {(label || description) && (
           <label htmlFor={switchId} className="cursor-pointer select-none">

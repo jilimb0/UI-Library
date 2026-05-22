@@ -13,7 +13,8 @@
 - [x] `@ui-construction-library/motion` — CSS / WAAPI motion layer
 - [x] `@ui-construction-library/dnd` — pointer-based DnD for Kanban
 - [x] `@ui-construction-library/icons` — owned SVG set (no `lucide-react` runtime)
-- [x] `cmdk` / `date-fns` — evaluated; retained as Tier-2 (documented in [dependency inventory](../guides/dependency-inventory.md))
+- [x] `cmdk` / `date-fns` — replaced (owned CommandPalette + utils calendar helpers)
+- [x] Adapter re-exports removed — `core` imports `@ui-construction-library/*` directly
 
 ### CI gates
 

@@ -1,6 +1,6 @@
 # ADR-0001: Adapter boundary for external UI runtime
 
-**Status:** Accepted  
+**Status:** Superseded (L3 — adapters removed, owned packages in `core`)  
 **Date:** 2026-05-22  
 **Owners:** `@ui-construction-library/core`
 

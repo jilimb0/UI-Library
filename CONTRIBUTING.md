@@ -42,7 +42,7 @@ Release channels: `pnpm publish:canary` / `pnpm publish:stable` (see [CANARY_REL
 
 ## Platform program
 
-We are moving toward [v1.0 self-owned](docs/guides/self-owned-platform.md) (controlled → owned primitives). Tier-1 UI deps must use `packages/core/src/adapters/*` only; see [dependency policy](docs/guides/dependency-policy.md).
+The library targets [v1.0 self-owned](docs/guides/self-owned-platform.md): UI primitives and behavior live in `@ui-construction-library/*`. See [dependency policy](docs/guides/dependency-policy.md).
 
 ## Required checks
 

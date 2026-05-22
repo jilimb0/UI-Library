@@ -1,5 +1,5 @@
+import { Popover as PrimitivePopover } from '@ui-construction-library/primitives';
 import type { ReactNode } from 'react';
-import { RadixPopover } from '../../../adapters/radix';
 
 export interface PopoverProps {
   trigger: ReactNode;
@@ -9,17 +9,17 @@ export interface PopoverProps {
 
 export function Popover({ trigger, content, side = 'bottom' }: PopoverProps) {
   return (
-    <RadixPopover.Root>
-      <RadixPopover.Trigger asChild>{trigger}</RadixPopover.Trigger>
-      <RadixPopover.Portal>
-        <RadixPopover.Content
+    <PrimitivePopover.Root>
+      <PrimitivePopover.Trigger asChild>{trigger}</PrimitivePopover.Trigger>
+      <PrimitivePopover.Portal>
+        <PrimitivePopover.Content
           side={side}
           sideOffset={8}
           className="z-50 rounded-md border border-slate-200 bg-white p-3 shadow-lg"
         >
           {content}
-        </RadixPopover.Content>
-      </RadixPopover.Portal>
-    </RadixPopover.Root>
+        </PrimitivePopover.Content>
+      </PrimitivePopover.Portal>
+    </PrimitivePopover.Root>
   );
 }

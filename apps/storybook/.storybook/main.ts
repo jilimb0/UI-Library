@@ -45,6 +45,10 @@ const config: StorybookConfig = {
           __dirname,
           '../../../packages/core/src/index.ts'
         ),
+        '@ui-construction-library/motion': resolve(
+          __dirname,
+          '../../../packages/motion/src/index.ts'
+        ),
       },
     },
   }),

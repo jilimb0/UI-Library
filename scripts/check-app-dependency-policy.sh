@@ -5,7 +5,7 @@ ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT_DIR"
 
 # Runtime UI packages apps must not declare directly (use @ui-construction-library/*).
-FORBIDDEN='@radix-ui/|@dnd-kit/|framer-motion|lucide-react|cmdk'
+FORBIDDEN='@radix-ui/|@dnd-kit/|framer-motion|lucide-react|cmdk|date-fns'
 
 violations=$(rg -n "\"($FORBIDDEN)" apps/*/package.json || true)
 

@@ -17,14 +17,15 @@
     "build": "rollup -c",
     "lint": "biome check src",
     "lint:fix": "biome check --write src",
-    "test": "echo \"@ui-construction-library/utils: no tests\"",
-    "test:coverage": "echo \"@ui-construction-library/utils: no tests\"",
+    "test": "vitest run --config ./vitest.config.ts",
+    "test:coverage": "vitest run --config ./vitest.config.ts --coverage",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^12.1.2",
     "@types/react": "catalog:",
     "rollup": "^4.34.8",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vitest": "catalog:"
   }
 }

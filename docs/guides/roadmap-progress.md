@@ -28,7 +28,7 @@
 
 ## Optional follow-ups (post-L3)
 
-- Remove thin `packages/core/src/adapters/*` re-exports (breaking-change window)
+- ~~Remove thin `packages/core/src/adapters/*` re-exports~~ (done)
 - Expand E2E matrix (keyboard paths, more Storybook stories)
 - Per-component docs in `docs/api/components.md`
 - Stricter bundle budgets per package (beyond current perf workflow)

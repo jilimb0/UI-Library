@@ -3,62 +3,49 @@
 Part of the [Self-Owned Platform program](./self-owned-platform.md). Full register: [dependency inventory](./dependency-inventory.md).
 
 ## Goal
-Reduce vendor lock-in while keeping release velocity and accessibility quality.
 
-## Current Model
-- Internal packages are first-class (`@ui-construction-library/*`).
-- External packages are allowed only when they provide one of:
-  - proven accessibility primitives,
-  - runtime performance benefits,
-  - ecosystem interoperability (React/Next/TanStack).
+Self-owned UI runtime: no third-party component libraries in `core` or apps.
 
-## Criticality Tiers
+## Current model
 
-### Tier 0 (Platform-critical)
+- UI primitives, motion, DnD, icons: `@ui-construction-library/*` (first-party).
+- Apps import UI only from `@ui-construction-library/*`.
+- Integrations stay in `packages/integrations/*`.
+
+## Criticality tiers
+
+### Tier 0 (platform-critical)
+
 - `react`, `react-dom`
 - `typescript`, `vite`, `rollup`, `vitest`, `pnpm`, `turbo`
 
-Policy:
-- Pin through workspace `catalog`.
-- Upgrade only with green CI and visual regression checks.
+Policy: pin via workspace `catalog`; upgrade with full CI.
 
-### Tier 1 (UI runtime-critical)
-- `@radix-ui/*`
-- `@dnd-kit/*`
-- `framer-motion`
-- `date-fns`
+### Tier 1 (formerly external UI — replaced)
 
-Policy:
-- Must be wrapped behind internal component APIs.
-- No direct usage from app surfaces unless explicitly approved.
+- `@radix-ui/*` → `@ui-construction-library/primitives`
+- `@dnd-kit/*` → `@ui-construction-library/dnd`
+- `framer-motion` → `@ui-construction-library/motion`
+- `lucide-react` → `@ui-construction-library/icons`
+- `cmdk` → owned `CommandPalette` implementation
+- `date-fns` → `@ui-construction-library/utils` calendar helpers
 
-### Tier 2 (Utility/support)
-- `clsx`, `tailwind-merge`, `class-variance-authority`, `zod`, `cmdk`, `lucide-react`
+Policy: **banned** in `packages/core` and `apps/*` (`pnpm check:deps`).
 
-Policy:
-- Keep usages isolated to `packages/core` or `packages/icons`.
-- Prefer thin wrappers and avoid hard-coupling app code.
+### Tier 2 (utility / support in `core`)
 
-## Independence Rules
-1. App workspaces (`apps/*`) should import from `@ui-construction-library/*` only for UI concerns.
-2. Tier-1 UI primitives in `packages/core` must enter only through `packages/core/src/adapters/*` (see [ADR-0001](../adr/0001-adapter-boundary-for-external-ui.md)).
-3. `pnpm check:deps` must pass before merge.
-4. New external dependency requires:
-- documented reason,
-- owner,
-- fallback/exit strategy,
-- bundle impact check.
+- `clsx`, `tailwind-merge`, `class-variance-authority`, `zod`
 
-## Package Naming Contract
-Public package names must match repository package manifests:
-- `@ui-construction-library/react-hook-form`
-- `@ui-construction-library/integration-tanstack-query`
-- `@ui-construction-library/integration-tanstack-router`
-- `@ui-construction-library/integration-i18n`
-- `@ui-construction-library/integration-next`
+Policy: isolated to `packages/core`; optional inline/fork later.
 
-## Quarterly Hardening Checklist
-- Audit direct external imports from `apps/*`.
-- Review transitive dependency growth and vulnerabilities.
-- Verify React/toolchain versions are aligned via `catalog`.
-- Re-run Storybook a11y checks and smoke tests after upgrades.
+## Independence rules
+
+1. App workspaces (`apps/*`) use `@ui-construction-library/*` only for UI.
+2. `packages/core` depends on first-party UI packages + Tier-2 utilities only.
+3. `pnpm check:deps` and `pnpm check:apps` must pass before merge.
+
+## CI
+
+```bash
+pnpm check:deps
+```

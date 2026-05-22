@@ -8,7 +8,7 @@ Ownership means **review authority, incident response, and roadmap accountabilit
 | Foundation | `@ui-construction-library/tokens` | tokens | core | Scales, semantic colors, CSS vars |
 | Icons | `@ui-construction-library/icons` | icons | core | Lucide today → SVG program Phase 1 |
 | Components | `@ui-construction-library/core` | core | — | Atoms → templates |
-| Adapters | `packages/core/src/adapters/*` | core | platform | Tier-1 boundary per ADR-0001 |
+| Utils (calendar) | `packages/utils/src/date/*` | utils | platform | Replaces `date-fns` in core |
 | Utils | `@ui-construction-library/utils` | core | — | Shared non-UI helpers |
 | Primitives (planned) | `@ui-construction-library/primitives` | core | a11y | Phase 2 — not yet extracted |
 | Motion (planned) | `@ui-construction-library/motion` | core | — | Phase 1 |

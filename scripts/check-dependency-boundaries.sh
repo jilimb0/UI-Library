@@ -15,7 +15,16 @@ if [[ -n "$violations" ]]; then
   exit 1
 fi
 
-pkg_violations=$(rg -n "\"@radix-ui/|\"@dnd-kit/|\"framer-motion\"|\"lucide-react\"" packages/core/package.json || true)
+pkg_violations=$(rg -n "\"@radix-ui/|\"@dnd-kit/|\"framer-motion\"|\"lucide-react\"|\"cmdk\"|\"date-fns\"" packages/core/package.json || true)
+
+import_violations=$(rg -n "from 'cmdk'|from \"cmdk\"|from 'date-fns'|from \"date-fns\"" packages/core/src \
+  -g '!**/*.stories.tsx' || true)
+
+if [[ -n "$import_violations" ]]; then
+  echo "Forbidden utility imports in packages/core (use @ui-construction-library/utils):"
+  echo "$import_violations"
+  exit 1
+fi
 
 if [[ -n "$pkg_violations" ]]; then
   echo "Tier-1 runtime dependencies still declared in packages/core/package.json:"

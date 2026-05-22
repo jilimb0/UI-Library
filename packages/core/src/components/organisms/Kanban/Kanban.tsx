@@ -1,12 +1,12 @@
-import type React from 'react';
-import { type ReactNode, useMemo, useState } from 'react';
 import {
   CSS,
   DndContext,
   type DragEndEvent,
   useDraggable,
   useDroppable,
-} from '../../../adapters/dnd';
+} from '@ui-construction-library/dnd';
+import type React from 'react';
+import { type ReactNode, useMemo, useState } from 'react';
 import { cn } from '../../../utils/cn';
 
 const DndContextCompat = DndContext as unknown as React.ComponentType<

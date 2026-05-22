@@ -1,7 +1,12 @@
-import { Command } from 'cmdk';
-import type React from 'react';
-import type { ReactNode } from 'react';
-import { RadixDialog as Dialog } from '../../../adapters/radix';
+import { Dialog } from '@ui-construction-library/primitives';
+import {
+  type KeyboardEvent,
+  type ReactNode,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 export interface CommandPaletteItem {
   id: string;
@@ -22,65 +27,131 @@ export interface CommandPaletteProps {
   groups: CommandPaletteGroup[];
 }
 
+function matchesQuery(item: CommandPaletteItem, query: string): boolean {
+  const q = query.trim().toLowerCase();
+  if (!q) return true;
+  if (item.label.toLowerCase().includes(q)) return true;
+  return (
+    item.keywords?.some((keyword) => keyword.toLowerCase().includes(q)) ?? false
+  );
+}
+
+function filterGroups(groups: CommandPaletteGroup[], query: string) {
+  return groups
+    .map((group) => ({
+      ...group,
+      items: group.items.filter((item) => matchesQuery(item, query)),
+    }))
+    .filter((group) => group.items.length > 0);
+}
+
 export function CommandPalette({
   open,
   onOpenChange,
   groups,
 }: CommandPaletteProps) {
-  const CommandRoot = Command as unknown as React.ComponentType<
-    React.ComponentProps<typeof Command>
-  >;
-  const CommandInput = Command.Input as unknown as React.ComponentType<
-    React.ComponentProps<typeof Command.Input>
-  >;
-  const CommandList = Command.List as unknown as React.ComponentType<
-    React.ComponentProps<typeof Command.List>
-  >;
-  const CommandEmpty = Command.Empty as unknown as React.ComponentType<
-    React.ComponentProps<typeof Command.Empty>
-  >;
-  const CommandGroup = Command.Group as unknown as React.ComponentType<
-    React.ComponentProps<typeof Command.Group>
-  >;
-  const CommandItem = Command.Item as unknown as React.ComponentType<
-    React.ComponentProps<typeof Command.Item>
-  >;
+  const [query, setQuery] = useState('');
+  const [activeIndex, setActiveIndex] = useState(0);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const filtered = useMemo(() => filterGroups(groups, query), [groups, query]);
+
+  const flatItems = useMemo(
+    () => filtered.flatMap((group) => group.items),
+    [filtered]
+  );
+
+  useEffect(() => {
+    if (open) {
+      setQuery('');
+      setActiveIndex(0);
+      requestAnimationFrame(() => inputRef.current?.focus());
+    }
+  }, [open]);
+
+  const selectItem = (item: CommandPaletteItem) => {
+    item.onSelect();
+    onOpenChange(false);
+  };
+
+  const onKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (flatItems.length === 0) return;
+
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      setActiveIndex((index) => (index + 1) % flatItems.length);
+    } else if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      setActiveIndex(
+        (index) => (index - 1 + flatItems.length) % flatItems.length
+      );
+    } else if (event.key === 'Enter') {
+      event.preventDefault();
+      const item = flatItems[activeIndex];
+      if (item) selectItem(item);
+    }
+  };
+
+  let itemOffset = 0;
 
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-40 bg-black/40" />
         <Dialog.Content className="fixed left-1/2 top-20 z-50 w-full max-w-xl -translate-x-1/2 rounded-lg bg-white p-2 shadow-xl">
-          <CommandRoot>
-            <CommandInput
-              className="w-full border-b border-slate-200 px-3 py-2 text-sm outline-none"
-              placeholder="Type a command..."
-            />
-            <CommandList className="max-h-80 overflow-auto p-1">
-              <CommandEmpty className="px-3 py-2 text-sm text-slate-500">
-                No results.
-              </CommandEmpty>
-              {groups.map((group) => (
-                <CommandGroup key={group.heading} heading={group.heading}>
-                  {group.items.map((item) => (
-                    <CommandItem
-                      key={item.id}
-                      value={item.label}
-                      keywords={item.keywords}
-                      onSelect={() => {
-                        item.onSelect();
-                        onOpenChange(false);
-                      }}
-                      className="flex cursor-pointer items-center gap-2 rounded px-3 py-2 text-sm data-[selected=true]:bg-slate-100"
-                    >
-                      {item.icon}
-                      <span>{item.label}</span>
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              ))}
-            </CommandList>
-          </CommandRoot>
+          <input
+            ref={inputRef}
+            type="search"
+            role="combobox"
+            aria-expanded
+            aria-controls="command-palette-list"
+            aria-autocomplete="list"
+            className="w-full border-b border-slate-200 px-3 py-2 text-sm outline-none"
+            placeholder="Type a command..."
+            value={query}
+            onChange={(event) => {
+              setQuery(event.target.value);
+              setActiveIndex(0);
+            }}
+            onKeyDown={onKeyDown}
+          />
+          <div
+            id="command-palette-list"
+            role="listbox"
+            className="max-h-80 overflow-auto p-1"
+          >
+            {flatItems.length === 0 ? (
+              <p className="px-3 py-2 text-sm text-slate-500">No results.</p>
+            ) : (
+              filtered.map((group) => (
+                <div key={group.heading} role="presentation">
+                  <p className="px-3 py-1 text-xs font-semibold text-slate-500">
+                    {group.heading}
+                  </p>
+                  {group.items.map((item) => {
+                    const index = itemOffset++;
+                    const active = index === activeIndex;
+                    return (
+                      <button
+                        key={item.id}
+                        type="button"
+                        role="option"
+                        aria-selected={active}
+                        className={`flex w-full cursor-pointer items-center gap-2 rounded px-3 py-2 text-left text-sm ${
+                          active ? 'bg-slate-100' : ''
+                        }`}
+                        onMouseEnter={() => setActiveIndex(index)}
+                        onClick={() => selectItem(item)}
+                      >
+                        {item.icon}
+                        <span>{item.label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              ))
+            )}
+          </div>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>

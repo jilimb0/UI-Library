@@ -1,5 +1,5 @@
+import { Dialog } from '@ui-construction-library/primitives';
 import type { ReactNode } from 'react';
-import { RadixDialog as Dialog } from '../../../adapters/radix';
 import { cn } from '../../../utils/cn';
 
 export interface DrawerProps {

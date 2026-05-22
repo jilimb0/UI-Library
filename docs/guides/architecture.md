@@ -54,16 +54,17 @@ See [Self-Owned Platform](./self-owned-platform.md) for maturity levels (L1 → 
 - Compound pattern for complex UI:
   - `Modal`, `Tabs`, `Accordion`
 
-## External runtime boundary (L1)
+## UI runtime boundary (L3)
 
-Tier-1 dependencies (`@radix-ui/*`, `@dnd-kit/*`, `framer-motion`, `lucide-react` in core) are imported only from:
+`@ui-construction-library/core` composes first-party packages only:
 
-- `packages/core/src/adapters/radix.ts`
-- `packages/core/src/adapters/dnd.ts`
-- `packages/core/src/adapters/motion.ts`
-- `packages/core/src/adapters/icons.ts`
+- `@ui-construction-library/primitives`
+- `@ui-construction-library/motion`
+- `@ui-construction-library/dnd`
+- `@ui-construction-library/icons`
+- `@ui-construction-library/utils` (calendar helpers)
 
-Enforced by `pnpm check:deps`. Details: [ADR-0001](../adr/0001-adapter-boundary-for-external-ui.md).
+Tier-1 UI vendors and `cmdk` / `date-fns` are banned (`pnpm check:deps`). Historical context: [ADR-0001](../adr/0001-adapter-boundary-for-external-ui.md).
 
 ## Theming
 
