@@ -298,17 +298,17 @@ function HeroSection() {
           ))}
         </div>
         <div className="hero-cta wrap-row">
-          <Link href={DOCS_URL} target="_blank" rel="noopener noreferrer">
+          <Link href={DOCS_URL}>
             <Button size="lg">Open docs</Button>
           </Link>
-          <Link href={GITHUB_URL} target="_blank" rel="noopener noreferrer">
+          <Link href={STORYBOOK_URL}>
             <Button variant="outline" size="lg">
-              View GitHub
+              Open Storybook
             </Button>
           </Link>
-          <Link href={STORYBOOK_URL} target="_blank" rel="noopener noreferrer">
+          <Link href={GITHUB_URL} target="_blank" rel="noopener noreferrer">
             <Button variant="ghost" size="lg">
-              Storybook
+              View GitHub
             </Button>
           </Link>
         </div>
