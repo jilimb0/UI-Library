@@ -1,4 +1,9 @@
-import { type KeyboardEvent, useMemo, useState } from 'react';
+import {
+  type CSSProperties,
+  type KeyboardEvent,
+  useMemo,
+  useState,
+} from 'react';
 import { cn } from '../../../utils/cn';
 
 export interface ComboBoxOption {
@@ -9,18 +14,26 @@ export interface ComboBoxOption {
 export interface ComboBoxProps {
   options: ComboBoxOption[];
   value?: string;
+  onChange?: (value: string) => void;
   onValueChange?: (value: string) => void;
   placeholder?: string;
   className?: string;
+  style?: CSSProperties;
 }
 
 export function ComboBox({
   options,
   value,
+  onChange,
   onValueChange,
   placeholder = 'Search...',
   className,
+  style,
 }: ComboBoxProps) {
+  const emitChange = (nextValue: string) => {
+    onValueChange?.(nextValue);
+    onChange?.(nextValue);
+  };
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [highlightedIndex, setHighlightedIndex] = useState(0);
@@ -54,7 +67,7 @@ export function ComboBox({
     }
     if (event.key === 'Enter' && filtered[highlightedIndex]) {
       event.preventDefault();
-      onValueChange?.(filtered[highlightedIndex].value);
+      emitChange(filtered[highlightedIndex].value);
       setQuery('');
       setOpen(false);
     }
@@ -64,7 +77,7 @@ export function ComboBox({
   };
 
   return (
-    <div className={cn('relative w-full', className)}>
+    <div className={cn('relative w-full', className)} style={style}>
       <input
         value={open ? query : selectedLabel}
         onFocus={() => setOpen(true)}
@@ -88,7 +101,7 @@ export function ComboBox({
                 <button
                   type="button"
                   onClick={() => {
-                    onValueChange?.(option.value);
+                    emitChange(option.value);
                     setQuery('');
                     setOpen(false);
                   }}

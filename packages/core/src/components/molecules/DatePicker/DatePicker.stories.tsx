@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, userEvent, within } from '@storybook/test';
 import { useState } from 'react';
 import DatePicker from './DatePicker';
 
@@ -60,5 +61,18 @@ export const WithTimezone: Story = {
     onChange: (date: Date) => {
       console.log('Selected date:', date);
     },
+  },
+};
+
+export const Interaction: Story = {
+  render: (args) => <DatePickerWrapper {...args} />,
+  args: {
+    selectedDate: null,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const nextMonth = canvas.getByRole('button', { name: 'Next month' });
+    await userEvent.click(nextMonth);
+    await expect(canvas.getByText(/^\w+\s\d{4}$/)).toBeInTheDocument();
   },
 };

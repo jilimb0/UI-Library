@@ -8,12 +8,12 @@ import { cn } from '../../../utils/cn';
 export interface SwitchProps extends PrimitiveSwitchProps {
   label?: string;
   description?: string;
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'default' | 'md' | 'lg';
 }
 
 export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
   (
-    { className, label, description, size = 'md', id, disabled, ...props },
+    { className, label, description, size = 'default', id, disabled, ...props },
     ref
   ) => {
     const generatedId = useId();
@@ -29,7 +29,7 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
             'switch',
             {
               'switch--sm': size === 'sm',
-              'switch--md': size === 'md',
+              'switch--md': size === 'default' || size === 'md',
               'switch--lg': size === 'lg',
             },
             className

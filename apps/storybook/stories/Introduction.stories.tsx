@@ -1,5 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Badge, Card, Heading, Text } from '@ui-construction-library/core';
+import {
+  Badge,
+  Card,
+  CrossSiteNav,
+  Heading,
+  Text,
+} from '@ui-construction-library/core';
 
 const highlights = [
   {
@@ -23,6 +29,7 @@ const highlights = [
 function Introduction() {
   return (
     <section className="stack-vertical" style={{ gap: 32 }}>
+      <CrossSiteNav current="storybook" demoHref="../" docsHref="../docs/" />
       <div className="stack-vertical" style={{ gap: 12, maxWidth: 760 }}>
         <Badge>Public entrypoint</Badge>
         <Heading

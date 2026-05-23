@@ -112,6 +112,27 @@
   color: var(--primary);
 }
 
+.button__spinner {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  margin-right: 0.375rem;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 9999px;
+  animation: button-spin 0.6s linear infinite;
+}
+
+@keyframes button-spin {
+  to { transform: rotate(360deg); }
+}
+
+.button__icon {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
 .input,
 .select,
 .textarea {
@@ -371,6 +392,10 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
 
 .dropdown-menu {
   margin-top: 0.25rem;
@@ -382,7 +407,27 @@
   box-shadow: var(--shadow-md);
 }
 
+.dropdown-menu--positioned {
+  position: absolute;
+  z-index: 10;
+  width: 100%;
+  max-height: 15rem;
+  overflow: auto;
+}
+
+.dropdown-trigger__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-left: 0.375rem;
+}
+
 .dropdown-menu__item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   padding: 0.5rem 1rem;
   font-size: 0.875rem;
   cursor: pointer;
@@ -458,6 +503,9 @@
   right: 1.5rem;
   bottom: 1.5rem;
   z-index: 70;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
   max-width: 24rem;
   border-radius: var(--radius, 2px);
   background-color: var(--card);
@@ -465,6 +513,43 @@
   padding: 0.75rem 1rem;
   box-shadow: var(--shadow-lg);
   border: 1px solid var(--border);
+}
+
+.toast__body {
+  flex: 1;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.toast__close {
+  flex-shrink: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--muted-foreground);
+  font-size: 1.125rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.toast__close:hover {
+  color: var(--foreground);
+}
+
+.toast--success {
+  border-left: 3px solid var(--success);
+}
+
+.toast--warning {
+  border-left: 3px solid var(--warning);
+}
+
+.toast--error {
+  border-left: 3px solid var(--error);
+}
+
+.toast--info {
+  border-left: 3px solid var(--info);
 }
 
 .pagination {
@@ -520,6 +605,22 @@
 .dropdown-menu__item--active {
   background-color: var(--primary);
   color: var(--primary-foreground);
+}
+
+.dropdown-menu__item--destructive {
+  color: var(--error);
+}
+
+.dropdown-menu__item--destructive:hover,
+.dropdown-menu__item--destructive:focus {
+  background-color: color-mix(in srgb, var(--error) 10%, transparent);
+  color: var(--error);
+}
+
+.dropdown-menu__item:disabled,
+.dropdown-menu__item[aria-disabled='true'] {
+  opacity: 0.5;
+  pointer-events: none;
 }
 
 @media (max-width: 768px) {
@@ -845,6 +946,17 @@ label,
   color: var(--primary-foreground);
 }
 
+.date-picker__day--disabled {
+  opacity: 0.35;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.date-picker__day:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 1px;
+}
+
 /* Accordion / tabs */
 .accordion-item {
   border-bottom: 1px solid var(--border);
@@ -1028,20 +1140,58 @@ label,
 
 .tooltip-bubble {
   position: absolute;
-  bottom: 100%;
+  z-index: 50;
   display: none;
-  margin-bottom: 0.5rem;
   padding: 0.25rem 0.5rem;
   border-radius: var(--radius, 2px);
   background: var(--foreground);
   color: var(--background);
   font-size: 0.75rem;
   white-space: nowrap;
+  pointer-events: none;
+}
+
+/* Side positioning — default is top */
+.tooltip-bubble,
+.tooltip-bubble--top {
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 0.375rem;
+}
+
+.tooltip-bubble--bottom {
+  top: 100%;
+  bottom: auto;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 0.375rem;
+  margin-bottom: 0;
+}
+
+.tooltip-bubble--left {
+  right: 100%;
+  bottom: auto;
+  left: auto;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-right: 0.375rem;
+  margin-bottom: 0;
+}
+
+.tooltip-bubble--right {
+  left: 100%;
+  bottom: auto;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: 0.375rem;
+  margin-bottom: 0;
 }
 
 .tooltip-trigger:hover .tooltip-bubble,
 .tooltip-trigger:focus-within .tooltip-bubble {
   display: block;
+  transition-delay: var(--tooltip-delay, 0ms);
 }
 
 /* Form controls */
@@ -1528,6 +1678,27 @@ label,
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--foreground);
+}
+
+.kanban-column__cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.kanban-card__title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+.kanban-card:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 1px;
+}
+
+.kanban-card[aria-grabbed='true'] {
+  opacity: 0.6;
 }
 
 .pagination-meta {

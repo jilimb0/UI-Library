@@ -66,7 +66,7 @@ describe('DatePicker Integration Tests', () => {
     const day15 = dateCells.find(
       (cell) =>
         cell.textContent === '15' &&
-        !(cell.className || '').includes('text-gray-400')
+        !(cell.className || '').includes('date-picker__day--outside')
     );
 
     expect(day15).toBeDefined();

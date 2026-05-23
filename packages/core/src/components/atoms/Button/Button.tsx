@@ -1,5 +1,10 @@
 import { cva, type VariantProps } from 'class-variance-authority';
-import type { ButtonHTMLAttributes, ElementType, ReactNode } from 'react';
+import {
+  type ButtonHTMLAttributes,
+  type ElementType,
+  forwardRef,
+  type ReactNode,
+} from 'react';
 import { cn } from '../../../utils/cn';
 
 const buttonVariants = cva('button', {
@@ -38,35 +43,45 @@ export interface ButtonProps
   rightIcon?: ReactNode;
 }
 
-function Button({
-  as,
-  className,
-  variant,
-  size,
-  loading = false,
-  leftIcon,
-  rightIcon,
-  disabled,
-  children,
-  ...props
-}: ButtonProps) {
-  const Component = (as ?? 'button') as ElementType;
-  const isNativeButton = Component === 'button';
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  (
+    {
+      as,
+      className,
+      variant,
+      size,
+      loading = false,
+      leftIcon,
+      rightIcon,
+      disabled,
+      children,
+      ...props
+    },
+    ref
+  ) => {
+    const Component = (as ?? 'button') as ElementType;
+    const isNativeButton = Component === 'button';
 
-  return (
-    <Component
-      className={cn(buttonVariants({ variant, size, className }))}
-      disabled={isNativeButton ? disabled || loading : undefined}
-      {...props}
-    >
-      {loading && (
-        <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-      )}
-      {leftIcon && <span className="mr-2">{leftIcon}</span>}
-      {children}
-      {rightIcon && <span className="ml-2">{rightIcon}</span>}
-    </Component>
-  );
-}
+    return (
+      <Component
+        ref={ref}
+        className={cn(buttonVariants({ variant, size, className }))}
+        disabled={isNativeButton ? disabled || loading : undefined}
+        aria-disabled={
+          !isNativeButton && (disabled || loading) ? true : undefined
+        }
+        aria-busy={loading ? true : undefined}
+        {...props}
+      >
+        {loading && <span className="button__spinner" aria-hidden="true" />}
+        {leftIcon && <span className="button__icon">{leftIcon}</span>}
+        {children}
+        {rightIcon && <span className="button__icon">{rightIcon}</span>}
+      </Component>
+    );
+  }
+);
+
+Button.displayName = 'Button';
 
 export { Button, buttonVariants };

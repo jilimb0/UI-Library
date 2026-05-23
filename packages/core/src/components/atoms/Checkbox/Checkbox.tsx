@@ -9,7 +9,7 @@ export interface CheckboxProps
   error?: boolean;
   errorMessage?: string;
   indeterminate?: boolean;
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'default' | 'md' | 'lg';
   variant?: 'default' | 'success' | 'warning' | 'danger';
 }
 
@@ -21,7 +21,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
       description,
       error,
       errorMessage,
-      size = 'md',
+      size = 'default',
       ...props
     },
     ref
@@ -54,8 +54,8 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
           />
 
           <CheckIcon
-            width={size === 'sm' ? 12 : size === 'md' ? 16 : 20}
-            height={size === 'sm' ? 12 : size === 'md' ? 16 : 20}
+            width={size === 'sm' ? 12 : size === 'lg' ? 20 : 16}
+            height={size === 'sm' ? 12 : size === 'lg' ? 20 : 16}
             preserveAspectRatio="xMidYMid meet"
           />
         </div>

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, userEvent, within } from '@storybook/test';
 import { useState } from 'react';
 import { Pagination } from './Pagination';
 
@@ -27,5 +28,14 @@ export const Default: Story = {
       );
     };
     return <Demo />;
+  },
+};
+
+export const Interaction: Story = {
+  render: Default.render,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole('button', { name: 'Next' }));
+    await expect(canvas.getByText('Page 4 of 12')).toBeInTheDocument();
   },
 };

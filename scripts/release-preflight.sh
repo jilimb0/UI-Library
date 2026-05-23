@@ -22,6 +22,9 @@ pnpm test
 echo "[preflight] build"
 pnpm build
 
+echo "[preflight] bundle budgets"
+pnpm check:bundle
+
 echo "[preflight] demo typecheck"
 pnpm demo:typecheck
 

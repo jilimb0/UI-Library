@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, userEvent, within } from '@storybook/test';
 import { Dropdown } from './Dropdown';
 
 const mockItems = [
@@ -50,6 +51,20 @@ export const WithOnChange: Story = {
     onChange: (value) => {
       console.log('Selected:', value);
     },
+  },
+};
+
+export const Interaction: Story = {
+  args: {
+    items: mockItems,
+    placeholder: 'Select an option',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const trigger = canvas.getByRole('button');
+    await userEvent.click(trigger);
+    await userEvent.click(canvas.getByText('Option 2'));
+    await expect(canvas.getByRole('button')).toHaveTextContent('Option 2');
   },
 };
 

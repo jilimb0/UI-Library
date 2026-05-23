@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import { cn } from '../../../utils/cn';
 
 export interface StepperItem {
@@ -10,19 +11,27 @@ export interface StepperProps {
   steps: StepperItem[];
   activeStep: number;
   onStepChange?: (step: number) => void;
+  onChange?: (step: number) => void;
   orientation?: 'horizontal' | 'vertical';
   linear?: boolean;
   className?: string;
+  style?: CSSProperties;
 }
 
 export function Stepper({
   steps,
   activeStep,
   onStepChange,
+  onChange,
   orientation = 'horizontal',
   linear = true,
   className,
+  style,
 }: StepperProps) {
+  const emitStepChange = (nextStep: number) => {
+    onStepChange?.(nextStep);
+    onChange?.(nextStep);
+  };
   return (
     <div
       className={cn(
@@ -30,6 +39,7 @@ export function Stepper({
         orientation === 'vertical' && 'stepper--vertical',
         className
       )}
+      style={style}
     >
       {steps.map((step, index) => {
         const isActive = index === activeStep;
@@ -41,7 +51,7 @@ export function Stepper({
             key={step.id}
             type="button"
             disabled={disabled}
-            onClick={() => onStepChange?.(index)}
+            onClick={() => emitStepChange(index)}
             className="stepper__step"
           >
             <span

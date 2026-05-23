@@ -1,3 +1,4 @@
+import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -8,42 +9,54 @@ const repoRoot = path.resolve(
 
 /** Shared Vite aliases for demo, docs and Storybook apps. */
 export function libraryAliases() {
+  const preferDist = process.env.UI_LIBRARY_PREFER_DIST === 'true';
+  const resolveEntry = (srcPath: string, distPath: string) => {
+    const srcAbs = path.resolve(repoRoot, srcPath);
+    const distAbs = path.resolve(repoRoot, distPath);
+
+    if (!preferDist) {
+      return srcAbs;
+    }
+
+    return existsSync(distAbs) ? distAbs : srcAbs;
+  };
+
   return {
-    '@ui-construction-library/core': path.resolve(
-      repoRoot,
-      'packages/core/src'
+    '@ui-construction-library/core': resolveEntry(
+      'packages/core/src',
+      'packages/core/dist/index.esm.js'
     ),
-    '@ui-construction-library/core/styles': path.resolve(
-      repoRoot,
-      'packages/core/src/styles/index.css'
+    '@ui-construction-library/core/styles': resolveEntry(
+      'packages/core/src/styles/index.css',
+      'packages/core/dist/styles.css'
     ),
-    '@ui-construction-library/icons': path.resolve(
-      repoRoot,
-      'packages/icons/src'
+    '@ui-construction-library/icons': resolveEntry(
+      'packages/icons/src',
+      'packages/icons/dist/index.esm.js'
     ),
-    '@ui-construction-library/tokens': path.resolve(
-      repoRoot,
-      'packages/tokens/src'
+    '@ui-construction-library/tokens': resolveEntry(
+      'packages/tokens/src',
+      'packages/tokens/dist/index.esm.js'
     ),
-    '@ui-construction-library/utils': path.resolve(
-      repoRoot,
-      'packages/utils/src'
+    '@ui-construction-library/utils': resolveEntry(
+      'packages/utils/src',
+      'packages/utils/dist/index.esm.js'
     ),
-    '@ui-construction-library/motion': path.resolve(
-      repoRoot,
-      'packages/motion/src'
+    '@ui-construction-library/motion': resolveEntry(
+      'packages/motion/src',
+      'packages/motion/dist/index.esm.js'
     ),
-    '@ui-construction-library/primitives': path.resolve(
-      repoRoot,
-      'packages/primitives/src'
+    '@ui-construction-library/primitives': resolveEntry(
+      'packages/primitives/src',
+      'packages/primitives/dist/index.esm.js'
     ),
-    '@ui-construction-library/dnd': path.resolve(
-      repoRoot,
-      'packages/dnd/src/index.tsx'
+    '@ui-construction-library/dnd': resolveEntry(
+      'packages/dnd/src/index.tsx',
+      'packages/dnd/dist/index.esm.js'
     ),
-    '@ui-construction-library/react-hook-form': path.resolve(
-      repoRoot,
-      'packages/integrations/react-hook-form/src'
+    '@ui-construction-library/react-hook-form': resolveEntry(
+      'packages/integrations/react-hook-form/src',
+      'packages/integrations/react-hook-form/dist/index.esm.js'
     ),
   };
 }

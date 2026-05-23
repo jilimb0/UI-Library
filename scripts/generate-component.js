@@ -3,44 +3,207 @@
 const fs = require('node:fs');
 const path = require('node:path');
 
-const componentName = process.argv[2];
+const category = process.argv[2];
+const componentName = process.argv[3];
 
-if (!componentName) {
-  console.error('Please provide a component name');
+if (!category || !componentName) {
+  console.error(
+    'Usage: node scripts/generate-component.js <atoms|molecules|organisms> <ComponentName>'
+  );
   process.exit(1);
 }
 
+const validCategories = ['atoms', 'molecules', 'organisms'];
+if (!validCategories.includes(category)) {
+  console.error(
+    `Invalid category. Must be one of: ${validCategories.join(', ')}`
+  );
+  process.exit(1);
+}
+
+const projectRoot = path.join(__dirname, '..');
 const componentDir = path.join(
-  __dirname,
-  '..',
+  projectRoot,
   'packages',
+  'core',
+  'src',
   'components',
+  category,
   componentName
 );
 
 if (fs.existsSync(componentDir)) {
-  console.error('Component already exists');
+  console.error(`Component directory already exists: ${componentDir}`);
   process.exit(1);
 }
 
+// 1. Create directory
 fs.mkdirSync(componentDir, { recursive: true });
 
-const componentContent = `import React from 'react';
+// 2. Component File content (forwardRef, cn integration, semantic layout)
+const componentContent = `import { forwardRef, type HTMLAttributes } from 'react';
+import { cn } from '../../../utils/cn';
 
-interface ${componentName}Props {
-  children?: ReactNode;
+export interface ${componentName}Props extends HTMLAttributes<HTMLDivElement> {
+  disabled?: boolean;
 }
 
-const ${componentName}: FC<${componentName}Props> = ({ children }) => {
-  return <div>{children}</div>;
-};
+export const ${componentName} = forwardRef<HTMLDivElement, ${componentName}Props>(
+  ({ className, disabled, children, ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          '${componentName.toLowerCase()}',
+          disabled && '${componentName.toLowerCase()}--disabled',
+          className
+        )}
+        aria-disabled={disabled || undefined}
+        {...props}
+      >
+        {children}
+      </div>
+    );
+  }
+);
+
+${componentName}.displayName = '${componentName}';
 
 export default ${componentName};
 `;
 
+// 3. Index File content
+const indexContent = `export * from './${componentName}';
+`;
+
+// 4. Test File content (including jest-axe check)
+const testContent = `import { render, screen } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
+import { ${componentName} } from './${componentName}';
+import { axe } from 'jest-axe';
+import '@testing-library/jest-dom';
+
+describe('${componentName}', () => {
+  it('renders correctly', () => {
+    render(<${componentName}>Hello World</${componentName}>);
+    expect(screen.getByText('Hello World')).toBeInTheDocument();
+  });
+
+  it('should have no accessibility violations', async () => {
+    const { container } = render(<${componentName}>Hello World</${componentName}>);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+});
+`;
+
+// 5. Story File content
+const storyContent = `import type { Meta, StoryObj } from '@storybook/react-vite';
+import { ${componentName} } from './${componentName}';
+
+const meta: Meta<typeof ${componentName}> = {
+  title: 'Components/${category.charAt(0).toUpperCase() + category.slice(1)}/${componentName}',
+  component: ${componentName},
+  tags: ['autodocs'],
+  argTypes: {
+    disabled: { control: 'boolean' },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof ${componentName}>;
+
+export const Default: Story = {
+  args: {
+    children: 'The ${componentName} component',
+    disabled: false,
+  },
+};
+`;
+
+// 6. Docs content file
+const docsContent = `# ${componentName}
+
+Описание компонента ${componentName}.
+
+## Пример использования
+
+\`\`\`tsx
+import { ${componentName} } from '@ui-construction-library/core';
+
+export default function Demo() {
+  return (
+    <${componentName}>
+      Контент компонента
+    </${componentName}>
+  );
+}
+\`\`\`
+`;
+
+// Write the files
 fs.writeFileSync(
   path.join(componentDir, `${componentName}.tsx`),
   componentContent
 );
+fs.writeFileSync(path.join(componentDir, 'index.ts'), indexContent);
+fs.writeFileSync(
+  path.join(componentDir, `${componentName}.test.tsx`),
+  testContent
+);
+fs.writeFileSync(
+  path.join(componentDir, `${componentName}.stories.tsx`),
+  storyContent
+);
 
-console.log(`${componentName} component created successfully.`);
+// Write docs md file
+const docsDir = path.join(projectRoot, 'apps', 'docs', 'content', category);
+if (!fs.existsSync(docsDir)) {
+  fs.mkdirSync(docsDir, { recursive: true });
+}
+fs.writeFileSync(
+  path.join(docsDir, `${componentName.toLowerCase()}.md`),
+  docsContent
+);
+
+// 7. Append export to category index file
+const categoryIndexPath = path.join(
+  projectRoot,
+  'packages',
+  'core',
+  'src',
+  'components',
+  category,
+  'index.ts'
+);
+if (fs.existsSync(categoryIndexPath)) {
+  let exports = fs.readFileSync(categoryIndexPath, 'utf8');
+  const exportLine = `export * from './${componentName}';\n`;
+  if (!exports.includes(exportLine)) {
+    exports += exportLine;
+    fs.writeFileSync(categoryIndexPath, exports, 'utf8');
+  }
+}
+
+console.log(
+  `[OK] Component "${componentName}" generated successfully in ${category}.`
+);
+console.log(
+  `- Created Component: packages/core/src/components/${category}/${componentName}/${componentName}.tsx`
+);
+console.log(
+  `- Created Index:     packages/core/src/components/${category}/${componentName}/index.ts`
+);
+console.log(
+  `- Created Test:      packages/core/src/components/${category}/${componentName}/${componentName}.test.tsx`
+);
+console.log(
+  `- Created Story:     packages/core/src/components/${category}/${componentName}/${componentName}.stories.tsx`
+);
+console.log(
+  `- Created Docs:      apps/docs/content/${category}/${componentName.toLowerCase()}.md`
+);
+console.log(
+  `- Registered export in packages/core/src/components/${category}/index.ts`
+);

@@ -1,5 +1,5 @@
 import { cva, type VariantProps } from 'class-variance-authority';
-import type { ElementType, HTMLAttributes } from 'react';
+import { type ElementType, forwardRef, type HTMLAttributes } from 'react';
 import { cn } from '../../../utils/cn';
 
 const textVariants = cva('text', {
@@ -7,6 +7,7 @@ const textVariants = cva('text', {
     size: {
       xs: 'text--xs',
       sm: 'text--sm',
+      default: '',
       base: '',
       lg: 'text--lg',
       xl: 'text--xl',
@@ -19,7 +20,7 @@ const textVariants = cva('text', {
     },
   },
   defaultVariants: {
-    size: 'base',
+    size: 'default',
     weight: 'normal',
   },
 });
@@ -30,14 +31,19 @@ export interface TextProps
   as?: ElementType;
 }
 
-const Text = ({ as, size, weight, className, ...props }: TextProps) => {
-  const Component = (as ?? 'p') as ElementType;
-  return (
-    <Component
-      className={cn(textVariants({ size, weight, className }))}
-      {...props}
-    />
-  );
-};
+const Text = forwardRef<HTMLElement, TextProps>(
+  ({ as, size, weight, className, ...props }, ref) => {
+    const Component = (as ?? 'p') as ElementType;
+    return (
+      <Component
+        ref={ref}
+        className={cn(textVariants({ size, weight, className }))}
+        {...props}
+      />
+    );
+  }
+);
+
+Text.displayName = 'Text';
 
 export { Text, textVariants };

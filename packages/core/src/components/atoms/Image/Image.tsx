@@ -1,4 +1,4 @@
-import { type ImgHTMLAttributes, useState } from 'react';
+import { forwardRef, type ImgHTMLAttributes, useState } from 'react';
 import { cn } from '../../../utils/cn';
 
 export interface ImageProps extends ImgHTMLAttributes<HTMLImageElement> {
@@ -6,32 +6,42 @@ export interface ImageProps extends ImgHTMLAttributes<HTMLImageElement> {
   aspectRatio?: string;
 }
 
-export function Image({
-  fallbackSrc,
-  className,
-  aspectRatio,
-  loading = 'lazy',
-  style,
-  onError,
-  ...props
-}: ImageProps) {
-  const [failed, setFailed] = useState(false);
-  return (
-    <div
-      className={cn('overflow-hidden', className)}
-      style={{ aspectRatio, ...style }}
-    >
-      <img
-        alt=""
-        {...props}
-        loading={loading}
-        src={failed && fallbackSrc ? fallbackSrc : props.src}
-        onError={(e) => {
-          setFailed(true);
-          onError?.(e);
-        }}
-        className="h-full w-full object-cover"
-      />
-    </div>
-  );
-}
+const Image = forwardRef<HTMLDivElement, ImageProps>(
+  (
+    {
+      fallbackSrc,
+      className,
+      aspectRatio,
+      loading = 'lazy',
+      style,
+      onError,
+      ...props
+    },
+    ref
+  ) => {
+    const [failed, setFailed] = useState(false);
+    return (
+      <div
+        ref={ref}
+        className={cn('image-wrapper', className)}
+        style={{ aspectRatio, overflow: 'hidden', ...style }}
+      >
+        <img
+          alt=""
+          {...props}
+          loading={loading}
+          src={failed && fallbackSrc ? fallbackSrc : props.src}
+          onError={(e) => {
+            setFailed(true);
+            onError?.(e);
+          }}
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+        />
+      </div>
+    );
+  }
+);
+
+Image.displayName = 'Image';
+
+export { Image };

@@ -14,8 +14,8 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "noFallthroughCasesInSwitch": true,
-    "baseUrl": ".",
     "ignoreDeprecations": "6.0",
+    "baseUrl": ".",
     "paths": {
       "@ui-construction-library/core": ["packages/core/src"],
       "@ui-construction-library/utils": ["packages/utils/src"],

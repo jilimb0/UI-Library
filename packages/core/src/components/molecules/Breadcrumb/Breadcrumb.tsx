@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import { cn } from '../../../utils/cn';
 
 export interface BreadcrumbItem {
@@ -12,15 +12,21 @@ export interface BreadcrumbProps {
   items: BreadcrumbItem[];
   separator?: ReactNode;
   className?: string;
+  style?: CSSProperties;
 }
 
 export function Breadcrumb({
   items,
   separator = '/',
   className,
+  style,
 }: BreadcrumbProps) {
   return (
-    <nav aria-label="Breadcrumb" className={cn('breadcrumb', className)}>
+    <nav
+      aria-label="Breadcrumb"
+      className={cn('breadcrumb', className)}
+      style={style}
+    >
       <ol className="inline-cluster">
         {items.map((item, index) => {
           const content = item.href ? (

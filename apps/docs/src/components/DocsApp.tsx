@@ -150,7 +150,7 @@ const COMPONENTS: ComponentDoc[] = [
       },
       {
         name: 'size',
-        type: `'sm' | 'md' | 'lg'`,
+        type: `'sm' | 'default' | 'lg'`,
         description: 'Control density across layouts.',
       },
       {
@@ -227,8 +227,13 @@ const COMPONENTS: ComponentDoc[] = [
         type: '(date: Date | null) => void',
         description: 'Selection callback.',
       },
+      {
+        name: 'className / style',
+        type: 'string / CSSProperties',
+        description: 'Optional layout and visual overrides.',
+      },
     ],
-    code: `<DatePicker selectedDate={value} onChange={setValue} />`,
+    code: `<DatePicker selectedDate={value} onChange={setValue} className="w-full" />`,
   },
   {
     name: 'DataTable',

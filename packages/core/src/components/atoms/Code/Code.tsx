@@ -1,6 +1,12 @@
-import type { HTMLAttributes } from 'react';
+import { forwardRef, type HTMLAttributes } from 'react';
 import { cn } from '../../../utils/cn';
 
-export function Code({ className, ...props }: HTMLAttributes<HTMLElement>) {
-  return <code className={cn('code', className)} {...props} />;
-}
+const Code = forwardRef<HTMLElement, HTMLAttributes<HTMLElement>>(
+  ({ className, ...props }, ref) => {
+    return <code ref={ref} className={cn('code', className)} {...props} />;
+  }
+);
+
+Code.displayName = 'Code';
+
+export { Code };

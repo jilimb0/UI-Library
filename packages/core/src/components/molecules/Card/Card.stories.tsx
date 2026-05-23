@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, userEvent, within } from '@storybook/test';
 import { Button } from '../../atoms/Button';
 import { Heading } from '../../atoms/Heading';
 import { Text } from '../../atoms/Text';
@@ -56,5 +57,23 @@ export const WithPadding: Story = {
         <Text className="mt-2">This card has more padding.</Text>
       </div>
     ),
+  },
+};
+
+export const Interaction: Story = {
+  args: {
+    children: (
+      <div className="p-6">
+        <Heading level={3}>Interactive Card</Heading>
+        <Text className="mt-2 mb-4">Trigger action inside a card.</Text>
+        <Button size="sm">Action</Button>
+      </div>
+    ),
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const action = canvas.getByRole('button', { name: 'Action' });
+    await userEvent.click(action);
+    await expect(action).toBeInTheDocument();
   },
 };

@@ -75,9 +75,39 @@ const Content = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
     const { setOpen, position } = useContextMenu();
 
     useEffect(() => {
+      setTimeout(() => {
+        const firstItem = document.querySelector(
+          '[role="menuitem"]'
+        ) as HTMLElement;
+        firstItem?.focus();
+      }, 50);
+    }, []);
+
+    useEffect(() => {
       const close = () => setOpen(false);
       const onKey = (e: KeyboardEvent) => {
-        if (e.key === 'Escape') setOpen(false);
+        if (e.key === 'Escape') {
+          setOpen(false);
+          return;
+        }
+
+        const items = Array.from(
+          document.querySelectorAll('[role="menuitem"]')
+        ) as HTMLElement[];
+        if (items.length === 0) return;
+        const currentIndex = items.indexOf(
+          document.activeElement as HTMLElement
+        );
+
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          const nextIndex = (currentIndex + 1) % items.length;
+          items[nextIndex]?.focus();
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          const prevIndex = (currentIndex - 1 + items.length) % items.length;
+          items[prevIndex]?.focus();
+        }
       };
       window.addEventListener('click', close);
       window.addEventListener('keydown', onKey);

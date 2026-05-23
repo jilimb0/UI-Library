@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, userEvent, within } from '@storybook/test';
 import { useState } from 'react';
 import { Button } from '../../atoms/Button';
 import { Tabs } from './Tabs';
@@ -48,5 +49,14 @@ export const Default: Story = {
         </div>
       </div>
     );
+  },
+};
+
+export const Interaction: Story = {
+  render: Default.render,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole('button', { name: 'Tab 2' }));
+    await expect(canvas.getByText('Content for Tab 2')).toBeInTheDocument();
   },
 };

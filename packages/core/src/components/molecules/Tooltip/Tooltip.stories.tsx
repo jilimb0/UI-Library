@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, userEvent, within } from '@storybook/test';
 import { Button } from '../../atoms/Button';
 import { Tooltip } from './Tooltip';
 
@@ -34,5 +35,18 @@ export const WithLongText: Story = {
     content:
       'This is a longer tooltip message that provides more detailed information about the element.',
     children: <Button variant="secondary">Learn More</Button>,
+  },
+};
+
+export const Interaction: Story = {
+  args: {
+    content: 'Tooltip content',
+    children: <Button>Hover me</Button>,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const trigger = canvas.getByRole('button', { name: 'Hover me' });
+    await userEvent.hover(trigger);
+    await expect(canvas.getByText('Tooltip content')).toBeInTheDocument();
   },
 };

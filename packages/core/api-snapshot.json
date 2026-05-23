@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-22T17:20:15.614Z",
+  "generatedAt": "2026-05-23T10:40:13.905Z",
   "package": "@ui-construction-library/core",
   "barrelExports": [
     "./animations",
@@ -8,7 +8,9 @@
     "./styles",
     "./themes",
     "./types",
-    "./utils"
+    "./utils",
+    "CrossSiteNav",
+    "CrossSiteNavProps"
   ],
   "componentModules": [
     "atoms/Avatar",

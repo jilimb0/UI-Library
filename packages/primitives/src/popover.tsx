@@ -104,18 +104,56 @@ const Content = forwardRef<
     top: 0,
     left: 0,
   });
+  const contentRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const trigger = triggerRef.current;
+    const content = contentRef.current;
     if (!trigger) return;
     const rect = trigger.getBoundingClientRect();
-    const offsets = {
-      top: { top: rect.top - sideOffset, left: rect.left },
-      bottom: { top: rect.bottom + sideOffset, left: rect.left },
-      left: { top: rect.top, left: rect.left - sideOffset },
-      right: { top: rect.top, left: rect.right + sideOffset },
-    };
-    setPosition(offsets[side]);
+
+    let top = rect.bottom + sideOffset;
+    let left = rect.left;
+
+    if (side === 'top') {
+      top = rect.top - sideOffset;
+      left = rect.left;
+    } else if (side === 'left') {
+      top = rect.top;
+      left = rect.left - sideOffset;
+    } else if (side === 'right') {
+      top = rect.top;
+      left = rect.right + sideOffset;
+    }
+
+    if (content) {
+      const contentRect = content.getBoundingClientRect();
+
+      // Horizontal collision protection
+      if (left < 4) {
+        left = 4;
+      } else if (left + contentRect.width > window.innerWidth - 4) {
+        left = window.innerWidth - contentRect.width - 4;
+      }
+
+      // Vertical collision protection and auto-flipping
+      if (
+        side === 'bottom' &&
+        top + contentRect.height > window.innerHeight - 4
+      ) {
+        const topFit = rect.top - sideOffset - contentRect.height;
+        if (topFit >= 4) {
+          top = topFit;
+        }
+      } else if (side === 'top' && top < 4) {
+        const bottomFit = rect.bottom + sideOffset;
+        if (bottomFit + contentRect.height <= window.innerHeight - 4) {
+          top = bottomFit;
+        }
+      }
+    }
+
+    setPosition({ top, left });
   }, [side, sideOffset, triggerRef]);
 
   useEffect(() => {
@@ -137,7 +175,12 @@ const Content = forwardRef<
 
   return (
     <div
-      ref={ref}
+      ref={(node) => {
+        contentRef.current = node;
+        if (typeof ref === 'function') ref(node);
+        else if (ref)
+          (ref as MutableRefObject<HTMLDivElement | null>).current = node;
+      }}
       role="dialog"
       style={{
         position: 'fixed',

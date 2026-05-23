@@ -1,8 +1,11 @@
-import { useMemo, useState } from 'react';
+import { type CSSProperties, useMemo, useState } from 'react';
 
 export interface ColorPickerProps {
   value?: string;
   onChange?: (value: string) => void;
+  onValueChange?: (value: string) => void;
+  className?: string;
+  style?: CSSProperties;
 }
 
 function hexToRgb(hex: string) {
@@ -18,18 +21,25 @@ function hexToRgb(hex: string) {
   return { r: (num >> 16) & 255, g: (num >> 8) & 255, b: num & 255 };
 }
 
-export function ColorPicker({ value = '#3b82f6', onChange }: ColorPickerProps) {
+export function ColorPicker({
+  value = '#3b82f6',
+  onChange,
+  onValueChange,
+  className,
+  style,
+}: ColorPickerProps) {
   const [color, setColor] = useState(value);
   const rgb = useMemo(() => hexToRgb(color), [color]);
 
   return (
-    <div className="stack-vertical">
+    <div className={className ?? 'stack-vertical'} style={style}>
       <input
         type="color"
         value={color}
         onChange={(e) => {
           setColor(e.target.value);
           onChange?.(e.target.value);
+          onValueChange?.(e.target.value);
         }}
         className="color-picker__input"
       />
@@ -39,6 +49,7 @@ export function ColorPicker({ value = '#3b82f6', onChange }: ColorPickerProps) {
         onChange={(e) => {
           setColor(e.target.value);
           onChange?.(e.target.value);
+          onValueChange?.(e.target.value);
         }}
         className="input"
       />

@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import { type DragEvent, useMemo, useState } from 'react';
 import { cn } from '../../../utils/cn';
 
@@ -5,16 +6,20 @@ export interface FileUploadProps {
   multiple?: boolean;
   accept?: string;
   maxSizeMb?: number;
+  onChange?: (files: File[]) => void;
   onFilesChange?: (files: File[]) => void;
   className?: string;
+  style?: CSSProperties;
 }
 
 export function FileUpload({
   multiple,
   accept,
   maxSizeMb = 10,
+  onChange,
   onFilesChange,
   className,
+  style,
 }: FileUploadProps) {
   const [files, setFiles] = useState<File[]>([]);
   const [isOver, setIsOver] = useState(false);
@@ -28,6 +33,7 @@ export function FileUpload({
     );
     const next = multiple ? valid : valid.slice(0, 1);
     setFiles(next);
+    onChange?.(next);
     onFilesChange?.(next);
   };
 
@@ -38,7 +44,7 @@ export function FileUpload({
   };
 
   return (
-    <div className={cn('stack-vertical', className)}>
+    <div className={cn('stack-vertical', className)} style={style}>
       <label
         onDragOver={(e) => {
           e.preventDefault();

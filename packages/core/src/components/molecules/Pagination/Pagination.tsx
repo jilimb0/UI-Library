@@ -1,14 +1,17 @@
-import type { ChangeEvent } from 'react';
+import { type ChangeEvent, forwardRef } from 'react';
 import { cn } from '../../../utils/cn';
 
 export interface PaginationProps {
   page: number;
   totalPages: number;
+  onChange?: (page: number) => void;
+  onValueChange?: (page: number) => void;
   onPageChange: (page: number) => void;
   pageSize?: number;
   pageSizeOptions?: number[];
   onPageSizeChange?: (pageSize: number) => void;
   className?: string;
+  style?: React.CSSProperties;
 }
 
 function buildVisiblePages(
@@ -30,99 +33,116 @@ function buildVisiblePages(
   return pages;
 }
 
-export function Pagination({
-  page,
-  totalPages,
-  onPageChange,
-  pageSize,
-  pageSizeOptions = [10, 20, 50, 100],
-  onPageSizeChange,
-  className,
-}: PaginationProps) {
-  const visiblePages = buildVisiblePages(page, totalPages);
-  const canPrev = page > 1;
-  const canNext = page < totalPages;
+export const Pagination = forwardRef<HTMLDivElement, PaginationProps>(
+  (
+    {
+      page,
+      totalPages,
+      onChange,
+      onValueChange,
+      onPageChange,
+      pageSize,
+      pageSizeOptions = [10, 20, 50, 100],
+      onPageSizeChange,
+      className,
+      style,
+    },
+    ref
+  ) => {
+    const emitPageChange = (nextPage: number) => {
+      onPageChange(nextPage);
+      onChange?.(nextPage);
+      onValueChange?.(nextPage);
+    };
+    const visiblePages = buildVisiblePages(page, totalPages);
+    const canPrev = page > 1;
+    const canNext = page < totalPages;
 
-  const handlePageSize = (event: ChangeEvent<HTMLSelectElement>) => {
-    onPageSizeChange?.(Number(event.target.value));
-  };
+    const handlePageSize = (event: ChangeEvent<HTMLSelectElement>) => {
+      onPageSizeChange?.(Number(event.target.value));
+    };
 
-  let ellipsisCount = 0;
+    let ellipsisCount = 0;
 
-  return (
-    <div className={cn('pagination', className)}>
-      <div className="pagination__controls">
-        <button
-          type="button"
-          onClick={() => canPrev && onPageChange(page - 1)}
-          disabled={!canPrev}
-          className="pagination-btn"
-        >
-          Prev
-        </button>
+    return (
+      <div ref={ref} className={cn('pagination', className)} style={style}>
+        <div className="pagination__controls">
+          <button
+            type="button"
+            onClick={() => canPrev && emitPageChange(page - 1)}
+            disabled={!canPrev}
+            className="pagination-btn"
+          >
+            Prev
+          </button>
 
-        <div className="pagination__pages">
-          {visiblePages.map((item) => {
-            if (item === 'ellipsis') {
-              ellipsisCount += 1;
+          <div className="pagination__pages">
+            {visiblePages.map((item) => {
+              if (item === 'ellipsis') {
+                ellipsisCount += 1;
+                return (
+                  <span
+                    key={`ellipsis-${ellipsisCount}`}
+                    className="pagination-ellipsis"
+                  >
+                    ...
+                  </span>
+                );
+              }
+
+              const isActive = item === page;
               return (
-                <span
-                  key={`ellipsis-${ellipsisCount}`}
-                  className="pagination-ellipsis"
+                <button
+                  key={`page-${item}`}
+                  type="button"
+                  onClick={() => emitPageChange(item)}
+                  aria-current={isActive ? 'page' : undefined}
+                  className={cn(
+                    'pagination-btn',
+                    isActive && 'pagination-btn--active'
+                  )}
                 >
-                  ...
-                </span>
+                  {item}
+                </button>
               );
-            }
+            })}
+          </div>
 
-            const isActive = item === page;
-            return (
-              <button
-                key={`page-${item}`}
-                type="button"
-                onClick={() => onPageChange(item)}
-                aria-current={isActive ? 'page' : undefined}
-                className={cn(
-                  'pagination-btn',
-                  isActive && 'pagination-btn--active'
-                )}
-              >
-                {item}
-              </button>
-            );
-          })}
+          <button
+            type="button"
+            onClick={() => canNext && emitPageChange(page + 1)}
+            disabled={!canNext}
+            className="pagination-btn"
+          >
+            Next
+          </button>
         </div>
 
-        <button
-          type="button"
-          onClick={() => canNext && onPageChange(page + 1)}
-          disabled={!canNext}
-          className="pagination-btn"
-        >
-          Next
-        </button>
+        <span className="pagination-meta">
+          Page {page} of {totalPages}
+        </span>
+
+        {onPageSizeChange && typeof pageSize === 'number' ? (
+          <label className="inline-cluster pagination-meta">
+            Page size
+            <select
+              value={pageSize}
+              onChange={handlePageSize}
+              className="pagination-select"
+            >
+              {pageSizeOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          </label>
+        ) : null}
       </div>
+    );
+  }
+);
 
-      <span className="pagination-meta">
-        Page {page} of {totalPages}
-      </span>
+Pagination.displayName = 'Pagination';
 
-      {onPageSizeChange && typeof pageSize === 'number' ? (
-        <label className="inline-cluster pagination-meta">
-          Page size
-          <select
-            value={pageSize}
-            onChange={handlePageSize}
-            className="pagination-select"
-          >
-            {pageSizeOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-        </label>
-      ) : null}
-    </div>
-  );
-}
+export default Pagination;

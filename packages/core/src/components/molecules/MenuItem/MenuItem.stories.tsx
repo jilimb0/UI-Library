@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, userEvent, within } from '@storybook/test';
 import { MenuItem } from './MenuItem';
 
 const meta: Meta<typeof MenuItem> = {
@@ -42,5 +43,18 @@ export const WithIcon: Story = {
       </div>
     ),
     active: false,
+  },
+};
+
+export const Interaction: Story = {
+  args: {
+    children: 'Clickable Menu Item',
+    active: false,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const item = canvas.getByText('Clickable Menu Item');
+    await userEvent.click(item);
+    await expect(item).toBeInTheDocument();
   },
 };

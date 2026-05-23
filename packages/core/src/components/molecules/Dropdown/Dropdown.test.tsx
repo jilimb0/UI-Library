@@ -1,6 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react';
+import { axe } from 'jest-axe';
 import { describe, expect, it } from 'vitest';
 import { Dropdown } from './Dropdown';
+import '@testing-library/jest-dom';
 
 const mockItems = [
   { id: 1, label: 'Item 1', value: 'item1' },
@@ -19,5 +21,11 @@ describe('Dropdown', () => {
     const button = screen.getByRole('button');
     fireEvent.click(button);
     expect(screen.getByRole('menu')).toBeInTheDocument();
+  });
+
+  it('should have no accessibility violations', async () => {
+    const { container } = render(<Dropdown items={mockItems} />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
   });
 });

@@ -10,10 +10,15 @@ export default {
   input: 'src/index.ts',
   onwarn,
   output: [
-    { file: 'dist/index.js', format: 'cjs', sourcemap: true },
-    { file: 'dist/index.esm.js', format: 'esm', sourcemap: true },
+    { file: 'dist/index.js', format: 'cjs', sourcemap: false },
+    { file: 'dist/index.esm.js', format: 'esm', sourcemap: false },
   ],
   plugins: [
-    typescript({ tsconfig: './tsconfig.json', outputToFilesystem: true }),
+    typescript({
+      tsconfig: './tsconfig.json',
+      outputToFilesystem: true,
+      sourceMap: false,
+      inlineSources: false,
+    }),
   ],
 };

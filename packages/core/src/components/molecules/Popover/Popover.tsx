@@ -1,21 +1,50 @@
 import { Popover as PrimitivePopover } from '@ui-construction-library/primitives';
 import type { ReactNode } from 'react';
+import { cn } from '../../../utils/cn';
 
 export interface PopoverProps {
   trigger: ReactNode;
   content: ReactNode;
+  /** Preferred side for the popover content. */
   side?: 'top' | 'right' | 'bottom' | 'left';
+  /** Offset in pixels from the trigger element. */
+  sideOffset?: number;
+  /** Whether the popover is open (controlled). */
+  open?: boolean;
+  /** Default open state (uncontrolled). */
+  defaultOpen?: boolean;
+  /** Callback when the open state changes. */
+  onOpenChange?: (open: boolean) => void;
+  /** Additional class name for the content panel. */
+  className?: string;
+  /** Inline styles for the content panel. */
+  style?: React.CSSProperties;
 }
 
-export function Popover({ trigger, content, side = 'bottom' }: PopoverProps) {
+export function Popover({
+  trigger,
+  content,
+  side = 'bottom',
+  sideOffset = 8,
+  open,
+  defaultOpen,
+  onOpenChange,
+  className,
+  style,
+}: PopoverProps) {
   return (
-    <PrimitivePopover.Root>
+    <PrimitivePopover.Root
+      open={open}
+      defaultOpen={defaultOpen}
+      onOpenChange={onOpenChange}
+    >
       <PrimitivePopover.Trigger asChild>{trigger}</PrimitivePopover.Trigger>
       <PrimitivePopover.Portal>
         <PrimitivePopover.Content
           side={side}
-          sideOffset={8}
-          className="popover"
+          sideOffset={sideOffset}
+          className={cn('popover', className)}
+          style={style}
         >
           {content}
         </PrimitivePopover.Content>

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, within } from '@storybook/test';
 import { Alert } from './Alert';
 
 const meta: Meta<typeof Alert> = {
@@ -45,5 +46,18 @@ export const ErrorVariant: Story = {
   args: {
     children: 'Error: Something went wrong',
     variant: 'error',
+  },
+};
+
+export const Interaction: Story = {
+  args: {
+    children: 'Warning: Please review your changes',
+    variant: 'warning',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(
+      canvas.getByText('Warning: Please review your changes')
+    ).toBeInTheDocument();
   },
 };

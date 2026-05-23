@@ -1,17 +1,18 @@
-import { forwardRef } from 'react';
+import { forwardRef, type SVGProps } from 'react';
+import { cn } from '../../../utils/cn';
 
-export interface SpinnerProps {
+export interface SpinnerProps extends SVGProps<SVGSVGElement> {
   size?: number;
 }
 
 const Spinner = forwardRef<SVGSVGElement, SpinnerProps>(
-  ({ size = 24, ...props }, ref) => {
+  ({ size = 24, className, ...props }, ref) => {
     return (
       <svg
         ref={ref}
         aria-label="Loading"
         role="img"
-        className="animate-spin"
+        className={cn('animate-spin', className)}
         width={size}
         height={size}
         viewBox="0 0 24 24"

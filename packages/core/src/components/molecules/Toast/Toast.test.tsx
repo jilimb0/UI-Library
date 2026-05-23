@@ -11,15 +11,15 @@ describe('Toast', () => {
 
   it('auto hides after duration callback', () => {
     vi.useFakeTimers();
-    const onAnimationEnd = vi.fn();
+    const onClose = vi.fn();
 
     render(
-      <Toast duration={3000} onAnimationEnd={onAnimationEnd}>
+      <Toast duration={3000} onClose={onClose}>
         Hide me
       </Toast>
     );
 
     vi.advanceTimersByTime(3000);
-    expect(onAnimationEnd).toHaveBeenCalled();
+    expect(onClose).toHaveBeenCalled();
   });
 });

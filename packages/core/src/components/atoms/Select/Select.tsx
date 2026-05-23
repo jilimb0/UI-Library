@@ -64,20 +64,23 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     };
 
     return (
-      <div className="flex flex-col space-y-1">
+      <div className="form-stack" style={{ gap: '0.25rem' }}>
         {label && (
           <label id={labelId} htmlFor={selectId} className="field-label">
             {label}
           </label>
         )}
-        <div className="relative">
+        <div style={{ position: 'relative', width: '100%' }}>
           <select
             id={selectId}
             aria-labelledby={label ? labelId : undefined}
             aria-describedby={
               description || (error && errorMessage) ? descriptionId : undefined
             }
-            className={cn(selectVariants({ size, className }))}
+            className={cn(
+              selectVariants({ size, className }),
+              error && 'select--error'
+            )}
             ref={ref}
             onChange={handleChange}
             {...props}
@@ -88,8 +91,20 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
               </option>
             ))}
           </select>
-          <span className="pointer-events-none absolute inset-y-0 right-2 flex items-center text-muted-foreground">
-            {icon ?? <ChevronDownIcon className="h-4 w-4" />}
+          <span
+            className="pointer-events-none text-muted-foreground"
+            style={{
+              position: 'absolute',
+              top: 0,
+              bottom: 0,
+              right: '0.5rem',
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            {icon ?? (
+              <ChevronDownIcon style={{ width: '1rem', height: '1rem' }} />
+            )}
           </span>
         </div>
         {(description || (error && errorMessage)) && (

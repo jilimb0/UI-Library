@@ -8,17 +8,18 @@ import { cn } from '../../../utils/cn';
 
 export interface AvatarProps extends ImgHTMLAttributes<HTMLImageElement> {
   fallback?: ReactNode;
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'default' | 'md' | 'lg';
 }
 
 const sizeClasses = {
   sm: 'avatar--sm',
+  default: 'avatar--md',
   md: 'avatar--md',
   lg: 'avatar--lg',
 };
 
 const Avatar = forwardRef<HTMLImageElement, AvatarProps>(
-  ({ fallback, size = 'md', className, ...props }, ref) => {
+  ({ fallback, size = 'default', className, ...props }, ref) => {
     const [isError, setIsError] = useState(false);
     return (
       <div className={cn('avatar', sizeClasses[size], className)}>
