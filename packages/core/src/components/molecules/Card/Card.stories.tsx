@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, userEvent, within } from '@storybook/test';
+import { expect, userEvent, within } from 'storybook/test';
 import { Button } from '../../atoms/Button';
 import { Heading } from '../../atoms/Heading';
 import { Text } from '../../atoms/Text';
