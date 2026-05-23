@@ -12,9 +12,9 @@ body,
 #root {
   margin: 0;
   min-height: 100%;
-  font-family: var(--font-body, 'Satoshi', 'Manrope', 'Inter', sans-serif);
-  background: var(--color-background, #f7f6f2);
-  color: var(--color-foreground, #28251d);
+  font-family: var(--font-sans);
+  background: var(--background);
+  color: var(--foreground);
 }
 
 a {
@@ -30,15 +30,12 @@ select {
 }
 
 body {
-  background:
-    radial-gradient(circle at top left, rgba(1, 105, 111, 0.08), transparent 28%),
-    radial-gradient(circle at top right, rgba(161, 44, 123, 0.08), transparent 24%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.3), transparent 32%),
-    var(--color-background, #f7f6f2);
+  background: var(--background);
 }
 
 .showcase-page {
   min-height: 100vh;
+  background: var(--background);
 }
 
 .showcase-shell {
@@ -59,10 +56,9 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 18px 24px;
-  border-bottom: 1px solid rgba(40, 37, 29, 0.08);
-  background: rgba(249, 248, 245, 0.84);
-  backdrop-filter: blur(16px);
+  padding: 12px 24px;
+  border-bottom: 1px solid var(--border);
+  background: var(--card);
 }
 
 .brand-lockup,
@@ -81,11 +77,11 @@ body {
 .brand-mark {
   display: grid;
   place-items: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 12px;
-  background: var(--color-primary, #01696f);
-  color: var(--color-background, #f7f6f2);
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius, 2px);
+  background: var(--primary);
+  color: var(--primary-foreground);
 }
 
 .brand-title,
@@ -93,46 +89,48 @@ body {
 .section-heading,
 .card-title {
   margin: 0;
-  font-family: var(--font-heading, 'Boska', 'Sora', serif);
-  letter-spacing: -0.04em;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  letter-spacing: -0.02em;
 }
 
 .brand-title {
-  font-size: 16px;
+  font-size: 15px;
 }
 
 .brand-subtitle,
 .section-description,
 .text-muted,
 .command-label {
-  color: var(--muted-foreground, #5b564e);
+  color: var(--muted-foreground);
 }
 
 .brand-subtitle {
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .hero-stat-label {
   margin: 0;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: var(--color-primary, #01696f);
+  color: var(--muted-foreground);
 }
 
 .nav-link {
   border: 0;
-  border-radius: 999px;
+  border-radius: var(--radius, 2px);
   background: transparent;
   color: inherit;
-  padding: 8px 12px;
+  padding: 6px 12px;
+  font-size: 14px;
   cursor: pointer;
-  transition: background 0.18s ease;
+  transition: background 0.15s ease;
 }
 
 .nav-link:hover {
-  background: rgba(1, 105, 111, 0.08);
+  background: var(--accent);
 }
 
 .stack {
@@ -157,22 +155,24 @@ body {
 
 .eyebrow {
   margin: 0;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-primary, #01696f);
+  color: var(--muted-foreground);
 }
 
 .section-heading {
-  font-size: clamp(28px, 5vw, 42px);
+  font-size: clamp(24px, 4vw, 32px);
 }
 
 .section-description,
 .hero-description {
   margin: 0;
   max-width: 72ch;
-  line-height: 1.65;
+  line-height: 1.6;
+  font-size: 14px;
+  color: var(--muted-foreground);
 }
 
 .hero-shell {
@@ -186,11 +186,11 @@ body {
 .hero-card,
 .panel,
 .footer-panel {
-  border: 1px solid rgba(40, 37, 29, 0.08);
-  border-radius: 24px;
-  background: rgba(249, 248, 245, 0.9);
-  box-shadow: 0 18px 48px rgba(40, 37, 29, 0.08);
-  color: var(--foreground, var(--color-foreground, #28251d));
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius, 2px) + 2px);
+  background: var(--card);
+  box-shadow: var(--shadow-sm);
+  color: var(--foreground);
 }
 
 .hero-copy {
@@ -205,24 +205,26 @@ body {
 }
 
 .hero-display {
-  font-size: clamp(40px, 6vw, 72px);
-  line-height: 0.98;
-  max-width: 11ch;
+  font-size: clamp(36px, 5vw, 56px);
+  line-height: 1.05;
+  max-width: 15ch;
+  font-weight: 700;
 }
 
 .hero-proof-list {
-  gap: 10px;
+  gap: 8px;
 }
 
 .hero-proof-item {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   width: fit-content;
-  padding: 10px 14px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.66);
-  border: 1px solid rgba(40, 37, 29, 0.08);
+  padding: 8px 12px;
+  border-radius: var(--radius, 2px);
+  background: var(--muted);
+  border: 1px solid var(--border);
+  font-size: 13px;
 }
 
 .hero-highlights-grid {
@@ -233,27 +235,27 @@ body {
 
 .hero-highlight-item {
   padding: 14px;
-  border-radius: 18px;
-  background: rgba(1, 105, 111, 0.05);
-  border: 1px solid rgba(1, 105, 111, 0.1);
+  border-radius: var(--radius, 2px);
+  background: var(--muted);
+  border: 1px solid var(--border);
 }
 
 .install-command {
   display: inline-flex;
   flex-direction: column;
   gap: 8px;
-  padding: 14px 16px;
-  border-radius: 18px;
-  background: rgba(1, 105, 111, 0.06);
-  border: 1px solid rgba(1, 105, 111, 0.12);
+  padding: 12px 14px;
+  border-radius: var(--radius, 2px);
+  background: var(--muted);
+  border: 1px solid var(--border);
   width: fit-content;
 }
 
 .hero-install code,
 .install-command code {
-  font-family: 'IBM Plex Mono', 'SFMono-Regular', monospace;
-  font-size: 14px;
-  color: var(--foreground, var(--color-foreground, #28251d));
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--foreground);
 }
 
 .hero-cta {
@@ -274,16 +276,16 @@ body {
 
 .hero-stat {
   padding: 14px;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.65);
-  border: 1px solid rgba(40, 37, 29, 0.08);
+  border-radius: var(--radius, 2px);
+  background: var(--card);
+  border: 1px solid var(--border);
 }
 
 .hero-stat-value {
   margin: 0;
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.5;
-  color: var(--foreground, var(--color-foreground, #28251d));
+  color: var(--foreground);
 }
 
 .feature-grid--three {
@@ -299,8 +301,8 @@ body {
 }
 
 .card-title {
-  font-size: 22px;
-  line-height: 1.1;
+  font-size: 18px;
+  line-height: 1.2;
 }
 
 .showcase-grid {
@@ -312,34 +314,34 @@ body {
 }
 
 .theme-swatch {
-  min-height: 72px;
-  border-radius: 18px;
-  border: 1px solid rgba(40, 37, 29, 0.08);
+  min-height: 64px;
+  border-radius: var(--radius, 2px);
+  border: 1px solid var(--border);
 }
 
 .theme-swatch--primary {
-  background: var(--color-primary, #01696f);
+  background: var(--primary);
 }
 
 .theme-swatch--accent {
-  background: var(--color-secondary, #a12c7b);
+  background: var(--accent);
 }
 
 .theme-swatch--card {
-  background: var(--color-card, #f9f8f5);
+  background: var(--card);
 }
 
 .theme-swatch--border {
-  background: linear-gradient(135deg, rgba(1, 105, 111, 0.12), rgba(40, 37, 29, 0.08));
+  background: var(--border);
 }
 
 .motion-band,
 .observer-band,
 .floating-inspector {
-  border-radius: 18px;
-  border: 1px solid rgba(40, 37, 29, 0.08);
-  background: rgba(255, 255, 255, 0.65);
-  padding: 18px;
+  border-radius: var(--radius, 2px);
+  border: 1px solid var(--border);
+  background: var(--card);
+  padding: 16px;
 }
 
 .footer-panel {
@@ -378,18 +380,17 @@ body {
   .hero-card,
   .panel,
   .footer-panel {
-    padding: 18px;
-    border-radius: 20px;
+    padding: 16px;
+    border-radius: calc(var(--radius, 2px) + 2px);
   }
 
   .hero-display {
     max-width: none;
-    font-size: clamp(34px, 9vw, 52px);
+    font-size: clamp(28px, 8vw, 42px);
   }
 
   .hero-proof-item {
     width: 100%;
-    border-radius: 16px;
   }
 
   .hero-highlights-grid,
@@ -397,60 +398,4 @@ body {
   .theme-token-preview {
     grid-template-columns: 1fr;
   }
-}
-
-html[data-theme='dark'] body {
-  background:
-    radial-gradient(circle at top left, rgba(79, 152, 163, 0.12), transparent 28%),
-    radial-gradient(circle at top right, rgba(209, 99, 167, 0.12), transparent 24%),
-    linear-gradient(180deg, rgba(0, 0, 0, 0.12), transparent 32%),
-    var(--color-background, #171614);
-}
-
-html[data-theme='dark'] .site-nav,
-html[data-theme='dark'] .hero-copy,
-html[data-theme='dark'] .hero-card,
-html[data-theme='dark'] .panel,
-html[data-theme='dark'] .footer-panel,
-html[data-theme='dark'] .hero-stat,
-html[data-theme='dark'] .motion-band,
-html[data-theme='dark'] .observer-band,
-html[data-theme='dark'] .floating-inspector,
-html[data-theme='dark'] .hero-proof-item,
-html[data-theme='dark'] .hero-highlight-item {
-  background: rgba(28, 27, 25, 0.9);
-  border-color: rgba(205, 204, 202, 0.1);
-  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.25);
-}
-
-html[data-theme='dark'] .hero-highlight-item {
-  background: rgba(79, 152, 163, 0.08);
-  border-color: rgba(79, 152, 163, 0.18);
-}
-
-html[data-theme='dark'] .brand-subtitle,
-html[data-theme='dark'] .section-description,
-html[data-theme='dark'] .text-muted,
-html[data-theme='dark'] .command-label {
-  color: var(--muted-foreground, #c7c2b7);
-}
-
-html[data-theme='dark'] .hero-stat-label,
-html[data-theme='dark'] .eyebrow {
-  color: var(--color-primary, #4faea8);
-}
-
-html[data-theme='dark'] .hero-stat-value,
-html[data-theme='dark'] .hero-install code,
-html[data-theme='dark'] .install-command code {
-  color: var(--foreground, var(--color-foreground, #ede9e1));
-}
-
-html[data-theme='dark'] .nav-link:hover {
-  background: rgba(79, 152, 163, 0.14);
-}
-
-html[data-theme='dark'] .install-command {
-  background: rgba(79, 152, 163, 0.12);
-  border-color: rgba(79, 152, 163, 0.18);
 }

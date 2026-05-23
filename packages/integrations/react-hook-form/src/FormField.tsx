@@ -35,7 +35,7 @@ export function FormField<T extends FieldValues>({
     typeof description === 'string' ? description : undefined;
 
   return (
-    <div className="flex flex-col space-y-1">
+    <div className="form-stack" style={{ gap: '0.25rem' }}>
       <Input
         label={labelText}
         description={descriptionText}
@@ -44,7 +44,11 @@ export function FormField<T extends FieldValues>({
         {...field}
       />
       {fieldState.error?.message ? (
-        <p className="text-xs text-red-600" role="alert">
+        <p
+          className="text--xs"
+          style={{ color: 'var(--error, #ef4444)', marginTop: '0.25rem' }}
+          role="alert"
+        >
           {fieldState.error.message}
         </p>
       ) : null}

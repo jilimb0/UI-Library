@@ -1,3 +1,4 @@
+import { borderRadius } from './borders';
 import {
   type ColorTokens,
   colors,
@@ -7,6 +8,7 @@ import {
 } from './colors';
 import { motion } from './motion';
 import { opacity } from './opacity';
+import { shadows } from './shadows';
 import { spacing } from './spacing';
 import { typography } from './typography';
 
@@ -105,6 +107,14 @@ export function generateCSSVariables(theme: Theme = {}): string {
 
   Object.entries(opacity).forEach(([k, value]) => {
     rootLines.push(toCSSVarLines(`opacity-${k}`, value));
+  });
+
+  Object.entries(borderRadius).forEach(([k, value]) => {
+    rootLines.push(toCSSVarLines(`radius-${k}`, value));
+  });
+
+  Object.entries(shadows).forEach(([k, value]) => {
+    rootLines.push(toCSSVarLines(`shadow-${k}`, value));
   });
 
   return [':root {', ...rootLines, '}'].join('\n');

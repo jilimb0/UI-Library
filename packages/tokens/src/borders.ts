@@ -7,10 +7,10 @@ export const borders = {
 
 export const borderRadius = {
   none: '0',
-  sm: '0.125rem',
-  md: '0.375rem',
-  lg: '0.5rem',
-  xl: '0.75rem',
-  '2xl': '1rem',
+  sm: '2px',
+  md: '4px',
+  lg: '4px',
+  xl: '6px',
+  '2xl': '8px',
   full: '9999px',
 };
