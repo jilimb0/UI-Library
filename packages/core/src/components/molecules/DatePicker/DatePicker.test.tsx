@@ -39,4 +39,23 @@ describe('DatePicker', () => {
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
+
+  it('selects date with keyboard Enter', () => {
+    const onChange = vi.fn();
+    render(
+      <DatePicker
+        selectedDate={new Date(2025, 11, 10)}
+        onChange={onChange}
+        initialMonth={new Date(2025, 11, 1)}
+      />
+    );
+
+    const selectedCell = screen
+      .getByText('10')
+      .closest('td') as HTMLTableCellElement;
+    selectedCell.focus();
+    fireEvent.keyDown(selectedCell, { key: 'Enter' });
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+  });
 });

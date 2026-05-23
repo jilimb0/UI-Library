@@ -1,5 +1,10 @@
 # Release Runbook
 
+Related policies:
+
+- [LTS, Versioning, and Deprecation Policy](./LTS_VERSIONING_POLICY.md)
+- [Compatibility Matrix](../guides/compatibility-matrix.md)
+
 ## 1. Preflight
 
 Run full verification:

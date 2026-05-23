@@ -54,6 +54,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       leftIcon,
       rightIcon,
       disabled,
+      style,
       children,
       ...props
     },
@@ -66,6 +67,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <Component
         ref={ref}
         className={cn(buttonVariants({ variant, size, className }))}
+        style={style}
         disabled={isNativeButton ? disabled || loading : undefined}
         aria-disabled={
           !isNativeButton && (disabled || loading) ? true : undefined

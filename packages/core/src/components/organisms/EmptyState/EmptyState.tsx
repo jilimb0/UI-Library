@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import { cn } from '../../../utils/cn';
 
 export interface EmptyStateProps {
@@ -7,6 +7,7 @@ export interface EmptyStateProps {
   description?: ReactNode;
   action?: ReactNode;
   className?: string;
+  style?: CSSProperties;
 }
 
 export function EmptyState({
@@ -15,9 +16,10 @@ export function EmptyState({
   description,
   action,
   className,
+  style,
 }: EmptyStateProps) {
   return (
-    <div className={cn('empty-state', className)}>
+    <div className={cn('empty-state', className)} style={style}>
       {icon ? <div className="empty-state__icon">{icon}</div> : null}
       <h3 className="empty-state__title">{title}</h3>
       {description ? (

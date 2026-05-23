@@ -69,6 +69,10 @@ export function ProductCard() {
 import { Button } from '@ui-construction-library/core';
 ```
 
+Для production-ready примеров (Next.js SSR, React Hook Form, TanStack Query) используйте отдельную страницу:
+
+- `apps/docs/content/production-recipes.md`
+
 ### Мониторинг размера бандла
 Рекомендуется использовать плагины визуализации размера сборки в вашем проекте для постоянного аудита:
 - Для Vite: `rollup-plugin-visualizer`

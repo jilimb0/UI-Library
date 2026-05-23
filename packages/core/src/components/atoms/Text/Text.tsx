@@ -32,12 +32,13 @@ export interface TextProps
 }
 
 const Text = forwardRef<HTMLElement, TextProps>(
-  ({ as, size, weight, className, ...props }, ref) => {
+  ({ as, size, weight, className, style, ...props }, ref) => {
     const Component = (as ?? 'p') as ElementType;
     return (
       <Component
         ref={ref}
         className={cn(textVariants({ size, weight, className }))}
+        style={style}
         {...props}
       />
     );

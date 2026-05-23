@@ -1,5 +1,5 @@
 import { Dialog } from '@ui-construction-library/primitives';
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import { cn } from '../../../utils/cn';
 
 export interface DrawerProps {
@@ -10,6 +10,7 @@ export interface DrawerProps {
   description?: ReactNode;
   children: ReactNode;
   className?: string;
+  style?: CSSProperties;
 }
 
 export function Drawer({
@@ -20,6 +21,7 @@ export function Drawer({
   description,
   children,
   className,
+  style,
 }: DrawerProps) {
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
@@ -33,6 +35,7 @@ export function Drawer({
             side === 'bottom' && 'drawer-content--bottom',
             className
           )}
+          style={style}
         >
           {(title || description) && (
             <div className="drawer-header">

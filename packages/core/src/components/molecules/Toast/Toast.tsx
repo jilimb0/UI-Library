@@ -16,6 +16,7 @@ const Toast = forwardRef<HTMLDivElement, ToastProps>(
       duration = 3000,
       variant = 'default',
       className,
+      style,
       children,
       onClose,
       ...props
@@ -42,6 +43,7 @@ const Toast = forwardRef<HTMLDivElement, ToastProps>(
           variant !== 'default' && `toast--${variant}`,
           className
         )}
+        style={style}
         {...props}
       >
         <div className="toast__body">{children}</div>

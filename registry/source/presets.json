@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "presets": {
+    "enterprise": {
+      "description": "Admin and internal tools baseline",
+      "dependencies": [
+        "@ui-construction-library/core",
+        "@ui-construction-library/tokens",
+        "@ui-construction-library/react-hook-form",
+        "@ui-construction-library/integration-tanstack-query"
+      ],
+      "features": [
+        "ThemeProvider",
+        "DataTable",
+        "Form",
+        "Modal",
+        "CommandPalette"
+      ]
+    },
+    "saas": {
+      "description": "B2B SaaS product baseline",
+      "dependencies": [
+        "@ui-construction-library/core",
+        "@ui-construction-library/tokens",
+        "@ui-construction-library/integration-tanstack-router",
+        "@ui-construction-library/integration-tanstack-query"
+      ],
+      "features": ["ThemeProvider", "Navigation", "Tabs", "Billing-ready forms"]
+    },
+    "marketing": {
+      "description": "Landing and campaign sites baseline",
+      "dependencies": [
+        "@ui-construction-library/core",
+        "@ui-construction-library/tokens"
+      ],
+      "features": ["ThemeProvider", "Hero layout", "Cards", "FAQ accordion"]
+    }
+  }
+}

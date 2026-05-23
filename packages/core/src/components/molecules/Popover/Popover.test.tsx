@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { axe } from 'jest-axe';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { Popover } from './Popover';
 import '@testing-library/jest-dom';
 
@@ -27,5 +27,18 @@ describe('Popover', () => {
     );
     const results = await axe(container);
     expect(results).toHaveNoViolations();
+  });
+
+  it('supports controlled open state', () => {
+    const onOpenChange = vi.fn();
+    render(
+      <Popover
+        trigger="Open Popover"
+        content={<div>Popover Content</div>}
+        open
+        onOpenChange={onOpenChange}
+      />
+    );
+    expect(screen.getByText('Popover Content')).toBeInTheDocument();
   });
 });

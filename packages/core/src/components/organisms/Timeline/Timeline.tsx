@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import { cn } from '../../../utils/cn';
 
 export interface TimelineItem {
@@ -12,11 +12,12 @@ export interface TimelineItem {
 export interface TimelineProps {
   items: TimelineItem[];
   className?: string;
+  style?: CSSProperties;
 }
 
-export function Timeline({ items, className }: TimelineProps) {
+export function Timeline({ items, className, style }: TimelineProps) {
   return (
-    <ol className={cn('timeline', className)}>
+    <ol className={cn('timeline', className)} style={style}>
       {items.map((item) => (
         <li key={item.id} className="timeline__item">
           <span className="timeline__marker">{item.icon ?? '•'}</span>

@@ -5,6 +5,7 @@ Decisions that affect platform direction, dependency boundaries, and public API 
 | ADR | Title | Status |
 | --- | --- | --- |
 | [0001](./0001-adapter-boundary-for-external-ui.md) | Adapter boundary for external UI runtime | Accepted |
+| [0002](./0002-api-and-accessibility-contracts.md) | API and accessibility contracts for public components | Accepted |
 
 ## Format
 

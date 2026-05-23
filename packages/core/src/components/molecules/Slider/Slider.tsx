@@ -9,6 +9,7 @@ export interface SliderProps {
   max?: number;
   step?: number;
   className?: string;
+  style?: React.CSSProperties;
 }
 
 export function Slider({
@@ -20,6 +21,7 @@ export function Slider({
   max = 100,
   step = 1,
   className,
+  style,
 }: SliderProps) {
   const resolvedValue = value ?? defaultValue;
   const thumbKeys = resolvedValue.map((_, i) => `thumb-${i}`);
@@ -36,6 +38,7 @@ export function Slider({
       max={max}
       step={step}
       className={className ?? 'slider'}
+      style={style}
     >
       <PrimitiveSlider.Track className="slider__track">
         <PrimitiveSlider.Range className="slider__range" />

@@ -13,11 +13,12 @@ const alertVariants = {
 };
 
 export const Alert = forwardRef<HTMLDivElement, AlertProps>(
-  ({ variant = 'default', className, ...props }, ref) => {
+  ({ variant = 'default', className, style, ...props }, ref) => {
     return (
       <div
         ref={ref}
         className={cn('alert', alertVariants[variant], className)}
+        style={style}
         {...props}
       />
     );

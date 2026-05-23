@@ -40,6 +40,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       label,
       description,
       id,
+      style,
       ...props
     },
     ref
@@ -50,7 +51,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     const descriptionId = description ? `${inputId}-description` : undefined;
 
     return (
-      <div>
+      <div style={style}>
         {label && (
           <label id={labelId} htmlFor={inputId}>
             {label}

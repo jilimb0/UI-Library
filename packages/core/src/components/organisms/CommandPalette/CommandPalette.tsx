@@ -1,5 +1,6 @@
 import { Dialog } from '@ui-construction-library/primitives';
 import {
+  type CSSProperties,
   type KeyboardEvent,
   type ReactNode,
   useEffect,
@@ -26,6 +27,7 @@ export interface CommandPaletteProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   groups: CommandPaletteGroup[];
+  style?: CSSProperties;
 }
 
 function matchesQuery(item: CommandPaletteItem, query: string): boolean {
@@ -50,6 +52,7 @@ export function CommandPalette({
   open,
   onOpenChange,
   groups,
+  style,
 }: CommandPaletteProps) {
   const [query, setQuery] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
@@ -120,6 +123,7 @@ export function CommandPalette({
             id="command-palette-list"
             role="listbox"
             className="command-palette__list"
+            style={style}
           >
             {flatItems.length === 0 ? (
               <p className="command-palette__empty">No results.</p>

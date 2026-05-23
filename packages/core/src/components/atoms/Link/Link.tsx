@@ -11,11 +11,12 @@ export interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
 }
 
 const Link = forwardRef<HTMLAnchorElement, LinkProps>(
-  ({ variant = 'default', className, ...props }, ref) => {
+  ({ variant = 'default', className, style, ...props }, ref) => {
     return (
       <a
         ref={ref}
         className={cn(linkVariants[variant], className)}
+        style={style}
         {...props}
       />
     );

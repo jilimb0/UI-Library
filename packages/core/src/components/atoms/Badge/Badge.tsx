@@ -21,11 +21,12 @@ export interface BadgeProps
     VariantProps<typeof badgeVariants> {}
 
 const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
-  ({ className, variant, ...props }, ref) => {
+  ({ className, variant, style, ...props }, ref) => {
     return (
       <span
         ref={ref}
         className={cn(badgeVariants({ variant, className }))}
+        style={style}
         {...props}
       />
     );

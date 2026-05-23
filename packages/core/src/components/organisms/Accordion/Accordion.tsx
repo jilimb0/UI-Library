@@ -4,9 +4,16 @@ import { cn } from '../../../utils/cn';
 
 function AccordionRoot({
   className,
+  style,
   ...props
 }: ComponentPropsWithoutRef<typeof PrimitiveAccordion.Root>) {
-  return <PrimitiveAccordion.Root className={cn(className)} {...props} />;
+  return (
+    <PrimitiveAccordion.Root
+      className={cn(className)}
+      style={style}
+      {...props}
+    />
+  );
 }
 
 function AccordionItem({

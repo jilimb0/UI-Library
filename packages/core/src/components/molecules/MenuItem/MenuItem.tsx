@@ -6,7 +6,7 @@ export interface MenuItemProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const MenuItem = forwardRef<HTMLDivElement, MenuItemProps>(
-  ({ active = false, className, children, ...props }, ref) => {
+  ({ active = false, className, style, children, ...props }, ref) => {
     return (
       <div
         ref={ref}
@@ -15,6 +15,7 @@ const MenuItem = forwardRef<HTMLDivElement, MenuItemProps>(
           active && 'dropdown-menu__item--active',
           className
         )}
+        style={style}
         {...props}
       >
         {children}

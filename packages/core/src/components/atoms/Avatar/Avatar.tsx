@@ -19,10 +19,10 @@ const sizeClasses = {
 };
 
 const Avatar = forwardRef<HTMLImageElement, AvatarProps>(
-  ({ fallback, size = 'default', className, ...props }, ref) => {
+  ({ fallback, size = 'default', className, style, ...props }, ref) => {
     const [isError, setIsError] = useState(false);
     return (
-      <div className={cn('avatar', sizeClasses[size], className)}>
+      <div className={cn('avatar', sizeClasses[size], className)} style={style}>
         {!isError && (
           <img
             ref={ref}

@@ -8,10 +8,10 @@ export interface RadioButtonProps
 }
 
 export const RadioButton = forwardRef<HTMLInputElement, RadioButtonProps>(
-  ({ className, label, description, ...props }, ref) => {
+  ({ className, label, description, style, ...props }, ref) => {
     const id = useId();
     return (
-      <div className="control-field">
+      <div className="control-field" style={style}>
         <input
           id={id}
           ref={ref}

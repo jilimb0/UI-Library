@@ -13,14 +13,23 @@ export interface SwitchProps extends PrimitiveSwitchProps {
 
 export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
   (
-    { className, label, description, size = 'default', id, disabled, ...props },
+    {
+      className,
+      label,
+      description,
+      size = 'default',
+      id,
+      disabled,
+      style,
+      ...props
+    },
     ref
   ) => {
     const generatedId = useId();
     const switchId = id ?? generatedId;
 
     return (
-      <div className="control-field control-field--switch">
+      <div className="control-field control-field--switch" style={style}>
         <PrimitiveSwitch.Root
           id={switchId}
           ref={ref}

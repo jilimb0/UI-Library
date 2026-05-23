@@ -21,6 +21,7 @@ function ModalClose(props: ComponentPropsWithoutRef<typeof Dialog.Close>) {
 
 function ModalContent({
   className,
+  style,
   children,
   title,
   ...props
@@ -30,6 +31,7 @@ function ModalContent({
       <Dialog.Overlay className="modal-backdrop" />
       <Dialog.Content
         className={cn('modal-content focus:outline-none', className)}
+        style={style}
         {...props}
       >
         {title ? (

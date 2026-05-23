@@ -5,7 +5,7 @@ export interface FormProps extends FormHTMLAttributes<HTMLFormElement> {
 }
 
 export const Form = forwardRef<HTMLFormElement, FormProps>(
-  ({ onSubmit, children, ...props }, ref) => {
+  ({ onSubmit, children, style, ...props }, ref) => {
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
 
@@ -20,6 +20,7 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(
         ref={ref}
         onSubmit={handleSubmit}
         className="form-stack"
+        style={style}
         data-testid="form"
         aria-label="form"
         {...props}

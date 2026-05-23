@@ -6,11 +6,11 @@ export interface HeadingProps extends HTMLAttributes<HTMLHeadingElement> {
 }
 
 const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(
-  ({ level = 1, as, className, children, ...props }, ref) => {
+  ({ level = 1, as, className, style, children, ...props }, ref) => {
     const Tag = (as ?? `h${level}`) as ElementType;
 
     return (
-      <Tag ref={ref} className={className} {...props}>
+      <Tag ref={ref} className={className} style={style} {...props}>
         {children}
       </Tag>
     );

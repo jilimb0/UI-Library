@@ -27,12 +27,12 @@ export interface TextAreaProps
 }
 
 const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
-  ({ className, size, variant, label, id, ...props }, ref) => {
+  ({ className, size, variant, label, id, style, ...props }, ref) => {
     const generatedId = useId();
     const fieldId = id ?? generatedId;
 
     return (
-      <div className="flex w-full flex-col gap-1">
+      <div className="flex w-full flex-col gap-1" style={style}>
         {label ? (
           <label htmlFor={fieldId} className="field-label">
             {label}

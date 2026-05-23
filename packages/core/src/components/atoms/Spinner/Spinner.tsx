@@ -6,13 +6,14 @@ export interface SpinnerProps extends SVGProps<SVGSVGElement> {
 }
 
 const Spinner = forwardRef<SVGSVGElement, SpinnerProps>(
-  ({ size = 24, className, ...props }, ref) => {
+  ({ size = 24, className, style, ...props }, ref) => {
     return (
       <svg
         ref={ref}
         aria-label="Loading"
         role="img"
         className={cn('animate-spin', className)}
+        style={style}
         width={size}
         height={size}
         viewBox="0 0 24 24"

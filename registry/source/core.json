@@ -1,0 +1,15 @@
+{
+  "name": "@ui-construction-library/core",
+  "version": "1.0.0",
+  "sourceMode": true,
+  "entry": "packages/core/src/index.ts",
+  "styles": "packages/core/src/styles/index.css",
+  "dependencies": [
+    "@ui-construction-library/primitives",
+    "@ui-construction-library/tokens",
+    "@ui-construction-library/icons",
+    "@ui-construction-library/utils",
+    "@ui-construction-library/dnd",
+    "@ui-construction-library/motion"
+  ]
+}

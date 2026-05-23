@@ -27,6 +27,12 @@ const STORYBOOK_URL = '../storybook/';
 const DEMO_URL = '../';
 const VERSION = __CORE_PACKAGE_VERSION__;
 const INSTALL_COMMAND = 'pnpm add @ui-construction-library/core';
+const ROADMAP_URL =
+  'https://github.com/jilimb0/UI-Library/blob/main/docs/roadmaps/best-in-market-90-day.md';
+const EPICS_URL =
+  'https://github.com/jilimb0/UI-Library/blob/main/docs/planning/best-in-market-epics.md';
+const ADR_URL =
+  'https://github.com/jilimb0/UI-Library/blob/main/docs/adr/0002-api-and-accessibility-contracts.md';
 
 type CategoryKey = 'atoms' | 'molecules' | 'organisms' | 'templates';
 
@@ -307,6 +313,39 @@ const TABLE_ROWS = [
     package: '@ui-construction-library/icons',
     use: 'Asset and icon layer',
     status: 'stable',
+  },
+];
+
+const KPI_ROWS = [
+  {
+    metric: 'Critical a11y regressions',
+    target: '0',
+    status: 'in progress',
+    owner: 'Core Team',
+  },
+  {
+    metric: 'Complex interaction+a11y pass rate',
+    target: '>=95%',
+    status: 'in progress',
+    owner: 'QA + Core Team',
+  },
+  {
+    metric: 'Install to production-ready screen',
+    target: '<=30 min',
+    status: 'in progress',
+    owner: 'DX Team',
+  },
+  {
+    metric: 'Gold integration kits',
+    target: '3',
+    status: 'in progress',
+    owner: 'Integrations Team',
+  },
+  {
+    metric: 'Public quality dashboard',
+    target: 'published',
+    status: 'in progress',
+    owner: 'Platform + Docs',
   },
 ];
 
@@ -631,6 +670,42 @@ function DocsContent() {
         </section>
 
         <section className="docs-grid docs-grid--dual">
+          <Card className="docs-panel">
+            <Text className="docs-section-label">
+              Quality dashboard (skeleton)
+            </Text>
+            <DataTable
+              columns={[
+                { key: 'metric', header: 'Metric' },
+                { key: 'target', header: 'Target' },
+                { key: 'status', header: 'Status' },
+                { key: 'owner', header: 'Owner' },
+              ]}
+              data={KPI_ROWS}
+            />
+            <div className="docs-chip-wrap">
+              <Link href={ADR_URL} target="_blank" rel="noopener noreferrer">
+                <Button variant="outline" size="sm">
+                  API + A11y ADR
+                </Button>
+              </Link>
+              <Link
+                href={ROADMAP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button variant="outline" size="sm">
+                  90-day roadmap
+                </Button>
+              </Link>
+              <Link href={EPICS_URL} target="_blank" rel="noopener noreferrer">
+                <Button variant="outline" size="sm">
+                  Epics and issue seeds
+                </Button>
+              </Link>
+            </div>
+          </Card>
+
           <Card className="docs-panel">
             <Text className="docs-section-label">Package surface</Text>
             <DataTable

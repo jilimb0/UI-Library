@@ -1,13 +1,14 @@
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
+import { cn } from '../../../utils/cn';
 
 export interface NavigationProps extends HTMLAttributes<HTMLElement> {
   children: ReactNode;
 }
 
 export const Navigation = forwardRef<HTMLElement, NavigationProps>(
-  ({ children, ...props }, ref) => {
+  ({ children, className, style, ...props }, ref) => {
     return (
-      <nav ref={ref} {...props}>
+      <nav ref={ref} className={cn(className)} style={style} {...props}>
         {children}
       </nav>
     );

@@ -1,9 +1,18 @@
 import { Tabs as PrimitiveTabs } from '@ui-construction-library/primitives';
-import type { ComponentPropsWithoutRef } from 'react';
+import type { ComponentPropsWithoutRef, CSSProperties } from 'react';
 import { cn } from '../../../utils/cn';
 
-function TabsRoot(props: ComponentPropsWithoutRef<typeof PrimitiveTabs.Root>) {
-  return <PrimitiveTabs.Root {...props} />;
+type TabsRootProps = ComponentPropsWithoutRef<typeof PrimitiveTabs.Root> & {
+  className?: string;
+  style?: CSSProperties;
+};
+
+function TabsRoot({ className, style, ...props }: TabsRootProps) {
+  return (
+    <div className={cn('tabs-root', className)} style={style}>
+      <PrimitiveTabs.Root {...props} />
+    </div>
+  );
 }
 
 function TabsList({

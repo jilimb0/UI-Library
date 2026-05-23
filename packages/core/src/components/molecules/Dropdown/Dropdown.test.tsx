@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { axe } from 'jest-axe';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { Dropdown } from './Dropdown';
 import '@testing-library/jest-dom';
 
@@ -27,5 +27,31 @@ describe('Dropdown', () => {
     const { container } = render(<Dropdown items={mockItems} />);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
+  });
+
+  it('closes on Escape and returns focus to trigger', () => {
+    render(<Dropdown items={mockItems} />);
+    const button = screen.getByRole('button');
+    fireEvent.click(button);
+    expect(screen.getByRole('menu')).toBeInTheDocument();
+
+    fireEvent.keyDown(document, { key: 'Escape' });
+    expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+    expect(button).toHaveFocus();
+  });
+
+  it('supports controlled value and onChange', () => {
+    const onChange = vi.fn();
+    render(
+      <Dropdown
+        items={mockItems}
+        value="item2"
+        onChange={onChange}
+        label="Demo"
+      />
+    );
+    expect(screen.getByRole('button', { name: 'Demo' })).toHaveTextContent(
+      'Item 2'
+    );
   });
 });
