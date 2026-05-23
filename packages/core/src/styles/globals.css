@@ -153,3 +153,32 @@ body {
   background: var(--background);
   color: var(--foreground);
 }
+
+/* Premium smooth transitions for runtime theme switching */
+html,
+body,
+.card,
+.button,
+.input,
+.select,
+.textarea,
+.badge,
+.tag,
+.alert,
+.table,
+.table th,
+.table td,
+.dropdown-menu,
+.modal-content,
+.toast,
+.kanban-card,
+.kanban-column,
+.sidebar,
+.popover,
+.tooltip-bubble {
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
