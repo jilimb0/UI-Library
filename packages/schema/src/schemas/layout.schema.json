@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ui-construction-library.dev/schemas/layout.schema.json",
+  "title": "LayoutNode",
+  "type": "object",
+  "required": ["id", "componentId", "props", "children"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "componentId": { "type": "string", "minLength": 1 },
+    "props": { "type": "object" },
+    "bindings": { "type": "object" },
+    "children": { "type": "array", "items": { "$ref": "#" } }
+  },
+  "additionalProperties": true
+}

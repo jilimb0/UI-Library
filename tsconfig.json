@@ -21,6 +21,9 @@
       "@ui-construction-library/utils": ["packages/utils/src"],
       "@ui-construction-library/tokens": ["packages/tokens/src"],
       "@ui-construction-library/icons": ["packages/icons/src"],
+      "@ui-construction-library/schema": ["packages/schema/src"],
+      "@ui-construction-library/registry": ["packages/registry/src"],
+      "@ui-construction-library/styles": ["packages/styles/src"],
       "@ui-construction-library/react-hook-form": ["packages/integrations/react-hook-form/src"]
     }
   },

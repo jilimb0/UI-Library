@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ui-construction-library.dev/schemas/project.schema.json",
+  "title": "ProjectConfig",
+  "type": "object",
+  "required": ["id", "name", "pages"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "name": { "type": "string", "minLength": 1 },
+    "pages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "root"],
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "root": { "$ref": "layout.schema.json" }
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}

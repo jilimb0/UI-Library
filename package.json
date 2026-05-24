@@ -52,7 +52,8 @@
     "release": "turbo run build && changeset publish",
     "validate": "pnpm check:deps && pnpm check:api && pnpm registry:source:check && pnpm preset:check && pnpm check:gold-kits && pnpm check:launch && pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm check:bundle && pnpm check:perf",
     "validate:platform": "pnpm validate && pnpm check:e2e",
-    "prepare": "husky"
+    "prepare": "husky",
+    "check:supabase-schema": "node ./scripts/check-supabase-schema-skeleton.js"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,cjs}": [
