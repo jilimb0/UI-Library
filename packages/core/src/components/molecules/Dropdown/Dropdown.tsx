@@ -220,7 +220,11 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
           aria-haspopup="listbox"
           aria-expanded={isOpen}
           aria-controls={isOpen ? menuId : undefined}
-          aria-labelledby={label ? `${buttonId}-label` : undefined}
+          aria-label={
+            label
+              ? `${label}: ${selected ? selected.label : placeholder}`
+              : undefined
+          }
           onClick={toggleDropdown}
         >
           <span>{selected ? selected.label : placeholder}</span>

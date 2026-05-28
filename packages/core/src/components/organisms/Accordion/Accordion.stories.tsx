@@ -32,7 +32,6 @@ const AccordionItem = ({ isOpen, onToggle, title, children }: any) => (
 
 export const Default: Story = {
   args: {
-    multiple: false,
     children: (
       <>
         <AccordionItem title="Section 1">
@@ -51,7 +50,6 @@ export const Default: Story = {
 
 export const Multiple: Story = {
   args: {
-    multiple: true,
     children: (
       <>
         <AccordionItem title="Section 1">

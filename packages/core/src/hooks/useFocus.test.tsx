@@ -4,7 +4,9 @@ import { useFocus } from './useFocus';
 
 const TestComponent = () => {
   const ref = useFocus<HTMLInputElement>();
-  return <input ref={ref} data-testid="test-input" />;
+  return (
+    <input ref={ref as React.Ref<HTMLInputElement>} data-testid="test-input" />
+  );
 };
 
 describe('useFocus', () => {

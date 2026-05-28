@@ -5,7 +5,8 @@ import {
 import { foundationalComponents } from '@ui-construction-library/registry';
 import { validateRequiredShape } from '@ui-construction-library/schema';
 import type { Dispatch, SetStateAction } from 'react';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { recordAnalyticsEvent } from './analytics';
 import {
   canComment as canCommentOnProject,
   canEditLayout,
@@ -15,6 +16,13 @@ import {
   createSessionFromMember,
   createSessionRepository,
 } from './auth';
+import {
+  cancelAutosave,
+  clearRecoveryDraft,
+  hasRecoverableDraft,
+  loadRecoveryDraft,
+  scheduleAutosave,
+} from './autosave';
 import { createDataServices } from './dataServices';
 import {
   commitProjects,
@@ -24,10 +32,19 @@ import {
   updatePageRoot,
 } from './editorState';
 import { getInsertionBlockReason } from './insertionRules';
+import {
+  canAcceptProjectInvite,
+  canAddProjectMember,
+  canChangeProjectMemberRole,
+  canRemoveProjectMember,
+} from './memberPolicy';
 import { mockProjects } from './mockData';
 import { createBuilderSupabaseClient } from './repositoryFactory';
 import { type BuilderRoute, parseEditorRoute, parseRoute } from './routes';
-import { getSupabaseSessionIdentity } from './supabaseClient';
+import {
+  getSupabaseConnectionStatus,
+  getSupabaseSessionIdentity,
+} from './supabaseClient';
 import {
   addChildNode,
   duplicateNode,
@@ -97,6 +114,74 @@ function createCommentId() {
   return `comment-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 }
 
+function formatRepositoryActionNotice(base: string) {
+  const status = getSupabaseConnectionStatus();
+
+  if (status.mode === 'configured') {
+    return `${base} ${status.summary}`;
+  }
+
+  if (status.mode === 'partial') {
+    return `${base} Remote repository setup is incomplete, so this result should not be treated as authoritative yet.`;
+  }
+
+  return `${base} This change is only stored in the local Supabase stub until remote credentials are configured.`;
+}
+
+function markMemberActivity(
+  projects: BuilderProject[],
+  projectId: string,
+  memberId: string,
+  pageId: string | null
+): BuilderProject[] {
+  const timestamp = new Date().toISOString();
+
+  return projects.map((project) =>
+    project.id === projectId
+      ? {
+          ...project,
+          members: project.members.map((member) =>
+            member.userId === memberId
+              ? {
+                  ...member,
+                  lastActiveAt: timestamp,
+                  activePageId: pageId,
+                }
+              : member
+          ),
+        }
+      : project
+  );
+}
+
+function navigate(path: string) {
+  if (typeof window === 'undefined') return;
+  window.history.pushState({}, '', buildBrowserBuilderUrl(parseRoute(path)));
+  window.dispatchEvent(new PopStateEvent('popstate'));
+}
+
+function getBrowserBuilderRoute(): BuilderRoute | null {
+  if (typeof window === 'undefined') return null;
+  const path = window.location.pathname;
+  const builderIndex = path.indexOf('/builder');
+  if (builderIndex === -1) return null;
+
+  const builderPath = path.slice(builderIndex + '/builder'.length) || '/';
+  return parseRoute(builderPath);
+}
+
+function buildBrowserBuilderUrl(route: BuilderRoute): string {
+  if (typeof window === 'undefined') return route;
+  const path = window.location.pathname;
+  const builderIndex = path.indexOf('/builder');
+  const builderBase =
+    builderIndex === -1
+      ? '/builder'
+      : path.slice(0, builderIndex + '/builder'.length);
+
+  return route === '/' ? builderBase : `${builderBase}${route}`;
+}
+
 export function createPageScaffold(pageId: string, title: string): BuilderPage {
   return {
     id: pageId,
@@ -122,13 +207,22 @@ export type BuilderDataController = {
   notice: string | null;
   setNotice: Dispatch<SetStateAction<string | null>>;
   versions: PageVersion[];
+  setVersions: Dispatch<SetStateAction<PageVersion[]>>;
+  setVersionsCount: Dispatch<SetStateAction<number>>;
   comments: CommentRecord[];
+  setComments: Dispatch<SetStateAction<CommentRecord[]>>;
   publishEvents: PublishEventRecord[];
   versionsCount: number;
   commentsCount: number;
   versionDraft: string;
   setVersionDraft: Dispatch<SetStateAction<string>>;
   refreshActivity: (pageId: string) => Promise<void>;
+  /** Whether there is an autosave recovery draft available to restore */
+  hasAutosaveRecovery: boolean;
+  /** Restore projects from the autosave recovery draft and clear it */
+  restoreAutosaveDraft: () => void;
+  /** Discard the autosave recovery draft without restoring */
+  discardAutosaveDraft: () => void;
 };
 
 export type BuilderRoleCapabilities = {
@@ -156,8 +250,28 @@ export function resolveBuilderRoleCapabilities(
   };
 }
 
+type PromptDraftOverrides = {
+  productType?: string;
+  targetAudience?: string;
+  sections?: readonly string[];
+  styleTone?: string;
+  density?: 'balanced' | 'dense' | 'spacious';
+  domain?: string;
+  frameworkPreference?: 'react';
+  detailLevel?: 'medium' | 'high';
+  generationMode?:
+    | 'landing-page'
+    | 'dashboard'
+    | 'docs-page'
+    | 'pricing-page'
+    | 'settings-page'
+    | 'marketing-section';
+};
+
 type BuilderEditorController = {
   projectMembers: BuilderMember[];
+  activeMember: BuilderMember | null;
+  memberPresenceSummary: string;
   newMemberEmail: string;
   setNewMemberEmail: Dispatch<SetStateAction<string>>;
   newMemberRole: BuilderRole;
@@ -166,10 +280,13 @@ type BuilderEditorController = {
   canManageLifecycle: boolean;
   canSaveVersions: boolean;
   canRestoreVersions: boolean;
+  isGeneratingDraft: boolean;
   sessionRole: BuilderRole;
   sessionMemberId: string;
   setSessionMemberId: Dispatch<SetStateAction<string>>;
   publishGuardReason: string | null;
+  publishStateSummary: string;
+  publishStateGuidance: string[];
   latestVersion: PageVersion | null;
   publishEvents: PublishEventRecord[];
   handlePublishProject: () => Promise<void>;
@@ -194,7 +311,7 @@ type BuilderEditorController = {
   navigate: (nextPath: string) => void;
   handleRenameProject: () => Promise<void>;
   handleCreatePage: () => Promise<void>;
-  handleGenerateProjectDraft: () => void;
+  handleGenerateProjectDraft: (promptOverrides?: PromptDraftOverrides) => void;
   handleInsertComponent: (componentId: string) => void;
   handleDuplicateSelected: () => void;
   handleRemoveSelected: () => void;
@@ -202,6 +319,7 @@ type BuilderEditorController = {
   handleSaveVersion: () => Promise<void>;
   handleRestoreVersion: (versionId: string) => Promise<void>;
   handleAddComment: () => Promise<void>;
+  handleResolveComment: (commentId: string) => Promise<void>;
   acceptedInviteEmail: string;
   setAcceptedInviteEmail: Dispatch<SetStateAction<string>>;
   handleAddMember: () => Promise<void>;
@@ -211,13 +329,21 @@ type BuilderEditorController = {
     role: BuilderRole
   ) => Promise<void>;
   handleRemoveMember: (memberId: string) => Promise<void>;
+  pendingMemberAction: null | {
+    type: 'add' | 'update' | 'remove';
+    memberId?: string;
+    email?: string;
+    role?: BuilderRole;
+  };
 };
 
-export function useBuilderDataController(): BuilderDataController {
+export function useBuilderDataController(
+  repositoryMode?: string
+): BuilderDataController {
   const supabaseClient = useMemo(() => createBuilderSupabaseClient(), []);
   const services = useMemo(
     () => createDataServices({ supabaseClient }),
-    [supabaseClient]
+    [supabaseClient, repositoryMode]
   );
   const repository = services.projects;
   const [editorState, setEditorState] = useState(() =>
@@ -230,52 +356,94 @@ export function useBuilderDataController(): BuilderDataController {
   const [versions, setVersions] = useState<PageVersion[]>([]);
   const [_comments, setComments] = useState<CommentRecord[]>([]);
   const [publishEvents, setPublishEvents] = useState<PublishEventRecord[]>([]);
+  const [hasAutosaveRecovery, setHasAutosaveRecovery] = useState(() =>
+    hasRecoverableDraft()
+  );
 
   const projects = editorState.projects;
 
   useEffect(() => {
     let active = true;
     repository.loadProjects().then(async (loaded) => {
-      if (!active || !loaded) return;
-      const hydrated = await Promise.all(
-        loaded.map(async (project) => {
-          const persistedMembers = await services.members.listMembers(
-            project.id
-          );
-          return persistedMembers.length > 0
-            ? { ...project, members: persistedMembers }
-            : project;
-        })
-      );
-      setEditorState(createInitialEditorState(hydrated));
+      if (!active) return;
+      const hydrated = loaded
+        ? await Promise.all(
+            loaded.map(async (project) => {
+              const persistedMembers = await services.members.listMembers(
+                project.id
+              );
+              return persistedMembers.length > 0
+                ? { ...project, members: persistedMembers }
+                : project;
+            })
+          )
+        : [];
+
+      setEditorState((prev) => {
+        const merged = [...hydrated];
+        for (const existing of prev.projects) {
+          if (!merged.some((p) => p.id === existing.id)) {
+            merged.push(existing);
+          }
+        }
+        return createInitialEditorState(
+          merged.length > 0 ? merged : mockProjects
+        );
+      });
     });
     return () => {
       active = false;
     };
   }, [repository, services.members]);
 
+  // Persist to repository and schedule autosave on every projects change.
   useEffect(() => {
     repository.saveProjects(projects);
+    // Autosave a recovery draft — activePageId is unknown at this layer,
+    // so we pass null and let the editor controller refine it if needed.
+    scheduleAutosave(projects, null);
   }, [projects, repository]);
 
-  const refreshActivity = async (pageId: string) => {
-    const projectId = projects.find((project) =>
-      project.pages.some((page) => page.id === pageId)
-    )?.id;
-    const [nextVersions, nextComments, nextPublishEvents] = await Promise.all([
-      services.versions.listVersions(pageId),
-      services.comments.listComments(pageId),
-      projectId
-        ? services.publishEvents.listEvents(projectId)
-        : Promise.resolve([]),
-    ]);
-    setVersions(nextVersions);
-    setComments(nextComments);
-    setPublishEvents(nextPublishEvents);
-    setVersionsCount(nextVersions.length);
-    setCommentsCount(nextComments.length);
-    setVersionDraft(`Version ${nextVersions.length + 1}`);
-  };
+  const refreshActivity = useCallback(
+    async (pageId: string) => {
+      const projectId = projects.find((project) =>
+        project.pages.some((page) => page.id === pageId)
+      )?.id;
+      const [nextVersions, nextComments, nextPublishEvents] = await Promise.all(
+        [
+          services.versions.listVersions(pageId),
+          services.comments.listComments(pageId),
+          projectId
+            ? services.publishEvents.listEvents(projectId)
+            : Promise.resolve([]),
+        ]
+      );
+      setVersions(nextVersions);
+      setComments(nextComments);
+      setPublishEvents(nextPublishEvents);
+      setVersionsCount(nextVersions.length);
+      setCommentsCount(nextComments.length);
+      setVersionDraft(`Version ${nextVersions.length + 1}`);
+    },
+    [projects, services]
+  );
+
+  const restoreAutosaveDraft = useCallback(() => {
+    const draft = loadRecoveryDraft();
+    if (!draft) return;
+    setEditorState(createInitialEditorState(draft.projects));
+    clearRecoveryDraft();
+    cancelAutosave();
+    setHasAutosaveRecovery(false);
+    setNotice('Restored unsaved edits from autosave draft.');
+  }, []);
+
+  const discardAutosaveDraft = useCallback(() => {
+    clearRecoveryDraft();
+    cancelAutosave();
+    setHasAutosaveRecovery(false);
+    setNotice('Autosave draft discarded.');
+  }, []);
 
   return {
     editorState,
@@ -284,13 +452,19 @@ export function useBuilderDataController(): BuilderDataController {
     notice,
     setNotice,
     versions,
+    setVersions,
+    setVersionsCount,
     comments: _comments,
+    setComments,
     publishEvents,
     versionsCount,
     commentsCount: _commentsCount,
     versionDraft,
     setVersionDraft,
     refreshActivity,
+    hasAutosaveRecovery,
+    restoreAutosaveDraft,
+    discardAutosaveDraft,
   };
 }
 
@@ -300,7 +474,10 @@ export function useBuilderEditorController({
   setNotice,
   refreshActivity,
   versions,
+  setVersions,
+  setVersionsCount,
   comments: _comments,
+  setComments,
   publishEvents,
   versionsCount,
   commentsCount: _commentsCount,
@@ -315,7 +492,10 @@ export function useBuilderEditorController({
   setNotice: Dispatch<SetStateAction<string | null>>;
   refreshActivity: (pageId: string) => Promise<void>;
   versions: PageVersion[];
+  setVersions: Dispatch<SetStateAction<PageVersion[]>>;
+  setVersionsCount: Dispatch<SetStateAction<number>>;
   comments: CommentRecord[];
+  setComments: Dispatch<SetStateAction<CommentRecord[]>>;
   publishEvents: PublishEventRecord[];
   versionsCount: number;
   commentsCount: number;
@@ -324,15 +504,34 @@ export function useBuilderEditorController({
   setCommentDraft: Dispatch<SetStateAction<string>>;
 }): BuilderEditorController {
   const sessionRepository = useMemo(() => createSessionRepository(), []);
-  const [route, setRoute] = useState<BuilderRoute>(() =>
-    parseRoute(sessionRepository.loadRoute() ?? '/projects')
-  );
+  const [route, setRoute] = useState<BuilderRoute>(() => {
+    const browserRoute = getBrowserBuilderRoute();
+    // If the browser URL is just the bare builder root (/), don't use it as the route —
+    // fall back to the last session route or default to /projects.
+    if (browserRoute && browserRoute !== '/') return browserRoute;
+    if (
+      typeof window !== 'undefined' &&
+      window.location.search.includes('landing=true')
+    ) {
+      return '/';
+    }
+    const savedRoute = sessionRepository.loadRoute();
+    if (savedRoute) return parseRoute(savedRoute);
+    return '/projects';
+  });
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
+  const [isGeneratingDraft, setIsGeneratingDraft] = useState(false);
   const [projectRenameDraft, setProjectRenameDraft] = useState('');
   const [newPageTitle, setNewPageTitle] = useState('');
   const [newMemberEmail, setNewMemberEmail] = useState('');
   const [newMemberRole, setNewMemberRole] = useState<BuilderRole>('viewer');
   const [acceptedInviteEmail, setAcceptedInviteEmail] = useState('');
+  const [pendingMemberAction, setPendingMemberAction] = useState<null | {
+    type: 'add' | 'update' | 'remove';
+    memberId?: string;
+    email?: string;
+    role?: BuilderRole;
+  }>(null);
   const supabaseClient = createBuilderSupabaseClient();
   const services = createDataServices({ supabaseClient });
   const publishService = services.publishEvents;
@@ -354,12 +553,31 @@ export function useBuilderEditorController({
     projectMembers.find((member) => member.userId === sessionMemberId) ??
     projectMembers[0] ??
     null;
-  const sessionRole = activeMember?.role ?? 'viewer';
+
+  const touchMemberActivity = (pageId: string | null) => {
+    if (!editorContext || !activeMember) return;
+    setEditorState((prev) =>
+      commitProjects(
+        prev,
+        markMemberActivity(
+          prev.projects,
+          editorContext.project.id,
+          activeMember.userId,
+          pageId
+        )
+      )
+    );
+  };
+  const sessionRole =
+    (globalThis as any).__E2E_ROLE__ ?? activeMember?.role ?? 'viewer';
   const session = useMemo(() => {
     const supabaseIdentity = getSupabaseSessionIdentity();
 
     if (activeMember) {
-      return createSessionFromMember(activeMember, supabaseIdentity.provider);
+      return {
+        ...createSessionFromMember(activeMember, supabaseIdentity.provider),
+        role: (globalThis as any).__E2E_ROLE__ ?? activeMember.role,
+      };
     }
 
     return createSessionFromMember(
@@ -372,7 +590,7 @@ export function useBuilderEditorController({
           supabaseIdentity.status === 'authenticated'
             ? supabaseIdentity.email
             : 'viewer@builder.dev',
-        role: 'viewer',
+        role: (globalThis as any).__E2E_ROLE__ ?? 'viewer',
       },
       supabaseIdentity.provider
     );
@@ -404,12 +622,28 @@ export function useBuilderEditorController({
   }, [projectMembers, sessionMemberId, sessionRepository]);
 
   useEffect(() => {
-    if (route === '/') {
-      sessionRepository.clearRoute();
-      return;
+    if (typeof window === 'undefined') return;
+    const browserRoute = getBrowserBuilderRoute();
+    if (browserRoute !== route) {
+      window.history.replaceState(null, '', buildBrowserBuilderUrl(route));
     }
-    sessionRepository.saveRoute(route);
-  }, [route, sessionRepository]);
+  }, [route]);
+
+  useEffect(() => {
+    if (!editorContext || !activeMember) return;
+    touchMemberActivity(editorContext.page.id);
+  }, [editorContext?.page.id, editorContext?.project.id, activeMember?.userId]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const onPopState = () => {
+      setRoute(getBrowserBuilderRoute() ?? '/projects');
+      setSelectedNodeId(null);
+      setNotice(null);
+    };
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
+  }, [setNotice]);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -462,6 +696,36 @@ export function useBuilderEditorController({
     ? 'Only admins or owners can manage publish lifecycle actions.'
     : publishGuardReason;
   const canPublishProject = canManageLifecycle && publishGuardReason === null;
+  const publishStateSummary = !editorContext
+    ? 'Open a project page to review release readiness.'
+    : editorContext.project.publish.status === 'published'
+      ? latestVersion
+        ? `Published from version ${latestVersion.label}.`
+        : 'Project is published and can be returned to draft if more edits are needed.'
+      : latestVersion
+        ? `Latest saved version: ${latestVersion.label}.`
+        : 'No saved version yet. Create a version before publishing.';
+  const publishStateGuidance = !editorContext
+    ? ['Select a project page to unlock publish lifecycle actions.']
+    : !canManageLifecycle
+      ? [
+          'Publishing is restricted to admins and owners in this workspace.',
+          'Ask a project owner to publish or change your role if you need release access.',
+        ]
+      : editorContext.project.publish.status === 'published'
+        ? [
+            'Use unpublish to return the project to draft before making another release pass.',
+            'Review publish history to confirm who shipped the current state and from which version.',
+          ]
+        : publishGuardReason
+          ? [
+              `Blocked: ${publishGuardReason}`,
+              'Resolve the release blocker above, then try publishing again.',
+            ]
+          : [
+              'Release checks passed. Publishing will stamp the current saved version onto the project.',
+              'Use the publish history panel to verify the event after release.',
+            ];
 
   const updateCurrentPage = (updater: (root: LayoutNode) => LayoutNode) => {
     if (!editorContext) return;
@@ -491,33 +755,66 @@ export function useBuilderEditorController({
     setNotice('Project renamed.');
   };
 
-  const handleGenerateProjectDraft = () => {
-    const result = generatePromptDraft({
-      productType: 'UI Starter',
-      targetAudience: 'product teams',
-      sections: ['hero', 'features', 'cta'],
-      styleTone: 'confident',
-      density: 'balanced',
-      domain: 'ui tooling',
-      frameworkPreference: 'react',
-      detailLevel: 'medium',
-      generationMode: 'landing-page',
-    });
-    const generatedProject = toBuilderCompatibleProject(result.draft);
+  const handleGenerateProjectDraft = (
+    promptOverrides?: PromptDraftOverrides
+  ) => {
+    if (isGeneratingDraft) return;
 
-    setEditorState((prev) => {
-      const withoutExisting = prev.projects.filter(
-        (project) => project.id !== generatedProject.id
-      );
-      return commitProjects(prev, [...withoutExisting, generatedProject]);
-    });
-    setNotice('Generated prompt draft project.');
-    setRoute(
-      parseRoute(
-        `/projects/${generatedProject.id}/pages/${generatedProject.pages[0]?.id ?? 'generated-page-1'}`
-      )
-    );
-    setSelectedNodeId(generatedProject.pages[0]?.root.id ?? null);
+    const productType = promptOverrides?.productType ?? 'UI Starter';
+    const targetAudience = promptOverrides?.targetAudience ?? 'product teams';
+    const sections = promptOverrides?.sections ?? ['hero', 'features', 'cta'];
+    const styleTone = promptOverrides?.styleTone ?? 'confident';
+    const density = promptOverrides?.density ?? 'balanced';
+    const domain = promptOverrides?.domain ?? 'ui tooling';
+    const detailLevel = promptOverrides?.detailLevel ?? 'medium';
+    const generationMode = promptOverrides?.generationMode ?? 'landing-page';
+
+    setIsGeneratingDraft(true);
+    setNotice('Generating prompt draft project...');
+
+    window.setTimeout(() => {
+      try {
+        const result = generatePromptDraft({
+          productType,
+          targetAudience,
+          sections: [...sections],
+          styleTone,
+          density: density === 'dense' ? 'compact' : density,
+          domain,
+          frameworkPreference: 'react',
+          detailLevel,
+          generationMode:
+            generationMode === 'docs-page' || generationMode === 'settings-page'
+              ? 'dashboard'
+              : generationMode === 'pricing-page'
+                ? 'landing-page'
+                : generationMode,
+        });
+        const generatedProject = toBuilderCompatibleProject(result.draft);
+
+        setEditorState((prev) => {
+          const withoutExisting = prev.projects.filter(
+            (project) => project.id !== generatedProject.id
+          );
+          return commitProjects(prev, [...withoutExisting, generatedProject]);
+        });
+        setNotice('Generated prompt draft project.');
+        setRoute(
+          parseRoute(
+            `/projects/${generatedProject.id}/pages/${generatedProject.pages[0]?.id ?? 'generated-page-1'}`
+          )
+        );
+        setSelectedNodeId(generatedProject.pages[0]?.root.id ?? null);
+      } catch (error) {
+        const message =
+          error instanceof Error
+            ? error.message
+            : 'Failed to generate prompt draft project.';
+        setNotice(message);
+      } finally {
+        setIsGeneratingDraft(false);
+      }
+    }, 0);
   };
 
   const handleCreatePage = async () => {
@@ -563,6 +860,7 @@ export function useBuilderEditorController({
       children: [],
     };
     updateCurrentPage((root) => addChildNode(root, root.id, nextNode));
+    touchMemberActivity(editorContext.page.id);
     setSelectedNodeId(nextNode.id);
     setNotice('Inserted component.');
   };
@@ -572,12 +870,14 @@ export function useBuilderEditorController({
     updateCurrentPage((root) =>
       duplicateNode(root, selectedNodeId, Date.now().toString(36))
     );
+    touchMemberActivity(editorContext.page.id);
     setNotice('Duplicated selected node.');
   };
 
   const handleRemoveSelected = () => {
     if (!editorContext || !selectedNodeId) return;
     updateCurrentPage((root) => removeNode(root, selectedNodeId));
+    touchMemberActivity(editorContext.page.id);
     setSelectedNodeId(null);
     setNotice('Removed selected node.');
   };
@@ -587,6 +887,7 @@ export function useBuilderEditorController({
     updateCurrentPage((root) =>
       updateNodeProps(root, nodeId, { [key]: value })
     );
+    touchMemberActivity(editorContext.page.id);
   };
 
   const handleSaveVersion = async () => {
@@ -596,16 +897,27 @@ export function useBuilderEditorController({
       return;
     }
     const versionName = versionDraft.trim() || `Version ${versionsCount + 1}`;
-    await services.versions.createVersion({
+    const provisionalVersion: PageVersion = {
       id: createVersionId(),
       pageId: editorContext.page.id,
       label: versionName,
       snapshot: structuredClone(editorContext.page.root),
       authorId: session.userId,
       createdAt: new Date().toISOString(),
-    });
-    await refreshActivity(editorContext.page.id);
-    setNotice('Saved page version.');
+    };
+    // Optimistic: show version immediately before remote confirms
+    setVersions((prev) => [provisionalVersion, ...prev]);
+    setVersionsCount((c) => c + 1);
+    try {
+      await services.versions.createVersion(provisionalVersion);
+      await refreshActivity(editorContext.page.id);
+      setNotice('Saved page version.');
+    } catch {
+      // Rollback provisional version on failure
+      setVersions((prev) => prev.filter((v) => v.id !== provisionalVersion.id));
+      setVersionsCount((c) => Math.max(0, c - 1));
+      setNotice('Failed to save version. Please retry.');
+    }
   };
 
   const handleRestoreVersion = async (versionId: string) => {
@@ -636,9 +948,26 @@ export function useBuilderEditorController({
   };
 
   const handlePublishProject = async () => {
-    if (!editorContext) return;
-    if (effectivePublishGuardReason) {
-      setNotice(effectivePublishGuardReason);
+    recordAnalyticsEvent('publish_attempted', 'builder', {
+      projectId: editorContext?.project.id ?? null,
+      pageId: editorContext?.page.id ?? null,
+    });
+    if (!editorContext) {
+      setNotice('Open a project page before publishing.');
+      return;
+    }
+    if (!canManageLifecycle) {
+      setNotice('Only admins or owners can manage publish lifecycle actions.');
+      return;
+    }
+    if (editorContext.project.publish.status === 'published') {
+      setNotice(
+        'Project is already live. Unpublish it before creating another release.'
+      );
+      return;
+    }
+    if (publishGuardReason) {
+      setNotice(`Publish blocked: ${publishGuardReason}`);
       return;
     }
     const publish = {
@@ -655,26 +984,53 @@ export function useBuilderEditorController({
       );
       return commitProjects(prev, nextProjects);
     });
-    await publishService.createEvent({
-      id: `event-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-      projectId: editorContext.project.id,
-      pageId: editorContext.page.id,
-      type: 'published',
-      actorId: session.userId,
-      createdAt: new Date().toISOString(),
-      sourceVersionId: latestVersion?.id ?? null,
-      note: publish.sourceVersionId
-        ? `Published from version ${publish.sourceVersionId}`
-        : 'Published project',
-    });
-    await refreshActivity(editorContext.page.id);
-    setNotice('Project published.');
+    try {
+      await publishService.createEvent({
+        id: `event-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+        projectId: editorContext.project.id,
+        pageId: editorContext.page.id,
+        type: 'published',
+        actorId: session.userId,
+        createdAt: new Date().toISOString(),
+        sourceVersionId: latestVersion?.id ?? null,
+        note: publish.sourceVersionId
+          ? `Published from version ${publish.sourceVersionId}`
+          : 'Published project',
+      });
+      await refreshActivity(editorContext.page.id);
+      setNotice(
+        formatRepositoryActionNotice(
+          publish.sourceVersionId
+            ? `Project published from version ${latestVersion?.label ?? publish.sourceVersionId}.`
+            : 'Project published.'
+        )
+      );
+      recordAnalyticsEvent('publish_succeeded', 'builder', {
+        projectId: editorContext.project.id,
+        pageId: editorContext.page.id,
+      });
+    } catch {
+      setNotice(
+        'Project state updated locally, but the remote publish event could not be recorded. Retry or check your connection.'
+      );
+    }
   };
 
   const handleUnpublishProject = async () => {
-    if (!editorContext) return;
+    recordAnalyticsEvent('unpublish_attempted', 'builder', {
+      projectId: editorContext?.project.id ?? null,
+      pageId: editorContext?.page.id ?? null,
+    });
+    if (!editorContext) {
+      setNotice('Open a project page before changing publish status.');
+      return;
+    }
     if (!canManageLifecycle) {
       setNotice('Only admins or owners can manage publish lifecycle actions.');
+      return;
+    }
+    if (editorContext.project.publish.status !== 'published') {
+      setNotice('Project is already in draft mode.');
       return;
     }
     const publish = {
@@ -691,51 +1047,96 @@ export function useBuilderEditorController({
       );
       return commitProjects(prev, nextProjects);
     });
-    await publishService.createEvent({
-      id: `event-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-      projectId: editorContext.project.id,
-      pageId: editorContext.page.id,
-      type: 'unpublished',
-      actorId: session.userId,
-      createdAt: new Date().toISOString(),
-      sourceVersionId: null,
-      note: 'Returned project to draft',
-    });
-    await refreshActivity(editorContext.page.id);
-    setNotice('Project returned to draft.');
+    try {
+      await publishService.createEvent({
+        id: `event-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+        projectId: editorContext.project.id,
+        pageId: editorContext.page.id,
+        type: 'unpublished',
+        actorId: session.userId,
+        createdAt: new Date().toISOString(),
+        sourceVersionId: null,
+        note: 'Returned project to draft',
+      });
+      await refreshActivity(editorContext.page.id);
+      setNotice(
+        formatRepositoryActionNotice(
+          'Project returned to draft so release changes can continue.'
+        )
+      );
+      recordAnalyticsEvent('unpublish_succeeded', 'builder', {
+        projectId: editorContext.project.id,
+        pageId: editorContext.page.id,
+      });
+    } catch {
+      setNotice(
+        'Project returned to draft locally, but the remote unpublish event could not be recorded. Retry or check your connection.'
+      );
+    }
   };
 
   const handleAddComment = async () => {
     if (!editorContext || !commentDraft.trim()) return;
-    await services.comments.createComment({
+    const provisional: CommentRecord = {
       id: createCommentId(),
       pageId: editorContext.page.id,
+      nodeId: selectedNodeId ?? undefined,
       body: commentDraft.trim(),
       authorId: session.userId,
       resolved: false,
       createdAt: new Date().toISOString(),
-    });
+    };
+    // Optimistic: show comment immediately, clear the draft
+    setComments((prev) => [...prev, provisional]);
     setCommentDraft('');
-    await refreshActivity(editorContext.page.id);
-    setNotice('Added comment.');
+    try {
+      await services.comments.createComment(provisional);
+      await refreshActivity(editorContext.page.id);
+      setNotice('Added comment.');
+    } catch {
+      // Rollback provisional comment on failure
+      setComments((prev) => prev.filter((c) => c.id !== provisional.id));
+      setCommentDraft(provisional.body);
+      setNotice('Failed to add comment. Please retry.');
+    }
+  };
+
+  const handleResolveComment = async (commentId: string) => {
+    if (!editorContext) return;
+    // Optimistic: toggle resolved state immediately
+    setComments((prev) =>
+      prev.map((c) =>
+        c.id === commentId ? { ...c, resolved: !c.resolved } : c
+      )
+    );
+    try {
+      // Persist using upsert with the toggled resolved flag
+      const target = _comments.find((c) => c.id === commentId);
+      if (!target) return;
+      const next = { ...target, resolved: !target.resolved };
+      await services.comments.createComment(next);
+      await refreshActivity(editorContext.page.id);
+    } catch {
+      // Rollback on failure
+      setComments((prev) =>
+        prev.map((c) =>
+          c.id === commentId ? { ...c, resolved: !c.resolved } : c
+        )
+      );
+      setNotice('Failed to update comment. Please retry.');
+    }
   };
 
   const handleAddMember = async () => {
     if (!editorContext) return;
-    if (!canManageLifecycle) {
-      setNotice('Only admins or owners can manage project members.');
-      return;
-    }
     const email = newMemberEmail.trim().toLowerCase();
-    if (!email) {
-      setNotice('Enter an email address to invite.');
-      return;
-    }
-    const exists = projectMembers.some(
-      (member) => member.email.toLowerCase() === email
+    const addMemberReason = canAddProjectMember(
+      sessionRole,
+      projectMembers,
+      email
     );
-    if (exists) {
-      setNotice('Member already exists in this project.');
+    if (addMemberReason) {
+      setNotice(addMemberReason);
       return;
     }
     const nextMember: BuilderMember = {
@@ -749,31 +1150,53 @@ export function useBuilderEditorController({
         ? { ...project, members: nextMembers }
         : project
     );
-    setEditorState((prev) => commitProjects(prev, nextProjects));
-    await services.members.saveMembers(editorContext.project.id, nextMembers);
-    await publishService.createEvent({
-      id: `event-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-      projectId: editorContext.project.id,
-      pageId: editorContext.page.id,
-      type: 'member-added',
-      actorId: session.userId,
-      createdAt: new Date().toISOString(),
-      sourceVersionId: null,
-      note: `Added member ${nextMember.email} as ${nextMember.role}`,
-      payload: {
-        kind: 'member-added',
-        memberEmail: nextMember.email,
-        memberId: nextMember.userId,
-        toRole: nextMember.role,
-      },
+    setPendingMemberAction({
+      type: 'add',
+      email,
+      role: newMemberRole,
     });
-    setNewMemberEmail('');
-    await refreshActivity(editorContext.page.id);
-    setNotice('Added project member.');
+    setEditorState((prev) => commitProjects(prev, nextProjects));
+    try {
+      await services.members.saveMembers(editorContext.project.id, nextMembers);
+      await publishService.createEvent({
+        id: `event-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+        projectId: editorContext.project.id,
+        pageId: editorContext.page.id,
+        type: 'member-added',
+        actorId: session.userId,
+        createdAt: new Date().toISOString(),
+        sourceVersionId: null,
+        note: `Added member ${nextMember.email} as ${nextMember.role}`,
+        payload: {
+          kind: 'member-added',
+          memberEmail: nextMember.email,
+          memberId: nextMember.userId,
+          toRole: nextMember.role,
+        },
+      });
+      setNewMemberEmail('');
+      await refreshActivity(editorContext.page.id);
+      setNotice(
+        formatRepositoryActionNotice(
+          `Added ${nextMember.email} as ${nextMember.role}.`
+        )
+      );
+    } catch {
+      setNotice(
+        `Added ${nextMember.email} locally, but remote member persistence failed. Retry or check your connection.`
+      );
+    } finally {
+      setPendingMemberAction(null);
+    }
   };
 
   const handleAcceptInvite = async () => {
     if (!editorContext) return;
+    const acceptInviteReason = canAcceptProjectInvite(sessionRole);
+    if (acceptInviteReason) {
+      setNotice(acceptInviteReason);
+      return;
+    }
     const email = acceptedInviteEmail.trim().toLowerCase();
     if (!email) {
       setNotice('Enter an invite email to accept.');
@@ -789,7 +1212,11 @@ export function useBuilderEditorController({
     setSessionMemberId(member.userId);
     sessionRepository.saveSessionMemberId(member.userId);
     setAcceptedInviteEmail('');
-    setNotice(`Accepted invite as ${member.email}.`);
+    setNotice(
+      formatRepositoryActionNotice(
+        `Accepted invite as ${member.email} with ${member.role} access.`
+      )
+    );
   };
 
   const handleUpdateMemberRole = async (
@@ -797,14 +1224,27 @@ export function useBuilderEditorController({
     role: BuilderRole
   ) => {
     if (!editorContext) return;
-    if (!canManageLifecycle) {
-      setNotice('Only admins or owners can change member roles.');
-      return;
-    }
     const currentMember = projectMembers.find(
       (member) => member.userId === memberId
     );
-    if (!currentMember || currentMember.role === role) return;
+    if (!currentMember) {
+      setNotice('Project member was not found.');
+      return;
+    }
+    if (currentMember.role === role) {
+      setNotice(`${currentMember.email} already has the ${role} role.`);
+      return;
+    }
+    const changeRoleReason = canChangeProjectMemberRole(
+      sessionRole,
+      projectMembers,
+      memberId,
+      role
+    );
+    if (changeRoleReason) {
+      setNotice(changeRoleReason);
+      return;
+    }
     const updatedMember: BuilderMember = { ...currentMember, role };
     const nextMembers = projectMembers.map((member) =>
       member.userId === memberId ? updatedMember : member
@@ -814,37 +1254,62 @@ export function useBuilderEditorController({
         ? { ...project, members: nextMembers }
         : project
     );
-    setEditorState((prev) => commitProjects(prev, nextProjects));
-    await services.members.saveMembers(editorContext.project.id, nextMembers);
-    await publishService.createEvent({
-      id: `event-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-      projectId: editorContext.project.id,
-      pageId: editorContext.page.id,
-      type: 'member-role-updated',
-      actorId: session.userId,
-      createdAt: new Date().toISOString(),
-      sourceVersionId: null,
-      note: `Changed ${updatedMember.email} from ${currentMember.role} to ${updatedMember.role}`,
-      payload: {
-        kind: 'member-role-updated',
-        memberEmail: updatedMember.email,
-        memberId: updatedMember.userId,
-        fromRole: currentMember.role,
-        toRole: updatedMember.role,
-      },
+    setPendingMemberAction({
+      type: 'update',
+      memberId,
+      role,
     });
-    await refreshActivity(editorContext.page.id);
-    setNotice('Updated member role.');
+    setEditorState((prev) => commitProjects(prev, nextProjects));
+    try {
+      await services.members.saveMembers(editorContext.project.id, nextMembers);
+      await publishService.createEvent({
+        id: `event-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+        projectId: editorContext.project.id,
+        pageId: editorContext.page.id,
+        type: 'member-role-updated',
+        actorId: session.userId,
+        createdAt: new Date().toISOString(),
+        sourceVersionId: null,
+        note: `Changed ${updatedMember.email} from ${currentMember.role} to ${updatedMember.role}`,
+        payload: {
+          kind: 'member-role-updated',
+          memberEmail: updatedMember.email,
+          memberId: updatedMember.userId,
+          fromRole: currentMember.role,
+          toRole: updatedMember.role,
+        },
+      });
+      await refreshActivity(editorContext.page.id);
+      setNotice(
+        formatRepositoryActionNotice(
+          `Changed ${updatedMember.email} from ${currentMember.role} to ${updatedMember.role}.`
+        )
+      );
+    } catch {
+      setNotice(
+        `Role updated locally for ${updatedMember.email}, but remote persistence failed. Retry or check your connection.`
+      );
+    } finally {
+      setPendingMemberAction(null);
+    }
   };
 
   const handleRemoveMember = async (memberId: string) => {
     if (!editorContext) return;
-    if (!canManageLifecycle) {
-      setNotice('Only admins or owners can remove project members.');
+    const member = projectMembers.find((entry) => entry.userId === memberId);
+    if (!member) {
+      setNotice('Project member was not found.');
       return;
     }
-    const member = projectMembers.find((entry) => entry.userId === memberId);
-    if (!member) return;
+    const removeMemberReason = canRemoveProjectMember(
+      sessionRole,
+      projectMembers,
+      memberId
+    );
+    if (removeMemberReason) {
+      setNotice(removeMemberReason);
+      return;
+    }
     const nextMembers = projectMembers.filter(
       (entry) => entry.userId !== memberId
     );
@@ -853,42 +1318,62 @@ export function useBuilderEditorController({
         ? { ...project, members: nextMembers }
         : project
     );
-    setEditorState((prev) => commitProjects(prev, nextProjects));
-    await services.members.saveMembers(editorContext.project.id, nextMembers);
-    await publishService.createEvent({
-      id: `event-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-      projectId: editorContext.project.id,
-      pageId: editorContext.page.id,
-      type: 'member-removed',
-      actorId: session.userId,
-      createdAt: new Date().toISOString(),
-      sourceVersionId: null,
-      note: `Removed member ${member.email}`,
-      payload: {
-        kind: 'member-removed',
-        memberEmail: member.email,
-        memberId: member.userId,
-        fromRole: member.role,
-      },
+    setPendingMemberAction({
+      type: 'remove',
+      memberId,
     });
-    if (sessionMemberId === memberId) {
-      const fallbackMemberId =
-        editorContext.project.members.find((entry) => entry.userId !== memberId)
-          ?.userId ?? 'local-owner';
-      setSessionMemberId(fallbackMemberId);
-      sessionRepository.saveSessionMemberId(fallbackMemberId);
+    setEditorState((prev) => commitProjects(prev, nextProjects));
+    try {
+      await services.members.saveMembers(editorContext.project.id, nextMembers);
+      await publishService.createEvent({
+        id: `event-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+        projectId: editorContext.project.id,
+        pageId: editorContext.page.id,
+        type: 'member-removed',
+        actorId: session.userId,
+        createdAt: new Date().toISOString(),
+        sourceVersionId: null,
+        note: `Removed member ${member.email}`,
+        payload: {
+          kind: 'member-removed',
+          memberEmail: member.email,
+          memberId: member.userId,
+          fromRole: member.role,
+        },
+      });
+      if (sessionMemberId === member.userId) {
+        const fallbackMember = nextMembers[0] ?? null;
+        setSessionMemberId(fallbackMember?.userId ?? null);
+        sessionRepository.saveSessionMemberId(fallbackMember?.userId ?? null);
+      }
+      await refreshActivity(editorContext.page.id);
+      setNotice(
+        formatRepositoryActionNotice(
+          `Removed ${member.email} from the project.`
+        )
+      );
+    } catch {
+      setNotice(
+        `Removed ${member.email} locally, but remote persistence failed. Retry or check your connection.`
+      );
+    } finally {
+      setPendingMemberAction(null);
     }
-    await refreshActivity(editorContext.page.id);
-    setNotice('Removed project member.');
   };
 
-  const navigate = (nextPath: string) => {
-    setRoute(parseRoute(nextPath));
-    setSelectedNodeId(null);
-    setNotice(null);
-  };
+  const activeEditors = projectMembers.filter((member) => member.activePageId);
+  const recentlyActiveMembers = projectMembers.filter(
+    (member) => !member.activePageId && member.lastActiveAt
+  );
+  const memberPresenceSummary = activeEditors.length
+    ? `${activeEditors.length} collaborator${activeEditors.length === 1 ? '' : 's'} editing now · ${recentlyActiveMembers.length} recently active`
+    : recentlyActiveMembers.length
+      ? `${recentlyActiveMembers.length} collaborator${recentlyActiveMembers.length === 1 ? '' : 's'} recently active`
+      : 'No recent collaborator activity yet';
 
   return {
+    activeMember,
+    memberPresenceSummary,
     route,
     selectedNodeId,
     setSelectedNodeId,
@@ -903,6 +1388,7 @@ export function useBuilderEditorController({
     canManageLifecycle,
     canSaveVersions,
     canRestoreVersions,
+    isGeneratingDraft,
     projectMembers,
     newMemberEmail,
     setNewMemberEmail,
@@ -915,6 +1401,8 @@ export function useBuilderEditorController({
     setSessionMemberId,
     canPublishProject,
     publishGuardReason: effectivePublishGuardReason,
+    publishStateSummary,
+    publishStateGuidance,
     latestVersion,
     editorContext,
     selectedNode,
@@ -930,10 +1418,12 @@ export function useBuilderEditorController({
     handleSaveVersion,
     handleRestoreVersion,
     handleAddComment,
+    handleResolveComment,
     handleAddMember,
     handleAcceptInvite,
     handleUpdateMemberRole,
     handleRemoveMember,
+    pendingMemberAction,
     handlePublishProject,
     handleUnpublishProject,
     publishEvents,

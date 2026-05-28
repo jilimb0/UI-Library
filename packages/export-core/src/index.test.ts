@@ -169,6 +169,25 @@ describe('export-core pipeline', () => {
     });
   });
 
+  it('produces a deterministic runnable export from a structured prompt request', () => {
+    // This test relied on the prompt-engine package which is outside this package's
+    // dependency boundary. Replace with a checklist acceptance test that uses the
+    // export-core public API only.
+    const normalized = normalizeExportProject(baseRequest);
+    const analyzed = analyzeExportProject(normalized);
+    const enriched = enrichExportProject(analyzed);
+    const rendered = renderExportProject(enriched);
+
+    const checklist = createExportAcceptanceChecklist(enriched, rendered);
+
+    expect(checklist).toEqual({
+      hasPages: true,
+      hasDiagnostics: false,
+      deterministicRenderer: true,
+      builderFixtureCompatible: true,
+    });
+  });
+
   it('emits diagnostics for unknown components and tracks unsupported nodes', () => {
     const result = normalizeExportProject({
       ...baseRequest,
@@ -235,8 +254,15 @@ describe('export-core pipeline', () => {
       'src/main.tsx',
       'src/App.tsx',
       'src/styles.css',
+      'src/theme.css',
+      'tokens/design-tokens.json',
+      'tokens/design-tokens.css',
+      'assets/icons/placeholder-app-icon.svg',
       'README.md',
     ]);
+    const appFile = first.files.find((file) => file.path === 'src/App.tsx');
+    expect(appFile?.content).toContain('const pageLayouts =');
+    expect(appFile?.content).toContain('className="app-shell"');
   });
 
   it('renders a deterministic html-static file manifest for the same builder fixture', () => {
@@ -250,6 +276,9 @@ describe('export-core pipeline', () => {
     expect(first.diagnostics).toEqual([]);
     expect(first.files.map((file) => file.path)).toEqual([
       'index.html',
+      'tokens/design-tokens.json',
+      'tokens/design-tokens.css',
+      'assets/icons/placeholder-app-icon.svg',
       'README.md',
     ]);
     const htmlFile = first.files.find((file) => file.path === 'index.html');
@@ -273,6 +302,9 @@ describe('export-core pipeline', () => {
     expect(first.files.map((file) => file.path)).toEqual([
       'index.html',
       'components.js',
+      'tokens/design-tokens.json',
+      'tokens/design-tokens.css',
+      'assets/icons/placeholder-app-icon.svg',
       'README.md',
     ]);
     const htmlFile = first.files.find((file) => file.path === 'index.html');

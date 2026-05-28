@@ -2,7 +2,11 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -14,17 +18,33 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "noFallthroughCasesInSwitch": true,
-    "ignoreDeprecations": "6.0",
     "baseUrl": ".",
+    "ignoreDeprecations": "6.0",
     "paths": {
-      "@ui-construction-library/core": ["packages/core/src"],
-      "@ui-construction-library/utils": ["packages/utils/src"],
-      "@ui-construction-library/tokens": ["packages/tokens/src"],
-      "@ui-construction-library/icons": ["packages/icons/src"],
-      "@ui-construction-library/schema": ["packages/schema/src"],
-      "@ui-construction-library/registry": ["packages/registry/src"],
-      "@ui-construction-library/styles": ["packages/styles/src"],
-      "@ui-construction-library/react-hook-form": ["packages/integrations/react-hook-form/src"]
+      "@ui-construction-library/core": [
+        "packages/core/src"
+      ],
+      "@ui-construction-library/utils": [
+        "packages/utils/src"
+      ],
+      "@ui-construction-library/tokens": [
+        "packages/tokens/src"
+      ],
+      "@ui-construction-library/icons": [
+        "packages/icons/src"
+      ],
+      "@ui-construction-library/schema": [
+        "packages/schema/src"
+      ],
+      "@ui-construction-library/registry": [
+        "packages/registry/src"
+      ],
+      "@ui-construction-library/styles": [
+        "packages/styles/src"
+      ],
+      "@ui-construction-library/react-hook-form": [
+        "packages/integrations/react-hook-form/src"
+      ]
     }
   },
   "include": [
@@ -32,9 +52,14 @@
     "packages/integrations/react-hook-form/src",
     "packages/utils/src",
     "packages/tokens/src",
-    "apps/**/*",
     "vitest.config.ts",
-    "vitest.setup.ts"
+    "vitest.setup.ts",
+    "apps/builder/**/*",
+    "apps/demo-showcase/**/*",
+    "apps/docs/**/*"
   ],
-  "exclude": ["node_modules", "dist"]
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

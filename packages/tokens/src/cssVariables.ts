@@ -18,10 +18,23 @@ export interface Theme {
   mode?: ThemeName;
   colors?: Partial<ColorTokens>;
   semantic?: Partial<SemanticColors>;
+  overrides?: Record<string, string>;
 }
 
 function toCSSVarLines(name: string, value: string): string {
   return `  --${name}: ${value};`;
+}
+
+function toThemeLayer(name: string, lines: string[]): string {
+  return [`[data-theme="${name}"] {`, ...lines, '}'].join('\n');
+}
+
+function toThemeLayerForRoot(name: string, lines: string[]): string {
+  return [
+    `:root:not([data-theme]), [data-theme="${name}"] {`,
+    ...lines,
+    '}',
+  ].join('\n');
 }
 
 export function generateCSSVariables(theme: Theme = {}): string {
@@ -117,5 +130,14 @@ export function generateCSSVariables(theme: Theme = {}): string {
     rootLines.push(toCSSVarLines(`shadow-${k}`, value));
   });
 
-  return [':root {', ...rootLines, '}'].join('\n');
+  const overrideLines = Object.entries(theme.overrides ?? {}).map(([k, v]) =>
+    toCSSVarLines(k.startsWith('--') ? k.slice(2) : k, v)
+  );
+
+  return [
+    toThemeLayerForRoot('light', rootLines),
+    toThemeLayer('light', overrideLines),
+    toThemeLayerForRoot('dark', rootLines),
+    toThemeLayer('dark', overrideLines),
+  ].join('\n\n');
 }

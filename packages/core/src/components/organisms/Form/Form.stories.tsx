@@ -30,7 +30,7 @@ export const Default: Story = {
         <Field label="Password">
           <Input type="password" placeholder="Enter your password" />
         </Field>
-        <Button type="submit" variant="primary">
+        <Button type="submit" variant="default">
           Submit
         </Button>
       </div>
@@ -51,7 +51,7 @@ export const WithValidation: Story = {
         <Field label="Password" description="Must be at least 8 characters">
           <Input type="password" placeholder="Enter your password" />
         </Field>
-        <Button type="submit" variant="primary">
+        <Button type="submit" variant="default">
           Submit
         </Button>
       </div>

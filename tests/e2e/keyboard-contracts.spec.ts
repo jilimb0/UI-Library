@@ -15,7 +15,8 @@ test.describe('Keyboard contracts smoke', () => {
 
   test('dropdown handles arrow navigation and selection', async ({ page }) => {
     await page.goto(BASE_URL);
-    const trigger = page.getByRole('button', { name: 'Select...' }).first();
+    // The Dropdown component trigger's accessible name includes the label prefix
+    const trigger = page.locator('.dropdown-trigger').first();
     await trigger.click();
     await page.keyboard.press('ArrowDown');
     await page.keyboard.press('ArrowDown');

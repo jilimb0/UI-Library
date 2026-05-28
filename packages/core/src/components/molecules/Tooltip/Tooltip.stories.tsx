@@ -26,7 +26,7 @@ export const Default: Story = {
 export const WithText: Story = {
   args: {
     content: 'Click this button to submit the form',
-    children: <Button variant="primary">Submit</Button>,
+    children: <Button variant="default">Submit</Button>,
   },
 };
 

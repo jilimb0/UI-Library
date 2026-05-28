@@ -17,7 +17,7 @@ export default {
   plugins: [
     json(),
     typescript({
-      tsconfig: './tsconfig.json',
+      tsconfig: './tsconfig.build.json',
       outputToFilesystem: true,
       sourceMap: false,
       inlineSources: false,

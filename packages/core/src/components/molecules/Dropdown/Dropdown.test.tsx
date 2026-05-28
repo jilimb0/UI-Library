@@ -50,8 +50,8 @@ describe('Dropdown', () => {
         label="Demo"
       />
     );
-    expect(screen.getByRole('button', { name: 'Demo' })).toHaveTextContent(
-      'Item 2'
-    );
+    expect(
+      screen.getByRole('button', { name: 'Demo: Item 2' })
+    ).toHaveTextContent('Item 2');
   });
 });

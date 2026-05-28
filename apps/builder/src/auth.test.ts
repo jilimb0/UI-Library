@@ -97,6 +97,32 @@ describe('supabase connection status', () => {
       enabled: true,
       mode: 'configured',
       detail: 'Supabase environment variables detected.',
+      summary: 'Remote repository is connected.',
+      guidance: [
+        'Builder can use Supabase-backed project and member repositories.',
+        'If remote actions fail, verify table migrations and Row Level Security policies next.',
+      ],
+      severity: 'healthy',
+    });
+  });
+
+  it('reports partial configuration when only one supabase env variable is present', () => {
+    expect(
+      getSupabaseConnectionStatus({
+        VITE_SUPABASE_URL: 'https://example.supabase.co',
+      })
+    ).toEqual({
+      enabled: false,
+      mode: 'partial',
+      detail:
+        'Supabase configuration is incomplete. Missing VITE_SUPABASE_ANON_KEY.',
+      summary: 'Remote repository setup is incomplete.',
+      guidance: [
+        'Add VITE_SUPABASE_ANON_KEY so Supabase mode can connect to the real backend.',
+        'Until configuration is complete, remote mode should be treated as disconnected and non-authoritative.',
+        'Switch to local or memory mode if you need predictable editing while environment setup is being fixed.',
+      ],
+      severity: 'error',
     });
   });
 
@@ -106,6 +132,13 @@ describe('supabase connection status', () => {
       mode: 'stub',
       detail:
         'Supabase mode is using the local stub client until env credentials are provided.',
+      summary: 'Remote repository is not configured.',
+      guidance: [
+        'Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to enable the real remote-backed mode.',
+        'Until then, Supabase mode only simulates reads and writes with the local stub client.',
+        'If you expected a real backend, switch repository mode to local or memory to avoid false confidence.',
+      ],
+      severity: 'warning',
     });
   });
 });

@@ -60,7 +60,7 @@ const sampleData: User[] = [
   },
 ];
 
-const columns = [
+const columns: any[] = [
   {
     key: 'name',
     header: 'Name',
@@ -80,11 +80,13 @@ const columns = [
     key: 'status',
     header: 'Status',
     sortable: true,
-    render: (item: User) => (
+    render: (item: unknown) => (
       <span
-        className={item.status === 'Active' ? 'text-green-600' : 'text-red-600'}
+        className={
+          (item as User).status === 'Active' ? 'text-green-600' : 'text-red-600'
+        }
       >
-        {item.status}
+        {(item as User).status}
       </span>
     ),
   },
@@ -114,8 +116,10 @@ export const WithCustomRender: Story = {
         key: 'name',
         header: 'Name',
         sortable: true,
-        render: (item: User) => (
-          <div className="font-semibold text-blue-600">{item.name}</div>
+        render: (item: unknown) => (
+          <div className="font-semibold text-blue-600">
+            {(item as User).name}
+          </div>
         ),
       },
       {
@@ -127,9 +131,9 @@ export const WithCustomRender: Story = {
         key: 'role',
         header: 'Role',
         sortable: true,
-        render: (item: User) => (
+        render: (item: unknown) => (
           <span className="px-2 py-1 bg-gray-100 rounded text-sm">
-            {item.role}
+            {(item as User).role}
           </span>
         ),
       },
@@ -137,15 +141,15 @@ export const WithCustomRender: Story = {
         key: 'status',
         header: 'Status',
         sortable: true,
-        render: (item: User) => (
+        render: (item: unknown) => (
           <span
             className={`px-2 py-1 rounded text-sm ${
-              item.status === 'Active'
+              (item as User).status === 'Active'
                 ? 'bg-green-100 text-green-800'
                 : 'bg-red-100 text-red-800'
             }`}
           >
-            {item.status}
+            {(item as User).status}
           </span>
         ),
       },

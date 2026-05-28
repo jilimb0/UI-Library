@@ -53,6 +53,12 @@ export type PromptRepairDiagnostic = {
   severity: 'info' | 'warning';
 };
 
+export type PromptGenerationPolicyScore = {
+  score: number;
+  status: 'allow' | 'warn' | 'block';
+  reasons: string[];
+};
+
 export type PromptRepairResult = {
   draft: PromptDraftProject;
   diagnostics: PromptRepairDiagnostic[];
@@ -80,10 +86,13 @@ export type PromptResponse = {
   alternatives: PromptAlternative[];
   draft: PromptDraftProject;
   repair: PromptRepairResult;
+  policy: PromptGenerationPolicyScore;
   explainability: {
     recipeId: string;
     usedComponents: string[];
     validationPassed: boolean;
+    compositionFamily: string;
+    layoutRhythm: string;
   };
 };
 
@@ -97,6 +106,58 @@ const MODE_SAFETY_RAILS: Record<PromptGenerationMode, readonly string[]> = {
 };
 
 const DETERMINISTIC_USED_COMPONENTS = ['card', 'heading', 'text'] as const;
+
+export function scorePromptRequest(
+  request: PromptRequest
+): PromptGenerationPolicyScore {
+  const reasons: string[] = [];
+  let score = 100;
+
+  if (request.productType.trim().split(/\s+/).length < 2) {
+    score -= 20;
+    reasons.push('Product type is underspecified for a reliable scaffold.');
+  }
+
+  if (request.targetAudience.trim().length === 0) {
+    score -= 20;
+    reasons.push('Target audience is missing.');
+  }
+
+  if (request.sections.length < 2) {
+    score -= 10;
+    reasons.push(
+      'Very few sections were requested, which weakens layout planning.'
+    );
+  }
+
+  if (/mobile app|native app/i.test(request.productType)) {
+    score -= 35;
+    reasons.push(
+      'Request implies a native/mobile app while the generator targets structured web UI.'
+    );
+  }
+
+  if (
+    /animation|motion-heavy|3d/i.test(
+      `${request.productType} ${request.domain}`
+    )
+  ) {
+    score -= 15;
+    reasons.push(
+      'Advanced motion requirements exceed the deterministic layout recipe baseline.'
+    );
+  }
+
+  const status = score < 50 ? 'block' : score < 75 ? 'warn' : 'allow';
+
+  if (reasons.length === 0) {
+    reasons.push(
+      'Prompt fits the deterministic structured-UI generation policy.'
+    );
+  }
+
+  return { score, status, reasons };
+}
 
 function slugify(value: string): string {
   return (
@@ -120,6 +181,154 @@ function makeTextNode(id: string, children: string): PromptDraftNode {
   };
 }
 
+type CompositionPlan = {
+  compositionFamily:
+    | 'hero-led'
+    | 'feature-grid'
+    | 'signal-first-dashboard'
+    | 'campaign-focus';
+  layoutRhythm: 'intro-heavy' | 'balanced-stack' | 'summary-detail';
+  sectionPadding: 'sm' | 'md' | 'lg';
+  heroShadow: 'sm' | 'md';
+};
+
+function deriveCompositionPlan(request: PromptRequest): CompositionPlan {
+  if (request.generationMode === 'dashboard') {
+    return {
+      compositionFamily: 'signal-first-dashboard',
+      layoutRhythm: 'summary-detail',
+      sectionPadding: request.density === 'compact' ? 'sm' : 'md',
+      heroShadow: 'sm',
+    };
+  }
+
+  if (request.generationMode === 'marketing-section') {
+    return {
+      compositionFamily: 'campaign-focus',
+      layoutRhythm: 'intro-heavy',
+      sectionPadding: request.density === 'spacious' ? 'lg' : 'md',
+      heroShadow: 'md',
+    };
+  }
+
+  if (
+    request.sections.includes('features') ||
+    request.sections.includes('pricing')
+  ) {
+    return {
+      compositionFamily: 'feature-grid',
+      layoutRhythm: 'balanced-stack',
+      sectionPadding:
+        request.density === 'compact'
+          ? 'sm'
+          : request.density === 'spacious'
+            ? 'lg'
+            : 'md',
+      heroShadow: 'md',
+    };
+  }
+
+  return {
+    compositionFamily: 'hero-led',
+    layoutRhythm: 'intro-heavy',
+    sectionPadding:
+      request.density === 'compact'
+        ? 'sm'
+        : request.density === 'spacious'
+          ? 'lg'
+          : 'md',
+    heroShadow: 'md',
+  };
+}
+
+function makeSectionCopy(
+  request: PromptRequest,
+  section: string,
+  index: number,
+  plan: CompositionPlan
+): string {
+  if (index === 0) {
+    return `A ${request.styleTone} ${request.domain} experience generated for ${request.targetAudience} with a ${plan.layoutRhythm} rhythm.`;
+  }
+
+  if (plan.compositionFamily === 'signal-first-dashboard') {
+    return `Summary-first ${section} block for ${request.targetAudience}, tuned to ${request.density} information density.`;
+  }
+
+  if (plan.compositionFamily === 'campaign-focus') {
+    return `Campaign-style ${section} content with deterministic hierarchy and ${request.styleTone} emphasis.`;
+  }
+
+  return `Deterministic ${section} content for a ${request.styleTone} ${request.productType} concept.`;
+}
+
+function makeSectionChildren(
+  request: PromptRequest,
+  section: string,
+  index: number,
+  plan: CompositionPlan
+): PromptDraftNode[] {
+  const baseId = `section-${index + 1}`;
+  const title =
+    index === 0
+      ? `${request.productType} for ${request.targetAudience}`
+      : section.charAt(0).toUpperCase() + section.slice(1);
+  const nodes: PromptDraftNode[] = [
+    makeHeadingNode(`${baseId}-heading`, index === 0 ? '1' : '2', title),
+    makeTextNode(
+      `${baseId}-copy`,
+      makeSectionCopy(request, section, index, plan)
+    ),
+  ];
+
+  if (
+    section === 'metrics' ||
+    section === 'analytics' ||
+    section === 'activity'
+  ) {
+    nodes.push(
+      makeTextNode(
+        `${baseId}-summary`,
+        `Key signals, KPI deltas, and operational summaries for ${request.targetAudience}.`
+      )
+    );
+  } else if (section === 'pricing' || section === 'plans') {
+    nodes.push(
+      makeTextNode(
+        `${baseId}-summary`,
+        `Plan comparison scaffold with deterministic billing hierarchy and clear upgrade path.`
+      )
+    );
+  } else if (section === 'faq' || section === 'docs' || section === 'setup') {
+    nodes.push(
+      makeTextNode(
+        `${baseId}-summary`,
+        `Reference-oriented section with concise onboarding detail and implementation guidance.`
+      )
+    );
+  } else if (section === 'cta') {
+    nodes.push(
+      makeTextNode(
+        `${baseId}-summary`,
+        `Single conversion-focused action area with restrained hierarchy and explicit next step.`
+      )
+    );
+  }
+
+  return nodes;
+}
+
+function getSectionLayoutVariant(
+  section: string,
+  index: number,
+  plan: CompositionPlan
+): 'hero' | 'feature' | 'detail' | 'cta' {
+  if (index === 0) return 'hero';
+  if (section === 'cta' || section === 'pricing') return 'cta';
+  if (plan.compositionFamily === 'signal-first-dashboard') return 'detail';
+  return 'feature';
+}
+
 function makeHeadingNode(
   id: string,
   level: string,
@@ -140,35 +349,20 @@ function buildLandingPageDraft(request: PromptRequest): PromptDraftProject {
   const assembledSections = uniqueOrdered(
     request.sections.length > 0 ? request.sections : ['hero', 'features', 'cta']
   );
+  const plan = deriveCompositionPlan(request);
 
   const sectionChildren = assembledSections.map((section, index) => ({
     id: `section-${index + 1}`,
     componentId: 'card',
     props: {
-      padding:
-        request.density === 'compact'
-          ? 'sm'
-          : request.density === 'spacious'
-            ? 'lg'
-            : 'md',
+      padding: plan.sectionPadding,
       interactive: false,
-      shadow: index === 0 ? 'md' : 'sm',
+      shadow: index === 0 ? plan.heroShadow : 'sm',
+      layoutVariant: getSectionLayoutVariant(section, index, plan),
+      layoutRhythm: plan.layoutRhythm,
+      compositionFamily: plan.compositionFamily,
     },
-    children: [
-      makeHeadingNode(
-        `section-${index + 1}-heading`,
-        index === 0 ? '1' : '2',
-        index === 0
-          ? `${request.productType} for ${request.targetAudience}`
-          : section.charAt(0).toUpperCase() + section.slice(1)
-      ),
-      makeTextNode(
-        `section-${index + 1}-copy`,
-        index === 0
-          ? `A ${request.styleTone} ${request.domain} experience generated for ${request.targetAudience}.`
-          : `Deterministic ${section} content for a ${request.styleTone} ${request.productType} concept.`
-      ),
-    ],
+    children: makeSectionChildren(request, section, index, plan),
   }));
 
   return {
@@ -325,6 +519,7 @@ export function generatePromptDraft(request: PromptRequest): PromptResponse {
   const assembledSections = uniqueOrdered(
     request.sections.length > 0 ? request.sections : ['hero', 'features', 'cta']
   );
+  const compositionPlan = deriveCompositionPlan(request);
 
   return {
     chosenIntent: request.generationMode,
@@ -357,10 +552,13 @@ export function generatePromptDraft(request: PromptRequest): PromptResponse {
     ],
     draft: repair.draft,
     repair,
+    policy: scorePromptRequest(request),
     explainability: {
       recipeId: `deterministic-${request.generationMode}`,
       usedComponents: [...DETERMINISTIC_USED_COMPONENTS],
       validationPassed: repair.valid,
+      compositionFamily: compositionPlan.compositionFamily,
+      layoutRhythm: compositionPlan.layoutRhythm,
     },
   };
 }

@@ -21,11 +21,19 @@ jobs:
       - run: pnpm --filter @ui-construction-library/registry typecheck
       - run: pnpm --filter @ui-construction-library/registry test
 
-  export-smoke-placeholder:
-    name: Export Smoke Test (Placeholder)
+  export-smoke-builds:
+    name: Export Smoke Builds
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Placeholder for Phase 5 export smoke matrix"
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @ui-construction-library/export-core test -- --runInBand
+      - run: pnpm --filter @ui-construction-library/export-core build
 
   generated-project-matrix-placeholder:
     name: Generated Project Matrix (Placeholder)

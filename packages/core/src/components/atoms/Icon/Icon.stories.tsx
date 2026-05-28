@@ -12,15 +12,15 @@ const meta: Meta<typeof Icon> = {
     name: {
       control: { type: 'select' },
       options: [
-        'Home',
-        'User',
-        'Settings',
-        'Search',
-        'Heart',
-        'Star',
-        'Bell',
-        'Mail',
-        'Check',
+        'home',
+        'user',
+        'settings',
+        'search',
+        'heart',
+        'star',
+        'bell',
+        'mail',
+        'check',
       ],
     },
     size: {
@@ -38,42 +38,42 @@ type Story = StoryObj<typeof Icon>;
 
 export const Default: Story = {
   args: {
-    name: 'Home',
+    name: 'home',
     size: 24,
   },
 };
 
 export const User: Story = {
   args: {
-    name: 'User',
+    name: 'user',
     size: 24,
   },
 };
 
 export const Settings: Story = {
   args: {
-    name: 'Settings',
+    name: 'settings',
     size: 24,
   },
 };
 
 export const Search: Story = {
   args: {
-    name: 'Search',
+    name: 'search',
     size: 24,
   },
 };
 
 export const Large: Story = {
   args: {
-    name: 'Star',
+    name: 'star',
     size: 48,
   },
 };
 
 export const Colored: Story = {
   args: {
-    name: 'Heart',
+    name: 'heart',
     size: 32,
     color: '#ef4444',
   },
@@ -82,11 +82,11 @@ export const Colored: Story = {
 export const MultipleIcons: Story = {
   render: () => (
     <div className="flex gap-4">
-      <Icon name="Home" size={24} />
-      <Icon name="User" size={24} />
-      <Icon name="Settings" size={24} />
-      <Icon name="Search" size={24} />
-      <Icon name="Heart" size={24} color="#ef4444" />
+      <Icon name="home" size={24} />
+      <Icon name="user" size={24} />
+      <Icon name="settings" size={24} />
+      <Icon name="search" size={24} />
+      <Icon name="heart" size={24} color="#ef4444" />
     </div>
   ),
 };

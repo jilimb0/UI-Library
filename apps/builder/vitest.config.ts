@@ -14,6 +14,5 @@ export default defineConfig({
       'src/versionRepository.test.ts',
     ],
     pool: 'threads',
-    singleThread: true,
   },
 });

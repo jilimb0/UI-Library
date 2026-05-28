@@ -1,4 +1,4 @@
-import type { Meta } from '@storybook/react';
+import type { Meta } from '@storybook/react-vite';
 import { Icon, Text } from '@ui-construction-library/core';
 
 const meta: Meta = {

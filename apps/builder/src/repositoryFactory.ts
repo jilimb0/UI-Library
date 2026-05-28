@@ -19,12 +19,18 @@ export function resolveRepositoryMode(): Mode {
   const globalMode = (
     globalThis as unknown as { __UI_BUILDER_REPOSITORY__?: string }
   ).__UI_BUILDER_REPOSITORY__;
-  const envMode =
-    typeof import.meta !== 'undefined'
-      ? import.meta.env?.VITE_BUILDER_REPOSITORY
-      : undefined;
-  const mode = (globalMode ?? envMode ?? 'local').toLowerCase();
-  if (mode === 'supabase' || mode === 'memory' || mode === 'local') return mode;
+
+  if (typeof globalMode === 'string') {
+    const normalized = globalMode.toLowerCase();
+    if (
+      normalized === 'supabase' ||
+      normalized === 'memory' ||
+      normalized === 'local'
+    ) {
+      return normalized;
+    }
+  }
+
   return 'local';
 }
 

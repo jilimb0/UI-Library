@@ -16,4 +16,11 @@ pnpm-debug.log
 # Local Pages preview artifacts
 .pages/
 
+# Local package manager and test artifacts
+.pnpm-store/
+supabase/.temp/
+test-results/
+playwright-report/
+
+next-product-plan.md
 task.md

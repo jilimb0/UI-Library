@@ -126,7 +126,7 @@ const Overlay = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
 );
 
 const Content = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
-  function Content({ onClick, ...props }, ref) {
+  function Content({ onClick, onKeyDown: onKeyDownProp, ...props }, ref) {
     const { setOpen, titleId, descriptionId } = useDialogContext();
     const contentRef = useRef<HTMLDivElement | null>(null);
 
@@ -152,7 +152,15 @@ const Content = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
           onClick?.(e);
           e.stopPropagation();
         }}
-        onKeyDown={(e) => e.stopPropagation()}
+        onKeyDown={(e) => {
+          onKeyDownProp?.(e);
+          if (e.key === 'Escape') {
+            e.stopPropagation();
+            setOpen(false);
+          } else {
+            e.stopPropagation();
+          }
+        }}
         {...props}
       />
     );

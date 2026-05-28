@@ -2,13 +2,19 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "composite": true,
+    "rootDir": "src",
     "outDir": "dist",
     "declaration": true,
     "declarationMap": true,
     "sourceMap": false,
     "noEmit": false,
-    "ignoreDeprecations": "6.0"
+    "ignoreDeprecations": "6.0",
+    "paths": {
+      "@ui-construction-library/schema": ["../schema/src/index.ts"],
+      "@ui-construction-library/registry": ["../registry/src/index.ts"],
+      "@ui-construction-library/tokens": ["../tokens/src/index.ts"]
+    }
   },
   "include": ["src/**/*"],
-  "exclude": []
+  "references": [{ "path": "../schema" }, { "path": "../registry" }, { "path": "../tokens" }]
 }

@@ -77,3 +77,39 @@ export function duplicateNode(
     }),
   };
 }
+
+export function replaceNode(
+  root: LayoutNode,
+  targetId: string,
+  nextNode: LayoutNode
+): LayoutNode {
+  if (root.id === targetId) {
+    return nextNode;
+  }
+
+  return {
+    ...root,
+    children: root.children.map((child) =>
+      replaceNode(child, targetId, nextNode)
+    ),
+  };
+}
+
+export function listNodeIdsDepthFirst(root: LayoutNode): string[] {
+  return [
+    root.id,
+    ...root.children.flatMap((child) => listNodeIdsDepthFirst(child)),
+  ];
+}
+
+export function findParentNode(
+  root: LayoutNode,
+  targetId: string
+): LayoutNode | null {
+  for (const child of root.children) {
+    if (child.id === targetId) return root;
+    const nested = findParentNode(child, targetId);
+    if (nested) return nested;
+  }
+  return null;
+}

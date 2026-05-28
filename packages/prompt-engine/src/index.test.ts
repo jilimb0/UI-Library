@@ -87,3 +87,73 @@ describe('prompt-engine deterministic baseline', () => {
     expect(builderProject.pages).toHaveLength(1);
   });
 });
+
+test('generatePromptDraft exposes composition family and layout rhythm for dashboards', () => {
+  const result = generatePromptDraft({
+    productType: 'Analytics workspace',
+    targetAudience: 'ops teams',
+    sections: ['hero', 'metrics', 'activity'],
+    styleTone: 'confident',
+    density: 'compact',
+    domain: 'operations',
+    frameworkPreference: 'react',
+    detailLevel: 'high',
+    generationMode: 'dashboard',
+  });
+
+  expect(result.explainability.compositionFamily).toBe(
+    'signal-first-dashboard'
+  );
+  expect(result.explainability.layoutRhythm).toBe('summary-detail');
+  expect(result.draft.pages[0]?.root.children[0]?.props.layoutRhythm).toBe(
+    'summary-detail'
+  );
+});
+
+test('generatePromptDraft uses feature-grid family for feature-heavy landing pages', () => {
+  const result = generatePromptDraft({
+    productType: 'Pricing portal',
+    targetAudience: 'finance teams',
+    sections: ['hero', 'features', 'pricing', 'cta'],
+    styleTone: 'structured',
+    density: 'balanced',
+    domain: 'billing',
+    frameworkPreference: 'react',
+    detailLevel: 'medium',
+    generationMode: 'landing-page',
+  });
+
+  expect(result.explainability.compositionFamily).toBe('feature-grid');
+  expect(result.draft.pages[0]?.root.children[1]?.props.layoutVariant).toBe(
+    'feature'
+  );
+  expect(result.draft.pages[0]?.root.children[2]?.props.layoutVariant).toBe(
+    'cta'
+  );
+});
+
+test('generatePromptDraft adds semantic child scaffolds for metrics and pricing sections', () => {
+  const result = generatePromptDraft({
+    productType: 'Revenue control center',
+    targetAudience: 'finance operators',
+    sections: ['hero', 'metrics', 'pricing', 'cta'],
+    styleTone: 'precise',
+    density: 'balanced',
+    domain: 'finops',
+    frameworkPreference: 'react',
+    detailLevel: 'high',
+    generationMode: 'dashboard',
+  });
+
+  const metricsChildren =
+    result.draft.pages[0]?.root.children[1]?.children ?? [];
+  const pricingChildren =
+    result.draft.pages[0]?.root.children[2]?.children ?? [];
+
+  expect(metricsChildren.length).toBeGreaterThanOrEqual(3);
+  expect(pricingChildren.length).toBeGreaterThanOrEqual(3);
+  expect(String(metricsChildren[2]?.props.children)).toContain('KPI');
+  expect(String(pricingChildren[2]?.props.children)).toContain(
+    'Plan comparison'
+  );
+});

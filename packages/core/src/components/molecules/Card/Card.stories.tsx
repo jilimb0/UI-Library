@@ -36,7 +36,7 @@ export const WithActions: Story = {
         <Heading level={3}>Card with Actions</Heading>
         <Text className="mt-2 mb-4">This card includes action buttons.</Text>
         <div className="flex gap-2">
-          <Button variant="primary" size="sm">
+          <Button variant="default" size="sm">
             Action
           </Button>
           <Button variant="secondary" size="sm">

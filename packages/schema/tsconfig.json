@@ -8,8 +8,9 @@
     "sourceMap": false,
     "noEmit": false,
     "ignoreDeprecations": "6.0",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "rootDir": "."
   },
-  "include": ["src/**/*", "src/**/*.json"],
-  "exclude": []
+  "include": ["src/**/*.ts", "src/**/*.json"],
+  "exclude": ["dist", "node_modules"]
 }

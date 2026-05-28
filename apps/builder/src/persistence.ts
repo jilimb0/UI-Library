@@ -2,8 +2,66 @@ import type {
   BuilderMember,
   BuilderPage,
   BuilderProject,
+  LayoutNode,
   SupabaseLikeClient,
 } from './types';
+
+// ---------------------------------------------------------------------------
+// Corruption guard helpers
+// ---------------------------------------------------------------------------
+
+/**
+ * Recursively validates a LayoutNode.
+ * Accepts the node only when it has a non-empty string id, a non-empty
+ * componentId, a props object, and a children array.
+ * Any child that fails validation is stripped rather than accepted.
+ */
+export function isValidLayoutNode(node: unknown): node is LayoutNode {
+  if (!node || typeof node !== 'object') return false;
+  const n = node as Record<string, unknown>;
+  return (
+    typeof n.id === 'string' &&
+    n.id.trim().length > 0 &&
+    typeof n.componentId === 'string' &&
+    n.componentId.trim().length > 0 &&
+    typeof n.props === 'object' &&
+    n.props !== null &&
+    Array.isArray(n.children)
+  );
+}
+
+/**
+ * Recursively cleans a LayoutNode: strips children that fail validation
+ * and applies the same cleaning to every surviving child.
+ */
+export function sanitizeLayoutNode(node: LayoutNode): LayoutNode {
+  return {
+    ...node,
+    children: node.children.filter(isValidLayoutNode).map(sanitizeLayoutNode),
+  };
+}
+
+/**
+ * Validates and sanitizes a BuilderPage.
+ * Returns null if the page cannot be recovered (missing id, title, or root).
+ */
+export function sanitizePage(raw: unknown): BuilderPage | null {
+  if (!raw || typeof raw !== 'object') return null;
+  const source = raw as Record<string, unknown>;
+
+  const id = typeof source.id === 'string' ? source.id.trim() : '';
+  const title =
+    typeof source.title === 'string' ? source.title : 'Untitled page';
+
+  if (!id) return null;
+  if (!isValidLayoutNode(source.root)) return null;
+
+  return {
+    id,
+    title,
+    root: sanitizeLayoutNode(source.root as LayoutNode),
+  };
+}
 
 export type ProjectRepository = {
   loadProjects: () => Promise<BuilderProject[] | null>;
@@ -72,12 +130,20 @@ function normalizeProjects(rows: unknown): BuilderProject[] {
         ? (source.publish as Record<string, unknown>)
         : {};
 
+    const id = String(source.id ?? '');
+    if (!id) return [];
+
+    // Validate and sanitize every page — strip pages with corrupt root nodes
+    // rather than letting them crash the canvas renderer.
+    const rawPages = Array.isArray(source.pages) ? source.pages : [];
+    const sanitizedPages: BuilderProject['pages'] = rawPages
+      .map(sanitizePage)
+      .filter((page): page is BuilderPage => page !== null);
+
     const project = {
-      id: String(source.id ?? ''),
+      id,
       name: String(source.name ?? 'Untitled project'),
-      pages: Array.isArray(source.pages)
-        ? (source.pages as BuilderProject['pages'])
-        : [],
+      pages: sanitizedPages,
       publish: {
         status: publishSource.status === 'published' ? 'published' : 'draft',
         publishedAt:
@@ -98,7 +164,7 @@ function normalizeProjects(rows: unknown): BuilderProject[] {
         : createDefaultMembers(),
     } satisfies BuilderProject;
 
-    return project.id ? [project] : [];
+    return [project];
   });
 }
 

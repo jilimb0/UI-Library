@@ -7,6 +7,7 @@ Public component catalog for `@ui-construction-library/core`, plus foundation st
 - `pnpm --filter @ui-app/storybook dev` — local dev on port 6006
 - `pnpm build-storybook` — static build (also used by Pages assemble)
 - `pnpm --filter @ui-app/storybook chromatic` — visual regression (Chromatic token required)
+- `Product/Flagship Flows` — the canonical proof recipes used by the Phase G product story
 
 ## Story layout
 

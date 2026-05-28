@@ -2,22 +2,34 @@
 
 Marketing-grade demo app for `@ui-construction-library/*` packages.
 
+## Flagship flows
+
+The showcase now includes five product-grade proof flows:
+
+- SaaS landing page
+- Dashboard shell
+- Settings app
+- Docs page
+- Pricing site
+
+Each flow is presented as prompt input, builder state, exported artifact, and runnable demo context.
+
 ## Run
 
 ```bash
-pnpm --filter @ui/demo-showcase dev
+pnpm --filter @ui-app/demo-showcase dev
 ```
 
 ## Build
 
 ```bash
-pnpm --filter @ui/demo-showcase build
+pnpm --filter @ui-app/demo-showcase build
 ```
 
 ## Typecheck
 
 ```bash
-pnpm --filter @ui/demo-showcase typecheck
+pnpm --filter @ui-app/demo-showcase typecheck
 ```
 
 ## GitHub Pages deploy

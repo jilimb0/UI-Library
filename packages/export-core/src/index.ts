@@ -1,5 +1,7 @@
 import { getComponentById } from '@ui-construction-library/registry';
 import { validateRequiredShape } from '@ui-construction-library/schema';
+import { recordExportAnalyticsEvent } from './analytics';
+import { createDesignTokenArtifactFiles } from './fidelity';
 
 export type ExportTarget =
   | 'react-single-page'
@@ -363,6 +365,19 @@ function createRoutePathMap(ir: ExportIRProject): string {
   return `\n{\n${entries.join(',\n')}\n}`;
 }
 
+function createPageLayoutMap(ir: ExportIRProject): string {
+  const entries = ir.pages.map(
+    (page, index) =>
+      `  ${JSON.stringify(page.pageId)}: { title: ${JSON.stringify(
+        page.name
+      )}, path: ${JSON.stringify(page.path)}, sectionLabel: ${JSON.stringify(
+        `Page ${index + 1}`
+      )} }`
+  );
+
+  return `\n{\n${entries.join(',\n')}\n}`;
+}
+
 function createPageViewMap(ir: ExportIRProject): string {
   const entries = ir.pages.map((page) => {
     const jsx = renderNodeToJsx(page.rootNode);
@@ -443,13 +458,19 @@ export function renderReactSinglePage(ir: ExportIRProject): RenderExportResult {
     },
     {
       path: 'src/App.tsx',
-      content: `import { useMemo, useState } from 'react';\n\nconst routePathMap = ${createRoutePathMap(ir)};\nconst pageViews = ${createPageViewMap(ir)};\n\nexport default function App() {\n  const paths = useMemo(() => Object.keys(routePathMap), []);\n  const [currentPath, setCurrentPath] = useState(paths[0] ?? '/');\n  const currentPageId = routePathMap[currentPath] ?? routePathMap[paths[0] ?? '/'];\n\n  return (\n    <div>\n      <nav aria-label="Exported pages" style={{ display: 'flex', gap: 12, padding: 24, borderBottom: '1px solid #e5e7eb', flexWrap: 'wrap' }}>\n        {paths.map((path) => (\n          <button\n            key={path}\n            type="button"\n            onClick={() => setCurrentPath(path)}\n            style={{\n              borderRadius: 999,\n              border: path === currentPath ? '1px solid #111827' : '1px solid #d1d5db',\n              background: path === currentPath ? '#111827' : '#ffffff',\n              color: path === currentPath ? '#ffffff' : '#111827',\n              padding: '8px 12px',\n            }}\n          >\n            {path}\n          </button>\n        ))}\n      </nav>\n      {currentPageId ? pageViews[currentPageId] : null}\n    </div>\n  );\n}\n`,
+      content: `import { useMemo, useState } from 'react';\nimport './theme.css';\n\nconst routePathMap = ${createRoutePathMap(ir)};\nconst pageLayouts = ${createPageLayoutMap(ir)};\nconst pageViews = ${createPageViewMap(ir)};\n\nexport default function App() {\n  const paths = useMemo(() => Object.keys(routePathMap), []);\n  const [currentPath, setCurrentPath] = useState(paths[0] ?? '/');\n  const currentPageId = routePathMap[currentPath] ?? routePathMap[paths[0] ?? '/'];\n  const currentLayout = currentPageId ? pageLayouts[currentPageId] : null;\n\n  return (\n    <div className="app-shell" data-export-target="react-single-page">\n      <aside className="app-sidebar">\n        <div>\n          <p className="app-eyebrow">Exported project</p>\n          <h1>${ir.name}</h1>\n          <p className="app-description">Route-aware React export with shared theme layer and app shell navigation.</p>\n        </div>\n        <nav aria-label="Exported pages" className="app-nav">\n          {paths.map((path) => {\n            const pageId = routePathMap[path];\n            const page = pageLayouts[pageId];\n            const active = path === currentPath;\n            return (\n              <button\n                key={path}\n                type="button"\n                onClick={() => setCurrentPath(path)}\n                className={active ? 'app-nav-link active' : 'app-nav-link'}\n              >\n                <span>{page.title}</span>\n                <small>{page.path}</small>\n              </button>\n            );\n          })}\n        </nav>\n      </aside>\n      <section className="app-content">\n        {currentLayout ? (\n          <header className="page-header">\n            <div>\n              <p className="app-eyebrow">{currentLayout.sectionLabel}</p>\n              <h2>{currentLayout.title}</h2>\n            </div>\n            <code>{currentLayout.path}</code>\n          </header>\n        ) : null}\n        <div className="page-canvas">{currentPageId ? pageViews[currentPageId] : null}</div>\n      </section>\n    </div>\n  );\n}\n`,
     },
     {
       path: 'src/styles.css',
       content:
-        ':root { color-scheme: light dark; }\nbody { margin: 0; font-family: Inter, system-ui, sans-serif; }\nmain { padding: 24px; }\n',
+        '.app-shell { display: grid; grid-template-columns: 280px minmax(0, 1fr); min-height: 100vh; font-family: var(--export-font-sans); color: var(--export-text); background: var(--export-bg); }\n.app-sidebar { padding: 32px 24px; border-right: 1px solid var(--export-border); background: var(--export-surface); display: grid; gap: 24px; align-content: start; }\n.app-content { display: grid; gap: 24px; padding: 32px; }\n.app-description { color: var(--export-muted); line-height: 1.5; }\n.app-eyebrow { margin: 0 0 8px; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--export-muted); }\n.app-nav { display: grid; gap: 12px; }\n.app-nav-link { display: grid; gap: 4px; padding: 12px 14px; border-radius: 16px; border: 1px solid var(--export-border); background: transparent; color: var(--export-text); text-align: left; }\n.app-nav-link small { color: var(--export-muted); }\n.app-nav-link.active { background: var(--export-accent); color: white; border-color: var(--export-accent); }\n.app-nav-link.active small { color: rgba(255,255,255,0.8); }\n.page-header { display: flex; justify-content: space-between; gap: 16px; align-items: end; padding-bottom: 16px; border-bottom: 1px solid var(--export-border); }\n.page-header code { padding: 6px 10px; border-radius: 999px; background: var(--export-surface); color: var(--export-muted); }\n.page-canvas { padding: 8px 0 32px; }\nmain { padding: 0; }\n@media (max-width: 960px) { .app-shell { grid-template-columns: 1fr; } .app-sidebar { border-right: none; border-bottom: 1px solid var(--export-border); } .page-header { flex-direction: column; align-items: start; } }\n',
     },
+    {
+      path: 'src/theme.css',
+      content:
+        ':root { --export-font-sans: Inter, system-ui, sans-serif; --export-bg: #f8fafc; --export-surface: #ffffff; --export-border: #e2e8f0; --export-text: #0f172a; --export-muted: #475569; --export-accent: #0f766e; }\n* { box-sizing: border-box; }\nhtml, body, #root { margin: 0; min-height: 100%; }\nbody { background: var(--export-bg); }\nbutton { font: inherit; cursor: pointer; }\nh1, h2, p { margin: 0; }\n',
+    },
+    ...createDesignTokenArtifactFiles(),
     {
       path: 'README.md',
       content: `# ${ir.name}\n\nGenerated by @ui-construction-library/export-core for target ${ir.target}.\n`,
@@ -533,6 +554,7 @@ ${pageSections}
 </html>
 `,
     },
+    ...createDesignTokenArtifactFiles(),
     {
       path: 'README.md',
       content: `# ${ir.name}\n\nGenerated by @ui-construction-library/export-core for target ${ir.target}.\n`,
@@ -681,6 +703,7 @@ customElements.define('ui-heading', UiHeading);
 customElements.define('ui-text', UiText);
 `,
     },
+    ...createDesignTokenArtifactFiles(),
     {
       path: 'README.md',
       content: `# ${ir.name}\n\nGenerated by @ui-construction-library/export-core for target ${ir.target}.\n`,
@@ -693,15 +716,28 @@ customElements.define('ui-text', UiText);
 export function renderExportProject(
   enriched: EnrichExportResult
 ): RenderExportResult {
+  recordExportAnalyticsEvent('export_render_started', enriched.ir.target, {
+    pageCount: enriched.metadata.pageCount,
+  });
+
   switch (enriched.ir.target) {
     case 'react-single-page':
-      return renderReactSinglePage(enriched.ir);
+      return finishExportRender(
+        enriched.ir.target,
+        renderReactSinglePage(enriched.ir)
+      );
     case 'html-static':
-      return renderHtmlStatic(enriched.ir);
+      return finishExportRender(
+        enriched.ir.target,
+        renderHtmlStatic(enriched.ir)
+      );
     case 'web-components-static':
-      return renderWebComponentsStatic(enriched.ir);
+      return finishExportRender(
+        enriched.ir.target,
+        renderWebComponentsStatic(enriched.ir)
+      );
     default:
-      return {
+      return finishExportRender(enriched.ir.target, {
         files: [],
         diagnostics: [
           {
@@ -710,8 +746,18 @@ export function renderExportProject(
             message: `Renderer ${enriched.ir.target} is not implemented.`,
           },
         ],
-      };
+      });
   }
+}
+
+function finishExportRender(
+  target: ExportTarget,
+  result: RenderExportResult
+): RenderExportResult {
+  recordExportAnalyticsEvent('export_render_finished', target, {
+    fileCount: result.files.length,
+  });
+  return result;
 }
 
 export function createExportAcceptanceChecklist(
@@ -730,3 +776,30 @@ export function createExportAcceptanceChecklist(
     ),
   };
 }
+
+export {
+  appendDoctorArtifacts,
+  createDesignTokenArtifactFiles,
+  createExportAssetManifest,
+  createExportDoctorMarkdown,
+  createExportDoctorReport,
+  type ExportAssetManifest,
+  type ExportDoctorReport,
+} from './fidelity';
+export type {
+  ExportPipelineArtifacts,
+  ExportPublicApiSnapshot,
+  ExportTargetPlugin,
+} from './targets';
+export {
+  createExportPublicApiSnapshot,
+  createExportTargetPlugin,
+  createStaticRenderResult,
+} from './targets';
+
+export {
+  createBuilderVisualSnapshot,
+  createExportVisualFidelityReport,
+  type ExportVisualFidelityReport,
+  type VisualFidelitySnapshot,
+} from './visualFidelity';

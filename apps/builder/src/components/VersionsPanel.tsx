@@ -1,4 +1,5 @@
 import type { PageVersion } from '../types';
+import { PanelState } from './PanelState';
 
 type Props = {
   versions: PageVersion[];
@@ -8,6 +9,9 @@ type Props = {
   onDraftChange: (value: string) => void;
   onCreateVersion: () => void;
   onRestoreVersion: (versionId: string) => void;
+  isLoading?: boolean;
+  recoveryMessage?: string | null;
+  onRecover?: () => void;
 };
 
 export function VersionsPanel({
@@ -18,6 +22,9 @@ export function VersionsPanel({
   onDraftChange,
   onCreateVersion,
   onRestoreVersion,
+  isLoading = false,
+  recoveryMessage = null,
+  onRecover,
 }: Props) {
   return (
     <section className="stack-panel">
@@ -25,7 +32,9 @@ export function VersionsPanel({
         <div>
           <h3>Versions</h3>
           <p className="muted small">
-            Capture named snapshots before risky edits or publish actions.
+            Capture named snapshots before risky edits or publish actions. Use a
+            <code> [Prompt] </code> prefix when the snapshot should stay linked
+            to a prompt-generated draft.
           </p>
         </div>
       </div>
@@ -48,8 +57,25 @@ export function VersionsPanel({
       </div>
 
       <div className="version-list">
-        {versions.length === 0 ? (
-          <div className="empty-state-inline">No saved versions yet.</div>
+        {isLoading ? (
+          <PanelState
+            title="Loading versions"
+            description="Fetching saved checkpoints for this page."
+            tone="loading"
+          />
+        ) : recoveryMessage ? (
+          <PanelState
+            title="Version history needs recovery"
+            description={recoveryMessage}
+            tone="recovery"
+            actionLabel={onRecover ? 'Retry versions' : undefined}
+            onAction={onRecover}
+          />
+        ) : versions.length === 0 ? (
+          <PanelState
+            title="No saved versions yet"
+            description="Save a checkpoint before major edits or prompt regenerations."
+          />
         ) : (
           versions.map((version) => (
             <article key={version.id} className="version-card">
@@ -57,6 +83,9 @@ export function VersionsPanel({
                 <strong>{version.label}</strong>
                 <p className="muted small">
                   {new Date(version.createdAt).toLocaleString()}
+                  {version.label.startsWith('[Prompt] ')
+                    ? ' · prompt-linked snapshot'
+                    : ''}
                 </p>
               </div>
               <button

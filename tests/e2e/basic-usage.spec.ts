@@ -54,20 +54,26 @@ test.describe('UI Library Pages smoke', () => {
     });
 
     const spacing = await openStory('/story/design-system-spacing--scale');
-    await expect(spacing.getByText('space-1', { exact: true })).toBeVisible({
-      timeout: 45_000,
-    });
+    await expect(spacing.getByText('--spacing-1', { exact: true })).toBeVisible(
+      {
+        timeout: 45_000,
+      }
+    );
 
     const typography = await openStory(
       '/story/design-system-typography--scale'
     );
-    await expect(typography.getByText('Heading 1')).toBeVisible({
+    await expect(
+      typography.getByRole('heading', { name: /Heading 1/ })
+    ).toBeVisible({
       timeout: 45_000,
     });
 
-    const icons = await openStory('/story/design-tokens-icons--icons');
+    const icons = await openStory('/story/design-system-icons--gallery');
     await expect(
-      icons.getByText('Representative icon set from the core package.')
+      icons.getByText(
+        'Representative icon set from the core package, tinted with theme tokens.'
+      )
     ).toBeVisible({ timeout: 45_000 });
   });
 
@@ -76,7 +82,7 @@ test.describe('UI Library Pages smoke', () => {
   }) => {
     await page.goto(BASE_URL, { waitUntil: 'networkidle' });
 
-    await page.getByRole('button', { name: 'Open modal' }).click();
+    await page.getByRole('button', { name: 'Open quickstart modal' }).click();
     await expect(
       page.getByRole('heading', { name: 'Component stack' })
     ).toBeVisible();

@@ -232,8 +232,38 @@ describe('export-core pipeline', () => {
       'src/main.tsx',
       'src/App.tsx',
       'src/styles.css',
+      'src/theme.css',
+      'tokens/design-tokens.json',
+      'tokens/design-tokens.css',
+      'assets/icons/placeholder-app-icon.svg',
       'README.md',
     ]);
+    const appFile = first.files.find((file) => file.path === 'src/App.tsx');
+    expect(appFile?.content).toContain('const pageLayouts =');
+    expect(appFile?.content).toContain('className="app-shell"');
+
+    const tokensJson = first.files.find(
+      (file) => file.path === 'tokens/design-tokens.json'
+    );
+    expect(tokensJson?.content).toContain('"stylesheets"');
+    expect(tokensJson?.content).toContain(
+      '@ui-construction-library/styles/dist/themes.css'
+    );
+    expect(tokensJson?.content).toContain(
+      '@ui-construction-library/styles/dist/variables.css'
+    );
+
+    const tokensCss = first.files.find(
+      (file) => file.path === 'tokens/design-tokens.css'
+    );
+    expect(tokensCss?.content).toContain(
+      ':root:not([data-theme]), [data-theme="light"]'
+    );
+    expect(tokensCss?.content).toContain(
+      ':root:not([data-theme]), [data-theme="dark"]'
+    );
+    expect(tokensCss?.content).toContain('/* export overrides */');
+    expect(tokensCss?.content).toContain('--export-font-sans:');
   });
 
   it('creates a closeout checklist from enriched and rendered output', () => {

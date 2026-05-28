@@ -1,10 +1,12 @@
 import type { RegistryComponent } from '@ui-construction-library/registry';
-import type { LayoutNode } from '../types';
+import type { BuilderValidationIssue, LayoutNode } from '../types';
 
 type Props = {
   node: LayoutNode | null;
   componentMeta?: RegistryComponent;
   onChangeProp: (nodeId: string, key: string, value: string) => void;
+  validationIssues?: BuilderValidationIssue[];
+  insertionGuidance?: string | null;
 };
 
 const enumOptions: Record<string, string[]> = {
@@ -13,7 +15,13 @@ const enumOptions: Record<string, string[]> = {
   tone: ['default', 'muted', 'success', 'warning', 'danger'],
 };
 
-export function InspectorPanel({ node, componentMeta, onChangeProp }: Props) {
+export function InspectorPanel({
+  node,
+  componentMeta,
+  onChangeProp,
+  validationIssues = [],
+  insertionGuidance = null,
+}: Props) {
   if (!node)
     return (
       <p className="muted">
@@ -37,6 +45,39 @@ export function InspectorPanel({ node, componentMeta, onChangeProp }: Props) {
           Metadata props: {componentMeta.props.map((p) => p.name).join(', ')}
         </p>
       )}
+      {insertionGuidance ? (
+        <div
+          style={{
+            marginBottom: 12,
+            padding: 10,
+            borderRadius: 10,
+            background: '#fef3c7',
+            color: '#92400e',
+            fontSize: 12,
+          }}
+        >
+          Constraint guidance: {insertionGuidance}
+        </div>
+      ) : null}
+      {validationIssues.length ? (
+        <div style={{ marginBottom: 12, display: 'grid', gap: 8 }}>
+          {validationIssues.map((issue) => (
+            <div
+              key={`${issue.nodeId}-${issue.message}`}
+              style={{
+                padding: 10,
+                borderRadius: 10,
+                background: issue.severity === 'error' ? '#fee2e2' : '#fef3c7',
+                color: issue.severity === 'error' ? '#991b1b' : '#92400e',
+                fontSize: 12,
+              }}
+            >
+              <strong>{issue.severity.toUpperCase()}</strong> · {issue.message}
+              <div>{issue.suggestion}</div>
+            </div>
+          ))}
+        </div>
+      ) : null}
       <div className="inspector-grid">
         {metadataProps.map((prop) => {
           const key = prop.name;

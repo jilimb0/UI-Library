@@ -41,6 +41,7 @@ import { FormField } from '@ui-construction-library/react-hook-form';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useForm } from 'react-hook-form';
+import { flagshipFlows } from './flagshipFlows';
 
 const GITHUB_URL = 'https://github.com/jilimb0/UI-Library';
 const DOCS_URL = './docs/';
@@ -237,6 +238,13 @@ function HeaderBar() {
         >
           Hooks
         </button>
+        <button
+          type="button"
+          className="nav-link"
+          onClick={() => scrollTo('flagship-flows')}
+        >
+          Flagship flows
+        </button>
         <Button
           variant="outline"
           size="sm"
@@ -247,6 +255,103 @@ function HeaderBar() {
         </Button>
       </div>
     </Navigation>
+  );
+}
+
+function FlagshipFlowsSection() {
+  const [selectedFlowId, setSelectedFlowId] = useState(flagshipFlows[0].id);
+  const selectedFlow =
+    flagshipFlows.find((flow) => flow.id === selectedFlowId) ??
+    flagshipFlows[0];
+
+  return (
+    <section id="flagship-flows" className="flagship-shell">
+      <div className="stack stack-tight flagship-intro">
+        <Text className="eyebrow">Flagship flows</Text>
+        <Heading as="h2" className="section-heading flagship-heading">
+          Five proof flows that show the product end to end
+        </Heading>
+        <Text className="section-description flagship-description">
+          Each flow is represented as prompt input, builder state, exported
+          artifact, and runnable demo. The set is meant to prove that the system
+          is more than isolated components: it can carry a product idea from
+          generation through publishing with predictable output.
+        </Text>
+      </div>
+
+      <div className="flagship-layout">
+        <div className="flagship-rail">
+          {flagshipFlows.map((flow, index) => {
+            const active = flow.id === selectedFlow.id;
+            return (
+              <button
+                key={flow.id}
+                type="button"
+                className={active ? 'flagship-chip active' : 'flagship-chip'}
+                onClick={() => setSelectedFlowId(flow.id)}
+                aria-pressed={active}
+              >
+                <span className="flagship-chip-index">0{index + 1}</span>
+                <span className="flagship-chip-copy">
+                  <strong>{flow.name}</strong>
+                  <small>{flow.audience}</small>
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        <Card className="flagship-detail">
+          <div className="flagship-detail__header">
+            <div className="stack stack-tight">
+              <Text className="eyebrow">Selected flow</Text>
+              <Heading as="h3" className="card-title">
+                {selectedFlow.name}
+              </Heading>
+            </div>
+            <Badge variant="default">{selectedFlow.audience}</Badge>
+          </div>
+
+          <div className="flagship-grid">
+            <div className="flagship-panel">
+              <Text className="eyebrow">Prompt input</Text>
+              <Text className="flagship-copy">{selectedFlow.promptInput}</Text>
+            </div>
+            <div className="flagship-panel">
+              <Text className="eyebrow">Builder state</Text>
+              <Text className="flagship-copy">{selectedFlow.builderState}</Text>
+            </div>
+            <div className="flagship-panel">
+              <Text className="eyebrow">Exported artifact</Text>
+              <Text className="flagship-copy">
+                {selectedFlow.exportedArtifact}
+              </Text>
+            </div>
+            <div className="flagship-panel">
+              <Text className="eyebrow">Runnable demo</Text>
+              <Text className="flagship-copy">{selectedFlow.runnableDemo}</Text>
+            </div>
+          </div>
+
+          <div className="flagship-proof">
+            {selectedFlow.proofPoints.map((proof) => (
+              <Badge key={proof}>{proof}</Badge>
+            ))}
+          </div>
+        </Card>
+      </div>
+
+      <div className="flagship-summary-grid">
+        {flagshipFlows.map((flow) => (
+          <Card key={flow.id} className="flagship-summary">
+            <Text className="eyebrow">{flow.name}</Text>
+            <Text className="text-muted">{flow.audience}</Text>
+            <div className="flagship-summary__line" />
+            <Text className="flagship-copy">{flow.promptInput}</Text>
+          </Card>
+        ))}
+      </div>
+    </section>
   );
 }
 
@@ -532,7 +637,7 @@ function ComponentGalleryCard() {
                 { id: 'next', label: 'Next.js', value: 'next' },
                 { id: 'vite', label: 'Vite', value: 'vite' },
               ]}
-              placeholder="Select framework"
+              placeholder="Select..."
               onChange={setDropdownValue}
             />
             <Text className="text-muted">Selected: {dropdownValue || '—'}</Text>
@@ -563,7 +668,9 @@ function ComponentGalleryCard() {
         </div>
 
         <div className="row wrap-row">
-          <Button onClick={() => setModalOpen(true)}>Open modal</Button>
+          <Button onClick={() => setModalOpen(true)}>
+            Open quickstart modal
+          </Button>
           <Button variant="outline" onClick={() => setToastVisible(true)}>
             Trigger toast
           </Button>
@@ -888,6 +995,7 @@ function ShowcasePage() {
       <HeaderBar />
       <main className="showcase-shell stack-xl">
         <HeroSection />
+        <FlagshipFlowsSection />
         <CrossSiteNav
           current="demo"
           docsHref={DOCS_URL}

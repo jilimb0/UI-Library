@@ -9,7 +9,7 @@ PAGES_DIR="${ROOT_DIR}/.pages"
 SITE_DIR="${PAGES_DIR}/${REPO_NAME}"
 
 rm -rf "$PAGES_DIR"
-mkdir -p "${SITE_DIR}/docs" "${SITE_DIR}/storybook"
+mkdir -p "${SITE_DIR}/docs" "${SITE_DIR}/storybook" "${SITE_DIR}/builder"
 
 echo "[assemble] building internal workspace packages..."
 pnpm turbo run build --filter="@ui-construction-library/core..."
@@ -23,9 +23,13 @@ DOCS_BASE_PATH="/${REPO_NAME}/docs/" pnpm --filter @ui-app/docs build
 echo "[assemble] demo..."
 DEMO_BASE_PATH="/${REPO_NAME}/" pnpm --filter @ui-app/demo-showcase build
 
+echo "[assemble] builder..."
+BUILDER_BASE_PATH="/${REPO_NAME}/builder/" pnpm --filter @ui-app/builder build
+
 cp -R ./apps/demo-showcase/dist/. "${SITE_DIR}/"
 cp -R ./apps/docs/dist/. "${SITE_DIR}/docs/"
 cp -R ./apps/storybook/storybook-static/. "${SITE_DIR}/storybook/"
+cp -R ./apps/builder/dist/. "${SITE_DIR}/builder/"
 
 cat >"${PAGES_DIR}/serve.json" <<EOF
 {
@@ -42,6 +46,18 @@ cat >"${PAGES_DIR}/serve.json" <<EOF
     {
       "source": "/${REPO_NAME}/storybook/",
       "destination": "/${REPO_NAME}/storybook/index.html"
+    },
+    {
+      "source": "/${REPO_NAME}/builder",
+      "destination": "/${REPO_NAME}/builder/index.html"
+    },
+    {
+      "source": "/${REPO_NAME}/builder/",
+      "destination": "/${REPO_NAME}/builder/index.html"
+    },
+    {
+      "source": "/${REPO_NAME}/builder/**",
+      "destination": "/${REPO_NAME}/builder/index.html"
     }
   ]
 }

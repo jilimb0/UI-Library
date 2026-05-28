@@ -11,7 +11,9 @@ export function BuilderShell({ left, center, right }: Props) {
     <div className="shell">
       <header className="topbar">
         <div className="brand">UI Construction Builder</div>
-        <div className="muted">Phase 4 collaboration baseline</div>
+        <div className="muted">
+          Phase E collaboration and persistence polish
+        </div>
       </header>
       <main className="layout">
         <section className="panel">{left}</section>

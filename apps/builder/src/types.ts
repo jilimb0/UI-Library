@@ -55,6 +55,8 @@ export type BuilderMember = {
   userId: string;
   email: string;
   role: BuilderRole;
+  lastActiveAt?: string | null;
+  activePageId?: string | null;
 };
 
 export type BuilderProject = {
@@ -105,4 +107,27 @@ export type SupabaseLikeClient = {
     select: (columns?: string) => Promise<{ data: unknown; error: unknown }>;
     upsert: (rows: unknown[]) => Promise<{ error: unknown }>;
   };
+};
+
+export type BuilderValidationIssue = {
+  nodeId: string;
+  severity: 'warning' | 'error';
+  message: string;
+  suggestion: string;
+};
+
+export type RepositoryConnectivityStatus = {
+  mode: 'local' | 'memory' | 'supabase';
+  state: 'connected' | 'disconnected' | 'local-only' | 'ephemeral' | 'degraded';
+  label: string;
+  summary: string;
+  recovery: string;
+  guidance: string[];
+  tone: {
+    background: string;
+    color: string;
+    border: string;
+  };
+  isRemoteAuthoritative: boolean;
+  allowsSafeRemoteActions: boolean;
 };

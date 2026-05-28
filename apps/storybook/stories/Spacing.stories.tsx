@@ -1,4 +1,4 @@
-import type { Meta } from '@storybook/react';
+import type { Meta } from '@storybook/react-vite';
 import { Text } from '@ui-construction-library/core';
 
 const meta: Meta = { title: 'Design System/Spacing', tags: ['autodocs'] };
