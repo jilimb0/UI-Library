@@ -18,7 +18,44 @@ describe('accessibility', () => {
   });
 
   describe('trapFocus', () => {
-    it('should trap focus within element', () => {
+    it('should focus the first focusable element on activation', () => {
+      const element = document.createElement('div');
+      element.innerHTML = `
+        <button>First</button>
+        <button>Last</button>
+      `;
+      document.body.appendChild(element);
+
+      const cleanup = trapFocus(element);
+      const firstButton = element.querySelector('button') as HTMLElement;
+
+      // trapFocus immediately focuses the first element
+      expect(document.activeElement).toBe(firstButton);
+
+      cleanup();
+      document.body.removeChild(element);
+    });
+
+    it('should call onEscape when Escape key is pressed', () => {
+      const element = document.createElement('div');
+      element.innerHTML = `<button>Only</button>`;
+      document.body.appendChild(element);
+
+      const onEscape = vi.fn();
+      const cleanup = trapFocus(element, onEscape);
+
+      const event = new KeyboardEvent('keydown', {
+        key: 'Escape',
+        bubbles: true,
+      });
+      document.dispatchEvent(event);
+      expect(onEscape).toHaveBeenCalledTimes(1);
+
+      cleanup();
+      document.body.removeChild(element);
+    });
+
+    it('should wrap focus from last to first on Tab', () => {
       const element = document.createElement('div');
       element.innerHTML = `
         <button>First</button>
@@ -30,12 +67,13 @@ describe('accessibility', () => {
       const firstButton = element.querySelector('button') as HTMLElement;
       const lastButton = element.querySelectorAll('button')[1] as HTMLElement;
 
-      firstButton.focus();
-      expect(document.activeElement).toBe(firstButton);
-
-      // Simulate Tab press
-      const event = new KeyboardEvent('keydown', { key: 'Tab' });
-      lastButton.dispatchEvent(event);
+      lastButton.focus();
+      const tabEvent = new KeyboardEvent('keydown', {
+        key: 'Tab',
+        bubbles: true,
+      });
+      document.dispatchEvent(tabEvent);
+      // After Tab on last element, focus wraps to first
       expect(document.activeElement).toBe(firstButton);
 
       cleanup();

@@ -29,6 +29,8 @@ export type PublishEventType =
   | 'published'
   | 'unpublished'
   | 'restored-version'
+  | 'layout-recovery'
+  | 'autosave-recovery'
   | GovernanceEventKind;
 
 export type PublishEventRecord = {

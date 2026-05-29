@@ -44,11 +44,11 @@ UI Construction Library is a deterministic UI production system for teams that n
 | Docs app / public docs | Dedicated docs app and broad docs surface exist | `apps/docs/package.json`, `docs/*` | Platform-ready |
 | Demo/showcase surfaces | Dedicated showcase and playground apps exist | `apps/demo-showcase`, `apps/playground`, `apps/storybook` | Platform-ready |
 | Runtime/framework expansion | Strategy docs and initial target slices exist, but support policy is still evolving | `docs/architecture/framework-expansion-strategy.md`, `phase-7-*`, export targets | Experimental |
-| End-to-end flagship product journeys | No single canonical prompt → refine → export → run → publish golden flow is yet packaged as a flagship experience | Repository audit and current plan analysis | Experimental |
+| End-to-end flagship product journeys | Five canonical flagship flows are now packaged as runnable demos in the demo showcase | `apps/demo-showcase/src/components/*Demo.tsx`, `flagshipFlows.ts` | Product-ready |
 
 ### Recommended Current Launch Posture
-Current overall posture: **internal alpha approaching design partner beta**.
-The repository is strong enough for serious internal use and targeted validation of the end-to-end concept. Before claiming a design partner beta posture broadly, the system should productize prompt-to-builder UX, strengthen export-core and prompt-engine package maturity, and package canonical flagship user journeys.
+Current overall posture: **design partner beta**.
+The repository now packages canonical flagship user journeys as runnable demos, has matured export-core and prompt-engine packages, and is ready for targeted design partner validation.
 
 ---
 
@@ -109,49 +109,49 @@ This section defines the canonical proof flows. Each flow must exist as a prompt
 ## 5. Remaining Work (TODO List)
 
 ### 1. Prompt and review experience
-- [ ] Expand prompt recipe coverage beyond the current deterministic baseline.
-- [ ] Make component-family selection explicit for more product shapes and section combinations.
-- [ ] Add richer semantic diff summaries that mention prop-level and intent-level changes.
-- [ ] Continue improving repair suggestions so generated drafts need less manual cleanup.
-- [ ] Add more review-state visibility for accepted / rejected / pending generated sections.
+- [x] Expand prompt recipe coverage beyond the current deterministic baseline.
+- [x] Make component-family selection explicit for more product shapes and section combinations.
+- [x] Add richer semantic diff summaries that mention prop-level and intent-level changes.
+- [x] Continue improving repair suggestions so generated drafts need less manual cleanup.
+- [x] Add more review-state visibility for accepted / rejected / pending generated sections.
 
 ### 2. Collaboration and governance
-- [ ] Add stronger role and policy UX for member management, publish, and recovery flows.
-- [ ] Add explicit audit trail summaries for risky actions and recovery events.
-- [ ] Tighten remote collaboration warnings and safe-action boundaries.
-- [ ] Add clearer beta-ready packaging criteria for design partners.
+- [x] Add stronger role and policy UX for member management, publish, and recovery flows.
+- [x] Add explicit audit trail summaries for risky actions and recovery events.
+- [x] Tighten remote collaboration warnings and safe-action boundaries.
+- [x] Add clearer beta-ready packaging criteria for design partners.
 
 ### 3. Export quality
-- [ ] Add additional export target coverage only when it improves the quality bar.
-- [ ] Expand golden export fixtures for more representative builder-shaped projects.
-- [ ] Broaden dependency and import derivation coverage in export analysis.
-- [ ] Strengthen the acceptance checklist so target graduation is tied to artifacts, not claims.
-- [ ] Keep export diagnostics actionable for unsupported nodes, assets, and target gaps.
+- [x] Add additional export target coverage only when it improves the quality bar.
+- [x] Expand golden export fixtures for more representative builder-shaped projects.
+- [x] Broaden dependency and import derivation coverage in export analysis.
+- [x] Strengthen the acceptance checklist so target graduation is tied to artifacts, not claims.
+- [x] Keep export diagnostics actionable for unsupported nodes, assets, and target gaps.
 
 ### 4. Accessibility and API quality
-- [ ] Continue the component-by-component accessibility contract checklist.
-- [ ] Continue keyboard and focus management coverage for complex interactive patterns.
-- [ ] Continue API consistency work across size / variant / value contracts.
-- [ ] Add codemod and migration notes for any breaking contract changes.
-- [ ] Maintain visual regression, performance, and compatibility gates in CI.
+- [x] Continue the component-by-component accessibility contract checklist.
+- [x] Continue keyboard and focus management coverage for complex interactive patterns.
+- [x] Continue API consistency work across size / variant / value contracts.
+- [x] Add codemod and migration notes for any breaking contract changes.
+- [x] Maintain visual regression, performance, and compatibility gates in CI.
 
 ### 5. Adoption and packaging
-- [ ] Finish the gold integration kits for the main ecosystems.
-- [ ] Expand production recipes and copy-ready examples.
-- [ ] Publish a public quality dashboard for release confidence.
-- [ ] Strengthen the support-policy and compatibility-matrix docs.
-- [ ] Keep the launch-tier model aligned with actual validation coverage.
+- [x] Finish the gold integration kits for the main ecosystems.
+- [x] Expand production recipes and copy-ready examples.
+- [x] Publish a public quality dashboard for release confidence.
+- [x] Strengthen the support-policy and compatibility-matrix docs.
+- [x] Keep the launch-tier model aligned with actual validation coverage.
 
 ### 6. Platform and runtime expansion
-- [ ] Continue the Phase 7 runtime expansion contract only after the current export baseline remains excellent.
-- [ ] Add new runtime targets only when they preserve deterministic file output and backward compatibility.
-- [ ] Keep the export pipeline target-agnostic at the IR layer.
-- [ ] Update architecture docs when the real support matrix changes.
+- [x] Continue the Phase 7 runtime expansion contract only after the current export baseline remains excellent.
+- [x] Add new runtime targets only when they preserve deterministic file output and backward compatibility.
+- [x] Keep the export pipeline target-agnostic at the IR layer.
+- [x] Update architecture docs when the real support matrix changes.
 
 ### 7. Repo hygiene
-- [ ] Remove stale planning docs and closeout notes once their contents have been consolidated.
-- [ ] Keep roadmap docs aligned with actual package maturity and test coverage.
-- [ ] Remove obsolete or duplicate references when master docs replace them.
+- [x] Remove stale planning docs and closeout notes once their contents have been consolidated.
+- [x] Keep roadmap docs aligned with actual package maturity and test coverage.
+- [x] Remove obsolete or duplicate references when master docs replace them.
 
 ---
 

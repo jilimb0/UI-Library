@@ -2,6 +2,14 @@
  * Accessibility utilities for better user experience
  */
 
+// Re-export the canonical trapFocus from primitives so all packages share one
+// implementation. The primitive version handles Tab cycling, Shift+Tab, and an
+// optional onEscape callback — a strict superset of the old local version.
+export {
+  getFocusableElements,
+  trapFocus,
+} from '@ui-construction-library/primitives';
+
 export function announceToScreenReader(message: string): void {
   const announcement = document.createElement('div');
   announcement.setAttribute('aria-live', 'polite');
@@ -14,41 +22,6 @@ export function announceToScreenReader(message: string): void {
   setTimeout(() => {
     document.body.removeChild(announcement);
   }, 1000);
-}
-
-export function trapFocus(element: HTMLElement): () => void {
-  const focusableElements = element.querySelectorAll(
-    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-  ) as NodeListOf<HTMLElement>;
-
-  const firstElement = focusableElements[0];
-  const lastElement = focusableElements[focusableElements.length - 1];
-
-  function handleTabKey(e: KeyboardEvent) {
-    if (e.key !== 'Tab') return;
-
-    if (e.shiftKey) {
-      if (document.activeElement === firstElement) {
-        lastElement.focus();
-        e.preventDefault();
-      }
-    } else {
-      if (document.activeElement === lastElement) {
-        firstElement.focus();
-        e.preventDefault();
-      }
-    }
-  }
-
-  element.addEventListener('keydown', handleTabKey);
-
-  // Focus first element
-  firstElement?.focus();
-
-  // Return cleanup function
-  return () => {
-    element.removeEventListener('keydown', handleTabKey);
-  };
 }
 
 export function getAriaProps(props: Record<string, any>) {

@@ -1,25 +1,4 @@
-# Руководство по миграции
+# Migration Guide
 
-## Общие рекомендации
-- Внимательно читайте changelog
-- Используйте TypeScript для контроля типов
-
-## Миграция с v0.x на v1.x
-
-### Основные изменения
-- Компоненты переписаны на функциональный стиль с хуками
-- Изменился API Button, теперь принимает пропы variant и size
-- Modal теперь управляется через состояние isOpen
-
-### Пример обновления
-```tsx
-// Старый код
-<Button primary onClick={handleClick}>Нажми меня</Button>
-
-// Новый код
-<Button variant="primary" size="md" onClick={handleClick}>Нажми меня</Button>
-```
-
-## Советы
-- Тестируйте после каждого шага миграции
-- Используйте Storybook для визуальной проверки
+> This file is superseded by the canonical migration guide.
+> See [`docs/migration/MIGRATION-GUIDE.md`](../migration/MIGRATION-GUIDE.md) for the current, complete guide covering all API changes, before/after examples, and codemod patterns.

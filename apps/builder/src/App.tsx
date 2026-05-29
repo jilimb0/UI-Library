@@ -18,6 +18,7 @@ import {
   useBuilderEditorController,
 } from './builderControllers';
 import { BuilderShell } from './components/BuilderShell';
+import { CanvasReviewOverlay } from './components/CanvasReviewOverlay';
 import { CanvasTree } from './components/CanvasTree';
 import { CommentsPanel } from './components/CommentsPanel';
 import { EventTimelinePanel } from './components/EventTimelinePanel';
@@ -27,6 +28,7 @@ import { PresenceBar } from './components/PresenceBar';
 import { ProjectMembersPanel } from './components/ProjectMembersPanel';
 import { PublishHistoryPanel } from './components/PublishHistoryPanel';
 import { RecoveryBanner } from './components/RecoveryBanner';
+import { RemoteSyncBanner } from './components/RemoteSyncBanner';
 import { VersionsPanel } from './components/VersionsPanel';
 import {
   resolveRepositoryMode,
@@ -343,6 +345,7 @@ export function App() {
     canManageLifecycle,
     canSaveVersions,
     canRestoreVersions,
+    sessionRole,
     projectMembers,
     newMemberEmail,
     setNewMemberEmail,
@@ -522,6 +525,31 @@ export function App() {
       .map((node) => String(node.id))
       .filter(Boolean) ?? [];
 
+  useEffect(() => {
+    if (!editorContext) return;
+    setGenerationSummary((current) => {
+      if (!current) return current;
+      const existing = current.sectionDecisions ?? {};
+      const next = { ...existing };
+      let changed = false;
+      for (const section of editorContext.page.root.children) {
+        const reviewState = (section.props as Record<string, unknown>)
+          .reviewState;
+        if (
+          reviewState === 'pending' ||
+          reviewState === 'accepted' ||
+          reviewState === 'rejected'
+        ) {
+          if (next[section.id] !== reviewState) {
+            next[section.id] = reviewState;
+            changed = true;
+          }
+        }
+      }
+      return changed ? { ...current, sectionDecisions: next } : current;
+    });
+  }, [editorContext?.page.id]);
+
   const buildDiffSummary = (nextSectionIds: string[]) => ({
     addedSections: nextSectionIds.filter(
       (id) => !currentBuilderSections.includes(id)
@@ -545,7 +573,7 @@ export function App() {
     return `Semantically, this refresh adds ${addedCount} section${addedCount === 1 ? '' : 's'}, removes ${removedCount} section${removedCount === 1 ? '' : 's'}, and keeps ${persistedCount} section${persistedCount === 1 ? '' : 's'} intact.`;
   };
 
-  function updateGenerationDecision(
+  function updateSectionDecision(
     nodeId: string,
     decision: 'pending' | 'accepted' | 'rejected'
   ) {
@@ -560,6 +588,14 @@ export function App() {
           }
         : current
     );
+  }
+
+  function setSectionReviewState(
+    nodeId: string,
+    decision: 'pending' | 'accepted' | 'rejected'
+  ) {
+    handleUpdateProps(nodeId, 'reviewState', decision);
+    updateSectionDecision(nodeId, decision);
   }
 
   function toggleProtectSelectedNode() {
@@ -583,14 +619,15 @@ export function App() {
 
   function acceptSelectedGeneratedSection() {
     if (!selectedNodeId) return;
-    updateGenerationDecision(selectedNodeId, 'accepted');
+    setSectionReviewState(selectedNodeId, 'accepted');
     setNotice('Selected generated section marked as accepted.');
   }
 
   function rejectSelectedGeneratedSection() {
     if (!selectedNodeId || !editorContext) return;
+    const rejectedNodeId = selectedNodeId;
     handleRemoveSelected();
-    updateGenerationDecision(selectedNodeId, 'rejected');
+    updateSectionDecision(rejectedNodeId, 'rejected');
     setSelectedNodeId(null);
     setNotice(
       'Selected generated section was rejected and removed from the page.'
@@ -613,7 +650,7 @@ export function App() {
       'provenanceLabel',
       'Regenerated section draft'
     );
-    updateGenerationDecision(selectedNodeId, 'accepted');
+    setSectionReviewState(selectedNodeId, 'accepted');
     setNotice('Selected generated section was regenerated in place.');
   }
 
@@ -926,6 +963,17 @@ export function App() {
   }
 
   if (route === '/projects') {
+    const switchToLocal = () => {
+      setRepositoryMode('local');
+      setRepositoryModeOverride('local');
+      setNotice('Switched repository mode to local for safe editing.');
+    };
+    const remoteSyncBanner = (
+      <RemoteSyncBanner
+        repositoryConnectivity={repositoryConnectivity}
+        onSwitchToLocal={switchToLocal}
+      />
+    );
     return (
       <>
         {recoverySummary && (
@@ -936,6 +984,7 @@ export function App() {
           />
         )}
         <BuilderShell
+          banner={remoteSyncBanner}
           left={<div />}
           center={
             <section style={{ display: 'grid', gap: 16 }}>
@@ -1619,8 +1668,43 @@ export function App() {
     );
   }
 
+  const handleUpdatePropsWithReviewSync = (
+    nodeId: string,
+    key: string,
+    value: string
+  ) => {
+    if (
+      key === 'reviewState' &&
+      (value === 'pending' || value === 'accepted' || value === 'rejected')
+    ) {
+      setSectionReviewState(nodeId, value);
+      return;
+    }
+    handleUpdateProps(nodeId, key, value);
+  };
+
+  const selectedNodeReviewState =
+    selectedNode &&
+    typeof (selectedNode.props as Record<string, unknown>).reviewState ===
+      'string'
+      ? ((selectedNode.props as Record<string, unknown>).reviewState as string)
+      : null;
+
+  const switchToLocal = () => {
+    setRepositoryMode('local');
+    setRepositoryModeOverride('local');
+    setNotice('Switched repository mode to local for safe editing.');
+  };
+  const remoteSyncBanner = (
+    <RemoteSyncBanner
+      repositoryConnectivity={repositoryConnectivity}
+      onSwitchToLocal={switchToLocal}
+    />
+  );
+
   return (
     <BuilderShell
+      banner={remoteSyncBanner}
       left={
         <div style={{ display: 'grid', gap: 16 }}>
           <header style={{ display: 'grid', gap: 8 }}>
@@ -2023,8 +2107,7 @@ export function App() {
                     <strong>Section generation controls</strong>
                     <div style={{ fontSize: 13, color: '#334155' }}>
                       Selected node: {selectedNode.id} · status:{' '}
-                      {generationSummary?.sectionDecisions?.[selectedNode.id] ??
-                        'not-tracked'}
+                      {selectedNodeReviewState ?? 'not-tracked'}
                     </div>
                     <div style={{ fontSize: 12, color: '#475569' }}>
                       Protection:{' '}
@@ -2264,11 +2347,34 @@ export function App() {
         </div>
       }
       center={
-        <CanvasTree
-          node={editorContext.page.root}
-          selectedNodeId={selectedNodeId}
-          onSelectNode={(id) => setSelectedNodeId(id)}
-        />
+        <div style={{ display: 'grid', gap: 16 }}>
+          {builderMode === 'review' && (
+            <CanvasReviewOverlay
+              sections={editorContext.page.root.children}
+              sectionDecisions={generationSummary?.sectionDecisions ?? {}}
+              selectedNodeId={selectedNodeId}
+              onSelectNode={(id) => setSelectedNodeId(id)}
+              onAccept={(id) => {
+                setSectionReviewState(id, 'accepted');
+                setNotice('Section marked as accepted.');
+              }}
+              onReject={(id) => {
+                setSectionReviewState(id, 'rejected');
+                setNotice('Section marked as rejected.');
+              }}
+              onReset={(id) => {
+                setSectionReviewState(id, 'pending');
+                setNotice('Section reset to pending.');
+              }}
+            />
+          )}
+          <CanvasTree
+            node={editorContext.page.root}
+            selectedNodeId={selectedNodeId}
+            onSelectNode={(id) => setSelectedNodeId(id)}
+            onUpdateProps={handleUpdatePropsWithReviewSync}
+          />
+        </div>
       }
       right={
         <div style={{ display: 'grid', gap: 16 }}>
@@ -2276,7 +2382,7 @@ export function App() {
             <InspectorPanel
               node={selectedNode}
               componentMeta={selectedMeta ?? undefined}
-              onChangeProp={handleUpdateProps}
+              onChangeProp={handleUpdatePropsWithReviewSync}
             />
           ) : null}
 
@@ -2294,6 +2400,7 @@ export function App() {
               <ProjectMembersPanel
                 members={projectMembers}
                 canManageMembers={canManageLifecycle}
+                sessionRole={sessionRole}
                 newMemberEmail={newMemberEmail}
                 onNewMemberEmailChange={setNewMemberEmail}
                 newMemberRole={newMemberRole}

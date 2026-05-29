@@ -5,6 +5,9 @@ import type { inputVariants } from '../components/atoms/Input/Input';
 import type { selectVariants } from '../components/atoms/Select/Select';
 import type { textVariants } from '../components/atoms/Text/Text';
 import type { textareaVariants } from '../components/atoms/TextArea/TextArea';
+import type { dropdownVariants } from '../components/molecules/Dropdown/Dropdown';
+import type { popoverContentVariants } from '../components/molecules/Popover/Popover';
+import type { modalContentVariants } from '../components/organisms/Modal/Modal';
 
 // Common component sizes
 export type ComponentSize = 'sm' | 'md' | 'lg';
@@ -31,4 +34,7 @@ export type SelectSize = VariantProps<typeof selectVariants>['size'];
 export type TextAreaVariant = VariantProps<typeof textareaVariants>['variant'];
 export type TextAreaSize = VariantProps<typeof textareaVariants>['size'];
 
-// Add more component-specific types here as needed
+// Overlay component size types
+export type ModalSize = VariantProps<typeof modalContentVariants>['size'];
+export type PopoverSize = VariantProps<typeof popoverContentVariants>['size'];
+export type DropdownSize = VariantProps<typeof dropdownVariants>['size'];

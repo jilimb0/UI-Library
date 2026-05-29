@@ -3,7 +3,11 @@ import { validateRequiredShape } from '@ui-construction-library/schema';
 export type PromptGenerationMode =
   | 'landing-page'
   | 'dashboard'
-  | 'marketing-section';
+  | 'marketing-section'
+  | 'settings-app'
+  | 'docs-page'
+  | 'pricing-page'
+  | 'onboarding';
 
 export type PromptRequest = {
   productType: string;
@@ -15,6 +19,7 @@ export type PromptRequest = {
   frameworkPreference: 'react';
   detailLevel: 'low' | 'medium' | 'high';
   generationMode: PromptGenerationMode;
+  componentFamily?: string;
 };
 
 export type NormalizedPromptRequest = PromptRequest & {
@@ -125,6 +130,18 @@ const MODE_SAFETY_RAILS: Record<PromptGenerationMode, readonly string[]> = {
   ],
   dashboard: ['summary-first layout', 'read-only placeholder metrics'],
   'marketing-section': ['single section output', 'copy kept deterministic'],
+  'settings-app': ['form fields validated', 'grouped configuration layout'],
+  'docs-page': ['anchored content headers', 'code examples formatted'],
+  'pricing-page': [
+    'plan tiers deterministic',
+    'comparison table scaffold only',
+    'no live billing integration',
+  ],
+  onboarding: [
+    'step-by-step linear flow',
+    'progress indicator required',
+    'no external auth calls',
+  ],
 };
 
 const DETERMINISTIC_USED_COMPONENTS = ['card', 'heading', 'text'] as const;
@@ -207,6 +224,7 @@ export function normalizePromptRequest(
     request.styleTone.trim().toLowerCase(),
     request.density,
     request.generationMode,
+    request.componentFamily ?? 'default',
     [...normalizedSections]
       .sort((left, right) => left.localeCompare(right))
       .join('|'),
@@ -230,11 +248,20 @@ export function summarizePromptRecipe(
     compositionFamily: plan.compositionFamily,
     layoutRhythm: plan.layoutRhythm,
     componentFamily:
-      plan.compositionFamily === 'signal-first-dashboard'
+      request.componentFamily ??
+      (plan.compositionFamily === 'signal-first-dashboard'
         ? 'approved-dashboard-primitives'
         : plan.compositionFamily === 'campaign-focus'
           ? 'approved-campaign-primitives'
-          : 'approved-layout-primitives',
+          : plan.compositionFamily === 'form-driven-settings'
+            ? 'approved-form-primitives'
+            : plan.compositionFamily === 'docs-structured'
+              ? 'approved-docs-primitives'
+              : plan.compositionFamily === 'pricing-tiered'
+                ? 'approved-pricing-primitives'
+                : plan.compositionFamily === 'onboarding-linear'
+                  ? 'approved-onboarding-primitives'
+                  : 'approved-layout-primitives'),
   };
 }
 
@@ -252,7 +279,11 @@ type CompositionPlan = {
     | 'hero-led'
     | 'feature-grid'
     | 'signal-first-dashboard'
-    | 'campaign-focus';
+    | 'campaign-focus'
+    | 'form-driven-settings'
+    | 'docs-structured'
+    | 'pricing-tiered'
+    | 'onboarding-linear';
   layoutRhythm: 'intro-heavy' | 'balanced-stack' | 'summary-detail';
   sectionPadding: 'sm' | 'md' | 'lg';
   heroShadow: 'sm' | 'md';
@@ -268,12 +299,48 @@ function deriveCompositionPlan(request: PromptRequest): CompositionPlan {
     };
   }
 
+  if (request.generationMode === 'settings-app') {
+    return {
+      compositionFamily: 'form-driven-settings',
+      layoutRhythm: 'balanced-stack',
+      sectionPadding: 'md',
+      heroShadow: 'sm',
+    };
+  }
+
+  if (request.generationMode === 'docs-page') {
+    return {
+      compositionFamily: 'docs-structured',
+      layoutRhythm: 'summary-detail',
+      sectionPadding: request.density === 'compact' ? 'sm' : 'md',
+      heroShadow: 'sm',
+    };
+  }
+
   if (request.generationMode === 'marketing-section') {
     return {
       compositionFamily: 'campaign-focus',
       layoutRhythm: 'intro-heavy',
       sectionPadding: request.density === 'spacious' ? 'lg' : 'md',
       heroShadow: 'md',
+    };
+  }
+
+  if (request.generationMode === 'pricing-page') {
+    return {
+      compositionFamily: 'pricing-tiered',
+      layoutRhythm: 'balanced-stack',
+      sectionPadding: request.density === 'compact' ? 'sm' : 'md',
+      heroShadow: 'sm',
+    };
+  }
+
+  if (request.generationMode === 'onboarding') {
+    return {
+      compositionFamily: 'onboarding-linear',
+      layoutRhythm: 'intro-heavy',
+      sectionPadding: request.density === 'spacious' ? 'lg' : 'md',
+      heroShadow: 'sm',
     };
   }
 
@@ -323,6 +390,22 @@ function makeSectionCopy(
 
   if (plan.compositionFamily === 'campaign-focus') {
     return `Campaign-style ${section} content with deterministic hierarchy and ${request.styleTone} emphasis.`;
+  }
+
+  if (plan.compositionFamily === 'form-driven-settings') {
+    return `Structured configuration panel for editing ${section} parameters.`;
+  }
+
+  if (plan.compositionFamily === 'docs-structured') {
+    return `Reference guide page covering ${section} setup, installation, and APIs.`;
+  }
+
+  if (plan.compositionFamily === 'pricing-tiered') {
+    return `Pricing scaffold for ${section} with deterministic plan hierarchy and clear upgrade path.`;
+  }
+
+  if (plan.compositionFamily === 'onboarding-linear') {
+    return `Step ${index + 1} of the onboarding flow: ${section} setup with guided progression.`;
   }
 
   return `Deterministic ${section} content for a ${request.styleTone} ${request.productType} concept.`;
@@ -379,6 +462,50 @@ function makeSectionChildren(
         `Single conversion-focused action area with restrained hierarchy and explicit next step.`
       )
     );
+  } else if (
+    section === 'profile' ||
+    section === 'notifications' ||
+    section === 'security'
+  ) {
+    nodes.push(
+      makeTextNode(
+        `${baseId}-summary`,
+        `Governed form controls for updating ${section} settings with instant schema validation.`
+      )
+    );
+  } else if (
+    section === 'sidebar' ||
+    section === 'anchors' ||
+    section === 'examples'
+  ) {
+    nodes.push(
+      makeTextNode(
+        `${baseId}-summary`,
+        `Anchor-supported technical documentation layout for ${section} reference.`
+      )
+    );
+  } else if (
+    section === 'plans' ||
+    section === 'comparison' ||
+    section === 'trust'
+  ) {
+    nodes.push(
+      makeTextNode(
+        `${baseId}-summary`,
+        `Deterministic ${section} scaffold with clear tier hierarchy and conversion-safe layout.`
+      )
+    );
+  } else if (
+    section === 'welcome' ||
+    section === 'setup' ||
+    section === 'complete'
+  ) {
+    nodes.push(
+      makeTextNode(
+        `${baseId}-summary`,
+        `Onboarding step: ${section} — linear progression with progress indicator and single primary action.`
+      )
+    );
   }
 
   return nodes;
@@ -426,6 +553,7 @@ function buildLandingPageDraft(request: PromptRequest): PromptDraftProject {
       layoutVariant: getSectionLayoutVariant(section, index, plan),
       layoutRhythm: plan.layoutRhythm,
       compositionFamily: plan.compositionFamily,
+      reviewState: 'pending',
     },
     children: makeSectionChildren(request, section, index, plan),
   }));
@@ -499,7 +627,8 @@ export function repairPromptDraftProject(
     repaired = true;
     diagnostics.push({
       code: 'project-id-repaired',
-      message: 'Missing project id was replaced with a deterministic fallback.',
+      message:
+        'Missing project id was replaced with a deterministic fallback. Fix: ensure the prompt request includes a non-empty product type so the id can be derived from it.',
       severity: 'warning',
     });
   }
@@ -510,7 +639,7 @@ export function repairPromptDraftProject(
     diagnostics.push({
       code: 'project-name-repaired',
       message:
-        'Missing project name was replaced with a deterministic fallback.',
+        'Missing project name was replaced with a deterministic fallback. Fix: set productType in the PromptRequest to a non-empty string so the name can be derived.',
       severity: 'warning',
     });
   }
@@ -523,7 +652,8 @@ export function repairPromptDraftProject(
     repaired = true;
     diagnostics.push({
       code: 'pages-repaired',
-      message: 'Missing pages were replaced with a single generated page.',
+      message:
+        'Missing pages were replaced with a single generated page. Fix: verify that buildLandingPageDraft returned at least one page — this usually means the sections array was empty.',
       severity: 'warning',
     });
   }
@@ -533,12 +663,30 @@ export function repairPromptDraftProject(
     const title = page.title?.trim() || `Generated Page ${index + 1}`;
     const root = ensureRootNode(page.root);
 
-    if (pageId !== page.id || title !== page.title || root !== page.root) {
+    if (pageId !== page.id) {
       repaired = true;
       diagnostics.push({
-        code: 'page-repaired',
-        message: `Page ${index + 1} received deterministic fallback values where required.`,
+        code: 'page-id-repaired',
+        message: `Page ${index + 1} had a missing id. Fix: ensure each page in the draft has a non-empty id string derived from the section slug.`,
         severity: 'info',
+      });
+    }
+
+    if (title !== page.title) {
+      repaired = true;
+      diagnostics.push({
+        code: 'page-title-repaired',
+        message: `Page ${index + 1} had a missing title. Fix: set the page title from the generation mode label or the first section name.`,
+        severity: 'info',
+      });
+    }
+
+    if (root !== page.root) {
+      repaired = true;
+      diagnostics.push({
+        code: 'page-root-repaired',
+        message: `Page ${index + 1} had an invalid or missing root node. Fix: check that buildLandingPageDraft produces a root card node with at least one child section.`,
+        severity: 'warning',
       });
     }
 
@@ -642,3 +790,10 @@ export function summarizePromptResponse(
     policyReasons: response.policy.reasons,
   };
 }
+
+export {
+  diffPromptDrafts,
+  type NodeDiff,
+  type PageDiff,
+  type ProjectDiff,
+} from './diff';

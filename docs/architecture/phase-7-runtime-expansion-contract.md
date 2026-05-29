@@ -24,7 +24,9 @@ Two target classes are now recognized:
 1. `renderers`: targets that map a validated export IR into runnable project files.
    - Existing: `react-single-page`
    - Existing: `html-static`
-   - Candidate next: richer framework renderer, for example a route-aware framework output with stronger application structure expectations.
+   - Existing: `web-components-static`
+   - Existing: `nextjs-app-router`
+   - Candidate next: `vue3` — a Vue 3 SFC renderer stub has been added to `packages/export-core/src/targets/vue3-target.ts` to prove IR target-agnosticism.
 
 2. `runtime shells`: targets that wrap or host rendered output in a product/runtime boundary.
    - Candidate next: an app shell with navigation, bootstrapping, and deployment assumptions layered on top of the renderer contract.
@@ -47,4 +49,5 @@ A Phase 7 target should not be considered complete unless all of the following a
 - The generated artifact clearly identifies the target and entry point semantics.
 
 ## Documentation follow-up
-If the next runtime slice lands successfully, `docs/architecture/export-pipeline-spec.md` should be revised so that the target list reflects the real support matrix rather than the original aspirational `React and Next` wording.
+- `docs/architecture/export-pipeline-spec.md` has been revised to reflect the real support matrix (`react-single-page`, `html-static`, `web-components-static`, `nextjs-app-router`).
+- `docs/architecture/framework-expansion-strategy.md` has been updated to mark completed migration-path steps.

@@ -9,6 +9,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import { trapFocus } from './internal/focusTrap';
 import { Portal } from './internal/Portal';
 import { Slottable } from './internal/Slottable';
 import { useControllableState } from './internal/useControllableState';
@@ -16,6 +17,7 @@ import { useControllableState } from './internal/useControllableState';
 type PopoverContextValue = {
   open: boolean;
   setOpen: (open: boolean) => void;
+  modal: boolean;
   triggerRef: MutableRefObject<HTMLElement | null>;
 };
 
@@ -32,11 +34,13 @@ function Root({
   open,
   defaultOpen,
   onOpenChange,
+  modal = false,
   children,
 }: {
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
+  modal?: boolean;
   children?: ReactNode;
 }) {
   const [currentOpen, setOpen] = useControllableState({
@@ -51,6 +55,7 @@ function Root({
       value={{
         open: Boolean(currentOpen),
         setOpen,
+        modal,
         triggerRef: triggerRef as MutableRefObject<HTMLElement | null>,
       }}
     >
@@ -99,7 +104,7 @@ const Content = forwardRef<
     sideOffset?: number;
   }
 >(function Content({ side = 'bottom', sideOffset = 8, style, ...props }, ref) {
-  const { setOpen, triggerRef } = usePopoverContext();
+  const { setOpen, triggerRef, modal } = usePopoverContext();
   const [position, setPosition] = useState<{ top: number; left: number }>({
     top: 0,
     left: 0,
@@ -157,8 +162,15 @@ const Content = forwardRef<
   }, [side, sideOffset, triggerRef]);
 
   useEffect(() => {
+    const node = contentRef.current;
+    if (!node || !modal) return;
+    return trapFocus(node, () => setOpen(false));
+  }, [modal, setOpen]);
+
+  useEffect(() => {
     const onDoc = (e: MouseEvent) => {
       const target = e.target as Node;
+      if (contentRef.current?.contains(target)) return;
       if (triggerRef.current?.contains(target)) return;
       setOpen(false);
     };
@@ -182,6 +194,7 @@ const Content = forwardRef<
           (ref as MutableRefObject<HTMLDivElement | null>).current = node;
       }}
       role="dialog"
+      aria-modal={modal || undefined}
       style={{
         position: 'fixed',
         top: position.top,

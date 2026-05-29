@@ -9,6 +9,7 @@ import {
 } from 'react';
 import { Portal } from './internal/Portal';
 import { Slottable } from './internal/Slottable';
+import { useControllableState } from './internal/useControllableState';
 
 type ContextMenuContextValue = {
   open: boolean;
@@ -25,13 +26,37 @@ function useContextMenu() {
   return ctx;
 }
 
-function Root({ children }: { children?: ReactNode }) {
-  const [open, setOpen] = useState(false);
+export interface ContextMenuRootProps {
+  /** Controlled open state. */
+  open?: boolean;
+  /** Default open state for uncontrolled usage. */
+  defaultOpen?: boolean;
+  /** Callback fired when the open state changes. */
+  onOpenChange?: (open: boolean) => void;
+  children?: ReactNode;
+}
+
+function Root({
+  open,
+  defaultOpen,
+  onOpenChange,
+  children,
+}: ContextMenuRootProps) {
+  const [currentOpen, setOpen] = useControllableState({
+    value: open,
+    defaultValue: defaultOpen ?? false,
+    onChange: onOpenChange,
+  });
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
   return (
     <ContextMenuContext.Provider
-      value={{ open, setOpen, position, setPosition }}
+      value={{
+        open: Boolean(currentOpen),
+        setOpen,
+        position,
+        setPosition,
+      }}
     >
       {children}
     </ContextMenuContext.Provider>

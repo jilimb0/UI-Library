@@ -250,6 +250,7 @@ describe('export-core pipeline', () => {
     expect(first.diagnostics).toEqual([]);
     expect(first.files.map((file) => file.path)).toEqual([
       'package.json',
+      'index.html',
       'tsconfig.json',
       'src/main.tsx',
       'src/App.tsx',

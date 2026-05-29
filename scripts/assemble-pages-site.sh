@@ -12,7 +12,7 @@ rm -rf "$PAGES_DIR"
 mkdir -p "${SITE_DIR}/docs" "${SITE_DIR}/storybook" "${SITE_DIR}/builder"
 
 echo "[assemble] building internal workspace packages..."
-pnpm turbo run build --filter="@ui-construction-library/core..."
+pnpm turbo run build --filter="./packages/*"
 
 echo "[assemble] storybook..."
 STORYBOOK_BASE_PATH="/${REPO_NAME}/storybook/" pnpm --filter @ui-app/storybook build-storybook

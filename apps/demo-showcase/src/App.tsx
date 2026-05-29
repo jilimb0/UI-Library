@@ -38,10 +38,42 @@ import {
   useToggle,
 } from '@ui-construction-library/core';
 import { FormField } from '@ui-construction-library/react-hook-form';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { lazy, Suspense, useCallback, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useForm } from 'react-hook-form';
 import { flagshipFlows } from './flagshipFlows';
+
+const SaasLandingDemo = lazy(() =>
+  import('./components/SaasLandingDemo').then((m) => ({
+    default: m.SaasLandingDemo,
+  }))
+);
+const DashboardShellDemo = lazy(() =>
+  import('./components/DashboardShellDemo').then((m) => ({
+    default: m.DashboardShellDemo,
+  }))
+);
+const SettingsAppDemo = lazy(() =>
+  import('./components/SettingsAppDemo').then((m) => ({
+    default: m.SettingsAppDemo,
+  }))
+);
+const DocsPageDemo = lazy(() =>
+  import('./components/DocsPageDemo').then((m) => ({ default: m.DocsPageDemo }))
+);
+const PricingSiteDemo = lazy(() =>
+  import('./components/PricingSiteDemo').then((m) => ({
+    default: m.PricingSiteDemo,
+  }))
+);
+
+const flowDemoMap: Record<string, React.ComponentType> = {
+  'saas-landing': SaasLandingDemo,
+  'dashboard-shell': DashboardShellDemo,
+  'settings-app': SettingsAppDemo,
+  'docs-page': DocsPageDemo,
+  'pricing-site': PricingSiteDemo,
+};
 
 const GITHUB_URL = 'https://github.com/jilimb0/UI-Library';
 const DOCS_URL = './docs/';
@@ -260,9 +292,12 @@ function HeaderBar() {
 
 function FlagshipFlowsSection() {
   const [selectedFlowId, setSelectedFlowId] = useState(flagshipFlows[0].id);
+  const [showDemo, setShowDemo] = useState(false);
   const selectedFlow =
     flagshipFlows.find((flow) => flow.id === selectedFlowId) ??
     flagshipFlows[0];
+
+  const DemoComponent = flowDemoMap[selectedFlow.id];
 
   return (
     <section id="flagship-flows" className="flagship-shell">
@@ -288,7 +323,10 @@ function FlagshipFlowsSection() {
                 key={flow.id}
                 type="button"
                 className={active ? 'flagship-chip active' : 'flagship-chip'}
-                onClick={() => setSelectedFlowId(flow.id)}
+                onClick={() => {
+                  setSelectedFlowId(flow.id);
+                  setShowDemo(false);
+                }}
                 aria-pressed={active}
               >
                 <span className="flagship-chip-index">0{index + 1}</span>
@@ -338,6 +376,32 @@ function FlagshipFlowsSection() {
               <Badge key={proof}>{proof}</Badge>
             ))}
           </div>
+
+          <div style={{ marginTop: '1rem' }}>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowDemo((prev) => !prev)}
+            >
+              {showDemo ? 'Hide live demo' : 'View live demo'}
+            </Button>
+          </div>
+
+          {showDemo && DemoComponent && (
+            <div
+              style={{
+                marginTop: '1rem',
+                padding: '1rem',
+                borderRadius: 'var(--radius)',
+                border: '1px dashed var(--border)',
+                background: 'var(--card)',
+              }}
+            >
+              <Suspense fallback={<Text>Loading demo…</Text>}>
+                <DemoComponent />
+              </Suspense>
+            </div>
+          )}
         </Card>
       </div>
 

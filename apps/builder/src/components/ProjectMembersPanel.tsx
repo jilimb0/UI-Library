@@ -1,3 +1,10 @@
+import { useMemo, useState } from 'react';
+import {
+  canAcceptProjectInvite,
+  canAddProjectMember,
+  canChangeProjectMemberRole,
+  canRemoveProjectMember,
+} from '../memberPolicy';
 import type {
   BuilderMember,
   BuilderRole,
@@ -46,6 +53,7 @@ type Props = {
   activeMember?: BuilderMember | null;
   memberPresenceSummary?: string;
   canManageMembers: boolean;
+  sessionRole: BuilderRole;
   newMemberEmail: string;
   onNewMemberEmailChange: (value: string) => void;
   newMemberRole: BuilderRole;
@@ -84,6 +92,7 @@ export function ProjectMembersPanel({
   activeMember = null,
   memberPresenceSummary,
   canManageMembers,
+  sessionRole,
   newMemberEmail,
   onNewMemberEmailChange,
   newMemberRole,
@@ -109,6 +118,45 @@ export function ProjectMembersPanel({
   const effectiveCanManageMembers =
     canManageMembers && !managementBlockedByRepository;
   const isPendingCurrentAction = Boolean(pendingMemberAction);
+  const [policyMessage, setPolicyMessage] = useState<string | null>(null);
+  const ownersCount = useMemo(
+    () => members.filter((member) => member.role === 'owner').length,
+    [members]
+  );
+  const normalizedInviteEmail = newMemberEmail.trim().toLowerCase();
+  const isValidEmailFormat = (email: string) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const inviteEmailFormatError =
+    normalizedInviteEmail && !isValidEmailFormat(normalizedInviteEmail)
+      ? 'Enter a valid email address (e.g. user@example.com).'
+      : null;
+  const inviteBlockReason = !effectiveCanManageMembers
+    ? managementBlockedByRepository
+      ? 'Remote membership actions are paused until connectivity recovers.'
+      : 'Only admins or owners can manage project members.'
+    : (inviteEmailFormatError ??
+      (normalizedInviteEmail
+        ? canAddProjectMember(sessionRole, members, normalizedInviteEmail)
+        : null));
+  const normalizedAcceptedInviteEmail = acceptedInviteEmail
+    .trim()
+    .toLowerCase();
+  const inviteTarget =
+    normalizedAcceptedInviteEmail.length > 0
+      ? (members.find(
+          (member) =>
+            member.email.toLowerCase() === normalizedAcceptedInviteEmail
+        ) ?? null)
+      : null;
+  const acceptInvitePolicyReason = effectiveCanManageMembers
+    ? canAcceptProjectInvite(sessionRole)
+    : managementBlockedByRepository
+      ? 'Remote membership actions are paused until connectivity recovers.'
+      : 'Only admins or owners can manage project members.';
+  const acceptInviteBlockReason = normalizedAcceptedInviteEmail
+    ? (acceptInvitePolicyReason ??
+      (inviteTarget ? null : 'Invite email was not found in this project.'))
+    : acceptInvitePolicyReason;
 
   return (
     <section className="stack-panel">
@@ -158,6 +206,16 @@ export function ProjectMembersPanel({
         />
       ) : null}
 
+      {policyMessage ? (
+        <PanelState
+          title="Membership policy"
+          description={policyMessage}
+          tone="recovery"
+          actionLabel="Dismiss"
+          onAction={() => setPolicyMessage(null)}
+        />
+      ) : null}
+
       <div className="version-list">
         {isLoading ? (
           <PanelState
@@ -185,59 +243,98 @@ export function ProjectMembersPanel({
             description="Invite collaborators to review, edit, and publish this project."
           />
         ) : (
-          members.map((member) => (
-            <article key={member.userId} className="version-card">
-              <div style={{ display: 'grid', gap: 8 }}>
-                <div style={{ display: 'grid', gap: 4 }}>
-                  <strong>{member.email}</strong>
-                  <span
-                    style={{ fontSize: 12, color: '#0f766e', fontWeight: 600 }}
-                  >
-                    {formatPresenceLabel(member)}
-                  </span>
-                  <span style={{ fontSize: 12, color: '#64748b' }}>
-                    {formatPresenceDetail(member)}
-                  </span>
-                </div>
-                <div
-                  style={{
-                    display: 'flex',
-                    gap: 8,
-                    flexWrap: 'wrap',
-                    alignItems: 'center',
-                  }}
-                >
-                  <select
-                    value={member.role}
-                    onChange={(event) =>
-                      onUpdateMemberRole(
-                        member.userId,
-                        event.target.value as BuilderRole
-                      )
-                    }
-                    disabled={
-                      !effectiveCanManageMembers || isPendingCurrentAction
-                    }
-                  >
-                    {roles.map((role) => (
-                      <option key={role} value={role}>
-                        {role}
-                      </option>
-                    ))}
-                  </select>
-                  <button
-                    type="button"
-                    onClick={() => onRemoveMember(member.userId)}
-                    disabled={
-                      !effectiveCanManageMembers || isPendingCurrentAction
-                    }
-                  >
-                    Remove
-                  </button>
-                </div>
-              </div>
-            </article>
-          ))
+          members.map((member) =>
+            (() => {
+              const removeReason = canRemoveProjectMember(
+                sessionRole,
+                members,
+                member.userId
+              );
+              const isLastOwner = member.role === 'owner' && ownersCount === 1;
+              return (
+                <article key={member.userId} className="version-card">
+                  <div style={{ display: 'grid', gap: 8 }}>
+                    <div style={{ display: 'grid', gap: 4 }}>
+                      <strong>{member.email}</strong>
+                      <span
+                        style={{
+                          fontSize: 12,
+                          color: '#0f766e',
+                          fontWeight: 600,
+                        }}
+                      >
+                        {formatPresenceLabel(member)}
+                      </span>
+                      <span style={{ fontSize: 12, color: '#64748b' }}>
+                        {formatPresenceDetail(member)}
+                      </span>
+                      {isLastOwner ? (
+                        <span style={{ fontSize: 12, color: '#92400e' }}>
+                          Last owner in project.
+                        </span>
+                      ) : null}
+                    </div>
+                    <div
+                      style={{
+                        display: 'flex',
+                        gap: 8,
+                        flexWrap: 'wrap',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <select
+                        value={member.role}
+                        onChange={(event) =>
+                          (() => {
+                            const nextRole = event.target.value as BuilderRole;
+                            const reason = canChangeProjectMemberRole(
+                              sessionRole,
+                              members,
+                              member.userId,
+                              nextRole
+                            );
+                            if (reason) {
+                              setPolicyMessage(reason);
+                              return;
+                            }
+                            setPolicyMessage(null);
+                            onUpdateMemberRole(member.userId, nextRole);
+                          })()
+                        }
+                        disabled={
+                          !effectiveCanManageMembers || isPendingCurrentAction
+                        }
+                      >
+                        {roles.map((role) => (
+                          <option key={role} value={role}>
+                            {role}
+                          </option>
+                        ))}
+                      </select>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (removeReason) {
+                            setPolicyMessage(removeReason);
+                            return;
+                          }
+                          setPolicyMessage(null);
+                          onRemoveMember(member.userId);
+                        }}
+                        disabled={
+                          !effectiveCanManageMembers ||
+                          isPendingCurrentAction ||
+                          Boolean(removeReason)
+                        }
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              );
+            })()
+          )
         )}
       </div>
 
@@ -270,11 +367,29 @@ export function ProjectMembersPanel({
           </select>
           <button
             type="button"
-            onClick={onAddMember}
-            disabled={!effectiveCanManageMembers || !newMemberEmail.trim()}
+            onClick={() => {
+              if (inviteBlockReason) {
+                setPolicyMessage(inviteBlockReason);
+                return;
+              }
+              if (!normalizedInviteEmail) return;
+              setPolicyMessage(null);
+              onAddMember();
+            }}
+            disabled={
+              !effectiveCanManageMembers ||
+              isPendingCurrentAction ||
+              !normalizedInviteEmail ||
+              Boolean(inviteBlockReason)
+            }
           >
             Invite member
           </button>
+          {inviteBlockReason && normalizedInviteEmail ? (
+            <span style={{ fontSize: 12, color: '#92400e' }}>
+              {inviteBlockReason}
+            </span>
+          ) : null}
         </div>
 
         <div
@@ -301,7 +416,15 @@ export function ProjectMembersPanel({
           />
           <button
             type="button"
-            onClick={onAcceptInvite}
+            onClick={() => {
+              if (acceptInviteBlockReason) {
+                setPolicyMessage(acceptInviteBlockReason);
+                return;
+              }
+              if (!normalizedAcceptedInviteEmail) return;
+              setPolicyMessage(null);
+              onAcceptInvite();
+            }}
             disabled={
               !effectiveCanManageMembers ||
               isPendingCurrentAction ||
@@ -310,6 +433,11 @@ export function ProjectMembersPanel({
           >
             Accept invite into session
           </button>
+          {acceptInviteBlockReason && normalizedAcceptedInviteEmail ? (
+            <span style={{ fontSize: 12, color: '#92400e' }}>
+              {acceptInviteBlockReason}
+            </span>
+          ) : null}
         </div>
       </div>
     </section>

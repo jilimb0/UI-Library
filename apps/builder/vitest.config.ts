@@ -12,6 +12,7 @@ export default defineConfig({
       'src/repositoryFactory.test.ts',
       'src/tree.test.ts',
       'src/versionRepository.test.ts',
+      'src/schemaGuard.test.ts',
     ],
     pool: 'threads',
   },

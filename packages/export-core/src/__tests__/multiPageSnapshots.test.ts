@@ -121,6 +121,7 @@ describe('multi-page export artifacts', () => {
     });
     expect(rendered.files.map((file) => file.path)).toEqual([
       'package.json',
+      'index.html',
       'tsconfig.json',
       'src/main.tsx',
       'src/App.tsx',

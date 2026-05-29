@@ -18,6 +18,7 @@ import {
 import {
   cancelAutosave,
   clearRecoveryDraft,
+  flushAutosave,
   hasRecoverableDraft,
   loadRecoveryDraft,
   scheduleAutosave,
@@ -399,6 +400,12 @@ export function useBuilderDataController(
     // so we pass null and let the editor controller refine it if needed.
     scheduleAutosave(projects, null);
   }, [projects, repository]);
+
+  useEffect(() => {
+    return () => {
+      flushAutosave(projects, null);
+    };
+  }, [projects]);
 
   const refreshActivity = useCallback(
     async (pageId: string) => {
@@ -787,20 +794,47 @@ export function useBuilderEditorController({
                 : generationMode,
         });
         const generatedProject = toBuilderCompatibleProject(result.draft);
+        const generatedProjectWithReviewState: typeof generatedProject = {
+          ...generatedProject,
+          pages: generatedProject.pages.map((page) => ({
+            ...page,
+            root: {
+              ...page.root,
+              children: page.root.children.map((child) => {
+                const existingReviewState = (
+                  child.props as Record<string, unknown>
+                ).reviewState;
+                if (existingReviewState) return child;
+                return {
+                  ...child,
+                  props: {
+                    ...child.props,
+                    reviewState: 'pending',
+                  },
+                };
+              }),
+            },
+          })),
+        };
 
         setEditorState((prev) => {
           const withoutExisting = prev.projects.filter(
-            (project) => project.id !== generatedProject.id
+            (project) => project.id !== generatedProjectWithReviewState.id
           );
-          return commitProjects(prev, [...withoutExisting, generatedProject]);
+          return commitProjects(prev, [
+            ...withoutExisting,
+            generatedProjectWithReviewState,
+          ]);
         });
         setNotice('Generated prompt draft project.');
         setRoute(
           parseRoute(
-            `/projects/${generatedProject.id}/pages/${generatedProject.pages[0]?.id ?? 'generated-page-1'}`
+            `/projects/${generatedProjectWithReviewState.id}/pages/${generatedProjectWithReviewState.pages[0]?.id ?? 'generated-page-1'}`
           )
         );
-        setSelectedNodeId(generatedProject.pages[0]?.root.id ?? null);
+        setSelectedNodeId(
+          generatedProjectWithReviewState.pages[0]?.root.id ?? null
+        );
       } catch (error) {
         const message =
           error instanceof Error
@@ -907,6 +941,8 @@ export function useBuilderEditorController({
     try {
       await services.versions.createVersion(provisionalVersion);
       await refreshActivity(editorContext.page.id);
+      clearRecoveryDraft();
+      cancelAutosave();
       setNotice('Saved page version.');
     } catch {
       // Rollback provisional version on failure
@@ -994,6 +1030,8 @@ export function useBuilderEditorController({
           : 'Published project',
       });
       await refreshActivity(editorContext.page.id);
+      clearRecoveryDraft();
+      cancelAutosave();
       setNotice(
         formatRepositoryActionNotice(
           publish.sourceVersionId

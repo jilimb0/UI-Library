@@ -22,5 +22,7 @@ supabase/.temp/
 test-results/
 playwright-report/
 
-next-product-plan.md
-task.md
+# Playwright screenshot snapshots
+**/*.spec.ts-snapshots/
+
+.qoder/

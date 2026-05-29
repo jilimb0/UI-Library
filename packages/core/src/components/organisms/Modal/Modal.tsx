@@ -1,11 +1,27 @@
 import { Dialog } from '@ui-construction-library/primitives';
+import { cva, type VariantProps } from 'class-variance-authority';
 import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 import { cn } from '../../../utils/cn';
 
+export const modalContentVariants = cva('modal-content focus:outline-none', {
+  variants: {
+    size: {
+      sm: 'modal-content--sm',
+      md: 'modal-content--md',
+      lg: 'modal-content--lg',
+      full: 'modal-content--full',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
+
 type ModalRootProps = ComponentPropsWithoutRef<typeof Dialog.Root>;
-type ModalContentProps = ComponentPropsWithoutRef<typeof Dialog.Content> & {
-  title?: string;
-};
+type ModalContentProps = ComponentPropsWithoutRef<typeof Dialog.Content> &
+  VariantProps<typeof modalContentVariants> & {
+    title?: string;
+  };
 
 function ModalRoot(props: ModalRootProps) {
   return <Dialog.Root {...props} />;
@@ -24,13 +40,14 @@ function ModalContent({
   style,
   children,
   title,
+  size,
   ...props
 }: ModalContentProps) {
   return (
     <Dialog.Portal>
       <Dialog.Overlay className="modal-backdrop" />
       <Dialog.Content
-        className={cn('modal-content focus:outline-none', className)}
+        className={cn(modalContentVariants({ size }), className)}
         style={style}
         {...props}
       >

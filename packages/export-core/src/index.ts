@@ -6,7 +6,9 @@ import { createDesignTokenArtifactFiles } from './fidelity';
 export type ExportTarget =
   | 'react-single-page'
   | 'html-static'
-  | 'web-components-static';
+  | 'web-components-static'
+  | 'nextjs-app-router'
+  | 'vue3';
 export type ExportPipelineStage =
   | 'normalize'
   | 'analyze'
@@ -73,6 +75,8 @@ export type ExportDiagnostic = {
   nodeId?: string;
   componentId?: string;
   propName?: string;
+  /** Dot-separated path from the page root to the node, e.g. "root > card > heading". */
+  nodePath?: string;
 };
 
 export type ExportIRNode = {
@@ -141,7 +145,8 @@ function normalizeScalarProp(
   pageId: string,
   nodeId: string,
   diagnostics: ExportDiagnostic[],
-  propName: string
+  propName: string,
+  nodePath?: string
 ): string | number | boolean | null {
   if (
     value === null ||
@@ -155,10 +160,11 @@ function normalizeScalarProp(
   diagnostics.push({
     level: 'warning',
     code: 'UNSUPPORTED_PROP_VALUE',
-    message: `Prop ${propName} on node ${nodeId} cannot be exported as a scalar value.`,
+    message: `Prop "${propName}" on node "${nodeId}" has a non-scalar value (${typeof value}) that cannot be exported. Fix: convert it to a string, number, boolean, or null before exporting.`,
     pageId,
     nodeId,
     propName,
+    nodePath,
   });
 
   return null;
@@ -167,19 +173,22 @@ function normalizeScalarProp(
 function normalizeNode(
   node: ExportNodeInput,
   pageId: string,
-  diagnostics: ExportDiagnostic[]
+  diagnostics: ExportDiagnostic[],
+  nodePath = 'root'
 ): ExportIRNode {
   const component = getComponentById(node.componentId);
   const exportKind = component ? 'component' : 'unsupported';
+  const currentPath = `${nodePath} > ${node.componentId}`;
 
   if (!component) {
     diagnostics.push({
       level: 'error',
       code: 'UNKNOWN_COMPONENT',
-      message: `Component ${node.componentId} is not registered for export.`,
+      message: `Component "${node.componentId}" (id: ${node.id}) is not registered for export. Remove it or replace it with a registered component.`,
       pageId,
       nodeId: node.id,
       componentId: node.componentId,
+      nodePath: currentPath,
     });
   }
 
@@ -188,7 +197,14 @@ function normalizeNode(
       .sort(([left], [right]) => left.localeCompare(right))
       .map(([propName, value]) => [
         propName,
-        normalizeScalarProp(value, pageId, node.id, diagnostics, propName),
+        normalizeScalarProp(
+          value,
+          pageId,
+          node.id,
+          diagnostics,
+          propName,
+          currentPath
+        ),
       ])
   );
 
@@ -198,7 +214,7 @@ function normalizeNode(
     exportKind,
     props,
     children: node.children.map((child) =>
-      normalizeNode(child, pageId, diagnostics)
+      normalizeNode(child, pageId, diagnostics, currentPath)
     ),
     unsupportedReason:
       exportKind === 'unsupported' ? 'component-not-registered' : undefined,
@@ -302,6 +318,38 @@ export function normalizeExportProject(
   };
 }
 
+// Component IDs that belong to packages beyond @ui-construction-library/core
+const MOTION_COMPONENT_IDS = new Set([
+  'animated-div',
+  'fade-in',
+  'slide-in',
+  'scale-in',
+  'motion-box',
+  'animated-list',
+  'animated-item',
+  'stagger-children',
+  'spring-box',
+]);
+
+const PRIMITIVES_COMPONENT_IDS = new Set([
+  'dialog',
+  'popover',
+  'accordion',
+  'tabs',
+  'slider',
+  'switch',
+  'context-menu',
+]);
+
+const DND_COMPONENT_IDS = new Set([
+  'draggable',
+  'droppable',
+  'drag-handle',
+  'sortable-list',
+  'sortable-item',
+  'dnd-context',
+]);
+
 export function analyzeExportProject(
   result: NormalizeExportResult
 ): AnalyzeExportResult {
@@ -334,6 +382,21 @@ export function analyzeExportProject(
 
   if (componentCounts.size > 1) {
     dependencies.add('clsx');
+  }
+
+  // Deep package dependency detection — add sub-packages when their
+  // component IDs appear in the tree so the exported package.json is complete.
+  for (const id of imports) {
+    const normalized = id.toLowerCase();
+    if (MOTION_COMPONENT_IDS.has(normalized)) {
+      dependencies.add('@ui-construction-library/motion');
+    }
+    if (PRIMITIVES_COMPONENT_IDS.has(normalized)) {
+      dependencies.add('@ui-construction-library/primitives');
+    }
+    if (DND_COMPONENT_IDS.has(normalized)) {
+      dependencies.add('@ui-construction-library/dnd');
+    }
   }
 
   return {
@@ -387,8 +450,44 @@ function createPageViewMap(ir: ExportIRProject): string {
   return `\n{\n${entries.join(',\n')}\n}`;
 }
 
+function collectExportedComponentIds(ir: ExportIRProject): string[] {
+  const ids = new Set<string>();
+
+  const visit = (node: ExportIRNode) => {
+    if (node.exportKind === 'component') ids.add(node.componentId);
+    for (const child of node.children) visit(child);
+  };
+
+  for (const page of ir.pages) {
+    visit(page.rootNode);
+  }
+
+  return [...ids].sort();
+}
+
+function createCoreComponentImportStatement(componentIds: string[]): string {
+  const names = componentIds.map(pascalCase);
+  if (names.length === 0) return '';
+  return `import { ${names.join(', ')} } from '@ui-construction-library/core';\n`;
+}
+
+function createReactTargetDependencyManifest(
+  componentIds: string[]
+): Record<string, string> {
+  const dependencies = new Set<string>(['react', 'react-dom']);
+  if (componentIds.length > 0)
+    dependencies.add('@ui-construction-library/core');
+  if (componentIds.length > 1) dependencies.add('clsx');
+  return Object.fromEntries(
+    [...dependencies].sort().map((name) => [name, '^0.0.0'])
+  );
+}
+
 export function renderReactSinglePage(ir: ExportIRProject): RenderExportResult {
   const diagnostics: ExportDiagnostic[] = [];
+  const componentIds = collectExportedComponentIds(ir);
+  const componentImports = createCoreComponentImportStatement(componentIds);
+  const dependencyManifest = createReactTargetDependencyManifest(componentIds);
 
   if (ir.pages.length === 0) {
     diagnostics.push({
@@ -399,6 +498,24 @@ export function renderReactSinglePage(ir: ExportIRProject): RenderExportResult {
 
     return { files: [], diagnostics };
   }
+
+  const dependencyVersions: Record<string, string> = {
+    ...Object.fromEntries(
+      Object.keys(dependencyManifest).map((name) => [name, '^0.0.0'])
+    ),
+    react: '^18.3.1',
+    'react-dom': '^18.3.1',
+    vite: '^8.0.0',
+    typescript: '^5.6.3',
+    clsx: '^2.1.1',
+    next: '^15.3.0',
+  };
+
+  const resolvedDependencies = Object.fromEntries(
+    Object.entries(dependencyManifest)
+      .map(([name]) => [name, dependencyVersions[name] ?? '^0.0.0'])
+      .sort(([a], [b]) => a.localeCompare(b))
+  );
 
   const files: ExportFile[] = [
     {
@@ -414,11 +531,7 @@ export function renderReactSinglePage(ir: ExportIRProject): RenderExportResult {
             build: 'vite build',
             preview: 'vite preview',
           },
-          dependencies: {
-            '@ui-construction-library/core': '^0.0.0',
-            react: '^18.3.1',
-            'react-dom': '^18.3.1',
-          },
+          dependencies: resolvedDependencies,
           devDependencies: {
             typescript: '^5.6.3',
             vite: '^8.0.0',
@@ -427,6 +540,11 @@ export function renderReactSinglePage(ir: ExportIRProject): RenderExportResult {
         null,
         2
       )}\n`,
+    },
+    {
+      path: 'index.html',
+      content:
+        '<!doctype html>\n<html lang="en">\n  <head>\n    <meta charset="UTF-8" />\n    <meta name="viewport" content="width=device-width, initial-scale=1.0" />\n    <title>Exported UI Project</title>\n  </head>\n  <body>\n    <div id="root"></div>\n    <script type="module" src="/src/main.tsx"></script>\n  </body>\n</html>\n',
     },
     {
       path: 'tsconfig.json',
@@ -458,7 +576,7 @@ export function renderReactSinglePage(ir: ExportIRProject): RenderExportResult {
     },
     {
       path: 'src/App.tsx',
-      content: `import { useMemo, useState } from 'react';\nimport './theme.css';\n\nconst routePathMap = ${createRoutePathMap(ir)};\nconst pageLayouts = ${createPageLayoutMap(ir)};\nconst pageViews = ${createPageViewMap(ir)};\n\nexport default function App() {\n  const paths = useMemo(() => Object.keys(routePathMap), []);\n  const [currentPath, setCurrentPath] = useState(paths[0] ?? '/');\n  const currentPageId = routePathMap[currentPath] ?? routePathMap[paths[0] ?? '/'];\n  const currentLayout = currentPageId ? pageLayouts[currentPageId] : null;\n\n  return (\n    <div className="app-shell" data-export-target="react-single-page">\n      <aside className="app-sidebar">\n        <div>\n          <p className="app-eyebrow">Exported project</p>\n          <h1>${ir.name}</h1>\n          <p className="app-description">Route-aware React export with shared theme layer and app shell navigation.</p>\n        </div>\n        <nav aria-label="Exported pages" className="app-nav">\n          {paths.map((path) => {\n            const pageId = routePathMap[path];\n            const page = pageLayouts[pageId];\n            const active = path === currentPath;\n            return (\n              <button\n                key={path}\n                type="button"\n                onClick={() => setCurrentPath(path)}\n                className={active ? 'app-nav-link active' : 'app-nav-link'}\n              >\n                <span>{page.title}</span>\n                <small>{page.path}</small>\n              </button>\n            );\n          })}\n        </nav>\n      </aside>\n      <section className="app-content">\n        {currentLayout ? (\n          <header className="page-header">\n            <div>\n              <p className="app-eyebrow">{currentLayout.sectionLabel}</p>\n              <h2>{currentLayout.title}</h2>\n            </div>\n            <code>{currentLayout.path}</code>\n          </header>\n        ) : null}\n        <div className="page-canvas">{currentPageId ? pageViews[currentPageId] : null}</div>\n      </section>\n    </div>\n  );\n}\n`,
+      content: `import { useMemo, useState } from 'react';\n${componentImports}import './theme.css';\n\nconst routePathMap = ${createRoutePathMap(ir)};\nconst pageLayouts = ${createPageLayoutMap(ir)};\nconst pageViews = ${createPageViewMap(ir)};\n\nexport default function App() {\n  const paths = useMemo(() => Object.keys(routePathMap), []);\n  const [currentPath, setCurrentPath] = useState(paths[0] ?? '/');\n  const currentPageId = routePathMap[currentPath] ?? routePathMap[paths[0] ?? '/'];\n  const currentLayout = currentPageId ? pageLayouts[currentPageId] : null;\n\n  return (\n    <div className="app-shell" data-export-target="react-single-page">\n      <aside className="app-sidebar">\n        <div>\n          <p className="app-eyebrow">Exported project</p>\n          <h1>${ir.name}</h1>\n          <p className="app-description">Route-aware React export with shared theme layer and app shell navigation.</p>\n        </div>\n        <nav aria-label="Exported pages" className="app-nav">\n          {paths.map((path) => {\n            const pageId = routePathMap[path];\n            const page = pageLayouts[pageId];\n            const active = path === currentPath;\n            return (\n              <button\n                key={path}\n                type="button"\n                onClick={() => setCurrentPath(path)}\n                className={active ? 'app-nav-link active' : 'app-nav-link'}\n              >\n                <span>{page.title}</span>\n                <small>{page.path}</small>\n              </button>\n            );\n          })}\n        </nav>\n      </aside>\n      <section className="app-content">\n        {currentLayout ? (\n          <header className="page-header">\n            <div>\n              <p className="app-eyebrow">{currentLayout.sectionLabel}</p>\n              <h2>{currentLayout.title}</h2>\n            </div>\n            <code>{currentLayout.path}</code>\n          </header>\n        ) : null}\n        <div className="page-canvas">{currentPageId ? pageViews[currentPageId] : null}</div>\n      </section>\n    </div>\n  );\n}\n`,
     },
     {
       path: 'src/styles.css',
@@ -713,6 +831,141 @@ customElements.define('ui-text', UiText);
   return { files, diagnostics };
 }
 
+function createNextAppRouterFilePath(pagePath: string): string {
+  const normalized = pagePath.trim();
+  if (normalized === '/' || normalized === '') return 'app/page.tsx';
+  const segments = normalized
+    .split('/')
+    .map((segment) => segment.trim())
+    .filter(Boolean)
+    .map((segment) =>
+      segment
+        .toLowerCase()
+        .replace(/[^a-z0-9-]+/g, '-')
+        .replace(/^-|-$/g, '')
+    )
+    .filter(Boolean);
+  if (segments.length === 0) return 'app/page.tsx';
+  return `app/${segments.join('/')}/page.tsx`;
+}
+
+export function renderNextjsAppRouter(ir: ExportIRProject): RenderExportResult {
+  const diagnostics: ExportDiagnostic[] = [];
+  const componentIds = collectExportedComponentIds(ir);
+  const componentImports = createCoreComponentImportStatement(componentIds);
+
+  if (ir.pages.length === 0) {
+    diagnostics.push({
+      level: 'error',
+      code: 'UNSUPPORTED_COMPONENT',
+      message: 'Cannot render export without at least one page.',
+    });
+
+    return { files: [], diagnostics };
+  }
+
+  const baseDependencies = new Set<string>(['next', 'react', 'react-dom']);
+  for (const id of componentIds) {
+    if (id) baseDependencies.add('@ui-construction-library/core');
+  }
+  if (componentIds.length > 1) baseDependencies.add('clsx');
+  const dependencyVersions: Record<string, string> = {
+    next: '^15.3.0',
+    react: '^18.3.1',
+    'react-dom': '^18.3.1',
+    '@ui-construction-library/core': '^0.0.0',
+    clsx: '^2.1.1',
+  };
+  const dependencies = Object.fromEntries(
+    [...baseDependencies]
+      .sort()
+      .map((name) => [name, dependencyVersions[name] ?? '^0.0.0'])
+  );
+
+  const files: ExportFile[] = [
+    {
+      path: 'package.json',
+      content: `${JSON.stringify(
+        {
+          name: 'exported-ui-project-next',
+          private: true,
+          version: '0.1.0',
+          scripts: {
+            dev: 'next dev',
+            build: 'next build',
+            start: 'next start',
+          },
+          dependencies,
+        },
+        null,
+        2
+      )}\n`,
+    },
+    {
+      path: 'tsconfig.json',
+      content: `${JSON.stringify(
+        {
+          compilerOptions: {
+            target: 'ES2020',
+            lib: ['DOM', 'DOM.Iterable', 'ES2020'],
+            allowJs: true,
+            skipLibCheck: true,
+            strict: true,
+            noEmit: true,
+            esModuleInterop: true,
+            module: 'ESNext',
+            moduleResolution: 'Bundler',
+            resolveJsonModule: true,
+            isolatedModules: true,
+            jsx: 'preserve',
+            incremental: true,
+          },
+          include: ['next-env.d.ts', '**/*.ts', '**/*.tsx'],
+          exclude: ['node_modules'],
+        },
+        null,
+        2
+      )}\n`,
+    },
+    {
+      path: 'next-env.d.ts',
+      content:
+        '/// <reference types="next" />\n/// <reference types="next/image-types/global" />\n\n// NOTE: This file should not be edited\n\n',
+    },
+    {
+      path: 'next.config.mjs',
+      content: 'export default {};\n',
+    },
+    {
+      path: 'app/globals.css',
+      content:
+        ':root { --export-font-sans: Inter, system-ui, sans-serif; --export-bg: #f8fafc; --export-surface: #ffffff; --export-border: #e2e8f0; --export-text: #0f172a; --export-muted: #475569; --export-accent: #0f766e; }\n* { box-sizing: border-box; }\nhtml, body { margin: 0; min-height: 100%; font-family: var(--export-font-sans); background: var(--export-bg); color: var(--export-text); }\nmain { padding: 32px; }\n',
+    },
+    {
+      path: 'app/layout.tsx',
+      content:
+        'import \'./globals.css\';\n\nexport default function RootLayout({\n  children,\n}: {\n  children: React.ReactNode;\n}) {\n  return (\n    <html lang="en">\n      <body>{children}</body>\n    </html>\n  );\n}\n',
+    },
+    ...ir.pages
+      .map((page) => {
+        const jsx = renderNodeToJsx(page.rootNode);
+        const filePath = createNextAppRouterFilePath(page.path);
+        return {
+          path: filePath,
+          content: `${componentImports}\nexport default function Page() {\n  return (\n    <main data-project-id=${JSON.stringify(ir.projectId)} data-page-id=${JSON.stringify(page.pageId)} data-page-path=${JSON.stringify(page.path)}>\n      ${jsx}\n    </main>\n  );\n}\n`,
+        };
+      })
+      .sort((a, b) => a.path.localeCompare(b.path)),
+    ...createDesignTokenArtifactFiles(),
+    {
+      path: 'README.md',
+      content: `# ${ir.name}\n\nGenerated by @ui-construction-library/export-core for target ${ir.target}.\n`,
+    },
+  ];
+
+  return { files, diagnostics };
+}
+
 export function renderExportProject(
   enriched: EnrichExportResult
 ): RenderExportResult {
@@ -720,24 +973,34 @@ export function renderExportProject(
     pageCount: enriched.metadata.pageCount,
   });
 
+  let result: RenderExportResult;
   switch (enriched.ir.target) {
     case 'react-single-page':
-      return finishExportRender(
+      result = finishExportRender(
         enriched.ir.target,
         renderReactSinglePage(enriched.ir)
       );
+      break;
+    case 'nextjs-app-router':
+      result = finishExportRender(
+        enriched.ir.target,
+        renderNextjsAppRouter(enriched.ir)
+      );
+      break;
     case 'html-static':
-      return finishExportRender(
+      result = finishExportRender(
         enriched.ir.target,
         renderHtmlStatic(enriched.ir)
       );
+      break;
     case 'web-components-static':
-      return finishExportRender(
+      result = finishExportRender(
         enriched.ir.target,
         renderWebComponentsStatic(enriched.ir)
       );
+      break;
     default:
-      return finishExportRender(enriched.ir.target, {
+      result = finishExportRender(enriched.ir.target, {
         files: [],
         diagnostics: [
           {
@@ -748,6 +1011,43 @@ export function renderExportProject(
         ],
       });
   }
+
+  // Enforce acceptance checklist — append error diagnostics for failed criteria
+  const checklist = createExportAcceptanceChecklist(enriched, result);
+  const checklistDiagnostics: ExportDiagnostic[] = [];
+
+  if (!checklist.hasPages) {
+    checklistDiagnostics.push({
+      level: 'error',
+      code: 'INVALID_PROJECT_SHAPE',
+      message: 'Acceptance checklist failed: export has no pages.',
+    });
+  }
+  if (!checklist.deterministicRenderer) {
+    checklistDiagnostics.push({
+      level: 'error',
+      code: 'INVALID_PROJECT_SHAPE',
+      message:
+        'Acceptance checklist failed: no deterministic renderer entry point found in output files.',
+    });
+  }
+  if (!checklist.builderFixtureCompatible) {
+    checklistDiagnostics.push({
+      level: 'error',
+      code: 'INVALID_PROJECT_SHAPE',
+      message:
+        'Acceptance checklist failed: one or more pages have an empty root node ID.',
+    });
+  }
+
+  if (checklistDiagnostics.length > 0) {
+    return {
+      ...result,
+      diagnostics: [...result.diagnostics, ...checklistDiagnostics],
+    };
+  }
+
+  return result;
 }
 
 function finishExportRender(
@@ -769,7 +1069,10 @@ export function createExportAcceptanceChecklist(
     hasDiagnostics:
       rendered.diagnostics.length > 0 || enriched.diagnostics.length > 0,
     deterministicRenderer: rendered.files.some(
-      (file) => file.path === 'src/App.tsx' || file.path === 'index.html'
+      (file) =>
+        file.path === 'src/App.tsx' ||
+        file.path === 'index.html' ||
+        file.path === 'app/page.tsx'
     ),
     builderFixtureCompatible: enriched.ir.pages.every(
       (page) => page.rootNode.nodeId.length > 0
@@ -786,6 +1089,7 @@ export {
   type ExportAssetManifest,
   type ExportDoctorReport,
 } from './fidelity';
+export { nextjsAppRouterTarget } from './nextjs-target';
 export type {
   ExportPipelineArtifacts,
   ExportPublicApiSnapshot,
@@ -796,7 +1100,7 @@ export {
   createExportTargetPlugin,
   createStaticRenderResult,
 } from './targets';
-
+export { vue3Target } from './targets/vue3-target';
 export {
   createBuilderVisualSnapshot,
   createExportVisualFidelityReport,

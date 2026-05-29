@@ -230,3 +230,64 @@ test('summarizePromptRecipe exposes the approved component family', () => {
   expect(summary.layoutRhythm).toBe('summary-detail');
   expect(summary.signature).toContain('analytics workspace');
 });
+
+test('generatePromptDraft supports settings-app generation mode', () => {
+  const result = generatePromptDraft({
+    productType: 'Account settings portal',
+    targetAudience: 'end users',
+    sections: ['hero', 'profile', 'notifications', 'security'],
+    styleTone: 'structured',
+    density: 'balanced',
+    domain: 'settings',
+    frameworkPreference: 'react',
+    detailLevel: 'medium',
+    generationMode: 'settings-app',
+  });
+
+  expect(result.explainability.compositionFamily).toBe('form-driven-settings');
+  expect(result.explainability.layoutRhythm).toBe('balanced-stack');
+  const profileSection =
+    result.draft.pages[0]?.root.children[1]?.children ?? [];
+  expect(String(profileSection[2]?.props.children)).toContain(
+    'Governed form controls'
+  );
+});
+
+test('generatePromptDraft supports docs-page generation mode', () => {
+  const result = generatePromptDraft({
+    productType: 'API documentation page',
+    targetAudience: 'developers',
+    sections: ['hero', 'sidebar', 'anchors', 'examples'],
+    styleTone: 'precise',
+    density: 'compact',
+    domain: 'documentation',
+    frameworkPreference: 'react',
+    detailLevel: 'high',
+    generationMode: 'docs-page',
+  });
+
+  expect(result.explainability.compositionFamily).toBe('docs-structured');
+  expect(result.explainability.layoutRhythm).toBe('summary-detail');
+  const examplesSection =
+    result.draft.pages[0]?.root.children[3]?.children ?? [];
+  expect(String(examplesSection[2]?.props.children)).toContain(
+    'Anchor-supported'
+  );
+});
+test('summarizePromptRecipe supports custom componentFamily', () => {
+  const summary = summarizePromptRecipe({
+    productType: 'Analytics workspace',
+    targetAudience: 'ops teams',
+    sections: ['hero', 'metrics', 'activity'],
+    styleTone: 'confident',
+    density: 'compact',
+    domain: 'operations',
+    frameworkPreference: 'react',
+    detailLevel: 'high',
+    generationMode: 'dashboard',
+    componentFamily: 'my-custom-motion-primitives',
+  });
+
+  expect(summary.componentFamily).toBe('my-custom-motion-primitives');
+  expect(summary.signature).toContain('my-custom-motion-primitives');
+});

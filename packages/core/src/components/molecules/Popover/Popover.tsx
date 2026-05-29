@@ -1,8 +1,23 @@
 import { Popover as PrimitivePopover } from '@ui-construction-library/primitives';
+import { cva, type VariantProps } from 'class-variance-authority';
 import type { ReactNode } from 'react';
 import { cn } from '../../../utils/cn';
 
-export interface PopoverProps {
+export const popoverContentVariants = cva('popover', {
+  variants: {
+    size: {
+      sm: 'popover--sm',
+      md: 'popover--md',
+      lg: 'popover--lg',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
+
+export interface PopoverProps
+  extends VariantProps<typeof popoverContentVariants> {
   trigger: ReactNode;
   content: ReactNode;
   /** Preferred side for the popover content. */
@@ -29,6 +44,7 @@ export function Popover({
   open,
   defaultOpen,
   onOpenChange,
+  size,
   className,
   style,
 }: PopoverProps) {
@@ -43,7 +59,7 @@ export function Popover({
         <PrimitivePopover.Content
           side={side}
           sideOffset={sideOffset}
-          className={cn('popover', className)}
+          className={cn(popoverContentVariants({ size }), className)}
           style={style}
         >
           {content}

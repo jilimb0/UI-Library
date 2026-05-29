@@ -54,6 +54,9 @@ function TreeNode({
 }: TreeNodeProps) {
   const isSelected =
     selectedNodeIds.includes(node.id) || selectedNodeId === node.id;
+  const reviewState = (node.props as Record<string, unknown>).reviewState as
+    | string
+    | undefined;
   return (
     <div style={{ marginLeft: depth * 12 }}>
       <div className="layer-row">
@@ -65,6 +68,33 @@ function TreeNode({
           }
         >
           {node.componentId} <span className="muted">#{node.id}</span>
+          {reviewState ? (
+            <span
+              style={{
+                marginLeft: 8,
+                borderRadius: 999,
+                padding: '2px 8px',
+                fontSize: 10,
+                fontWeight: 600,
+                textTransform: 'uppercase',
+                letterSpacing: '0.04em',
+                background:
+                  reviewState === 'accepted'
+                    ? '#dcfce7'
+                    : reviewState === 'rejected'
+                      ? '#fee2e2'
+                      : '#fef3c7',
+                color:
+                  reviewState === 'accepted'
+                    ? '#166534'
+                    : reviewState === 'rejected'
+                      ? '#991b1b'
+                      : '#92400e',
+              }}
+            >
+              {reviewState}
+            </span>
+          ) : null}
         </button>
         <button
           type="button"

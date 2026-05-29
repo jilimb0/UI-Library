@@ -21,13 +21,14 @@ Platform must support additional frameworks without destabilizing React-first de
 ## Technical decisions
 - Expansion after registry/schema/styles contracts stabilize.
 - Additive adapters, no rewrite of React core packages.
-- Start with static export and web components before deeper framework adapters.
+- Static export and web components targets are implemented; deeper framework adapters require Phase 7 completion.
 
 ## Migration path
-1. Stabilize universal contracts.
-2. Add static export.
-3. Add web components runtime.
-4. Add Vue/Angular adapters with clear caveats.
+1. ✅ Stabilize universal contracts.
+2. ✅ Add static export (`html-static`).
+3. ✅ Add web components runtime (`web-components-static`).
+4. ✅ Add Next.js app router target (`nextjs-app-router`).
+5. Add Vue/Angular adapters with clear caveats (pending Phase 7).
 
 ## Risks
 - Support burden growing faster than test capacity.

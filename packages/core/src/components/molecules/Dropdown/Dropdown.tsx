@@ -1,4 +1,6 @@
 import { ChevronDownIcon } from '@ui-construction-library/icons';
+import { useControllableState } from '@ui-construction-library/primitives';
+import { cva, type VariantProps } from 'class-variance-authority';
 import {
   forwardRef,
   type ReactNode,
@@ -10,6 +12,19 @@ import {
 } from 'react';
 import { cn } from '../../../utils/cn';
 
+export const dropdownVariants = cva('dropdown', {
+  variants: {
+    size: {
+      sm: 'dropdown--sm',
+      md: 'dropdown--md',
+      lg: 'dropdown--lg',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
+
 export interface DropdownItem {
   id: number | string;
   label: string;
@@ -20,7 +35,7 @@ export interface DropdownItem {
   disabled?: boolean;
 }
 
-export interface DropdownProps {
+export interface DropdownProps extends VariantProps<typeof dropdownVariants> {
   items: DropdownItem[];
   value?: string;
   defaultValue?: string;
@@ -33,6 +48,12 @@ export interface DropdownProps {
   icon?: ReactNode;
   className?: string;
   style?: React.CSSProperties;
+  /** Controlled open state. */
+  open?: boolean;
+  /** Default open state for uncontrolled usage. */
+  defaultOpen?: boolean;
+  /** Callback fired when the open state changes. */
+  onOpenChange?: (open: boolean) => void;
 }
 
 export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
@@ -48,12 +69,22 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
       icon,
       className,
       style,
+      size,
+      open,
+      defaultOpen,
+      onOpenChange,
     },
     ref
   ) => {
     const buttonId = useId();
     const menuId = useId();
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useControllableState({
+      value: open,
+      defaultValue: defaultOpen ?? false,
+      onChange: onOpenChange,
+    });
+    // Coerce to boolean for JSX conditionals and aria attributes
+    const menuOpen = Boolean(isOpen);
 
     // Controlled/uncontrolled selected item state
     const findItemByValue = (val?: string) =>
@@ -73,7 +104,7 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
     const [openUpward, setOpenUpward] = useState(false);
 
     useEffect(() => {
-      if (!isOpen || !menuRef.current || !buttonRef.current) return;
+      if (!menuOpen || !menuRef.current || !buttonRef.current) return;
 
       const menu = menuRef.current;
       const button = buttonRef.current;
@@ -89,7 +120,7 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
       } else {
         setOpenUpward(false);
       }
-    }, [isOpen]);
+    }, [menuOpen]);
 
     const openMenu = useCallback(() => {
       if (disabled) return;
@@ -102,15 +133,15 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
           firstItem?.focus();
         }
       }, 50);
-    }, [disabled]);
+    }, [disabled, setIsOpen]);
 
     const closeMenu = useCallback(() => {
       setIsOpen(false);
       buttonRef.current?.focus();
-    }, []);
+    }, [setIsOpen]);
 
     const toggleDropdown = () => {
-      if (isOpen) {
+      if (menuOpen) {
         closeMenu();
       } else {
         openMenu();
@@ -140,11 +171,11 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
       }
       document.addEventListener('mousedown', onClickOutside);
       return () => document.removeEventListener('mousedown', onClickOutside);
-    }, []);
+    }, [setIsOpen]);
 
     useEffect(() => {
       function onKeyDown(event: KeyboardEvent) {
-        if (!isOpen || !menuRef.current) return;
+        if (!menuOpen || !menuRef.current) return;
 
         const itemsArray = Array.from(
           menuRef.current.querySelectorAll(
@@ -202,10 +233,14 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
       }
       document.addEventListener('keydown', onKeyDown);
       return () => document.removeEventListener('keydown', onKeyDown);
-    }, [closeMenu, isOpen]);
+    }, [closeMenu, menuOpen]);
 
     return (
-      <div ref={ref} className={cn('dropdown', className)} style={style}>
+      <div
+        ref={ref}
+        className={cn(dropdownVariants({ size }), className)}
+        style={style}
+      >
         {label ? (
           <span id={`${buttonId}-label`} className="field-label">
             {label}
@@ -218,8 +253,8 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
           disabled={disabled}
           className="dropdown-trigger"
           aria-haspopup="listbox"
-          aria-expanded={isOpen}
-          aria-controls={isOpen ? menuId : undefined}
+          aria-expanded={menuOpen}
+          aria-controls={menuOpen ? menuId : undefined}
           aria-label={
             label
               ? `${label}: ${selected ? selected.label : placeholder}`
@@ -233,7 +268,7 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
           </span>
         </button>
 
-        {isOpen && (
+        {menuOpen && (
           <div
             ref={menuRef}
             id={menuId}

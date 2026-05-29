@@ -120,50 +120,13 @@ function upsertPageInMemory(
   });
 }
 
+import { sanitizeProject } from './schemaGuard';
+
 function normalizeProjects(rows: unknown): BuilderProject[] {
   if (!Array.isArray(rows)) return [];
   return rows.flatMap((row) => {
     if (!row || typeof row !== 'object') return [];
-    const source = row as Record<string, unknown>;
-    const publishSource =
-      source.publish && typeof source.publish === 'object'
-        ? (source.publish as Record<string, unknown>)
-        : {};
-
-    const id = String(source.id ?? '');
-    if (!id) return [];
-
-    // Validate and sanitize every page — strip pages with corrupt root nodes
-    // rather than letting them crash the canvas renderer.
-    const rawPages = Array.isArray(source.pages) ? source.pages : [];
-    const sanitizedPages: BuilderProject['pages'] = rawPages
-      .map(sanitizePage)
-      .filter((page): page is BuilderPage => page !== null);
-
-    const project = {
-      id,
-      name: String(source.name ?? 'Untitled project'),
-      pages: sanitizedPages,
-      publish: {
-        status: publishSource.status === 'published' ? 'published' : 'draft',
-        publishedAt:
-          typeof publishSource.publishedAt === 'string'
-            ? publishSource.publishedAt
-            : null,
-        publishedBy:
-          typeof publishSource.publishedBy === 'string'
-            ? publishSource.publishedBy
-            : null,
-        sourceVersionId:
-          typeof publishSource.sourceVersionId === 'string'
-            ? publishSource.sourceVersionId
-            : null,
-      },
-      members: Array.isArray(source.members)
-        ? (source.members as BuilderMember[])
-        : createDefaultMembers(),
-    } satisfies BuilderProject;
-
+    const { project } = sanitizeProject(row);
     return [project];
   });
 }

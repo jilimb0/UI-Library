@@ -5,7 +5,7 @@ The platform must export deterministic, human-readable projects instead of britt
 
 ## Scope
 - Define export request/response contracts.
-- Define React and Next exporters as first targets.
+- Document the current target support matrix (`react-single-page`, `html-static`, `web-components-static`, `nextjs-app-router`).
 - Define CI smoke-test strategy for generated output.
 
 ## Non-goals
@@ -23,7 +23,8 @@ Export request fields:
 - `formattingOptions`
 
 ## Public contracts
-- `packages/export-react` and `packages/export-next` interfaces.
+- `packages/export-core` IR, analysis, and rendering contracts.
+- Target-specific renderer contracts (`react-single-page`, `html-static`, `web-components-static`, `nextjs-app-router`).
 - Archive manifest and generated README contract.
 
 ## Technical decisions
@@ -41,4 +42,5 @@ Export request fields:
 
 ## Open questions
 - Template ownership model for exporter boilerplates.
-- Support matrix for server/client component boundaries.
+- Support matrix for server/client component boundaries in `nextjs-app-router`.
+- Prioritization criteria for additional framework targets (Vue, Angular, etc.).
