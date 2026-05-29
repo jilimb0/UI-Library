@@ -44,7 +44,6 @@ This index is the fastest way to navigate the architecture of the UI Constructio
 - `docs/adr/0001-adapter-boundary-for-external-ui.md` — adapter boundary decisions.
 - `docs/adr/0002-api-and-accessibility-contracts.md` — API and accessibility decisions.
 - `docs/api/components.md` — public component API documentation.
-- `docs/api/hooks.md` — public hook API documentation.
 - `docs/api/utilities.md` — utility API documentation.
 
 ## Product, release, and market context
