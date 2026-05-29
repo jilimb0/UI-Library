@@ -48,9 +48,18 @@ export function createSupabaseCommentRepository(
         .from('comment')
         .select('id,page_id,node_id,body,author_id,resolved,created_at');
       if (error) throw new Error('Supabase comment list failed');
-      return ((data as CommentRecord[]) ?? []).filter(
-        (c) => c.pageId === pageId
-      );
+      const rows = (data as any[]) ?? [];
+      return rows
+        .map((row) => ({
+          id: String(row.id),
+          pageId: String(row.page_id),
+          nodeId: row.node_id ? String(row.node_id) : undefined,
+          body: String(row.body),
+          authorId: String(row.author_id),
+          resolved: Boolean(row.resolved),
+          createdAt: String(row.created_at),
+        }))
+        .filter((c) => c.pageId === pageId);
     },
     async createComment(comment) {
       const { error } = await client.from('comment').upsert([

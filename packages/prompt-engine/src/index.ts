@@ -17,6 +17,11 @@ export type PromptRequest = {
   generationMode: PromptGenerationMode;
 };
 
+export type NormalizedPromptRequest = PromptRequest & {
+  normalizedSections: string[];
+  promptSignature: string;
+};
+
 export type PromptAssumption = {
   code: string;
   message: string;
@@ -96,6 +101,23 @@ export type PromptResponse = {
   };
 };
 
+export type PromptDraftReviewSummary = {
+  intent: PromptGenerationMode;
+  compositionFamily: string;
+  layoutRhythm: string;
+  sectionCount: number;
+  sectionLabels: string[];
+  policyStatus: PromptGenerationPolicyScore['status'];
+  policyReasons: string[];
+};
+
+export type PromptRecipeSummary = {
+  signature: string;
+  compositionFamily: string;
+  layoutRhythm: string;
+  componentFamily: string;
+};
+
 const MODE_SAFETY_RAILS: Record<PromptGenerationMode, readonly string[]> = {
   'landing-page': [
     'single primary page',
@@ -170,6 +192,50 @@ function slugify(value: string): string {
 
 function uniqueOrdered(values: string[]): string[] {
   return [...new Set(values.map((value) => value.trim()).filter(Boolean))];
+}
+
+export function normalizePromptRequest(
+  request: PromptRequest
+): NormalizedPromptRequest {
+  const normalizedSections = uniqueOrdered(
+    request.sections.length > 0 ? request.sections : ['hero', 'features', 'cta']
+  );
+  const promptSignature = [
+    request.productType.trim().toLowerCase(),
+    request.targetAudience.trim().toLowerCase(),
+    request.domain.trim().toLowerCase(),
+    request.styleTone.trim().toLowerCase(),
+    request.density,
+    request.generationMode,
+    [...normalizedSections]
+      .sort((left, right) => left.localeCompare(right))
+      .join('|'),
+  ].join('::');
+
+  return {
+    ...request,
+    normalizedSections,
+    promptSignature,
+  };
+}
+
+export function summarizePromptRecipe(
+  request: PromptRequest
+): PromptRecipeSummary {
+  const normalized = normalizePromptRequest(request);
+  const plan = deriveCompositionPlan(normalized);
+
+  return {
+    signature: normalized.promptSignature,
+    compositionFamily: plan.compositionFamily,
+    layoutRhythm: plan.layoutRhythm,
+    componentFamily:
+      plan.compositionFamily === 'signal-first-dashboard'
+        ? 'approved-dashboard-primitives'
+        : plan.compositionFamily === 'campaign-focus'
+          ? 'approved-campaign-primitives'
+          : 'approved-layout-primitives',
+  };
 }
 
 function makeTextNode(id: string, children: string): PromptDraftNode {
@@ -343,13 +409,12 @@ function makeHeadingNode(
 }
 
 function buildLandingPageDraft(request: PromptRequest): PromptDraftProject {
+  const normalizedRequest = normalizePromptRequest(request);
   const projectSlug = slugify(
-    `${request.productType}-${request.targetAudience}`
+    `${normalizedRequest.productType}-${normalizedRequest.targetAudience}`
   );
-  const assembledSections = uniqueOrdered(
-    request.sections.length > 0 ? request.sections : ['hero', 'features', 'cta']
-  );
-  const plan = deriveCompositionPlan(request);
+  const assembledSections = normalizedRequest.normalizedSections;
+  const plan = deriveCompositionPlan(normalizedRequest);
 
   const sectionChildren = assembledSections.map((section, index) => ({
     id: `section-${index + 1}`,
@@ -367,7 +432,7 @@ function buildLandingPageDraft(request: PromptRequest): PromptDraftProject {
 
   return {
     id: `prompt-${projectSlug}`,
-    name: `${request.productType} Prompt Draft`,
+    name: `${normalizedRequest.productType} Prompt Draft`,
     pages: [
       {
         id: 'generated-page',
@@ -514,15 +579,14 @@ export function toBuilderCompatibleProject(
 }
 
 export function generatePromptDraft(request: PromptRequest): PromptResponse {
-  const draft = buildLandingPageDraft(request);
+  const normalizedRequest = normalizePromptRequest(request);
+  const draft = buildLandingPageDraft(normalizedRequest);
   const repair = repairPromptDraftProject(draft);
-  const assembledSections = uniqueOrdered(
-    request.sections.length > 0 ? request.sections : ['hero', 'features', 'cta']
-  );
-  const compositionPlan = deriveCompositionPlan(request);
+  const assembledSections = normalizedRequest.normalizedSections;
+  const compositionPlan = deriveCompositionPlan(normalizedRequest);
 
   return {
-    chosenIntent: request.generationMode,
+    chosenIntent: normalizedRequest.generationMode,
     assembledSections,
     assumptions: [
       {
@@ -554,11 +618,27 @@ export function generatePromptDraft(request: PromptRequest): PromptResponse {
     repair,
     policy: scorePromptRequest(request),
     explainability: {
-      recipeId: `deterministic-${request.generationMode}`,
+      recipeId: `deterministic-${normalizedRequest.generationMode}`,
       usedComponents: [...DETERMINISTIC_USED_COMPONENTS],
       validationPassed: repair.valid,
       compositionFamily: compositionPlan.compositionFamily,
       layoutRhythm: compositionPlan.layoutRhythm,
     },
+  };
+}
+
+export function summarizePromptResponse(
+  response: PromptResponse
+): PromptDraftReviewSummary {
+  return {
+    intent: response.chosenIntent,
+    compositionFamily: response.explainability.compositionFamily,
+    layoutRhythm: response.explainability.layoutRhythm,
+    sectionCount: response.assembledSections.length,
+    sectionLabels: response.assembledSections.map(
+      (section) => section.charAt(0).toUpperCase() + section.slice(1)
+    ),
+    policyStatus: response.policy.status,
+    policyReasons: response.policy.reasons,
   };
 }

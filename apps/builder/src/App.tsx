@@ -1,5 +1,16 @@
-import { generatePromptDraft } from '@ui-construction-library/prompt-engine';
+import {
+  generatePromptDraft,
+  summarizePromptResponse,
+} from '@ui-construction-library/prompt-engine';
 import { useEffect, useMemo, useState } from 'react';
+import {
+  analyzeExportProject,
+  appendDoctorArtifacts,
+  createExportRequestFromBuilderProject,
+  enrichExportProject,
+  normalizeExportProject,
+  renderExportProject,
+} from '../../../packages/export-core/src/index';
 import { recordAnalyticsEvent } from './analytics';
 import { getRecoveryDraftSummary } from './autosave';
 import {
@@ -384,6 +395,30 @@ export function App() {
     setCommentDraft,
   });
 
+  const exportPreview = useMemo(() => {
+    if (!editorContext) return null;
+    const exportRequest = createExportRequestFromBuilderProject(
+      {
+        id: editorContext.project.id,
+        name: editorContext.project.name,
+        pages: editorContext.project.pages.map((page, index) => ({
+          id: page.id,
+          title: index === 0 ? 'Current page' : page.title,
+          root: page.root,
+        })),
+      },
+      'react-single-page'
+    );
+    const normalized = normalizeExportProject(exportRequest);
+    const analyzed = analyzeExportProject(normalized);
+    const enriched = enrichExportProject(analyzed);
+    const rendered = appendDoctorArtifacts(
+      enriched,
+      renderExportProject(enriched)
+    );
+    return { normalized, analyzed, enriched, rendered };
+  }, [editorContext]);
+
   const _activeProjectForOverview = useMemo(() => {
     if (projectRoute) {
       return (
@@ -499,6 +534,17 @@ export function App() {
     ),
   });
 
+  const formatDiffSummary = (summary: {
+    addedSections: string[];
+    removedSections: string[];
+    persistedSections: string[];
+  }) => {
+    const addedCount = summary.addedSections.length;
+    const removedCount = summary.removedSections.length;
+    const persistedCount = summary.persistedSections.length;
+    return `Semantically, this refresh adds ${addedCount} section${addedCount === 1 ? '' : 's'}, removes ${removedCount} section${removedCount === 1 ? '' : 's'}, and keeps ${persistedCount} section${persistedCount === 1 ? '' : 's'} intact.`;
+  };
+
   function updateGenerationDecision(
     nodeId: string,
     decision: 'pending' | 'accepted' | 'rejected'
@@ -598,12 +644,15 @@ export function App() {
             ? 'landing-page'
             : selectedTemplate.generationMode,
     });
+    const semanticSummary = summarizePromptResponse(generated);
     const nextSectionIds =
       generated.draft.pages[0]?.root.children.map(
         (node: LayoutNode) => node.id
       ) ?? [];
     setPendingDiffSummary(buildDiffSummary(nextSectionIds));
-    setNotice('Prepared diffable regeneration preview.');
+    setNotice(
+      `Prepared ${semanticSummary.compositionFamily} preview with ${semanticSummary.sectionCount} sections.`
+    );
   };
   const latestPromptLinkedVersion = versions.find((version) =>
     version.label.startsWith('[Prompt] ')
@@ -1243,6 +1292,9 @@ export function App() {
                   <p style={{ margin: 0, color: '#475569', fontSize: 13 }}>
                     Compare the next generated draft against the current builder
                     page before applying it.
+                  </p>
+                  <p style={{ margin: 0, color: '#475569', fontSize: 13 }}>
+                    {formatDiffSummary(pendingDiffSummary)}
                   </p>
                   <div
                     style={{
@@ -2375,6 +2427,40 @@ export function App() {
                 Current page: {editorContext.page.title} · Versions available:{' '}
                 {versions.length}
               </div>
+              {exportPreview ? (
+                <div
+                  style={{
+                    display: 'grid',
+                    gap: 8,
+                    padding: 12,
+                    borderRadius: 10,
+                    background: '#ffffff',
+                    border: '1px solid #e2e8f0',
+                    fontSize: 13,
+                    color: '#334155',
+                  }}
+                >
+                  <strong>Export diagnostics</strong>
+                  <div>
+                    Diagnostics:{' '}
+                    {exportPreview.rendered.diagnostics.length +
+                      exportPreview.analyzed.diagnostics.length}
+                  </div>
+                  <div>
+                    Unsupported nodes:{' '}
+                    {exportPreview.analyzed.unsupportedNodeIds.length}
+                  </div>
+                  <div>
+                    Doctor status:{' '}
+                    {exportPreview.rendered.files.some(
+                      (file: { path: string }) =>
+                        file.path === 'EXPORT_DOCTOR.md'
+                    )
+                      ? 'available'
+                      : 'missing'}
+                  </div>
+                </div>
+              ) : null}
             </section>
           ) : null}
         </div>

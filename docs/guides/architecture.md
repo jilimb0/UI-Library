@@ -90,4 +90,4 @@ Optional; they must not be required for core library readiness.
 - [Dependency policy](./dependency-policy.md)
 - [Dependency inventory](./dependency-inventory.md)
 - [Package ownership](../ownership/PACKAGE_OWNERSHIP.md)
-- [Roadmap progress](./roadmap-progress.md)
+- [Master project plan](../planning/master-project-plan.md)

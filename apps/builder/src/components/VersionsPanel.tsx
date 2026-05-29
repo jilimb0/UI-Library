@@ -26,6 +26,11 @@ export function VersionsPanel({
   recoveryMessage = null,
   onRecover,
 }: Props) {
+  const latestVersion = versions[0] ?? null;
+  const promptLinkedVersionCount = versions.filter((version) =>
+    version.label.startsWith('[Prompt] ')
+  ).length;
+
   return (
     <section className="stack-panel">
       <div className="section-header">
@@ -35,6 +40,13 @@ export function VersionsPanel({
             Capture named snapshots before risky edits or publish actions. Use a
             <code> [Prompt] </code> prefix when the snapshot should stay linked
             to a prompt-generated draft.
+          </p>
+          <p className="muted small">
+            {versions.length} saved version{versions.length === 1 ? '' : 's'}
+            {latestVersion ? ` · latest: ${latestVersion.label}` : ''}
+            {promptLinkedVersionCount
+              ? ` · ${promptLinkedVersionCount} prompt-linked snapshot${promptLinkedVersionCount === 1 ? '' : 's'}`
+              : ''}
           </p>
         </div>
       </div>

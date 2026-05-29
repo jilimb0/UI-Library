@@ -43,6 +43,8 @@ export type AutosaveRecoveryDraft = {
   activePageId: string | null;
   /** Snapshot of all projects at the time of autosave */
   projects: BuilderProject[];
+  /** Stable summary used to compare drafts after reload */
+  projectIds: string[];
 };
 
 // ---------------------------------------------------------------------------
@@ -170,6 +172,7 @@ function commitAutosave(
     savedAt: new Date().toISOString(),
     activePageId,
     projects,
+    projectIds: projects.map((project) => project.id).sort(),
   };
   try {
     window.localStorage.setItem(RECOVERY_KEY, JSON.stringify(draft));
@@ -181,7 +184,11 @@ function commitAutosave(
 function isValidRecoveryDraft(value: unknown): value is AutosaveRecoveryDraft {
   if (!value || typeof value !== 'object') return false;
   const obj = value as Record<string, unknown>;
-  return typeof obj.savedAt === 'string' && Array.isArray(obj.projects);
+  return (
+    typeof obj.savedAt === 'string' &&
+    Array.isArray(obj.projects) &&
+    Array.isArray(obj.projectIds)
+  );
 }
 
 function formatAge(ms: number): string {

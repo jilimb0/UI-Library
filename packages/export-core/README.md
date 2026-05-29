@@ -95,8 +95,8 @@ Use when framework-agnostic embedding matters more than first-class runtime ergo
 ## Current limitations
 
 - Asset, font, and icon export fidelity is still incomplete.
-- Export doctor diagnostics and richer machine-readable support signals still need productization.
-- Support tiers are documented, but they will remain below stable until fidelity and diagnostics mature further.
+- Some target outputs are still intentionally beta rather than stable.
+- Support tiers are documented, but they remain below stable until fidelity, diagnostics, and asset coverage mature further.
 
 ## Intended evolution
 

@@ -24,11 +24,17 @@ Primary concepts currently exposed by the package:
 - `PromptRequest`
 - `PromptResponse`
 - `PromptGenerationMode`
+- `NormalizedPromptRequest`
+- `PromptDraftReviewSummary`
+- `PromptRecipeSummary`
+- `normalizePromptRequest()`
 - `generatePromptDraft()`
 - `validatePromptDraftProject()`
 - `repairPromptDraftProject()`
 - `toBuilderCompatibleProject()`
 - `getPromptGenerationSafetyRails()`
+- `summarizePromptResponse()`
+- `summarizePromptRecipe()`
 
 ## Design goals
 
@@ -49,8 +55,8 @@ Primary concepts currently exposed by the package:
 
 - Generation modes are intentionally narrow.
 - Output recipes are still baseline and deterministic-first.
-- Public packaging maturity is behind mature core packages; only test workflow is currently defined.
 - The package is optimized for internal integration, not yet for wide external consumption.
+- Broader section-repair and multi-step regeneration workflows are still future work.
 
 ## Intended evolution
 
@@ -59,4 +65,4 @@ Planned evolution areas include:
 - richer registry-aware prompt recipes;
 - section-level regeneration and protected-user-edit workflows;
 - stronger explainability and clarification loops;
-- improved package maturity with build, lint, and typecheck parity.
+- improved package maturity with build, lint, typecheck, and release packaging parity.

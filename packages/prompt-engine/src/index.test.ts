@@ -2,8 +2,11 @@ import { describe, expect, it } from 'vitest';
 import {
   generatePromptDraft,
   getPromptGenerationSafetyRails,
+  normalizePromptRequest,
   type PromptRequest,
   repairPromptDraftProject,
+  summarizePromptRecipe,
+  summarizePromptResponse,
   toBuilderCompatibleProject,
   validatePromptDraftProject,
 } from './index';
@@ -156,4 +159,74 @@ test('generatePromptDraft adds semantic child scaffolds for metrics and pricing 
   expect(String(pricingChildren[2]?.props.children)).toContain(
     'Plan comparison'
   );
+});
+
+test('summarizePromptResponse exposes review-friendly structure metadata', () => {
+  const result = generatePromptDraft({
+    productType: 'Analytics workspace',
+    targetAudience: 'ops teams',
+    sections: ['hero', 'metrics', 'activity'],
+    styleTone: 'confident',
+    density: 'compact',
+    domain: 'operations',
+    frameworkPreference: 'react',
+    detailLevel: 'high',
+    generationMode: 'dashboard',
+  });
+
+  const summary = summarizePromptResponse(result);
+
+  expect(summary.intent).toBe('dashboard');
+  expect(summary.compositionFamily).toBe('signal-first-dashboard');
+  expect(summary.layoutRhythm).toBe('summary-detail');
+  expect(summary.sectionCount).toBe(3);
+  expect(summary.sectionLabels).toEqual(['Hero', 'Metrics', 'Activity']);
+  expect(summary.policyStatus).toBe(result.policy.status);
+});
+
+test('normalizePromptRequest produces a stable prompt signature', () => {
+  const first = normalizePromptRequest({
+    productType: 'Analytics workspace',
+    targetAudience: 'ops teams',
+    sections: ['cta', 'hero', 'metrics'],
+    styleTone: 'confident',
+    density: 'compact',
+    domain: 'operations',
+    frameworkPreference: 'react',
+    detailLevel: 'high',
+    generationMode: 'dashboard',
+  });
+  const second = normalizePromptRequest({
+    productType: 'Analytics workspace',
+    targetAudience: 'ops teams',
+    sections: ['hero', 'metrics', 'cta'],
+    styleTone: 'confident',
+    density: 'compact',
+    domain: 'operations',
+    frameworkPreference: 'react',
+    detailLevel: 'high',
+    generationMode: 'dashboard',
+  });
+
+  expect(first.normalizedSections).toEqual(['cta', 'hero', 'metrics']);
+  expect(first.promptSignature).toBe(second.promptSignature);
+});
+
+test('summarizePromptRecipe exposes the approved component family', () => {
+  const summary = summarizePromptRecipe({
+    productType: 'Analytics workspace',
+    targetAudience: 'ops teams',
+    sections: ['hero', 'metrics', 'activity'],
+    styleTone: 'confident',
+    density: 'compact',
+    domain: 'operations',
+    frameworkPreference: 'react',
+    detailLevel: 'high',
+    generationMode: 'dashboard',
+  });
+
+  expect(summary.componentFamily).toBe('approved-dashboard-primitives');
+  expect(summary.compositionFamily).toBe('signal-first-dashboard');
+  expect(summary.layoutRhythm).toBe('summary-detail');
+  expect(summary.signature).toContain('analytics workspace');
 });

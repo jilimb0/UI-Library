@@ -28,9 +28,9 @@ const DEMO_URL = '../';
 const VERSION = __CORE_PACKAGE_VERSION__;
 const INSTALL_COMMAND = 'pnpm add @ui-construction-library/core';
 const ROADMAP_URL =
-  'https://github.com/jilimb0/UI-Library/blob/main/docs/roadmaps/best-in-market-90-day.md';
+  'https://github.com/jilimb0/UI-Library/blob/main/docs/planning/master-project-plan.md';
 const EPICS_URL =
-  'https://github.com/jilimb0/UI-Library/blob/main/docs/planning/best-in-market-epics.md';
+  'https://github.com/jilimb0/UI-Library/blob/main/docs/planning/master-project-plan.md';
 const ADR_URL =
   'https://github.com/jilimb0/UI-Library/blob/main/docs/adr/0002-api-and-accessibility-contracts.md';
 

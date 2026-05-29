@@ -39,7 +39,17 @@ export function createSupabaseVersionRepository(
         .from('page_version')
         .select('id,page_id,label,snapshot_json,author_id,created_at');
       if (error) throw new Error('Supabase version list failed');
-      return ((data as PageVersion[]) ?? []).filter((v) => v.pageId === pageId);
+      const rows = (data as any[]) ?? [];
+      return rows
+        .map((row) => ({
+          id: String(row.id),
+          pageId: String(row.page_id),
+          label: String(row.label),
+          snapshot: row.snapshot_json,
+          authorId: String(row.author_id),
+          createdAt: String(row.created_at),
+        }))
+        .filter((v) => v.pageId === pageId);
     },
     async createVersion(version) {
       const { error } = await client.from('page_version').upsert([

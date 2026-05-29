@@ -25,7 +25,6 @@ This index is the fastest way to navigate the architecture of the UI Constructio
 
 - `docs/architecture/auth-and-persistence-spec.md` — auth, persistence, repository modes, and remote/local behavior.
 - `docs/architecture/realtime-collaboration-spec.md` — collaboration and realtime-oriented product expectations.
-- `docs/architecture/current-state-audit.md` — prior system audit useful for context on gaps and trade-offs.
 
 ## Prompt generation
 
@@ -50,10 +49,8 @@ This index is the fastest way to navigate the architecture of the UI Constructio
 
 ## Product, release, and market context
 
-- `docs/guides/roadmap-progress.md` — roadmap progress snapshot.
 - `docs/guides/market-comparison.md` — market context and comparative positioning.
-- `docs/planning/best-in-market-epics.md` — strategic epics for broader product ambition.
-- `docs/roadmaps/best-in-market-90-day.md` — shorter-horizon execution roadmap.
+- `docs/planning/master-project-plan.md` — consolidated project action plan and remaining work.
 - `docs/release/RELEASE_RUNBOOK.md` — release process.
 - `docs/release/PR_CHECKLIST.md` — PR and release quality expectations.
 
@@ -68,4 +65,4 @@ This index is the fastest way to navigate the architecture of the UI Constructio
 7. `docs/architecture/prompt-generation-spec.md`
 8. `docs/architecture/export-pipeline-spec.md`
 9. `docs/architecture/framework-expansion-strategy.md`
-10. `docs/guides/roadmap-progress.md`
+10. `docs/planning/master-project-plan.md`

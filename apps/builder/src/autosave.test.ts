@@ -94,6 +94,7 @@ describe('autosave — flushAutosave and loadRecoveryDraft', () => {
     expect(draft).not.toBeNull();
     expect(draft?.projects).toHaveLength(2);
     expect(draft?.activePageId).toBe('p1-page-1');
+    expect(draft?.projectIds).toEqual(['p1', 'p2']);
     expect(typeof draft?.savedAt).toBe('string');
   });
 

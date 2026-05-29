@@ -3,7 +3,6 @@ import {
   toBuilderCompatibleProject,
 } from '@ui-construction-library/prompt-engine';
 import { foundationalComponents } from '@ui-construction-library/registry';
-import { validateRequiredShape } from '@ui-construction-library/schema';
 import type { Dispatch, SetStateAction } from 'react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { recordAnalyticsEvent } from './analytics';
@@ -63,10 +62,7 @@ import type {
   PublishEventRecord,
   PublishRecord,
 } from './types';
-
-function walkNodes(root: LayoutNode): LayoutNode[] {
-  return [root, ...root.children.flatMap(walkNodes)];
-}
+import { collectValidationIssues } from './validation';
 
 export function canPublishCurrentProject({
   editorContext,
@@ -81,18 +77,18 @@ export function canPublishCurrentProject({
   if (versionsCount === 0)
     return 'Save at least one version before publishing.';
 
-  const hasInvalidNode = editorContext.project.pages.some((page) =>
-    walkNodes(page.root).some((node) => {
-      const meta = foundationalComponents.find(
-        (component) => component.id === node.componentId
-      );
-      if (!meta) return false;
-      return !validateRequiredShape('layout', node);
-    })
+  const validationIssues = editorContext.project.pages.flatMap((page) =>
+    collectValidationIssues(page.root, foundationalComponents)
   );
-
-  if (hasInvalidNode)
-    return 'Resolve required prop validation issues before publishing.';
+  const blockingIssues = validationIssues.filter(
+    (issue) => issue.severity === 'error'
+  );
+  if (blockingIssues.length > 0) {
+    const firstIssue = blockingIssues[0];
+    return firstIssue
+      ? `${firstIssue.message} (${blockingIssues.length} blocking issue${blockingIssues.length === 1 ? '' : 's'} total)`
+      : 'Resolve required validation issues before publishing.';
+  }
   return null;
 }
 

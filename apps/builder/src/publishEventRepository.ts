@@ -41,9 +41,21 @@ export function createSupabasePublishEventRepository(
           'id,project_id,page_id,type,actor_id,created_at,source_version_id,note'
         );
       if (error) throw new Error('Supabase publish event list failed');
-      return ((data as PublishEventRecord[]) ?? []).filter(
-        (event) => event.projectId === projectId
-      );
+      const rows = (data as any[]) ?? [];
+      return rows
+        .map((row) => ({
+          id: String(row.id),
+          projectId: String(row.project_id),
+          pageId: row.page_id ? String(row.page_id) : null,
+          type: String(row.type) as any,
+          actorId: String(row.actor_id),
+          createdAt: String(row.created_at),
+          sourceVersionId: row.source_version_id
+            ? String(row.source_version_id)
+            : null,
+          note: row.note ? String(row.note) : null,
+        }))
+        .filter((event) => event.projectId === projectId);
     },
     async createEvent(event) {
       const { error } = await client.from('publish_event').upsert([
