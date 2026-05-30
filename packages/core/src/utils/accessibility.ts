@@ -24,8 +24,10 @@ export function announceToScreenReader(message: string): void {
   }, 1000);
 }
 
-export function getAriaProps(props: Record<string, any>) {
-  const ariaProps: Record<string, any> = {};
+export function getAriaProps(
+  props: Record<string, unknown>
+): Record<string, unknown> {
+  const ariaProps: Record<string, unknown> = {};
 
   Object.keys(props).forEach((key) => {
     if (key.startsWith('aria-') || key.startsWith('data-')) {

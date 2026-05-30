@@ -31,6 +31,8 @@
     "playwright:install": "playwright install chromium",
     "check:e2e": "pnpm playwright:install && playwright test",
     "check:security": "pnpm audit --audit-level=high",
+    "check:hygiene": "node ./scripts/check-repo-hygiene.js",
+    "check:workspace-scripts": "node ./scripts/check-workspace-scripts.js",
     "check:perf": "pnpm exec vitest run --config tests/performance/vitest.config.js",
     "publish:canary": "./scripts/publish-canary.sh",
     "publish:stable": "./scripts/publish-stable.sh",
@@ -55,7 +57,7 @@
     "sync-versions": "node scripts/sync-app-versions.js",
     "sync-versions:dry": "node scripts/sync-app-versions.js --dry-run",
     "release": "turbo run build && changeset publish",
-    "validate": "pnpm check:deps && pnpm check:api && pnpm registry:source:check && pnpm preset:check && pnpm check:gold-kits && pnpm check:launch && pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm check:bundle && pnpm check:perf",
+    "validate": "pnpm check:hygiene && pnpm check:workspace-scripts && pnpm check:deps && pnpm check:api && pnpm registry:source:check && pnpm preset:check && pnpm check:gold-kits && pnpm check:launch && pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm check:bundle && pnpm check:perf",
     "validate:platform": "pnpm validate && pnpm check:e2e",
     "prepare": "husky",
     "check:supabase-schema": "node ./scripts/check-supabase-schema-skeleton.js"

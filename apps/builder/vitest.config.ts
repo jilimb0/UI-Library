@@ -13,7 +13,18 @@ export default defineConfig({
       'src/tree.test.ts',
       'src/versionRepository.test.ts',
       'src/schemaGuard.test.ts',
+      'src/builderControllers.test.ts',
     ],
     pool: 'threads',
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html'],
+      thresholds: {
+        statements: 80,
+        branches: 80,
+        functions: 80,
+        lines: 80,
+      },
+    },
   },
 });

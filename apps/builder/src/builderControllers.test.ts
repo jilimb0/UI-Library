@@ -35,13 +35,20 @@ describe('publish guards', () => {
     expect(reason).toMatch(/save at least one version/i);
   });
 
-  it('blocks publishing when required props are invalid', () => {
+  it('blocks publishing when the page tree has validation errors', () => {
     const project = makeProject({
       pages: [
         {
           id: 'landing',
           title: 'Landing',
-          root: { id: 'root', componentId: 'button', props: {}, children: [] },
+          root: {
+            id: 'root',
+            componentId: 'calendar',
+            props: {},
+            children: [
+              { id: 'child', componentId: 'button', props: {}, children: [] },
+            ],
+          },
         },
       ],
     });
@@ -49,7 +56,7 @@ describe('publish guards', () => {
       editorContext: { project, page: project.pages[0] },
       versionsCount: 1,
     });
-    expect(reason).toMatch(/validation/i);
+    expect(reason).toMatch(/should not contain child nodes/i);
   });
 
   it('allows publishing after versioning when page tree is valid', () => {

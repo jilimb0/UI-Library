@@ -34,6 +34,12 @@ const stubStorage = {
   },
 };
 
+function isRowWithId(value: unknown): value is Record<string, unknown> & {
+  id: unknown;
+} {
+  return value !== null && typeof value === 'object' && 'id' in value;
+}
+
 export function createSupabaseClientStub(
   _env = getSupabaseEnv()
 ): SupabaseLikeClient {
@@ -46,15 +52,20 @@ export function createSupabaseClientStub(
       },
       async upsert(rows: unknown[]) {
         const raw = stubStorage.getItem(table);
-        let data = raw ? JSON.parse(raw) : [];
-        if (!Array.isArray(data)) data = [];
+        const parsed: unknown = raw ? JSON.parse(raw) : [];
+        const data: Record<string, unknown>[] = Array.isArray(parsed)
+          ? parsed.filter(
+              (item): item is Record<string, unknown> =>
+                item !== null && typeof item === 'object'
+            )
+          : [];
 
         const rowsArray = Array.isArray(rows) ? rows : [rows];
         for (const row of rowsArray) {
           if (row && typeof row === 'object') {
             const rowObj = row as Record<string, unknown>;
             const existingIndex = data.findIndex(
-              (item: any) => item && item.id === rowObj.id
+              (item) => isRowWithId(item) && item.id === rowObj.id
             );
             if (existingIndex !== -1) {
               data[existingIndex] = { ...data[existingIndex], ...rowObj };

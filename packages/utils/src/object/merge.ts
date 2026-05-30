@@ -2,18 +2,25 @@ export function merge<T extends object, U extends object>(
   target: T,
   source: U
 ): T & U {
-  const output: T & U = { ...(target as any) };
+  const targetRecord = target as Record<PropertyKey, unknown>;
+  const output = { ...target } as Record<PropertyKey, unknown>;
 
   (Object.keys(source) as Array<keyof U>).forEach((key) => {
     const sourceValue = source[key];
-    const targetValue = (target as any)[key];
+    const targetValue = targetRecord[key];
 
-    if (sourceValue instanceof Object && key in target) {
-      (output as any)[key] = merge(targetValue as any, sourceValue as any);
+    if (
+      sourceValue !== null &&
+      typeof sourceValue === 'object' &&
+      targetValue !== null &&
+      typeof targetValue === 'object' &&
+      key in target
+    ) {
+      output[key] = merge(targetValue, sourceValue);
     } else {
-      (output as any)[key] = sourceValue as any;
+      output[key] = sourceValue;
     }
   });
 
-  return output;
+  return output as T & U;
 }

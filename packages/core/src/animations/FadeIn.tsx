@@ -1,7 +1,9 @@
 import { motion } from '@ui-construction-library/motion';
-import type { PropsWithChildren } from 'react';
+import type { ComponentPropsWithoutRef, PropsWithChildren } from 'react';
 
-export function FadeIn({ children, ...props }: PropsWithChildren<any>) {
+export type FadeInProps = PropsWithChildren<ComponentPropsWithoutRef<'div'>>;
+
+export function FadeIn({ children, ...props }: FadeInProps) {
   return (
     <motion.div
       initial={{ opacity: 0 }}

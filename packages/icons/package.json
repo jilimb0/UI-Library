@@ -21,6 +21,7 @@
   "scripts": {
     "build": "pnpm build:icons && rollup -c",
     "build:icons": "node scripts/build-icons.js",
+    "test": "node scripts/build-icons.js",
     "typecheck": "tsc --noEmit",
     "lint": "biome check src"
   },

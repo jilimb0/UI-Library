@@ -10,6 +10,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "rollup -c",
+    "test": "vitest run --config ../../../vitest.config.ts src",
     "typecheck": "tsc --noEmit",
     "lint": "biome check src"
   },
@@ -21,7 +22,8 @@
     "@types/react": "catalog:",
     "@rollup/plugin-typescript": "^12.1.2",
     "rollup": "^4.34.8",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vitest": "catalog:"
   },
   "type": "module"
 }

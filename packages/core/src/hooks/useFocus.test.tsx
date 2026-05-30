@@ -1,5 +1,5 @@
-import { fireEvent, render, screen } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
 import { useFocus } from './useFocus';
 
 const TestComponent = () => {
@@ -10,11 +10,8 @@ const TestComponent = () => {
 };
 
 describe('useFocus', () => {
-  it("should log 'Element focused' on focus", () => {
-    const spy = vi.spyOn(console, 'log');
+  it('focuses the referenced element on mount', () => {
     render(<TestComponent />);
-    fireEvent.focus(screen.getByTestId('test-input'));
-    expect(spy).toHaveBeenCalledWith('Element focused');
-    spy.mockRestore();
+    expect(screen.getByTestId('test-input')).toHaveFocus();
   });
 });

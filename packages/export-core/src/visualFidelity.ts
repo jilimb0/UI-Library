@@ -1,16 +1,15 @@
+import { analyzeExportProject, enrichExportProject } from './analysis';
+import {
+  createExportRequestFromBuilderProject,
+  normalizeExportProject,
+} from './normalization';
+import { renderExportProject } from './pipeline';
 import type {
   BuilderLikeProject,
   EnrichExportResult,
   ExportTarget,
   RenderExportResult,
-} from './index';
-import {
-  analyzeExportProject,
-  createExportRequestFromBuilderProject,
-  enrichExportProject,
-  normalizeExportProject,
-  renderExportProject,
-} from './index';
+} from './types';
 
 export type VisualFidelitySnapshot = {
   pageIds: string[];

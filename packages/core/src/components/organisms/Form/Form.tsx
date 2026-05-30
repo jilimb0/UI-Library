@@ -1,7 +1,10 @@
 import { type FormEvent, type FormHTMLAttributes, forwardRef } from 'react';
 
-export interface FormProps extends FormHTMLAttributes<HTMLFormElement> {
-  onSubmit: (data: Record<string, any>) => void;
+export type FormSubmitData = Record<string, FormDataEntryValue>;
+
+export interface FormProps
+  extends Omit<FormHTMLAttributes<HTMLFormElement>, 'onSubmit'> {
+  onSubmit: (data: FormSubmitData) => void;
 }
 
 export const Form = forwardRef<HTMLFormElement, FormProps>(
@@ -10,7 +13,7 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(
       event.preventDefault();
 
       const formData = new FormData(event.currentTarget);
-      const data: Record<string, any> = Object.fromEntries(formData);
+      const data = Object.fromEntries(formData) as FormSubmitData;
 
       onSubmit(data);
     };

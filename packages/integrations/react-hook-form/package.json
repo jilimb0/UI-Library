@@ -13,7 +13,7 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "test": "echo \"@ui-construction-library/react-hook-form: no tests\"",
+    "test": "vitest run --config ../../../vitest.config.ts src",
     "lint": "biome check src",
     "typecheck": "tsc --noEmit"
   },
@@ -23,7 +23,9 @@
     "react-hook-form": ">=7.0.0"
   },
   "devDependencies": {
-    "@types/react": "catalog:"
+    "@testing-library/react": "^16.3.2",
+    "@types/react": "catalog:",
+    "vitest": "catalog:"
   },
   "dependencies": {
     "@ui-construction-library/core": "^0.1.1"

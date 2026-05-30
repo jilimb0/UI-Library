@@ -2,9 +2,25 @@ import type {
   BuilderMember,
   BuilderPage,
   BuilderProject,
+  BuilderRole,
   LayoutNode,
   PublishRecord,
 } from './types';
+
+const builderRoles = [
+  'owner',
+  'admin',
+  'editor',
+  'commenter',
+  'viewer',
+] as const satisfies readonly BuilderRole[];
+
+function isBuilderRole(value: unknown): value is BuilderRole {
+  return (
+    typeof value === 'string' &&
+    (builderRoles as readonly string[]).includes(value)
+  );
+}
 
 export function sanitizeProject(input: unknown): {
   project: BuilderProject;
@@ -82,16 +98,7 @@ export function sanitizeProject(input: unknown): {
         const memObj = rawMember as Record<string, unknown>;
         const userId = typeof memObj.userId === 'string' ? memObj.userId : '';
         const email = typeof memObj.email === 'string' ? memObj.email : '';
-        const rawRole = typeof memObj.role === 'string' ? memObj.role : '';
-        const role = [
-          'owner',
-          'admin',
-          'editor',
-          'commenter',
-          'viewer',
-        ].includes(rawRole)
-          ? (rawRole as any)
-          : 'viewer';
+        const role = isBuilderRole(memObj.role) ? memObj.role : 'viewer';
 
         if (userId && email) {
           members.push({

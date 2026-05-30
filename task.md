@@ -1,7 +1,7 @@
 # Task
 
 ## Phase
-Build
+Validate
 
 ## Completed
 - Identified which `@ui-construction-library/*` packages are published on npm.
@@ -24,11 +24,29 @@ Build
 - Wired CI to check published package versions.
 - Fixed the `Dropdown.keyboard.test.tsx` assertion to match component behavior.
 - Removed the stale planning/status backlog files.
+- Added the A+ improvement roadmap with a tracked implementation checklist.
+- Removed the hardcoded Chromatic token from Storybook scripts and documented
+  the `CHROMATIC_PROJECT_TOKEN` secret requirement.
+- Added repository hygiene and workspace script checks, then wired them into
+  `pnpm validate` and CI.
+- Removed tracked Rollup cache artifacts from package source control.
+- Normalized workspace package/app scripts for `build`, `lint`, `typecheck`,
+  and `test`.
+- Fixed Storybook lint/typecheck/build coverage for `.storybook` and `stories`.
+- Removed production debug logging and targeted production `any` escape hatches
+  in builder, core, and utils runtime paths.
+- Isolated the builder E2E role override behind a typed helper.
 
 ## Open
 - Re-run dependency checks after the next release sync if any package versions change.
 - Continue the builder boundary cleanup only in small, validated slices if further product changes require it.
 - Keep transient planning artifacts out of the repo.
+- Add or ratchet explicit coverage thresholds for packages that do not yet
+  enforce the stated 80% policy.
+- Continue high-risk module decomposition for registry, builder controllers,
+  export-core, and prompt-engine in separate validated slices.
+- Run the full platform gate, including E2E, after local `pnpm validate` is
+  green.
 
 ## Blockers
-- None for the current publish batch.
+- None for the current A+ validation slice.

@@ -19,7 +19,8 @@
       "!**/storybook-static",
       "!**/.next",
       "!packages/core/src/**/*.js",
-      "!packages/core/src/**/*.d.ts"
+      "!packages/core/src/**/*.d.ts",
+      "!scratch"
     ]
   },
   "formatter": {

@@ -3,10 +3,12 @@
   "private": true,
   "scripts": {
     "dev": "storybook dev -p 6006",
+    "build": "storybook build",
     "build-storybook": "storybook build",
-    "typecheck": "echo \"storybook: no typecheck\"",
-    "lint": "biome check src",
-    "chromatic": "npx chromatic --project-token=chpt_0c4428a8b40c003"
+    "test": "vitest run --config ../../vitest.config.ts --passWithNoTests stories .storybook",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check .storybook stories",
+    "chromatic": "chromatic --project-token=$CHROMATIC_PROJECT_TOKEN"
   },
   "dependencies": {
     "@ui-construction-library/core": "^0.1.2",
@@ -18,6 +20,9 @@
     "@storybook/addon-docs": "^10.4.0",
     "@storybook/react-vite": "^10.4.0",
     "@tailwindcss/vite": "^4.3.0",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
     "chromatic": "^16.10.1",
     "storybook": "^10.4.0",
     "tailwindcss": "catalog:",

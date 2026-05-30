@@ -6,6 +6,25 @@ export type CommentRepository = {
   resolveComment: (commentId: string) => Promise<void>;
 };
 
+type CommentRow = {
+  id?: unknown;
+  page_id?: unknown;
+  node_id?: unknown;
+  body?: unknown;
+  author_id?: unknown;
+  resolved?: unknown;
+  created_at?: unknown;
+};
+
+function toRecordArray(data: unknown): Record<string, unknown>[] {
+  return Array.isArray(data)
+    ? data.filter(
+        (row): row is Record<string, unknown> =>
+          row !== null && typeof row === 'object'
+      )
+    : [];
+}
+
 export function createInMemoryCommentRepository(
   seed: CommentRecord[] = []
 ): CommentRepository {
@@ -48,7 +67,7 @@ export function createSupabaseCommentRepository(
         .from('comment')
         .select('id,page_id,node_id,body,author_id,resolved,created_at');
       if (error) throw new Error('Supabase comment list failed');
-      const rows = (data as any[]) ?? [];
+      const rows = toRecordArray(data) as CommentRow[];
       return rows
         .map((row) => ({
           id: String(row.id),

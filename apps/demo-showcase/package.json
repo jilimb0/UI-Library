@@ -2,6 +2,7 @@
   "name": "@ui-app/demo-showcase",
   "private": true,
   "scripts": {
+    "test": "vitest run --config ../../vitest.config.ts src",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
@@ -23,6 +24,7 @@
     "@vitejs/plugin-react": "^6.0.2",
     "tailwindcss": "catalog:",
     "typescript": "^6.0.3",
-    "vite": "catalog:"
+    "vite": "catalog:",
+    "vitest": "catalog:"
   }
 }

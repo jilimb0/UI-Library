@@ -1,4 +1,4 @@
-import type { PromptDraftNode, PromptDraftProject } from './index';
+import type { PromptDraftNode, PromptDraftProject } from './types';
 
 export type NodeDiff = {
   nodeId: string;

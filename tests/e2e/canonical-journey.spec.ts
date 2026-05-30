@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { setE2ERole } from './testHelpers';
 
 const port = process.env.PORT ?? '4173';
 const BASE_URL =
@@ -12,9 +13,7 @@ test.describe('builder canonical journey flow', () => {
 
   test('runs complete prompt to publish lifecycle', async ({ page }) => {
     // Override the E2E role to 'owner' so this test has permissions to complete the full lifecycle
-    await page.addInitScript(() => {
-      (window as any).__E2E_ROLE__ = 'owner';
-    });
+    await setE2ERole(page, 'owner');
 
     // 1. Navigate to the projects list
     await page.goto(`${BASE_URL}builder/projects`, { waitUntil: 'load' });
@@ -87,9 +86,7 @@ test.describe('builder canonical journey flow', () => {
 
   test('generates draft and can add a page in edit mode', async ({ page }) => {
     // Override the E2E role to 'owner' so this test has permissions to perform layout changes and page creation
-    await page.addInitScript(() => {
-      (window as any).__E2E_ROLE__ = 'owner';
-    });
+    await setE2ERole(page, 'owner');
 
     await page.goto(`${BASE_URL}builder/projects`, { waitUntil: 'load' });
     await expect(page.getByRole('heading', { name: 'Projects' })).toBeVisible({

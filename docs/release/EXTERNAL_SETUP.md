@@ -15,7 +15,9 @@ These platform settings support the canonical release process documented in [`RE
 Go to `Settings -> Secrets and variables -> Actions` and add:
 
 - `NPM_TOKEN`: npm automation token with publish access
-- `CHROMATIC_PROJECT_TOKEN`: Chromatic project token
+- `CHROMATIC_PROJECT_TOKEN`: Chromatic project token. Keep this only in GitHub
+  Actions secrets or a local shell environment; never commit it in
+  `package.json`, `.env*`, or documentation.
 - `CODECOV_TOKEN`: token for private repositories (optional for public)
 
 ## 3) Branch Protection (main)

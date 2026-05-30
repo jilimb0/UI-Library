@@ -1,0 +1,227 @@
+import {
+  baseCompatibility,
+  commonAsProp,
+  commonChildrenProp,
+  commonClassNameProp,
+  commonSizeProp,
+  commonToneProp,
+  type RegistryComponent,
+} from './shared';
+
+export const typographyComponents: RegistryComponent[] = [
+  {
+    id: 'text',
+    slug: 'text',
+    displayName: 'Text',
+    package: '@ui-construction-library/core',
+    version: '0.1.0',
+    category: 'typography',
+    description:
+      'Body text primitive. Renders as <p> by default; use `as` to change semantic element.',
+    status: 'stable',
+    tags: ['content', 'typography'],
+    props: [
+      commonSizeProp,
+      commonToneProp,
+      commonAsProp,
+      commonClassNameProp,
+      commonChildrenProp,
+      {
+        name: 'truncate',
+        type: 'boolean',
+        category: 'layout',
+        editingSurface: 'layout-edit',
+        description: 'Truncates overflowing text with an ellipsis.',
+        defaultValue: 'false',
+      },
+      {
+        name: 'align',
+        type: 'string',
+        category: 'layout',
+        editingSurface: 'layout-edit',
+        description: 'Text alignment (start | center | end).',
+        defaultValue: 'start',
+      },
+      {
+        name: 'weight',
+        type: 'string',
+        category: 'style',
+        editingSurface: 'quick-edit',
+        description: 'Font weight (regular | medium | semibold | bold).',
+        defaultValue: 'regular',
+      },
+    ],
+    slots: ['default'],
+    events: [],
+    states: ['default'],
+    a11y: {
+      keyboard: [],
+      focusBehavior: 'Non-interactive; not focusable.',
+      screenReaderNotes: [
+        'Do not use as a heading substitute; use Heading component instead.',
+      ],
+      invalidCombinations: [
+        '<Text as="h1|h2|h3"> — use Heading component for semantic headings',
+      ],
+      localizationNotes: [
+        'Bidirectional text handled by browser; ensure dir attribute set on parent for RTL.',
+      ],
+    },
+    responsiveBehavior: ['wrap', 'fluid font size via token'],
+    styleHooks: ['text.color', 'text.size', 'text.weight'],
+    builder: {
+      editingSurface: 'inline-editable',
+      allowChildren: true,
+    },
+    recipes: [
+      {
+        id: 'empty-state-body',
+        label: 'Empty State Body Text',
+        description: 'Supportive description in an empty state.',
+        requiredProps: ['children'],
+        recommendedDefaults: { size: 'md', tone: 'muted', align: 'center' },
+        doExample:
+          '<Text tone="muted">No projects yet. Create your first to get started.</Text>',
+        dontExample: '<Text>No items</Text>',
+      },
+    ],
+    antiPatterns: [
+      {
+        id: 'text-as-heading',
+        description:
+          'Using <Text as="h1"> or styling Text to look like a heading.',
+        reason:
+          'Heading landmark semantics are lost; document outline breaks for screen readers.',
+        fix: 'Use the Heading component.',
+      },
+      {
+        id: 'very-low-contrast',
+        description:
+          'Applying a custom tone or className that results in contrast below 4.5:1.',
+        reason: 'Fails WCAG AA for normal-size text.',
+        fix: 'Use semantic tone tokens; verify contrast with design tokens.',
+      },
+    ],
+    export: { react: 'supported', next: 'supported' },
+    compatibility: baseCompatibility,
+  },
+  {
+    id: 'heading',
+    slug: 'heading',
+    displayName: 'Heading',
+    package: '@ui-construction-library/core',
+    version: '0.1.0',
+    category: 'typography',
+    description: 'Semantic section heading h1–h6.',
+    status: 'stable',
+    tags: ['content', 'typography', 'title'],
+    props: [
+      {
+        name: 'level',
+        type: '1|2|3|4|5|6',
+        category: 'accessibility',
+        editingSurface: 'advanced-edit',
+        required: true,
+        description: 'HTML heading level and semantic rank.',
+        defaultValue: '2',
+      },
+      {
+        name: 'visualSize',
+        type: 'string',
+        category: 'style',
+        editingSurface: 'quick-edit',
+        description:
+          'Override visual size independently from semantic level (1|2|3|4|5|6).',
+      },
+      commonToneProp,
+      commonAsProp,
+      commonClassNameProp,
+      commonChildrenProp,
+      {
+        name: 'truncate',
+        type: 'boolean',
+        category: 'layout',
+        editingSurface: 'layout-edit',
+        description: 'Truncates overflowing text with an ellipsis.',
+        defaultValue: 'false',
+      },
+    ],
+    slots: ['default'],
+    events: [],
+    states: ['default'],
+    a11y: {
+      keyboard: [],
+      focusBehavior:
+        'Non-interactive; not focusable by default. May receive focus programmatically after route navigation.',
+      screenReaderNotes: [
+        'Do not skip heading levels (e.g. h1 → h3).',
+        'One h1 per page.',
+        'Heading text must describe the section it introduces.',
+      ],
+      invalidCombinations: [
+        'Multiple h1 on one page',
+        'Skipped heading levels',
+      ],
+      localizationNotes: ['Heading text must be translatable.'],
+    },
+    responsiveBehavior: ['wrap', 'fluid font size via token'],
+    styleHooks: [
+      'heading.color',
+      'heading.size',
+      'heading.weight',
+      'heading.lineHeight',
+    ],
+    builder: {
+      editingSurface: 'inline-editable',
+      allowChildren: true,
+    },
+    recipes: [
+      {
+        id: 'page-title',
+        label: 'Page Title',
+        description: 'Primary h1 for a page.',
+        requiredProps: ['level', 'children'],
+        recommendedDefaults: { level: 1, visualSize: '2xl' },
+        a11yCaveats: ['Only one h1 per page.'],
+      },
+    ],
+    antiPatterns: [
+      {
+        id: 'heading-level-misuse',
+        description:
+          'Choosing heading level for visual size rather than semantic rank.',
+        reason: 'Screen reader outline and landmark navigation break.',
+        fix: 'Set level semantically; use visualSize prop to adjust appearance.',
+      },
+    ],
+    export: { react: 'supported', next: 'supported' },
+    compatibility: baseCompatibility,
+  },
+  {
+    id: 'code',
+    slug: 'code',
+    displayName: 'Code',
+    package: '@ui-construction-library/core',
+    version: '0.1.0',
+    category: 'typography',
+    description: 'Inline code styling primitive.',
+    status: 'stable',
+    tags: ['code', 'inline'],
+    props: [commonClassNameProp, commonChildrenProp],
+    slots: ['default'],
+    events: [],
+    states: ['default'],
+    a11y: {
+      keyboard: [],
+      focusBehavior: 'Non-interactive; not focusable.',
+      screenReaderNotes: ['Used for inline code snippets.'],
+    },
+    responsiveBehavior: ['inline'],
+    styleHooks: ['code.bg', 'code.color'],
+    builder: { editingSurface: 'inline-editable', allowChildren: true },
+    recipes: [],
+    antiPatterns: [],
+    export: { react: 'supported', next: 'supported' },
+    compatibility: baseCompatibility,
+  },
+];

@@ -10,6 +10,27 @@ export type PublishEventRepository = {
   createEvent: (event: PublishEventRecord) => Promise<void>;
 };
 
+type PublishEventRow = {
+  id?: unknown;
+  project_id?: unknown;
+  page_id?: unknown;
+  type?: unknown;
+  actor_id?: unknown;
+  created_at?: unknown;
+  source_version_id?: unknown;
+  note?: unknown;
+  payload?: unknown;
+};
+
+function toRecordArray(data: unknown): Record<string, unknown>[] {
+  return Array.isArray(data)
+    ? data.filter(
+        (row): row is Record<string, unknown> =>
+          row !== null && typeof row === 'object'
+      )
+    : [];
+}
+
 export function createInMemoryPublishEventRepository(
   seed: PublishEventRecord[] = []
 ): PublishEventRepository {
@@ -46,7 +67,7 @@ export function createSupabasePublishEventRepository(
           'id,project_id,page_id,type,actor_id,created_at,source_version_id,note,payload'
         );
       if (error) throw new Error('Supabase publish event list failed');
-      const rows = (data as any[]) ?? [];
+      const rows = toRecordArray(data) as PublishEventRow[];
       return rows
         .map((row) => ({
           id: String(row.id),
