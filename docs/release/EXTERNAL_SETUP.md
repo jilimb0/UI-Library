@@ -1,6 +1,6 @@
 # External Setup (GitHub + npm)
 
-These steps cannot be applied from repository files and must be configured in platform settings.
+These platform settings support the canonical release process documented in [`README.md`](./README.md) and [`RELEASE_RUNBOOK.md`](./RELEASE_RUNBOOK.md).
 
 ## GitHub Repository Settings
 

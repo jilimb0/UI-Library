@@ -107,4 +107,3 @@ foundation   → tokens, theming, motion tokens              (@ui-construction-l
 - [Architecture](./architecture.md)
 - [ADR-0001: Adapter boundary](../adr/0001-adapter-boundary-for-external-ui.md)
 - [Package ownership](../ownership/PACKAGE_OWNERSHIP.md)
-- [Master project plan](../planning/master-project-plan.md)

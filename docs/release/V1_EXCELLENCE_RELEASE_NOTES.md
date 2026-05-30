@@ -1,6 +1,6 @@
 # v1 Excellence Release Notes
 
-These notes summarize the `v1.0` self-owned release posture for UI Construction Library.
+These notes summarize the `v1.0` self-owned release posture for UI Construction Library and point back to the canonical release docs in [`README.md`](./README.md) and [`RELEASE_RUNBOOK.md`](./RELEASE_RUNBOOK.md).
 
 ## What shipped
 

@@ -1,5 +1,7 @@
 # Demo Pitch Script (5-7 minutes)
 
+This is a short presentation script for the demo showcase. Release policy lives in [`README.md`](./README.md), [`RELEASE_RUNBOOK.md`](./RELEASE_RUNBOOK.md), and [`RELEASE_NOTES_TEMPLATE.md`](./RELEASE_NOTES_TEMPLATE.md).
+
 ## 1. Opening (30 sec)
 
 - "This is our production-ready React UI library monorepo."

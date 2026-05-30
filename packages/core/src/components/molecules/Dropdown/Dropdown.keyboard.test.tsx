@@ -1,7 +1,8 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 import { Dropdown } from './Dropdown';
+import '@testing-library/jest-dom';
 
 const mockItems = [
   { id: 1, label: 'Item 1', value: 'item1' },
@@ -16,7 +17,8 @@ describe('Dropdown Keyboard Navigation', () => {
     const button = screen.getByRole('button');
     fireEvent.click(button);
 
+    await waitFor(() => expect(screen.getByText('Item 1')).toHaveFocus());
     await user.keyboard('{ArrowDown}{ArrowDown}{Enter}');
-    expect(screen.getByText('Item 2')).toBeInTheDocument();
+    expect(screen.getByRole('button')).toHaveTextContent('Item 3');
   });
 });
