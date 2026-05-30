@@ -9,7 +9,7 @@ This index is the fastest way to navigate the architecture of the UI Constructio
 - `docs/architecture/platform-overview.md` — high-level platform shape and package/app boundaries.
 - `docs/architecture/platform-vocabulary.md` — canonical terms used across builder, schema, registry, export, and runtime flows.
 - `docs/architecture/package-naming-strategy.md` — package naming conventions and scope rules.
-- `docs/guides/architecture.md` — broader implementation-oriented architecture guide.
+- `docs/architecture/builder-boundary.md` — builder layering and refactor boundary.
 
 ## Schema and registry
 
@@ -49,7 +49,6 @@ This index is the fastest way to navigate the architecture of the UI Constructio
 ## Product, release, and market context
 
 - `docs/guides/market-comparison.md` — market context and comparative positioning.
-- `docs/planning/master-project-plan.md` — consolidated project action plan and remaining work.
 - `docs/release/RELEASE_RUNBOOK.md` — release process.
 - `docs/release/PR_CHECKLIST.md` — PR and release quality expectations.
 
@@ -64,4 +63,4 @@ This index is the fastest way to navigate the architecture of the UI Constructio
 7. `docs/architecture/prompt-generation-spec.md`
 8. `docs/architecture/export-pipeline-spec.md`
 9. `docs/architecture/framework-expansion-strategy.md`
-10. `docs/planning/master-project-plan.md`
+10. `docs/architecture/builder-boundary.md`

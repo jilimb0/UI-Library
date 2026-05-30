@@ -4,9 +4,29 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
   resolve: {
     alias: {
+      '@ui-construction-library/icons': resolve(
+        __dirname,
+        '../icons/src/index.ts'
+      ),
+      '@ui-construction-library/primitives': resolve(
+        __dirname,
+        '../primitives/src/index.ts'
+      ),
+      '@ui-construction-library/dnd': resolve(
+        __dirname,
+        '../dnd/src/index.tsx'
+      ),
+      '@ui-construction-library/tokens': resolve(
+        __dirname,
+        '../tokens/src/index.ts'
+      ),
       '@ui-construction-library/utils': resolve(
         __dirname,
         '../utils/src/index.ts'
+      ),
+      '@ui-construction-library/motion': resolve(
+        __dirname,
+        '../motion/src/index.ts'
       ),
     },
   },

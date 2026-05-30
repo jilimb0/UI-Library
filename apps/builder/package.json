@@ -10,12 +10,12 @@
     "lint": "biome check src"
   },
   "dependencies": {
-    "@ui-construction-library/core": "workspace:^0.1.1",
+    "@ui-construction-library/core": "^0.1.2",
     "@ui-construction-library/export-core": "workspace:*",
-    "@ui-construction-library/registry": "workspace:^0.1.0",
-    "@ui-construction-library/schema": "workspace:^0.1.0",
+    "@ui-construction-library/registry": "workspace:*",
+    "@ui-construction-library/schema": "workspace:*",
     "@ui-construction-library/prompt-engine": "workspace:*",
-    "@ui-construction-library/styles": "workspace:^0.1.0",
+    "@ui-construction-library/styles": "workspace:*",
     "react": "catalog:",
     "react-dom": "catalog:"
   },

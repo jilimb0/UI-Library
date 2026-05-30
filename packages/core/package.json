@@ -1,6 +1,6 @@
 {
   "name": "@ui-construction-library/core",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
@@ -45,12 +45,12 @@
     }
   },
   "dependencies": {
-    "@ui-construction-library/dnd": "workspace:*",
-    "@ui-construction-library/icons": "workspace:*",
-    "@ui-construction-library/motion": "workspace:*",
-    "@ui-construction-library/primitives": "workspace:*",
-    "@ui-construction-library/tokens": "workspace:*",
-    "@ui-construction-library/utils": "workspace:*",
+    "@ui-construction-library/dnd": "^0.1.1",
+    "@ui-construction-library/icons": "^0.1.1",
+    "@ui-construction-library/motion": "^0.1.1",
+    "@ui-construction-library/primitives": "^0.1.0",
+    "@ui-construction-library/tokens": "^0.1.1",
+    "@ui-construction-library/utils": "^0.1.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.0.0",
     "tailwind-merge": "^2.5.5",

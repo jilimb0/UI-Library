@@ -36,6 +36,42 @@ describe('publishEventRepository', () => {
     const repo = createSupabasePublishEventRepository();
     await expect(repo.listEvents('project-1')).rejects.toThrow(/not wired/i);
   });
+
+  it('preserves governance payloads when reading from supabase rows', async () => {
+    const rows = [
+      {
+        id: 'e3',
+        project_id: 'project-1',
+        page_id: null,
+        type: 'member-added',
+        actor_id: 'u1',
+        created_at: '2026-01-03',
+        source_version_id: null,
+        note: 'Added member',
+        payload: {
+          kind: 'member-added',
+          member_id: 'm1',
+          member_email: 'new@builder.dev',
+        },
+      },
+    ];
+    const repo = createSupabasePublishEventRepository({
+      from() {
+        return {
+          async select() {
+            return { data: rows, error: null };
+          },
+          async upsert() {
+            return { error: null };
+          },
+        };
+      },
+    } as never);
+
+    const list = await repo.listEvents('project-1');
+    expect(list[0]?.payload?.kind).toBe('member-added');
+    expect(list[0]?.payload?.memberEmail).toBe('new@builder.dev');
+  });
 });
 
 it('persists governance payloads', async () => {

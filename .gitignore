@@ -7,9 +7,14 @@ storybook-static/
 .env
 .env.local
 .DS_Store
+*/.DS_Store
 npm-debug.log
 yarn-error.log
 pnpm-debug.log
+*.tgz
+
+# Local npm pack artifacts
+ui-construction-library-*.tgz
 *.cookie
 *.tsbuildinfo
 

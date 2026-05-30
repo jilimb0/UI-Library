@@ -1,9 +1,11 @@
-import path from 'node:path';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import type { StorybookConfig } from '@storybook/react-vite';
 import tailwindcss from '@tailwindcss/vite';
-import { libraryAliases } from '../../../tools/vite/library-aliases';
+import { libraryAliases } from '../../../tools/vite/library-aliases.ts';
 
-const coreStoriesDir = path.resolve(__dirname, '../../../packages/core/src');
+const storybookDir = dirname(fileURLToPath(import.meta.url));
+const coreStoriesDir = resolve(storybookDir, '../../../packages/core/src');
 
 const config: StorybookConfig = {
   stories: [

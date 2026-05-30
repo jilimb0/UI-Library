@@ -41,7 +41,11 @@ export function getMemberByEmail(
   members: BuilderMember[],
   email: string
 ): BuilderMember | null {
-  return members.find((entry) => entry.email.toLowerCase() === email) ?? null;
+  const normalizedEmail = email.toLowerCase();
+  return (
+    members.find((entry) => entry.email.toLowerCase() === normalizedEmail) ??
+    null
+  );
 }
 
 export function getMemberById(

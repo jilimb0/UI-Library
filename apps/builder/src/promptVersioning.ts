@@ -65,7 +65,7 @@ export function createPromptLinkedVersion(
       promptGenerationId: summary.id,
       prompt: summary.prompt,
       audience: summary.audience,
-      templateId: summary.id,
+      templateId: summary.templateId,
       diffSummary: summary.diffSummary ?? null,
       protectedNodeIds: summary.protectedNodeIds ?? [],
       sectionDecisions: summary.sectionDecisions ?? {},

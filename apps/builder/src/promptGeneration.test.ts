@@ -48,6 +48,8 @@ describe('promptGeneration', () => {
 
     expect(summary.templateId).toBe('dashboard');
     expect(summary.protectedNodeIds).toEqual(['node-1']);
+    expect(summary.prompt).toBe('Build a dashboard');
+    expect(summary.policyStatus).toBe('allow');
     expect(summary.createdAt).toMatch(/T/);
   });
 });

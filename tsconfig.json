@@ -22,28 +22,31 @@
     "ignoreDeprecations": "6.0",
     "paths": {
       "@ui-construction-library/core": [
-        "packages/core/src"
+        "packages/core/src/index.ts"
       ],
       "@ui-construction-library/utils": [
-        "packages/utils/src"
+        "packages/utils/src/index.ts"
       ],
       "@ui-construction-library/tokens": [
-        "packages/tokens/src"
+        "packages/tokens/src/index.ts"
       ],
       "@ui-construction-library/icons": [
-        "packages/icons/src"
+        "packages/icons/src/index.ts"
+      ],
+      "@ui-construction-library/primitives": [
+        "packages/primitives/src/index.ts"
       ],
       "@ui-construction-library/schema": [
-        "packages/schema/src"
+        "packages/schema/src/index.ts"
       ],
       "@ui-construction-library/registry": [
-        "packages/registry/src"
+        "packages/registry/src/index.ts"
       ],
       "@ui-construction-library/styles": [
-        "packages/styles/src"
+        "packages/styles/src/index.ts"
       ],
       "@ui-construction-library/react-hook-form": [
-        "packages/integrations/react-hook-form/src"
+        "packages/integrations/react-hook-form/src/index.ts"
       ]
     }
   },

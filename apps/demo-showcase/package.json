@@ -9,9 +9,9 @@
     "lint": "biome check src"
   },
   "dependencies": {
-    "@ui-construction-library/core": "workspace:^0.1.1",
-    "@ui-construction-library/icons": "workspace:^0.1.0",
-    "@ui-construction-library/react-hook-form": "workspace:^0.1.1",
+    "@ui-construction-library/core": "^0.1.2",
+    "@ui-construction-library/icons": "^0.1.1",
+    "@ui-construction-library/react-hook-form": "^0.1.1",
     "react": "catalog:",
     "react-dom": "catalog:",
     "react-hook-form": "^7.53.0"

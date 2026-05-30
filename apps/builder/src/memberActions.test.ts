@@ -15,6 +15,7 @@ describe('memberActions', () => {
   ];
 
   it('finds members', () => {
+    expect(getMemberByEmail(members, 'Viewer@Builder.Dev')?.userId).toBe('u2');
     expect(getMemberByEmail(members, 'viewer@builder.dev')?.userId).toBe('u2');
     expect(getMemberById(members, 'u1')?.email).toBe('owner@builder.dev');
   });

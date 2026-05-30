@@ -34,6 +34,7 @@ describe('promptVersioning', () => {
     expect(version.pageId).toBe('page-1');
     expect(version.label).toBe('[Prompt] Landing page');
     expect(version.snapshot.promptGenerationId).toBe('gen-1');
+    expect(version.snapshot.templateId).toBe('landing-page');
   });
 
   it('links generation summary to version metadata', () => {

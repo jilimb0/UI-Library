@@ -3,9 +3,7 @@
 // Syncs @ui-construction-library/* versions in apps/*/package.json
 // to match packages/*/package.json after `changeset version`.
 //
-// Apps stay on the pnpm workspace protocol (workspace:^x.y.z) so installs
-// resolve to local packages — not the npm registry (which may not have the
-// new version until after publish).
+// Apps use published semver ranges so installs resolve to npm packages.
 //
 // Usage: node scripts/sync-app-versions.js [--dry-run]
 
@@ -48,7 +46,7 @@ function readJson(path) {
  * @returns {string | null} new version string, or null if unchanged
  */
 function resolveAppDepVersion(current, packageVersion) {
-  const target = `workspace:^${packageVersion}`;
+  const target = `^${packageVersion}`;
 
   if (current === target) {
     return null;

@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "composite": true,
+    "rootDir": "../..",
     "outDir": "dist",
     "declaration": true,
     "declarationMap": true,
@@ -10,15 +11,22 @@
     "allowArbitraryExtensions": true,
     "paths": {
       "@/*": ["./src/*"],
-      "@ui-construction-library/tokens": ["../tokens/src/index.ts"],
-      "@ui-construction-library/icons": ["../icons/src/index.ts"],
-      "@ui-construction-library/motion": ["../motion/src/index.ts"],
-      "@ui-construction-library/primitives": ["../primitives/src/index.ts"],
-      "@ui-construction-library/dnd": ["../dnd/src/index.tsx"]
+      "@ui-construction-library/tokens": ["packages/tokens/src/index.ts"],
+      "@ui-construction-library/icons": ["packages/icons/src/index.ts"],
+      "@ui-construction-library/utils": ["packages/utils/src/index.ts"],
+      "@ui-construction-library/motion": ["packages/motion/src/index.ts"],
+      "@ui-construction-library/primitives": ["packages/primitives/src/index.ts"],
+      "@ui-construction-library/dnd": ["packages/dnd/src/index.tsx"]
     }
   },
   "include": [
     "src/**/*",
+    "../icons/src/**/*",
+    "../utils/src/**/*",
+    "../tokens/src/**/*",
+    "../motion/src/**/*",
+    "../primitives/src/**/*",
+    "../dnd/src/**/*",
     "../../public/icons",
     "vitest-env.d.ts",
     "**/*.test.tsx",

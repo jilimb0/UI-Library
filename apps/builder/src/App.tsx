@@ -6,7 +6,6 @@ import {
   normalizeExportProject,
   renderExportProject,
 } from '@ui-construction-library/export-core';
-import { summarizePromptResponse } from '@ui-construction-library/prompt-engine';
 import { useEffect, useMemo, useState } from 'react';
 import { recordAnalyticsEvent } from './analytics';
 import { getRecoveryDraftSummary } from './autosave';
@@ -14,6 +13,15 @@ import {
   useBuilderDataController,
   useBuilderEditorController,
 } from './builderControllers';
+import { buildValidationIssues } from './builderHealth';
+import { type BuilderMode, changeBuilderMode } from './builderModeActions';
+import {
+  acceptSelectedGeneratedSection as acceptSelectedGeneratedSectionWorkflow,
+  regenerateSelectedGeneratedSection as regenerateSelectedGeneratedSectionWorkflow,
+  rejectSelectedGeneratedSection as rejectSelectedGeneratedSectionWorkflow,
+  setSectionReviewState as setSectionReviewStateWorkflow,
+  toggleProtectSelectedNode as toggleProtectSelectedNodeWorkflow,
+} from './builderSelectionActions';
 import { BuilderShell } from './components/BuilderShell';
 import { CanvasReviewOverlay } from './components/CanvasReviewOverlay';
 import { CanvasTree } from './components/CanvasTree';
@@ -27,17 +35,12 @@ import { PublishHistoryPanel } from './components/PublishHistoryPanel';
 import { RecoveryBanner } from './components/RecoveryBanner';
 import { RemoteSyncBanner } from './components/RemoteSyncBanner';
 import { VersionsPanel } from './components/VersionsPanel';
+import { formatDiffSummary, getPromptTemplateById } from './generationHelpers';
 import {
-  buildDiffSummary,
-  formatDiffSummary,
-  getCurrentBuilderSections,
-  getPromptTemplateById,
-} from './generationHelpers';
-import {
-  analyzePromptDraft,
-  createPromptGenerationSummary,
-  generatePromptDraftPreview,
-} from './promptGeneration';
+  type GenerationSummary,
+  refreshSectionDecisionsFromReviewState,
+} from './generationState';
+import { createPromptController } from './promptController';
 import {
   buildClarificationPrompts,
   builderModeSections,
@@ -46,9 +49,9 @@ import {
   promptTemplates,
 } from './promptModel';
 import {
-  createPromptLinkedVersion,
-  linkGenerationToVersion,
-} from './promptVersioning';
+  generateDiffPreview as runDiffPreview,
+  runPromptTemplate as runPromptTemplateWorkflow,
+} from './promptWorkflow';
 import { getRepositoryConnectivityStatus } from './repositoryConnectivity';
 import {
   resolveRepositoryMode,
@@ -56,39 +59,6 @@ import {
 } from './repositoryFactory';
 import { parseProjectRoute } from './routes';
 import { getSupabaseConnectionStatus } from './supabaseClient';
-
-type PromptTemplate = import('./promptModel').PromptTemplate;
-
-type BuilderMode = 'generate' | 'edit' | 'review' | 'publish' | 'export';
-
-type GenerationSummary = {
-  id: string;
-  createdAt: string;
-  templateId: PromptTemplate['id'];
-  templateLabel: string;
-  audience: string;
-  prompt: string;
-  assumptions: string[];
-  unsupportedIntent: string | null;
-  fallbackDecisions: string[];
-  policyScore: number;
-  policyStatus: 'allow' | 'warn' | 'block';
-  policyReasons: string[];
-  compositionFamily?: string;
-  layoutRhythm?: string;
-  protectedNodeIds?: string[];
-  sectionDecisions?: Record<string, 'pending' | 'accepted' | 'rejected'>;
-  diffSummary?: {
-    addedSections: string[];
-    removedSections: string[];
-    persistedSections: string[];
-  } | null;
-  linkedVersionId?: string | null;
-  linkedVersionLabel?: string | null;
-  linkedVersionCreatedAt?: string | null;
-  linkedSnapshotId?: string | null;
-  snapshotLabel?: string | null;
-};
 
 export function App() {
   const projectRoute = parseProjectRoute(window.location.pathname);
@@ -286,15 +256,15 @@ export function App() {
   );
 
   const latestGenerationForEditor = generationHistory[0] ?? generationSummary;
-  const validationIssues: Array<{
-    nodeId: string;
-    message: string;
-    severity?: string;
-  }> = [];
+  const validationIssues = buildValidationIssues(
+    editorContext?.project ?? null
+  );
   const _selectedNodeIssues = selectedNodeId
     ? validationIssues.filter((issue) => issue.nodeId === selectedNodeId)
     : [];
-  const repairSuggestions: string[] = [];
+  const repairSuggestions = validationIssues
+    .filter((issue) => issue.severity === 'error')
+    .map((issue) => issue.message);
   const panelContextSummary = {
     selectedNodeId,
     selectedNodeLabel: selectedNode?.componentId ?? null,
@@ -307,32 +277,16 @@ export function App() {
   };
   const modeSections = builderModeSections;
 
-  const currentBuilderSections = getCurrentBuilderSections(
-    editorContext?.page.root.children
-  );
-
   useEffect(() => {
     if (!editorContext) return;
     setGenerationSummary((current) => {
-      if (!current) return current;
-      const existing = current.sectionDecisions ?? {};
-      const next = { ...existing };
-      let changed = false;
-      for (const section of editorContext.page.root.children) {
-        const reviewState = (section.props as Record<string, unknown>)
-          .reviewState;
-        if (
-          reviewState === 'pending' ||
-          reviewState === 'accepted' ||
-          reviewState === 'rejected'
-        ) {
-          if (next[section.id] !== reviewState) {
-            next[section.id] = reviewState;
-            changed = true;
-          }
-        }
-      }
-      return changed ? { ...current, sectionDecisions: next } : current;
+      return refreshSectionDecisionsFromReviewState(
+        current,
+        editorContext.page.root.children.map((section) => ({
+          id: section.id,
+          reviewState: (section.props as Record<string, unknown>).reviewState,
+        }))
+      );
     });
   }, [editorContext?.page.id]);
 
@@ -340,16 +294,21 @@ export function App() {
     nodeId: string,
     decision: 'pending' | 'accepted' | 'rejected'
   ) {
-    setGenerationSummary((current) =>
-      current
-        ? {
-            ...current,
-            sectionDecisions: {
-              ...(current.sectionDecisions ?? {}),
-              [nodeId]: decision,
-            },
-          }
-        : current
+    setSectionReviewStateWorkflow(
+      {
+        selectedNodeId,
+        selectedNode,
+        editorContext,
+        protectedNodeIds,
+        setProtectedNodeIds,
+        setGenerationSummary,
+        setSelectedNodeId,
+        setNotice,
+        handleUpdateProps,
+        handleRemoveSelected,
+      },
+      nodeId,
+      decision
     );
   }
 
@@ -357,256 +316,110 @@ export function App() {
     nodeId: string,
     decision: 'pending' | 'accepted' | 'rejected'
   ) {
-    handleUpdateProps(nodeId, 'reviewState', decision);
     updateSectionDecision(nodeId, decision);
   }
 
   function toggleProtectSelectedNode() {
-    if (!selectedNodeId) return;
-    setProtectedNodeIds((current) =>
-      current.includes(selectedNodeId)
-        ? current.filter((id) => id !== selectedNodeId)
-        : [...current, selectedNodeId]
-    );
-    setGenerationSummary((current) =>
-      current
-        ? {
-            ...current,
-            protectedNodeIds: current.protectedNodeIds?.includes(selectedNodeId)
-              ? current.protectedNodeIds.filter((id) => id !== selectedNodeId)
-              : [...(current.protectedNodeIds ?? []), selectedNodeId],
-          }
-        : current
-    );
+    toggleProtectSelectedNodeWorkflow({
+      selectedNodeId,
+      setProtectedNodeIds,
+      setGenerationSummary,
+    });
   }
 
   function acceptSelectedGeneratedSection() {
-    if (!selectedNodeId) return;
-    setSectionReviewState(selectedNodeId, 'accepted');
-    setNotice('Selected generated section marked as accepted.');
+    acceptSelectedGeneratedSectionWorkflow(
+      { selectedNodeId, setNotice },
+      (nodeId, decision) => setSectionReviewState(nodeId, decision)
+    );
   }
 
   function rejectSelectedGeneratedSection() {
-    if (!selectedNodeId || !editorContext) return;
-    const rejectedNodeId = selectedNodeId;
-    handleRemoveSelected();
-    updateSectionDecision(rejectedNodeId, 'rejected');
-    setSelectedNodeId(null);
-    setNotice(
-      'Selected generated section was rejected and removed from the page.'
-    );
+    rejectSelectedGeneratedSectionWorkflow({
+      selectedNodeId,
+      selectedNode,
+      editorContext,
+      protectedNodeIds,
+      setProtectedNodeIds,
+      setGenerationSummary,
+      setSelectedNodeId,
+      setNotice,
+      handleUpdateProps,
+      handleRemoveSelected,
+    });
   }
 
   function regenerateSelectedGeneratedSection() {
-    if (!selectedNodeId || !selectedNode || !editorContext) return;
-    if (protectedNodeIds.includes(selectedNodeId)) {
-      setNotice(
-        'This section is protected and cannot be regenerated until protection is removed.'
-      );
-      return;
-    }
-
-    handleUpdateProps(selectedNodeId, 'generationStatus', 'regenerated');
-    handleUpdateProps(selectedNodeId, 'generatedAt', new Date().toISOString());
-    handleUpdateProps(
+    regenerateSelectedGeneratedSectionWorkflow({
       selectedNodeId,
-      'provenanceLabel',
-      'Regenerated section draft'
-    );
-    setSectionReviewState(selectedNodeId, 'accepted');
-    setNotice('Selected generated section was regenerated in place.');
+      selectedNode,
+      editorContext,
+      protectedNodeIds,
+      setProtectedNodeIds,
+      setGenerationSummary,
+      setSelectedNodeId,
+      setNotice,
+      handleUpdateProps,
+      handleRemoveSelected,
+    });
   }
 
-  const generateDiffPreview = () => {
-    recordAnalyticsEvent('prompt_diff_previewed', 'builder', {
-      templateId: selectedTemplate.id,
-    });
-    const _normalizedPrompt = promptDraft.trim();
-    const _normalizedAudience =
-      audienceDraft.trim() || selectedTemplate.targetAudience;
-    const generated = generatePromptDraftPreview(
+  const generateDiffPreview = () =>
+    runDiffPreview({
+      editorPage: editorContext?.page ?? null,
       promptDraft,
       audienceDraft,
-      selectedTemplate
-    );
-    const semanticSummary = summarizePromptResponse(generated);
-    const nextSectionIds =
-      generated.draft.pages[0]?.root.children.map((node) => node.id) ?? [];
-    setPendingDiffSummary(
-      buildDiffSummary(currentBuilderSections, nextSectionIds)
-    );
-    setNotice(
-      `Prepared ${semanticSummary.compositionFamily} preview with ${semanticSummary.sectionCount} sections.`
-    );
-  };
+      selectedTemplate,
+      setPendingDiffSummary,
+      setNotice,
+    });
   const latestPromptLinkedVersion = versions.find((version) =>
     version.label.startsWith('[Prompt] ')
   );
 
   const handleBuilderModeChange = (mode: BuilderMode) => {
-    recordAnalyticsEvent('builder_mode_changed', 'builder', { mode });
-    setBuilderMode(mode);
+    changeBuilderMode(setBuilderMode, mode);
   };
 
-  const reopenGeneration = (summary: GenerationSummary) => {
-    const template = getPromptTemplateById(promptTemplates, summary.templateId);
-    setPromptTemplateId(template.id);
-    setPromptDraft(summary.prompt);
-    setAudienceDraft(summary.audience);
-    setExplainPrompt(true);
-    setGenerationSummary(summary);
-    setShowPromptEntry(true);
-    setShowGenerationHistory(false);
-  };
+  const promptController = createPromptController({
+    latestPromptLinkedVersion,
+    generationSummary,
+    editorPage: editorContext?.page ?? null,
+    setGenerationSummary,
+    setGenerationHistory,
+    setPromptTemplateId,
+    setPromptDraft,
+    setAudienceDraft,
+    setExplainPrompt,
+    setShowPromptEntry,
+    setShowGenerationHistory,
+    setNotice,
+    getPromptTemplateById: (id) => getPromptTemplateById(promptTemplates, id),
+  });
+  const linkLatestGenerationToVersion =
+    promptController.linkLatestGenerationToVersion;
+  const reopenGeneration = promptController.reopenGeneration;
 
-  function createPromptLinkedVersionEntry(summary: GenerationSummary) {
-    if (!editorContext) return;
-    const version = createPromptLinkedVersion(summary, editorContext.page);
-    setGenerationSummary((current) =>
-      current && current.id === summary.id
-        ? {
-            ...current,
-            ...linkGenerationToVersion(version, version.snapshot.id),
-          }
-        : current
-    );
-    setGenerationHistory((history) =>
-      history.map((entry) =>
-        entry.id === summary.id
-          ? {
-              ...entry,
-              ...linkGenerationToVersion(version, version.snapshot.id),
-            }
-          : entry
-      )
-    );
-    setNotice('Prepared prompt-linked version metadata.');
-  }
-  const linkLatestGenerationToVersion = () => {
-    const version = latestPromptLinkedVersion;
-    if (!version && generationSummary) {
-      createPromptLinkedVersionEntry(generationSummary);
-      return;
-    }
-    if (!version) return;
-    setGenerationSummary((current) =>
-      current
-        ? {
-            ...current,
-            linkedVersionId: version.id,
-            linkedVersionLabel: version.label,
-            linkedVersionCreatedAt: version.createdAt,
-            linkedSnapshotId:
-              (version.snapshot as { id?: string } | undefined)?.id ?? null,
-            snapshotLabel: (version.snapshot as { id?: string } | undefined)?.id
-              ? `Snapshot ${(version.snapshot as { id?: string }).id}`
-              : null,
-          }
-        : current
-    );
-    setGenerationHistory((history) =>
-      history.map((entry, index) =>
-        index === 0
-          ? {
-              ...entry,
-              linkedVersionId: version.id,
-              linkedVersionLabel: version.label,
-              linkedVersionCreatedAt: version.createdAt,
-              linkedSnapshotId:
-                (version.snapshot as { id?: string } | undefined)?.id ?? null,
-              snapshotLabel: (version.snapshot as { id?: string } | undefined)
-                ?.id
-                ? `Snapshot ${(version.snapshot as { id?: string }).id}`
-                : null,
-            }
-          : entry
-      )
-    );
-  };
-
-  const runPromptTemplate = () => {
-    recordAnalyticsEvent('prompt_draft_generated', 'builder', {
-      templateId: selectedTemplate.id,
-      audience: audienceDraft.trim() || selectedTemplate.targetAudience,
-    });
-    const normalizedPrompt = promptDraft.trim();
-    const normalizedAudience =
-      audienceDraft.trim() || selectedTemplate.targetAudience;
-    const analysis = analyzePromptDraft(
+  const runPromptTemplate = () =>
+    runPromptTemplateWorkflow({
+      editorPage: editorContext?.page ?? null,
       promptDraft,
       audienceDraft,
-      selectedTemplate
-    );
-
-    if (analysis.policy.status === 'block') {
-      setGenerationSummary({
-        ...createPromptGenerationSummary(
-          selectedTemplate,
-          normalizedAudience,
-          normalizedPrompt || selectedTemplate.productType,
-          analysis,
-          protectedNodeIds,
-          pendingDiffSummary
-        ),
-        compositionFamily: undefined,
-        layoutRhythm: undefined,
-        sectionDecisions: {},
-        linkedVersionId: null,
-        linkedVersionLabel: null,
-        linkedVersionCreatedAt: null,
-        linkedSnapshotId: null,
-        snapshotLabel: null,
-      });
-      setShowPromptEntry(false);
-      setShowGenerationHistory(false);
-      setNotice(
-        'Prompt blocked before entering the canvas. Refine the request.'
-      );
-      return;
-    }
-
-    const _generated = generatePromptDraftPreview(
-      promptDraft,
-      audienceDraft,
-      selectedTemplate
-    );
-
-    handleGenerateProjectDraft({
-      productType: normalizedPrompt || selectedTemplate.productType,
-      targetAudience: normalizedAudience,
-      sections: [...selectedTemplate.sections],
-      styleTone: selectedTemplate.styleTone,
-      density: selectedTemplate.density,
-      domain: selectedTemplate.domain,
-      frameworkPreference: selectedTemplate.frameworkPreference,
-      detailLevel: selectedTemplate.detailLevel,
-      generationMode: selectedTemplate.generationMode,
+      selectedTemplate,
+      protectedNodeIds,
+      pendingDiffSummary,
+      setNotice,
+      setGenerationSummary,
+      setGenerationHistory,
+      setPendingDiffSummary,
+      setPromptTemplateId,
+      setPromptDraft,
+      setAudienceDraft,
+      setExplainPrompt,
+      setShowPromptEntry,
+      setShowGenerationHistory,
+      handleGenerateProjectDraft,
     });
-
-    const nextSummary: GenerationSummary = {
-      ...createPromptGenerationSummary(
-        selectedTemplate,
-        normalizedAudience,
-        normalizedPrompt || selectedTemplate.productType,
-        analysis,
-        protectedNodeIds,
-        pendingDiffSummary
-      ),
-      compositionFamily: undefined,
-      layoutRhythm: undefined,
-      sectionDecisions: {},
-      linkedVersionId: null,
-      linkedVersionLabel: null,
-      linkedVersionCreatedAt: null,
-      linkedSnapshotId: null,
-      snapshotLabel: null,
-    };
-
-    setGenerationSummary(nextSummary);
-    setGenerationHistory((history) => [nextSummary, ...history].slice(0, 8));
-    setShowPromptEntry(false);
-    setShowGenerationHistory(false);
-  };
 
   if (route === '/') {
     return (

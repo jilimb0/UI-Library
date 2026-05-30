@@ -25,7 +25,7 @@ node scripts/sync-app-versions.js   # apps → workspace:^x.y.z (local packages)
 pnpm install
 ```
 
-`sync-app-versions.js` updates app deps to `workspace:^<version>` so pnpm links to the monorepo — not the npm registry (new versions are not on npm until after publish).
+`sync-app-versions.js` updates app deps to `^<version>` so apps consume the published npm packages directly.
 
 Commit versioning changes:
 

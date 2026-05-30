@@ -1,10 +1,26 @@
 # Changelog
 
-## 1.1.0
+<!-- AUTO-GENERATED FROM COMMITS + CHANGESETS -->
 
-- Foundation and infrastructure updates
-- CI/CD workflows and release pipeline
-- Storybook app scaffold
-- Node.js policy standardized to Node 24 across workflows and toolchain
-- validation pipeline now includes dependency boundaries, API snapshot checks, bundle budgets, and performance smoke checks
-- component API consistency improvements shipped across core atoms/molecules with backward-compatible aliases
+## @ui-construction-library/primitives
+
+### feat
+
+- (builder) add section review workflow with UI and state management
+- (tabs) add interaction story for tab switching in Storybook
+- add scripts for assembling pages, checking API snapshots, and enforcing dependency policies
+
+### other
+
+- Add end-to-end tests for builder repository lifecycle, versioning, and visual regression
+
+## @ui-construction-library/react-hook-form
+
+### feat
+
+- enhance testing setup and coverage
+- add scripts for assembling pages, checking API snapshots, and enforcing dependency policies
+
+### refactor
+
+- update styles and tokens for consistency and improved design
