@@ -23,6 +23,25 @@ import {
   loadRecoveryDraft,
   scheduleAutosave,
 } from './autosave';
+import {
+  getMemberPresenceSummary,
+  getPublishGuardReason,
+  getPublishStateGuidance,
+  getPublishStateSummary,
+} from './builderLifecycle';
+import {
+  acceptInvite,
+  addMember,
+  removeMember,
+  updateMemberRole,
+} from './builderMemberActions';
+import {
+  addComment,
+  publishProject,
+  resolveComment,
+  unpublishProject,
+} from './builderPublishCommentActions';
+import { restoreVersion, saveVersion } from './builderVersionActions';
 import { createDataServices } from './dataServices';
 import {
   commitProjects,
@@ -32,19 +51,10 @@ import {
   updatePageRoot,
 } from './editorState';
 import { getInsertionBlockReason } from './insertionRules';
-import {
-  canAcceptProjectInvite,
-  canAddProjectMember,
-  canChangeProjectMemberRole,
-  canRemoveProjectMember,
-} from './memberPolicy';
 import { mockProjects } from './mockData';
 import { createBuilderSupabaseClient } from './repositoryFactory';
 import { type BuilderRoute, parseEditorRoute, parseRoute } from './routes';
-import {
-  getSupabaseConnectionStatus,
-  getSupabaseSessionIdentity,
-} from './supabaseClient';
+import { getSupabaseSessionIdentity } from './supabaseClient';
 import {
   addChildNode,
   duplicateNode,
@@ -61,7 +71,6 @@ import type {
   LayoutNode,
   PageVersion,
   PublishEventRecord,
-  PublishRecord,
 } from './types';
 import { collectValidationIssues } from './validation';
 
@@ -91,38 +100,6 @@ export function canPublishCurrentProject({
       : 'Resolve required validation issues before publishing.';
   }
   return null;
-}
-
-function createVersionId() {
-  return `version-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-}
-
-function updateProjectPublish(
-  projects: BuilderProject[],
-  projectId: string,
-  publish: PublishRecord
-): BuilderProject[] {
-  return projects.map((project) =>
-    project.id === projectId ? { ...project, publish } : project
-  );
-}
-
-function createCommentId() {
-  return `comment-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-}
-
-function formatRepositoryActionNotice(base: string) {
-  const status = getSupabaseConnectionStatus();
-
-  if (status.mode === 'configured') {
-    return `${base} ${status.summary}`;
-  }
-
-  if (status.mode === 'partial') {
-    return `${base} Remote repository setup is incomplete, so this result should not be treated as authoritative yet.`;
-  }
-
-  return `${base} This change is only stored in the local Supabase stub until remote credentials are configured.`;
 }
 
 function markMemberActivity(
@@ -692,43 +669,25 @@ export function useBuilderEditorController({
 
   const latestVersion = versions[0] ?? null;
   const publishGuardReason = useMemo(
-    () => canPublishCurrentProject({ editorContext, versionsCount }),
-    [editorContext, versionsCount]
+    () =>
+      getPublishGuardReason({
+        editorContext,
+        versionsCount,
+        canManageLifecycle,
+      }),
+    [canManageLifecycle, editorContext, versionsCount]
   );
-  const effectivePublishGuardReason = !canManageLifecycle
-    ? 'Only admins or owners can manage publish lifecycle actions.'
-    : publishGuardReason;
+  const effectivePublishGuardReason = publishGuardReason;
   const canPublishProject = canManageLifecycle && publishGuardReason === null;
-  const publishStateSummary = !editorContext
-    ? 'Open a project page to review release readiness.'
-    : editorContext.project.publish.status === 'published'
-      ? latestVersion
-        ? `Published from version ${latestVersion.label}.`
-        : 'Project is published and can be returned to draft if more edits are needed.'
-      : latestVersion
-        ? `Latest saved version: ${latestVersion.label}.`
-        : 'No saved version yet. Create a version before publishing.';
-  const publishStateGuidance = !editorContext
-    ? ['Select a project page to unlock publish lifecycle actions.']
-    : !canManageLifecycle
-      ? [
-          'Publishing is restricted to admins and owners in this workspace.',
-          'Ask a project owner to publish or change your role if you need release access.',
-        ]
-      : editorContext.project.publish.status === 'published'
-        ? [
-            'Use unpublish to return the project to draft before making another release pass.',
-            'Review publish history to confirm who shipped the current state and from which version.',
-          ]
-        : publishGuardReason
-          ? [
-              `Blocked: ${publishGuardReason}`,
-              'Resolve the release blocker above, then try publishing again.',
-            ]
-          : [
-              'Release checks passed. Publishing will stamp the current saved version onto the project.',
-              'Use the publish history panel to verify the event after release.',
-            ];
+  const publishStateSummary = getPublishStateSummary({
+    editorContext,
+    latestVersion,
+  });
+  const publishStateGuidance = getPublishStateGuidance({
+    editorContext,
+    canManageLifecycle,
+    publishGuardReason,
+  });
 
   const updateCurrentPage = (updater: (root: LayoutNode) => LayoutNode) => {
     if (!editorContext) return;
@@ -922,488 +881,162 @@ export function useBuilderEditorController({
 
   const handleSaveVersion = async () => {
     if (!editorContext) return;
-    if (!canSaveVersions) {
-      setNotice('Current role cannot save versions.');
-      return;
-    }
-    const versionName = versionDraft.trim() || `Version ${versionsCount + 1}`;
-    const provisionalVersion: PageVersion = {
-      id: createVersionId(),
-      pageId: editorContext.page.id,
-      label: versionName,
-      snapshot: structuredClone(editorContext.page.root),
-      authorId: session.userId,
-      createdAt: new Date().toISOString(),
-    };
-    // Optimistic: show version immediately before remote confirms
-    setVersions((prev) => [provisionalVersion, ...prev]);
-    setVersionsCount((c) => c + 1);
-    try {
-      await services.versions.createVersion(provisionalVersion);
-      await refreshActivity(editorContext.page.id);
-      clearRecoveryDraft();
-      cancelAutosave();
-      setNotice('Saved page version.');
-    } catch {
-      // Rollback provisional version on failure
-      setVersions((prev) => prev.filter((v) => v.id !== provisionalVersion.id));
-      setVersionsCount((c) => Math.max(0, c - 1));
-      setNotice('Failed to save version. Please retry.');
-    }
+    await saveVersion({
+      canSaveVersions,
+      versionDraft,
+      versionsCount,
+      editorPageId: editorContext.page.id,
+      editorPageRoot: editorContext.page.root,
+      sessionUserId: session.userId,
+      setVersions,
+      setVersionsCount,
+      createVersion: services.versions.createVersion,
+      refreshActivity,
+      clearRecoveryDraft,
+      cancelAutosave,
+      setNotice,
+    });
   };
 
   const handleRestoreVersion = async (versionId: string) => {
     if (!editorContext) return;
-    if (!canRestoreVersions) {
-      setNotice('Current role cannot restore saved versions.');
-      return;
-    }
-    const version = versions.find((entry) => entry.id === versionId);
-    if (!version) {
-      setNotice('Selected version was not found.');
-      return;
-    }
-    updateCurrentPage(() => structuredClone(version.snapshot));
-    await publishService.createEvent({
-      id: `event-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-      projectId: editorContext.project.id,
-      pageId: editorContext.page.id,
-      type: 'restored-version',
-      actorId: session.userId,
-      createdAt: new Date().toISOString(),
-      sourceVersionId: version.id,
-      note: `Restored version ${version.label}`,
+    await restoreVersion({
+      canRestoreVersions,
+      versionId,
+      versions,
+      editorPageId: editorContext.page.id,
+      editorProjectId: editorContext.project.id,
+      sessionUserId: session.userId,
+      updateCurrentPage,
+      createEvent: publishService.createEvent,
+      refreshActivity,
+      setSelectedNodeId,
+      setNotice,
     });
-    await refreshActivity(editorContext.page.id);
-    setSelectedNodeId(version.snapshot.id);
-    setNotice(`Restored version: ${version.label}.`);
   };
 
-  const handlePublishProject = async () => {
-    recordAnalyticsEvent('publish_attempted', 'builder', {
-      projectId: editorContext?.project.id ?? null,
-      pageId: editorContext?.page.id ?? null,
+  const handlePublishProject = async () =>
+    publishProject({
+      editorContext,
+      canManageLifecycle,
+      publishGuardReason,
+      latestVersion,
+      sessionUserId: session.userId,
+      publishServiceCreateEvent: publishService.createEvent,
+      refreshActivity,
+      clearRecoveryDraft,
+      cancelAutosave,
+      setEditorState,
+      setNotice,
+      recordAnalyticsEvent,
     });
-    if (!editorContext) {
-      setNotice('Open a project page before publishing.');
-      return;
-    }
-    if (!canManageLifecycle) {
-      setNotice('Only admins or owners can manage publish lifecycle actions.');
-      return;
-    }
-    if (editorContext.project.publish.status === 'published') {
-      setNotice(
-        'Project is already live. Unpublish it before creating another release.'
-      );
-      return;
-    }
-    if (publishGuardReason) {
-      setNotice(`Publish blocked: ${publishGuardReason}`);
-      return;
-    }
-    const publish = {
-      status: 'published' as const,
-      publishedAt: new Date().toISOString(),
-      publishedBy: session.userId,
-      sourceVersionId: latestVersion?.id ?? null,
-    };
-    setEditorState((prev) => {
-      const nextProjects = updateProjectPublish(
-        prev.projects,
-        editorContext.project.id,
-        publish
-      );
-      return commitProjects(prev, nextProjects);
+
+  const handleUnpublishProject = async () =>
+    unpublishProject({
+      editorContext,
+      canManageLifecycle,
+      sessionUserId: session.userId,
+      publishServiceCreateEvent: publishService.createEvent,
+      refreshActivity,
+      setEditorState,
+      setNotice,
+      recordAnalyticsEvent,
     });
-    try {
-      await publishService.createEvent({
-        id: `event-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-        projectId: editorContext.project.id,
-        pageId: editorContext.page.id,
-        type: 'published',
-        actorId: session.userId,
-        createdAt: new Date().toISOString(),
-        sourceVersionId: latestVersion?.id ?? null,
-        note: publish.sourceVersionId
-          ? `Published from version ${publish.sourceVersionId}`
-          : 'Published project',
-      });
-      await refreshActivity(editorContext.page.id);
-      clearRecoveryDraft();
-      cancelAutosave();
-      setNotice(
-        formatRepositoryActionNotice(
-          publish.sourceVersionId
-            ? `Project published from version ${latestVersion?.label ?? publish.sourceVersionId}.`
-            : 'Project published.'
-        )
-      );
-      recordAnalyticsEvent('publish_succeeded', 'builder', {
-        projectId: editorContext.project.id,
-        pageId: editorContext.page.id,
-      });
-    } catch {
-      setNotice(
-        'Project state updated locally, but the remote publish event could not be recorded. Retry or check your connection.'
-      );
-    }
-  };
 
-  const handleUnpublishProject = async () => {
-    recordAnalyticsEvent('unpublish_attempted', 'builder', {
-      projectId: editorContext?.project.id ?? null,
-      pageId: editorContext?.page.id ?? null,
+  const handleAddComment = async () =>
+    addComment({
+      editorContext,
+      commentDraft,
+      selectedNodeId,
+      sessionUserId: session.userId,
+      setComments,
+      setCommentDraft,
+      createComment: services.comments.createComment,
+      refreshActivity,
+      setNotice,
     });
-    if (!editorContext) {
-      setNotice('Open a project page before changing publish status.');
-      return;
-    }
-    if (!canManageLifecycle) {
-      setNotice('Only admins or owners can manage publish lifecycle actions.');
-      return;
-    }
-    if (editorContext.project.publish.status !== 'published') {
-      setNotice('Project is already in draft mode.');
-      return;
-    }
-    const publish = {
-      status: 'draft' as const,
-      publishedAt: null,
-      publishedBy: null,
-      sourceVersionId: null,
-    };
-    setEditorState((prev) => {
-      const nextProjects = updateProjectPublish(
-        prev.projects,
-        editorContext.project.id,
-        publish
-      );
-      return commitProjects(prev, nextProjects);
+
+  const handleResolveComment = async (commentId: string) =>
+    resolveComment({
+      editorContext,
+      commentId,
+      comments: _comments,
+      setComments,
+      createComment: services.comments.createComment,
+      refreshActivity,
+      setNotice,
     });
-    try {
-      await publishService.createEvent({
-        id: `event-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-        projectId: editorContext.project.id,
-        pageId: editorContext.page.id,
-        type: 'unpublished',
-        actorId: session.userId,
-        createdAt: new Date().toISOString(),
-        sourceVersionId: null,
-        note: 'Returned project to draft',
-      });
-      await refreshActivity(editorContext.page.id);
-      setNotice(
-        formatRepositoryActionNotice(
-          'Project returned to draft so release changes can continue.'
-        )
-      );
-      recordAnalyticsEvent('unpublish_succeeded', 'builder', {
-        projectId: editorContext.project.id,
-        pageId: editorContext.page.id,
-      });
-    } catch {
-      setNotice(
-        'Project returned to draft locally, but the remote unpublish event could not be recorded. Retry or check your connection.'
-      );
-    }
-  };
 
-  const handleAddComment = async () => {
-    if (!editorContext || !commentDraft.trim()) return;
-    const provisional: CommentRecord = {
-      id: createCommentId(),
-      pageId: editorContext.page.id,
-      nodeId: selectedNodeId ?? undefined,
-      body: commentDraft.trim(),
-      authorId: session.userId,
-      resolved: false,
-      createdAt: new Date().toISOString(),
-    };
-    // Optimistic: show comment immediately, clear the draft
-    setComments((prev) => [...prev, provisional]);
-    setCommentDraft('');
-    try {
-      await services.comments.createComment(provisional);
-      await refreshActivity(editorContext.page.id);
-      setNotice('Added comment.');
-    } catch {
-      // Rollback provisional comment on failure
-      setComments((prev) => prev.filter((c) => c.id !== provisional.id));
-      setCommentDraft(provisional.body);
-      setNotice('Failed to add comment. Please retry.');
-    }
-  };
-
-  const handleResolveComment = async (commentId: string) => {
-    if (!editorContext) return;
-    // Optimistic: toggle resolved state immediately
-    setComments((prev) =>
-      prev.map((c) =>
-        c.id === commentId ? { ...c, resolved: !c.resolved } : c
-      )
-    );
-    try {
-      // Persist using upsert with the toggled resolved flag
-      const target = _comments.find((c) => c.id === commentId);
-      if (!target) return;
-      const next = { ...target, resolved: !target.resolved };
-      await services.comments.createComment(next);
-      await refreshActivity(editorContext.page.id);
-    } catch {
-      // Rollback on failure
-      setComments((prev) =>
-        prev.map((c) =>
-          c.id === commentId ? { ...c, resolved: !c.resolved } : c
-        )
-      );
-      setNotice('Failed to update comment. Please retry.');
-    }
-  };
-
-  const handleAddMember = async () => {
-    if (!editorContext) return;
-    const email = newMemberEmail.trim().toLowerCase();
-    const addMemberReason = canAddProjectMember(
+  const handleAddMember = async () =>
+    addMember({
+      editorContext,
       sessionRole,
       projectMembers,
-      email
-    );
-    if (addMemberReason) {
-      setNotice(addMemberReason);
-      return;
-    }
-    const nextMember: BuilderMember = {
-      userId: `member-${Date.now()}`,
-      email,
-      role: newMemberRole,
-    };
-    const nextMembers = [...projectMembers, nextMember];
-    const nextProjects = projects.map((project) =>
-      project.id === editorContext.project.id
-        ? { ...project, members: nextMembers }
-        : project
-    );
-    setPendingMemberAction({
-      type: 'add',
-      email,
-      role: newMemberRole,
+      newMemberRole,
+      newMemberEmail,
+      sessionUserId: session.userId,
+      setPendingMemberAction,
+      setEditorState,
+      setNewMemberEmail,
+      setNotice,
+      refreshActivity,
+      servicesSaveMembers: services.members.saveMembers,
+      publishServiceCreateEvent: publishService.createEvent,
+      projects,
+      recordAnalyticsEvent,
     });
-    setEditorState((prev) => commitProjects(prev, nextProjects));
-    try {
-      await services.members.saveMembers(editorContext.project.id, nextMembers);
-      await publishService.createEvent({
-        id: `event-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-        projectId: editorContext.project.id,
-        pageId: editorContext.page.id,
-        type: 'member-added',
-        actorId: session.userId,
-        createdAt: new Date().toISOString(),
-        sourceVersionId: null,
-        note: `Added member ${nextMember.email} as ${nextMember.role}`,
-        payload: {
-          kind: 'member-added',
-          memberEmail: nextMember.email,
-          memberId: nextMember.userId,
-          toRole: nextMember.role,
-        },
-      });
-      setNewMemberEmail('');
-      await refreshActivity(editorContext.page.id);
-      setNotice(
-        formatRepositoryActionNotice(
-          `Added ${nextMember.email} as ${nextMember.role}.`
-        )
-      );
-    } catch {
-      setNotice(
-        `Added ${nextMember.email} locally, but remote member persistence failed. Retry or check your connection.`
-      );
-    } finally {
-      setPendingMemberAction(null);
-    }
-  };
 
-  const handleAcceptInvite = async () => {
-    if (!editorContext) return;
-    const acceptInviteReason = canAcceptProjectInvite(sessionRole);
-    if (acceptInviteReason) {
-      setNotice(acceptInviteReason);
-      return;
-    }
-    const email = acceptedInviteEmail.trim().toLowerCase();
-    if (!email) {
-      setNotice('Enter an invite email to accept.');
-      return;
-    }
-    const member = projectMembers.find(
-      (entry) => entry.email.toLowerCase() === email
-    );
-    if (!member) {
-      setNotice('Invite email was not found in this project.');
-      return;
-    }
-    setSessionMemberId(member.userId);
-    sessionRepository.saveSessionMemberId(member.userId);
-    setAcceptedInviteEmail('');
-    setNotice(
-      formatRepositoryActionNotice(
-        `Accepted invite as ${member.email} with ${member.role} access.`
-      )
-    );
-  };
+  const handleAcceptInvite = async () =>
+    acceptInvite({
+      editorContext,
+      sessionRole,
+      acceptedInviteEmail,
+      projectMembers,
+      setSessionMemberId,
+      sessionRepositorySaveSessionMemberId:
+        sessionRepository.saveSessionMemberId,
+      setAcceptedInviteEmail,
+      setNotice,
+    });
 
-  const handleUpdateMemberRole = async (
-    memberId: string,
-    role: BuilderRole
-  ) => {
-    if (!editorContext) return;
-    const currentMember = projectMembers.find(
-      (member) => member.userId === memberId
-    );
-    if (!currentMember) {
-      setNotice('Project member was not found.');
-      return;
-    }
-    if (currentMember.role === role) {
-      setNotice(`${currentMember.email} already has the ${role} role.`);
-      return;
-    }
-    const changeRoleReason = canChangeProjectMemberRole(
+  const handleUpdateMemberRole = async (memberId: string, role: BuilderRole) =>
+    updateMemberRole({
+      editorContext,
       sessionRole,
       projectMembers,
-      memberId,
-      role
-    );
-    if (changeRoleReason) {
-      setNotice(changeRoleReason);
-      return;
-    }
-    const updatedMember: BuilderMember = { ...currentMember, role };
-    const nextMembers = projectMembers.map((member) =>
-      member.userId === memberId ? updatedMember : member
-    );
-    const nextProjects = projects.map((project) =>
-      project.id === editorContext.project.id
-        ? { ...project, members: nextMembers }
-        : project
-    );
-    setPendingMemberAction({
-      type: 'update',
       memberId,
       role,
+      projects,
+      setPendingMemberAction,
+      setEditorState,
+      setNotice,
+      refreshActivity,
+      servicesSaveMembers: services.members.saveMembers,
+      publishServiceCreateEvent: publishService.createEvent,
+      sessionUserId: session.userId,
     });
-    setEditorState((prev) => commitProjects(prev, nextProjects));
-    try {
-      await services.members.saveMembers(editorContext.project.id, nextMembers);
-      await publishService.createEvent({
-        id: `event-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-        projectId: editorContext.project.id,
-        pageId: editorContext.page.id,
-        type: 'member-role-updated',
-        actorId: session.userId,
-        createdAt: new Date().toISOString(),
-        sourceVersionId: null,
-        note: `Changed ${updatedMember.email} from ${currentMember.role} to ${updatedMember.role}`,
-        payload: {
-          kind: 'member-role-updated',
-          memberEmail: updatedMember.email,
-          memberId: updatedMember.userId,
-          fromRole: currentMember.role,
-          toRole: updatedMember.role,
-        },
-      });
-      await refreshActivity(editorContext.page.id);
-      setNotice(
-        formatRepositoryActionNotice(
-          `Changed ${updatedMember.email} from ${currentMember.role} to ${updatedMember.role}.`
-        )
-      );
-    } catch {
-      setNotice(
-        `Role updated locally for ${updatedMember.email}, but remote persistence failed. Retry or check your connection.`
-      );
-    } finally {
-      setPendingMemberAction(null);
-    }
-  };
 
-  const handleRemoveMember = async (memberId: string) => {
-    if (!editorContext) return;
-    const member = projectMembers.find((entry) => entry.userId === memberId);
-    if (!member) {
-      setNotice('Project member was not found.');
-      return;
-    }
-    const removeMemberReason = canRemoveProjectMember(
+  const handleRemoveMember = async (memberId: string) =>
+    removeMember({
+      editorContext,
       sessionRole,
       projectMembers,
-      memberId
-    );
-    if (removeMemberReason) {
-      setNotice(removeMemberReason);
-      return;
-    }
-    const nextMembers = projectMembers.filter(
-      (entry) => entry.userId !== memberId
-    );
-    const nextProjects = projects.map((project) =>
-      project.id === editorContext.project.id
-        ? { ...project, members: nextMembers }
-        : project
-    );
-    setPendingMemberAction({
-      type: 'remove',
       memberId,
+      projects,
+      setPendingMemberAction,
+      setEditorState,
+      setNotice,
+      refreshActivity,
+      servicesSaveMembers: services.members.saveMembers,
+      publishServiceCreateEvent: publishService.createEvent,
+      sessionUserId: session.userId,
+      sessionMemberId,
+      setSessionMemberId,
+      sessionRepositorySaveSessionMemberId:
+        sessionRepository.saveSessionMemberId,
     });
-    setEditorState((prev) => commitProjects(prev, nextProjects));
-    try {
-      await services.members.saveMembers(editorContext.project.id, nextMembers);
-      await publishService.createEvent({
-        id: `event-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-        projectId: editorContext.project.id,
-        pageId: editorContext.page.id,
-        type: 'member-removed',
-        actorId: session.userId,
-        createdAt: new Date().toISOString(),
-        sourceVersionId: null,
-        note: `Removed member ${member.email}`,
-        payload: {
-          kind: 'member-removed',
-          memberEmail: member.email,
-          memberId: member.userId,
-          fromRole: member.role,
-        },
-      });
-      if (sessionMemberId === member.userId) {
-        const fallbackMember = nextMembers[0] ?? null;
-        setSessionMemberId(fallbackMember?.userId ?? null);
-        sessionRepository.saveSessionMemberId(fallbackMember?.userId ?? null);
-      }
-      await refreshActivity(editorContext.page.id);
-      setNotice(
-        formatRepositoryActionNotice(
-          `Removed ${member.email} from the project.`
-        )
-      );
-    } catch {
-      setNotice(
-        `Removed ${member.email} locally, but remote persistence failed. Retry or check your connection.`
-      );
-    } finally {
-      setPendingMemberAction(null);
-    }
-  };
 
-  const activeEditors = projectMembers.filter((member) => member.activePageId);
-  const recentlyActiveMembers = projectMembers.filter(
-    (member) => !member.activePageId && member.lastActiveAt
-  );
-  const memberPresenceSummary = activeEditors.length
-    ? `${activeEditors.length} collaborator${activeEditors.length === 1 ? '' : 's'} editing now · ${recentlyActiveMembers.length} recently active`
-    : recentlyActiveMembers.length
-      ? `${recentlyActiveMembers.length} collaborator${recentlyActiveMembers.length === 1 ? '' : 's'} recently active`
-      : 'No recent collaborator activity yet';
+  const memberPresenceSummary = getMemberPresenceSummary(projectMembers);
 
   return {
     activeMember,

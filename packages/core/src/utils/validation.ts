@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-// Схема формы
+// Form schema
 export const createFormSchema = z.object({
   email: z.string().email('Invalid email format'),
   password: z.string().min(8, 'Password must be at least 8 characters'),
@@ -9,7 +9,7 @@ export const createFormSchema = z.object({
   terms: z.boolean().refine((val) => val === true, 'You must accept the terms'),
 });
 
-// Универсальная функция валидации
+// Generic validation helper
 export const validateComponent = <T>(schema: z.ZodSchema<T>, data?: any) => {
   try {
     const parsedData = schema.parse(data);
@@ -23,7 +23,7 @@ export const validateComponent = <T>(schema: z.ZodSchema<T>, data?: any) => {
   }
 };
 
-// Валидация формы — просто boolean
+// Form validation returns a simple boolean
 export const validateForm = <T>(
   schema: z.ZodSchema<T>,
   data?: any

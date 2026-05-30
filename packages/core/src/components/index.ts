@@ -1,8 +1,8 @@
-// Главный экспорт компонентов по уровням
+// Main export for components by layer
 
-// Экспорт тем
+// Theme exports
 export * from '../themes';
-// Экспорт типов
+// Type exports
 export * from '../types';
 export * from '../utils';
 export * from './atoms';

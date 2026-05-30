@@ -13,7 +13,7 @@ describe('accessibility', () => {
       const announcement = document.querySelector('[aria-live="polite"]');
       expect(announcement).toBeInTheDocument();
       expect(announcement?.textContent).toBe('Test message');
-      // Note: setTimeout не тестировать напрямую
+      // Note: do not test setTimeout directly
     });
   });
 
@@ -73,7 +73,7 @@ describe('accessibility', () => {
         bubbles: true,
       });
       document.dispatchEvent(tabEvent);
-      // After Tab on last element, focus wraps to first
+      // After Tab on the last element, focus wraps to the first
       expect(document.activeElement).toBe(firstButton);
 
       cleanup();

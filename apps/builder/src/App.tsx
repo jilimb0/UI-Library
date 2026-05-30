@@ -1,16 +1,13 @@
 import {
-  generatePromptDraft,
-  summarizePromptResponse,
-} from '@ui-construction-library/prompt-engine';
-import { useEffect, useMemo, useState } from 'react';
-import {
   analyzeExportProject,
   appendDoctorArtifacts,
   createExportRequestFromBuilderProject,
   enrichExportProject,
   normalizeExportProject,
   renderExportProject,
-} from '../../../packages/export-core/src/index';
+} from '@ui-construction-library/export-core';
+import { summarizePromptResponse } from '@ui-construction-library/prompt-engine';
+import { useEffect, useMemo, useState } from 'react';
 import { recordAnalyticsEvent } from './analytics';
 import { getRecoveryDraftSummary } from './autosave';
 import {
@@ -31,101 +28,36 @@ import { RecoveryBanner } from './components/RecoveryBanner';
 import { RemoteSyncBanner } from './components/RemoteSyncBanner';
 import { VersionsPanel } from './components/VersionsPanel';
 import {
+  buildDiffSummary,
+  formatDiffSummary,
+  getCurrentBuilderSections,
+  getPromptTemplateById,
+} from './generationHelpers';
+import {
+  analyzePromptDraft,
+  createPromptGenerationSummary,
+  generatePromptDraftPreview,
+} from './promptGeneration';
+import {
+  buildClarificationPrompts,
+  builderModeSections,
+  buildTemplateLibrary,
+  getSelectedTemplate,
+  promptTemplates,
+} from './promptModel';
+import {
+  createPromptLinkedVersion,
+  linkGenerationToVersion,
+} from './promptVersioning';
+import { getRepositoryConnectivityStatus } from './repositoryConnectivity';
+import {
   resolveRepositoryMode,
   setRepositoryModeOverride,
 } from './repositoryFactory';
 import { parseProjectRoute } from './routes';
 import { getSupabaseConnectionStatus } from './supabaseClient';
-import type { LayoutNode, RepositoryConnectivityStatus } from './types';
 
-const promptTemplates = [
-  {
-    id: 'landing-page',
-    label: 'Landing page',
-    productType: 'Product landing page',
-    targetAudience: 'product teams',
-    sections: ['hero', 'social-proof', 'features', 'cta'],
-    styleTone: 'confident',
-    density: 'spacious' as const,
-    domain: 'product marketing',
-    frameworkPreference: 'react',
-    detailLevel: 'medium' as const,
-    generationMode: 'landing-page' as const,
-    summary: 'For a focused launch or feature landing page.',
-  },
-  {
-    id: 'dashboard',
-    label: 'Dashboard',
-    productType: 'Analytics dashboard',
-    targetAudience: 'ops and product teams',
-    sections: ['kpis', 'trend-chart', 'activity', 'table'],
-    styleTone: 'calm',
-    density: 'dense' as const,
-    domain: 'analytics',
-    frameworkPreference: 'react',
-    detailLevel: 'high' as const,
-    generationMode: 'dashboard' as const,
-    summary: 'For data-heavy internal tools and admin surfaces.',
-  },
-  {
-    id: 'docs-page',
-    label: 'Docs page',
-    productType: 'Documentation page',
-    targetAudience: 'developers',
-    sections: ['intro', 'usage', 'api', 'examples'],
-    styleTone: 'clear',
-    density: 'balanced' as const,
-    domain: 'developer documentation',
-    frameworkPreference: 'react',
-    detailLevel: 'medium' as const,
-    generationMode: 'docs-page' as const,
-    summary: 'For product docs, guides, and reference content.',
-  },
-  {
-    id: 'pricing-page',
-    label: 'Pricing page',
-    productType: 'Pricing page',
-    targetAudience: 'buyers and evaluators',
-    sections: ['plans', 'comparison', 'faq', 'cta'],
-    styleTone: 'trustworthy',
-    density: 'balanced' as const,
-    domain: 'go-to-market',
-    frameworkPreference: 'react',
-    detailLevel: 'medium' as const,
-    generationMode: 'pricing-page' as const,
-    summary: 'For plan comparison and conversion-focused pages.',
-  },
-  {
-    id: 'settings-page',
-    label: 'Settings page',
-    productType: 'Settings page',
-    targetAudience: 'authenticated users',
-    sections: ['profile', 'preferences', 'security', 'danger-zone'],
-    styleTone: 'practical',
-    density: 'dense' as const,
-    domain: 'account management',
-    frameworkPreference: 'react',
-    detailLevel: 'medium' as const,
-    generationMode: 'settings-page' as const,
-    summary: 'For account and application preferences.',
-  },
-  {
-    id: 'marketing-section',
-    label: 'Marketing section',
-    productType: 'Marketing section',
-    targetAudience: 'website visitors',
-    sections: ['headline', 'benefits', 'supporting-visual', 'cta'],
-    styleTone: 'expressive',
-    density: 'spacious' as const,
-    domain: 'brand storytelling',
-    frameworkPreference: 'react',
-    detailLevel: 'medium' as const,
-    generationMode: 'marketing-section' as const,
-    summary: 'For a reusable section inside a larger page.',
-  },
-] as const;
-
-type PromptTemplate = (typeof promptTemplates)[number];
+type PromptTemplate = import('./promptModel').PromptTemplate;
 
 type BuilderMode = 'generate' | 'edit' | 'review' | 'publish' | 'export';
 
@@ -212,97 +144,10 @@ export function App() {
   const [pendingDiffSummary, setPendingDiffSummary] =
     useState<GenerationSummary['diffSummary']>(null);
   const supabaseStatus = getSupabaseConnectionStatus();
-  const repositoryConnectivity: RepositoryConnectivityStatus =
-    repositoryMode === 'supabase'
-      ? supabaseStatus.mode === 'configured'
-        ? {
-            mode: 'supabase',
-            state: 'connected',
-            label: 'remote connected',
-            summary: supabaseStatus.summary,
-            guidance: supabaseStatus.guidance,
-            recovery: 'Remote persistence is ready for collaborative editing.',
-            tone: {
-              background: '#dcfce7',
-              color: '#166534',
-              border: '1px solid #86efac',
-            },
-            isRemoteAuthoritative: true,
-            allowsSafeRemoteActions: true,
-          }
-        : supabaseStatus.mode === 'partial'
-          ? {
-              mode: 'supabase',
-              state: 'disconnected',
-              label: 'remote disconnected',
-              summary: supabaseStatus.summary,
-              guidance: supabaseStatus.guidance,
-              recovery:
-                'Complete the missing Supabase environment variable or switch back to local or memory mode before continuing collaborative work.',
-              tone: {
-                background: '#fee2e2',
-                color: '#991b1b',
-                border: '1px solid #fca5a5',
-              },
-              isRemoteAuthoritative: false,
-              allowsSafeRemoteActions: false,
-            }
-          : {
-              mode: 'supabase',
-              state: 'degraded',
-              label: 'remote stub',
-              summary: supabaseStatus.summary,
-              guidance: supabaseStatus.guidance,
-              recovery:
-                'Provide Supabase credentials to leave stub mode, or stay on local or memory mode for predictable non-remote editing.',
-              tone: {
-                background: '#fef3c7',
-                color: '#92400e',
-                border: '1px solid #fcd34d',
-              },
-              isRemoteAuthoritative: false,
-              allowsSafeRemoteActions: false,
-            }
-      : repositoryMode === 'memory'
-        ? {
-            mode: 'memory',
-            state: 'ephemeral',
-            label: 'ephemeral runtime',
-            summary: 'Changes live only for this in-memory session.',
-            guidance: [
-              'Use memory mode for demos, tests, and disposable editing sessions.',
-              'Reloading the app resets unsaved in-memory state.',
-            ],
-            recovery:
-              'Save or export anything important before reloading because memory mode is intentionally disposable.',
-            tone: {
-              background: '#e0f2fe',
-              color: '#075985',
-              border: '1px solid #7dd3fc',
-            },
-            isRemoteAuthoritative: false,
-            allowsSafeRemoteActions: false,
-          }
-        : {
-            mode: 'local',
-            state: 'local-only',
-            label: 'local runtime',
-            summary:
-              'Changes are stored in the local browser-backed repository.',
-            guidance: [
-              'Local mode keeps project state on this device only.',
-              'Switch to Supabase mode when you need remote-backed collaboration and persistence diagnostics.',
-            ],
-            recovery:
-              'Keep working locally on this device, or switch to Supabase when you need shared remote persistence.',
-            tone: {
-              background: '#e2e8f0',
-              color: '#334155',
-              border: '1px solid #cbd5e1',
-            },
-            isRemoteAuthoritative: false,
-            allowsSafeRemoteActions: false,
-          };
+  const repositoryConnectivity = getRepositoryConnectivityStatus(
+    repositoryMode,
+    supabaseStatus
+  );
   const repositoryStatusLabel = repositoryConnectivity.label;
   const repositoryStatusTone = repositoryConnectivity.tone;
   const repositoryStatusSummary = repositoryConnectivity.summary;
@@ -432,44 +277,13 @@ export function App() {
     return editorContext?.project ?? null;
   }, [editorContext, projectRoute, projects]);
 
-  const selectedTemplate =
-    promptTemplates.find((template) => template.id === promptTemplateId) ??
-    promptTemplates[0];
-  const templateLibrary = promptTemplates.map((template) => ({
-    ...template,
-    samplePrompt: `${template.productType} for ${template.targetAudience}`,
-    explainabilityPreview: [
-      `Recipe: ${template.generationMode}`,
-      `Sections: ${template.sections.join(', ')}`,
-      `Tone: ${template.styleTone} · Density: ${template.density}`,
-    ],
-  }));
-  const normalizedPromptDraft = promptDraft.trim().toLowerCase();
-  const clarificationPrompts = [
-    !promptDraft.trim()
-      ? 'Describe the product or page outcome so generation can pick a better scaffold.'
-      : null,
-    promptDraft.trim().split(/\s+/).filter(Boolean).length < 4
-      ? 'Add a little more product context, such as the feature area or customer problem.'
-      : null,
-    !audienceDraft.trim()
-      ? 'Specify who the page is for so information density and hierarchy can be tuned.'
-      : null,
-    normalizedPromptDraft.includes('mobile app')
-      ? 'This builder currently generates structured web UI; clarify the primary web surface you want first.'
-      : null,
-    normalizedPromptDraft.includes('animation')
-      ? 'If motion is important, name the exact area that should feel animated so layout stays deterministic.'
-      : null,
-    selectedTemplate.id === 'dashboard' &&
-    !/(metric|kpi|chart|table|analytics|report)/.test(normalizedPromptDraft)
-      ? 'For dashboards, mention the key metrics or views you expect to see.'
-      : null,
-    selectedTemplate.id === 'pricing-page' &&
-    !/(plan|tier|pricing|billing)/.test(normalizedPromptDraft)
-      ? 'For pricing pages, mention plan structure or billing expectations.'
-      : null,
-  ].filter(Boolean) as string[];
+  const selectedTemplate = getSelectedTemplate(promptTemplateId);
+  const templateLibrary = buildTemplateLibrary();
+  const clarificationPrompts = buildClarificationPrompts(
+    promptDraft,
+    audienceDraft,
+    selectedTemplate.id
+  );
 
   const latestGenerationForEditor = generationHistory[0] ?? generationSummary;
   const validationIssues: Array<{
@@ -491,39 +305,11 @@ export function App() {
     memberPresenceSummary,
     activeMemberLabel: activeMember?.email ?? null,
   };
-  const modeSections = {
-    generate: {
-      label: 'Generate',
-      description: 'Shape a deterministic prompt request and create a draft.',
-    },
-    edit: {
-      label: 'Edit',
-      description: 'Refine layout, content, and structure inside the canvas.',
-    },
-    review: {
-      label: 'Review',
-      description:
-        'Inspect validation, generation rationale, and readiness signals.',
-    },
-    publish: {
-      label: 'Publish',
-      description:
-        'Review versioning and publish lifecycle state before release.',
-    },
-    export: {
-      label: 'Export',
-      description:
-        'Prepare deterministic handoff and downstream implementation work.',
-    },
-  } as const satisfies Record<
-    BuilderMode,
-    { label: string; description: string }
-  >;
+  const modeSections = builderModeSections;
 
-  const currentBuilderSections =
+  const currentBuilderSections = getCurrentBuilderSections(
     editorContext?.page.root.children
-      .map((node) => String(node.id))
-      .filter(Boolean) ?? [];
+  );
 
   useEffect(() => {
     if (!editorContext) return;
@@ -549,29 +335,6 @@ export function App() {
       return changed ? { ...current, sectionDecisions: next } : current;
     });
   }, [editorContext?.page.id]);
-
-  const buildDiffSummary = (nextSectionIds: string[]) => ({
-    addedSections: nextSectionIds.filter(
-      (id) => !currentBuilderSections.includes(id)
-    ),
-    removedSections: currentBuilderSections.filter(
-      (id) => !nextSectionIds.includes(id)
-    ),
-    persistedSections: nextSectionIds.filter((id) =>
-      currentBuilderSections.includes(id)
-    ),
-  });
-
-  const formatDiffSummary = (summary: {
-    addedSections: string[];
-    removedSections: string[];
-    persistedSections: string[];
-  }) => {
-    const addedCount = summary.addedSections.length;
-    const removedCount = summary.removedSections.length;
-    const persistedCount = summary.persistedSections.length;
-    return `Semantically, this refresh adds ${addedCount} section${addedCount === 1 ? '' : 's'}, removes ${removedCount} section${removedCount === 1 ? '' : 's'}, and keeps ${persistedCount} section${persistedCount === 1 ? '' : 's'} intact.`;
-  };
 
   function updateSectionDecision(
     nodeId: string,
@@ -658,35 +421,20 @@ export function App() {
     recordAnalyticsEvent('prompt_diff_previewed', 'builder', {
       templateId: selectedTemplate.id,
     });
-    const normalizedPrompt = promptDraft.trim();
-    const normalizedAudience =
+    const _normalizedPrompt = promptDraft.trim();
+    const _normalizedAudience =
       audienceDraft.trim() || selectedTemplate.targetAudience;
-    const generated = generatePromptDraft({
-      productType: normalizedPrompt || selectedTemplate.productType,
-      targetAudience: normalizedAudience,
-      sections: [...selectedTemplate.sections],
-      styleTone: selectedTemplate.styleTone,
-      density:
-        selectedTemplate.density === 'dense'
-          ? 'compact'
-          : selectedTemplate.density,
-      domain: selectedTemplate.domain,
-      frameworkPreference: 'react',
-      detailLevel: selectedTemplate.detailLevel,
-      generationMode:
-        selectedTemplate.generationMode === 'docs-page' ||
-        selectedTemplate.generationMode === 'settings-page'
-          ? 'dashboard'
-          : selectedTemplate.generationMode === 'pricing-page'
-            ? 'landing-page'
-            : selectedTemplate.generationMode,
-    });
+    const generated = generatePromptDraftPreview(
+      promptDraft,
+      audienceDraft,
+      selectedTemplate
+    );
     const semanticSummary = summarizePromptResponse(generated);
     const nextSectionIds =
-      generated.draft.pages[0]?.root.children.map(
-        (node: LayoutNode) => node.id
-      ) ?? [];
-    setPendingDiffSummary(buildDiffSummary(nextSectionIds));
+      generated.draft.pages[0]?.root.children.map((node) => node.id) ?? [];
+    setPendingDiffSummary(
+      buildDiffSummary(currentBuilderSections, nextSectionIds)
+    );
     setNotice(
       `Prepared ${semanticSummary.compositionFamily} preview with ${semanticSummary.sectionCount} sections.`
     );
@@ -701,9 +449,7 @@ export function App() {
   };
 
   const reopenGeneration = (summary: GenerationSummary) => {
-    const template =
-      promptTemplates.find((entry) => entry.id === summary.templateId) ??
-      promptTemplates[0];
+    const template = getPromptTemplateById(promptTemplates, summary.templateId);
     setPromptTemplateId(template.id);
     setPromptDraft(summary.prompt);
     setAudienceDraft(summary.audience);
@@ -713,38 +459,14 @@ export function App() {
     setShowGenerationHistory(false);
   };
 
-  function createPromptLinkedVersion(summary: GenerationSummary) {
+  function createPromptLinkedVersionEntry(summary: GenerationSummary) {
     if (!editorContext) return;
-    const snapshotId = `snapshot-${Date.now()}`;
-    const versionId = `version-${Date.now()}`;
-    const version = {
-      id: versionId,
-      pageId: editorContext.page.id,
-      label: `[Prompt] ${summary.templateLabel}`,
-      snapshot: {
-        id: snapshotId,
-        promptGenerationId: summary.id,
-        prompt: summary.prompt,
-        audience: summary.audience,
-        templateId: summary.templateId,
-        diffSummary: summary.diffSummary ?? null,
-        protectedNodeIds: summary.protectedNodeIds ?? [],
-        sectionDecisions: summary.sectionDecisions ?? {},
-        page: editorContext.page,
-      },
-      authorId: 'system',
-      createdAt: new Date().toISOString(),
-    };
-
+    const version = createPromptLinkedVersion(summary, editorContext.page);
     setGenerationSummary((current) =>
       current && current.id === summary.id
         ? {
             ...current,
-            linkedVersionId: version.id,
-            linkedVersionLabel: version.label,
-            linkedVersionCreatedAt: version.createdAt,
-            linkedSnapshotId: snapshotId,
-            snapshotLabel: `Snapshot ${snapshotId}`,
+            ...linkGenerationToVersion(version, version.snapshot.id),
           }
         : current
     );
@@ -753,11 +475,7 @@ export function App() {
         entry.id === summary.id
           ? {
               ...entry,
-              linkedVersionId: version.id,
-              linkedVersionLabel: version.label,
-              linkedVersionCreatedAt: version.createdAt,
-              linkedSnapshotId: snapshotId,
-              snapshotLabel: `Snapshot ${snapshotId}`,
+              ...linkGenerationToVersion(version, version.snapshot.id),
             }
           : entry
       )
@@ -767,7 +485,7 @@ export function App() {
   const linkLatestGenerationToVersion = () => {
     const version = latestPromptLinkedVersion;
     if (!version && generationSummary) {
-      createPromptLinkedVersion(generationSummary);
+      createPromptLinkedVersionEntry(generationSummary);
       return;
     }
     if (!version) return;
@@ -814,52 +532,25 @@ export function App() {
     const normalizedPrompt = promptDraft.trim();
     const normalizedAudience =
       audienceDraft.trim() || selectedTemplate.targetAudience;
-    const promptLower = normalizedPrompt.toLowerCase();
-    const assumptions = [
-      `Using ${selectedTemplate.label.toLowerCase()} scaffold.`,
-      `Targeting ${normalizedAudience}.`,
-      `Applying ${selectedTemplate.density} density with ${selectedTemplate.styleTone} tone.`,
-    ];
-    const unsupportedIntent = promptLower.includes('mobile app')
-      ? 'Prompt mentions a mobile app; builder draft stays focused on structured web UI.'
-      : promptLower.includes('animation')
-        ? 'Prompt mentions advanced animation; generation stays within deterministic layout recipes.'
-        : null;
-    const policy: {
-      score: number;
-      status: 'allow' | 'warn' | 'block';
-      reasons: string[];
-    } = {
-      score: 1,
-      status: 'allow',
-      reasons: [],
-    };
-    const fallbackDecisions = [
-      `Recipe sections: ${selectedTemplate.sections.join(', ')}.`,
-      `Framework locked to ${selectedTemplate.frameworkPreference}.`,
-      `Detail level set to ${selectedTemplate.detailLevel}.`,
-    ];
+    const analysis = analyzePromptDraft(
+      promptDraft,
+      audienceDraft,
+      selectedTemplate
+    );
 
-    if (policy.status === 'block') {
+    if (analysis.policy.status === 'block') {
       setGenerationSummary({
-        id: `generation-${Date.now()}`,
-        createdAt: new Date().toISOString(),
-        templateId: selectedTemplate.id,
-        templateLabel: selectedTemplate.label,
-        audience: normalizedAudience,
-        prompt: normalizedPrompt || selectedTemplate.productType,
-        assumptions,
-        unsupportedIntent:
-          unsupportedIntent ?? 'Generation blocked by policy scoring.',
-        fallbackDecisions,
-        policyScore: policy.score,
-        policyStatus: policy.status,
-        policyReasons: policy.reasons,
+        ...createPromptGenerationSummary(
+          selectedTemplate,
+          normalizedAudience,
+          normalizedPrompt || selectedTemplate.productType,
+          analysis,
+          protectedNodeIds,
+          pendingDiffSummary
+        ),
         compositionFamily: undefined,
         layoutRhythm: undefined,
-        protectedNodeIds,
         sectionDecisions: {},
-        diffSummary: pendingDiffSummary,
         linkedVersionId: null,
         linkedVersionLabel: null,
         linkedVersionCreatedAt: null,
@@ -874,26 +565,11 @@ export function App() {
       return;
     }
 
-    const _generated = generatePromptDraft({
-      productType: normalizedPrompt || selectedTemplate.productType,
-      targetAudience: normalizedAudience,
-      sections: [...selectedTemplate.sections],
-      styleTone: selectedTemplate.styleTone,
-      density:
-        selectedTemplate.density === 'dense'
-          ? 'compact'
-          : selectedTemplate.density,
-      domain: selectedTemplate.domain,
-      frameworkPreference: 'react',
-      detailLevel: selectedTemplate.detailLevel,
-      generationMode:
-        selectedTemplate.generationMode === 'docs-page' ||
-        selectedTemplate.generationMode === 'settings-page'
-          ? 'dashboard'
-          : selectedTemplate.generationMode === 'pricing-page'
-            ? 'landing-page'
-            : selectedTemplate.generationMode,
-    });
+    const _generated = generatePromptDraftPreview(
+      promptDraft,
+      audienceDraft,
+      selectedTemplate
+    );
 
     handleGenerateProjectDraft({
       productType: normalizedPrompt || selectedTemplate.productType,
@@ -908,18 +584,22 @@ export function App() {
     });
 
     const nextSummary: GenerationSummary = {
-      id: `generation-${Date.now()}`,
-      createdAt: new Date().toISOString(),
-      templateId: selectedTemplate.id,
-      templateLabel: selectedTemplate.label,
-      audience: normalizedAudience,
-      prompt: normalizedPrompt || selectedTemplate.productType,
-      assumptions,
-      unsupportedIntent,
-      fallbackDecisions,
-      policyScore: policy.score,
-      policyStatus: policy.status,
-      policyReasons: policy.reasons,
+      ...createPromptGenerationSummary(
+        selectedTemplate,
+        normalizedAudience,
+        normalizedPrompt || selectedTemplate.productType,
+        analysis,
+        protectedNodeIds,
+        pendingDiffSummary
+      ),
+      compositionFamily: undefined,
+      layoutRhythm: undefined,
+      sectionDecisions: {},
+      linkedVersionId: null,
+      linkedVersionLabel: null,
+      linkedVersionCreatedAt: null,
+      linkedSnapshotId: null,
+      snapshotLabel: null,
     };
 
     setGenerationSummary(nextSummary);

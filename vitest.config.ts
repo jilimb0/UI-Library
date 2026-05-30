@@ -32,8 +32,12 @@ export default {
     include: [
       'src/**/*.test.{ts,tsx}',
       'src/**/*.spec.{ts,tsx}',
+      'apps/*/src/**/*.test.{ts,tsx}',
+      'apps/*/src/**/*.spec.{ts,tsx}',
       'packages/*/src/**/*.test.{ts,tsx}',
       'packages/*/src/**/*.spec.{ts,tsx}',
+      'packages/integrations/*/src/**/*.test.{ts,tsx}',
+      'packages/integrations/*/src/**/*.spec.{ts,tsx}',
     ],
 
     server: {

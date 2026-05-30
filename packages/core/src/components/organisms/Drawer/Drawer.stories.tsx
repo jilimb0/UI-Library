@@ -10,19 +10,25 @@ const meta: Meta<typeof Drawer> = {
 };
 
 export default meta;
+
 type Story = StoryObj<typeof Drawer>;
 
-export const Right: Story = {
+export const Default: Story = {
   render: () => {
     const Demo = () => {
-      const [open, setOpen] = useState(false);
+      const [open, setOpen] = useState(true);
       return (
-        <>
-          <Button onClick={() => setOpen(true)}>Open Drawer</Button>
-          <Drawer open={open} onOpenChange={setOpen} side="right" title="Panel">
+        <div>
+          <Button onClick={() => setOpen(true)}>Open drawer</Button>
+          <Drawer
+            open={open}
+            onOpenChange={setOpen}
+            title="Settings"
+            description="Manage preferences"
+          >
             Drawer content
           </Drawer>
-        </>
+        </div>
       );
     };
     return <Demo />;

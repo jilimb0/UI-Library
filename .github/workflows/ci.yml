@@ -42,6 +42,7 @@ jobs:
       - run: pnpm check:security
         continue-on-error: true
       - run: pnpm check:contracts
+      - run: pnpm check:supabase-schema
       - name: Upload contract compliance report
         uses: actions/upload-artifact@v4
         with:

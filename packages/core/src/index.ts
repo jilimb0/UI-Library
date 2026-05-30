@@ -1,4 +1,4 @@
-// Главный экспорт компонентов и утилит
+// Main export for components and utilities
 
 export * from './animations';
 export * from './components';

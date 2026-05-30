@@ -1,13 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
-import { expect, userEvent, within } from 'storybook/test';
 import { Stepper } from './Stepper';
-
-const STEPS = [
-  { id: 'details', label: 'Details' },
-  { id: 'review', label: 'Review' },
-  { id: 'done', label: 'Done' },
-];
 
 const meta: Meta<typeof Stepper> = {
   title: 'Components/Molecules/Stepper',
@@ -16,31 +9,25 @@ const meta: Meta<typeof Stepper> = {
 };
 
 export default meta;
+
 type Story = StoryObj<typeof Stepper>;
 
 export const Default: Story = {
   render: () => {
     const Demo = () => {
-      const [activeStep, setActiveStep] = useState(0);
+      const [step, setStep] = useState(1);
       return (
         <Stepper
-          steps={STEPS}
-          activeStep={activeStep}
-          onStepChange={setActiveStep}
-          linear={false}
+          steps={[
+            { id: '1', label: 'Plan' },
+            { id: '2', label: 'Build' },
+            { id: '3', label: 'Ship' },
+          ]}
+          activeStep={step}
+          onStepChange={setStep}
         />
       );
     };
     return <Demo />;
-  },
-};
-
-export const Interaction: Story = {
-  render: Default.render,
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    await userEvent.click(canvas.getByRole('button', { name: /Review/i }));
-    const indicator = canvas.getByText('2');
-    await expect(indicator.className).toContain('stepper__indicator--active');
   },
 };

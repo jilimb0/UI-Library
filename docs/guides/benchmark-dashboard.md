@@ -1,22 +1,21 @@
 # Benchmark Dashboard
 
-## Current Baseline
+This guide describes the benchmark reporting surface used for release validation.
 
-| Metric | Result | Gate |
-| --- | --- | --- |
-| Core bundle gzip | 28.23 KB | <= 50 KB |
-| Core CSS gzip | 6.35 KB | <= 20 KB |
-| Performance test suite | 4/4 passed | required |
-| Critical a11y regressions | 0 (contract + e2e gates) | required |
+## Purpose
 
-## Data Sources
+- Track bundle-size, performance, and regression signals across major packages.
+- Provide a stable check for release readiness and platform changes.
 
-- `pnpm check:bundle`
-- `pnpm check:perf`
-- CI runs (`ci.yml`, `chromatic.yml`)
+## Suggested metrics
 
-## Update Procedure
+- Package build time
+- Bundle size
+- Render latency on key demo and builder paths
+- Test/runtime health on changed packages
 
-1. Run `pnpm validate`.
-2. Update baseline table if budgets are intentionally changed.
-3. Link release notes to this page when metrics shift.
+## Review cadence
+
+- Update the dashboard when release-critical packages change.
+- Re-run the dashboard before promotion to stable.
+- Keep historical deltas visible so regressions are easy to spot.

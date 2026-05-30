@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@ui-construction-library/core": "workspace:^0.1.1",
+    "@ui-construction-library/export-core": "workspace:*",
     "@ui-construction-library/registry": "workspace:^0.1.0",
     "@ui-construction-library/schema": "workspace:^0.1.0",
     "@ui-construction-library/prompt-engine": "workspace:*",

@@ -6,7 +6,7 @@ export function AuthExample() {
   const [password, setPassword] = useState('');
 
   const handleSubmit = (data: Record<string, any>) => {
-    // data содержит { email: "...", password: "..." }
+    // data contains { email: "...", password: "..." }
     alert(`Email: ${data.email}, Password: ${data.password}`);
   };
 

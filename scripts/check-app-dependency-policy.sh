@@ -15,4 +15,12 @@ if [[ -n "$violations" ]]; then
   exit 1
 fi
 
+relative_import_violations=$(rg -n "\.\./\.\./\.\./packages/" apps/*/src -g '!**/*.css' || true)
+
+if [[ -n "$relative_import_violations" ]]; then
+  echo "App source policy violations (relative package traversal is forbidden; use workspace package imports):"
+  echo "$relative_import_violations"
+  exit 1
+fi
+
 echo "App dependency policy check passed."
