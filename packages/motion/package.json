@@ -1,6 +1,6 @@
 {
   "name": "@ui-construction-library/motion",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
@@ -8,6 +8,7 @@
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
+  "sideEffects": false,
   "exports": {
     ".": {
       "import": "./dist/index.esm.js",
@@ -27,6 +28,17 @@
   "peerDependencies": {
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": false
+    },
+    "react-dom": {
+      "optional": false
+    }
+  },
+  "dependencies": {
+    "@ui-construction-library/core": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "catalog:",

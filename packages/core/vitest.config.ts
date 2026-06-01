@@ -12,10 +12,6 @@ export default defineConfig({
         __dirname,
         '../primitives/src/index.ts'
       ),
-      '@ui-construction-library/dnd': resolve(
-        __dirname,
-        '../dnd/src/index.tsx'
-      ),
       '@ui-construction-library/tokens': resolve(
         __dirname,
         '../tokens/src/index.ts'
@@ -23,10 +19,6 @@ export default defineConfig({
       '@ui-construction-library/utils': resolve(
         __dirname,
         '../utils/src/index.ts'
-      ),
-      '@ui-construction-library/motion': resolve(
-        __dirname,
-        '../motion/src/index.ts'
       ),
     },
   },

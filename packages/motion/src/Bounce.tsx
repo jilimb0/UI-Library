@@ -1,5 +1,5 @@
-import { motion } from '@ui-construction-library/motion';
 import type { ComponentPropsWithoutRef, PropsWithChildren } from 'react';
+import { motion } from './motion';
 
 export type BounceProps = PropsWithChildren<ComponentPropsWithoutRef<'div'>>;
 

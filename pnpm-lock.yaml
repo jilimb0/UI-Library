@@ -328,15 +328,9 @@ importers:
 
   packages/core:
     dependencies:
-      '@ui-construction-library/dnd':
-        specifier: ^0.1.1
-        version: 0.1.1(react@19.2.6)
       '@ui-construction-library/icons':
         specifier: ^0.1.1
         version: 0.1.1(react@19.2.6)
-      '@ui-construction-library/motion':
-        specifier: ^0.1.1
-        version: 0.1.1(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@ui-construction-library/primitives':
         specifier: ^0.1.0
         version: 0.1.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
@@ -419,9 +413,15 @@ importers:
 
   packages/dnd:
     dependencies:
+      '@ui-construction-library/core':
+        specifier: workspace:*
+        version: link:../core
       react:
         specifier: '>=18.0.0'
         version: 19.2.6
+      react-dom:
+        specifier: '>=18.0.0'
+        version: 19.2.6(react@19.2.6)
     devDependencies:
       '@rollup/plugin-commonjs':
         specifier: ^29.0.2
@@ -637,6 +637,9 @@ importers:
 
   packages/motion:
     dependencies:
+      '@ui-construction-library/core':
+        specifier: workspace:*
+        version: link:../core
       react:
         specifier: '>=18.0.0'
         version: 19.2.6

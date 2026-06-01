@@ -1,6 +1,5 @@
 // Main export for components and utilities
 
-export * from './animations';
 export * from './components';
 export * from './hooks';
 export type { CrossSiteNavProps } from './showcase/CrossSiteNav';

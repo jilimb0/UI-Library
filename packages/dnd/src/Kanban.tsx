@@ -1,13 +1,12 @@
+import type React from 'react';
+import { type ReactNode, useCallback, useMemo, useRef, useState } from 'react';
 import {
   CSS,
   DndContext,
   type DragEndEvent,
   useDraggable,
   useDroppable,
-} from '@ui-construction-library/dnd';
-import type React from 'react';
-import { type ReactNode, useCallback, useMemo, useRef, useState } from 'react';
-import { cn } from '../../../utils/cn';
+} from './index';
 
 const DndContextCompat = DndContext as unknown as React.ComponentType<
   React.ComponentProps<typeof DndContext>
@@ -106,7 +105,9 @@ function DroppableColumn({
   return (
     <section
       ref={setNodeRef}
-      className={cn('kanban-column', isOver && 'kanban-column--active')}
+      className={['kanban-column', isOver && 'kanban-column--active']
+        .filter(Boolean)
+        .join(' ')}
       aria-label={title}
     >
       <h3 className="kanban-column__title">{title}</h3>
@@ -250,7 +251,10 @@ export function Kanban({
           border: 0,
         }}
       />
-      <div className={cn('kanban-board', className)} style={style}>
+      <div
+        className={['kanban-board', className].filter(Boolean).join(' ')}
+        style={style}
+      >
         {state.map((column) => {
           const cards = column.cards.map((card) => (
             <div key={card.id}>

@@ -31,3 +31,4 @@ playwright-report/
 **/*.spec.ts-snapshots/
 
 .qoder/
+.plans/

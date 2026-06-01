@@ -3,11 +3,7 @@ import {
   Badge,
   Button,
   Card,
-  fadeInProps,
-  getSlideInProps,
   Input,
-  MotionFadeIn,
-  MotionSlideIn,
   Spinner,
   Text,
   useAsync,
@@ -17,6 +13,10 @@ import {
   usePrevious,
   useToggle,
 } from '@ui-construction-library/core';
+import {
+  FadeIn as MotionFadeIn,
+  SlideIn as MotionSlideIn,
+} from '@ui-construction-library/motion';
 import { useCallback, useRef, useState } from 'react';
 import { SectionIntro } from './SectionIntro';
 
@@ -139,7 +139,7 @@ export function MotionAndHooksCard() {
         </div>
 
         <div className="feature-grid feature-grid--dual">
-          <MotionFadeIn key={`fade-${motionReplay}`} {...fadeInProps}>
+          <MotionFadeIn key={`fade-${motionReplay}`}>
             <div className="motion-band stack-tight">
               <Text className="eyebrow">MotionFadeIn</Text>
               <Text>
@@ -153,10 +153,7 @@ export function MotionAndHooksCard() {
             </div>
           </MotionFadeIn>
 
-          <MotionSlideIn
-            key={`slide-${motionReplay}`}
-            {...getSlideInProps('right')}
-          >
+          <MotionSlideIn key={`slide-${motionReplay}`} direction="right">
             <div className="motion-band stack-tight">
               <Text className="eyebrow">MotionSlideIn</Text>
               <Text>

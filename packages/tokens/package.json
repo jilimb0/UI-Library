@@ -8,6 +8,7 @@
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/src/index.d.ts",
+  "sideEffects": ["*.css", "**/*.css"],
   "exports": {
     ".": {
       "import": "./dist/index.esm.js",
@@ -16,7 +17,8 @@
     },
     "./tailwind.preset": {
       "default": "./tailwind.preset.ts"
-    }
+    },
+    "./css": "./dist/tokens.css"
   },
   "files": [
     "dist",

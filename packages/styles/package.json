@@ -10,8 +10,17 @@
   "types": "dist/index.d.ts",
   "type": "module",
   "sideEffects": [
-    "dist/*.css"
+    "dist/*.css",
+    "**/*.css"
   ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./styles.css": "./dist/styles.css"
+  },
   "files": [
     "dist"
   ],

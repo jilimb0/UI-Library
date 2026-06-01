@@ -5,7 +5,6 @@ export * from './DataTable';
 export * from './Drawer';
 export * from './EmptyState';
 export * from './Form';
-export * from './Kanban';
 export * from './Modal';
 export * from './Navigation';
 export * from './Sidebar';

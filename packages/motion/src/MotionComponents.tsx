@@ -1,4 +1,4 @@
-import { motion } from '@ui-construction-library/motion';
+import { motion } from './motion';
 
 type SlideDirection = 'left' | 'right';
 

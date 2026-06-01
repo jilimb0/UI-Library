@@ -8,7 +8,6 @@ import {
   Dropdown,
   Heading,
   Input,
-  Kanban,
   Modal,
   Progress,
   RadioButton,
@@ -18,6 +17,7 @@ import {
   Toast,
   Tooltip,
 } from '@ui-construction-library/core';
+import { Kanban } from '@ui-construction-library/dnd';
 import { useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { SectionIntro } from './SectionIntro';

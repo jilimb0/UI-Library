@@ -1,8 +1,7 @@
 {
-  "generatedAt": "2026-05-23T10:40:13.905Z",
+  "generatedAt": "2026-06-01T16:47:52.677Z",
   "package": "@ui-construction-library/core",
   "barrelExports": [
-    "./animations",
     "./components",
     "./hooks",
     "./styles",
@@ -61,7 +60,6 @@
     "organisms/Drawer",
     "organisms/EmptyState",
     "organisms/Form",
-    "organisms/Kanban",
     "organisms/Modal",
     "organisms/Navigation",
     "organisms/Sidebar",

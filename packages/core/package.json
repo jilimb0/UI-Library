@@ -20,8 +20,10 @@
       "require": "./dist/index.js",
       "types": "./dist/src/index.d.ts"
     },
+    "./styles.css": "./dist/styles.css",
     "./styles": "./dist/styles.css"
   },
+  "sideEffects": ["*.css", "**/*.css"],
   "scripts": {
     "build": "rollup -c",
     "lint": "biome check src",
@@ -45,9 +47,7 @@
     }
   },
   "dependencies": {
-    "@ui-construction-library/dnd": "^0.1.1",
     "@ui-construction-library/icons": "^0.1.1",
-    "@ui-construction-library/motion": "^0.1.1",
     "@ui-construction-library/primitives": "^0.1.0",
     "@ui-construction-library/tokens": "^0.1.1",
     "@ui-construction-library/utils": "^0.1.1",

@@ -1,6 +1,6 @@
-import { render, screen } from '@testing-library/react';
+import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { Kanban, type KanbanColumn } from './Kanban';
 
 const initialColumns: KanbanColumn[] = [
@@ -15,6 +15,10 @@ const initialColumns: KanbanColumn[] = [
     cards: [{ id: 'card-2', title: 'Card 2' }],
   },
 ];
+
+afterEach(() => {
+  cleanup();
+});
 
 describe('Kanban', () => {
   it('moves card across columns with keyboard arrows', async () => {
