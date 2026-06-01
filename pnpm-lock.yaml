@@ -338,8 +338,8 @@ importers:
         specifier: ^0.1.1
         version: 0.1.1(react@19.2.6)
       '@ui-construction-library/primitives':
-        specifier: ^0.1.0
-        version: 0.1.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
+        specifier: ^0.1.2
+        version: 0.1.2(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@ui-construction-library/tokens':
         specifier: ^0.1.1
         version: 0.1.1
@@ -420,8 +420,8 @@ importers:
   packages/dnd:
     dependencies:
       '@ui-construction-library/core':
-        specifier: workspace:*
-        version: link:../core
+        specifier: ^0.1.2
+        version: 0.1.2(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       react:
         specifier: '>=18.0.0'
         version: 19.2.6
@@ -457,17 +457,17 @@ importers:
   packages/export-core:
     dependencies:
       '@ui-construction-library/registry':
-        specifier: workspace:*
-        version: link:../registry
+        specifier: ^0.1.2
+        version: 0.1.2
       '@ui-construction-library/schema':
-        specifier: workspace:*
-        version: link:../schema
+        specifier: ^0.1.0
+        version: 0.1.0
       '@ui-construction-library/styles':
-        specifier: workspace:*
-        version: link:../styles
+        specifier: ^0.1.0
+        version: 0.1.0
       '@ui-construction-library/tokens':
-        specifier: workspace:*
-        version: link:../tokens
+        specifier: ^0.1.1
+        version: 0.1.1
     devDependencies:
       '@rollup/plugin-typescript':
         specifier: ^12.1.2
@@ -644,8 +644,8 @@ importers:
   packages/motion:
     dependencies:
       '@ui-construction-library/core':
-        specifier: workspace:*
-        version: link:../core
+        specifier: ^0.1.2
+        version: 0.1.2(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       react:
         specifier: '>=18.0.0'
         version: 19.2.6
@@ -742,11 +742,11 @@ importers:
   packages/prompt-engine:
     dependencies:
       '@ui-construction-library/registry':
-        specifier: workspace:*
-        version: link:../registry
+        specifier: ^0.1.2
+        version: 0.1.2
       '@ui-construction-library/schema':
-        specifier: workspace:*
-        version: link:../schema
+        specifier: ^0.1.0
+        version: 0.1.0
     devDependencies:
       '@rollup/plugin-typescript':
         specifier: ^12.1.2
@@ -2693,12 +2693,27 @@ packages:
       react: '>=18.0.0'
       react-dom: '>=18.0.0'
 
+  '@ui-construction-library/primitives@0.1.2':
+    resolution: {integrity: sha512-hjHzxkL+GW8KnbUd7SUiccdTkqGX3qShgRohOpjAz+Twb8XX4Moo6zf8RyXQpXUXO7f6p7MMo3/3oSntr55+yg==}
+    peerDependencies:
+      react: '>=18.0.0'
+      react-dom: '>=18.0.0'
+
   '@ui-construction-library/react-hook-form@0.1.1':
     resolution: {integrity: sha512-3sQJLajB62JyTNDzSuqTYYVmLA81ASQ4ZXJa2eNEkP8wabDdX3IXsZE2OfLn4zpEMDEzLmte1mwTEkUawaXfXQ==}
     peerDependencies:
       react: '>=18.0.0'
       react-dom: '>=18.0.0'
       react-hook-form: '>=7.0.0'
+
+  '@ui-construction-library/registry@0.1.2':
+    resolution: {integrity: sha512-/Oc2okq2z/NbioIJu5RJBFsf/eu7yqurC//oZlA2lULr8otcbHtOYGrOmB4JR5rHIPATt7wx414qU7XgJs73Ng==}
+
+  '@ui-construction-library/schema@0.1.0':
+    resolution: {integrity: sha512-AiJ55I0M1ACzzHkJKWldqf4Hh0VUJpnYqGq7lHN70d3dzEqGvI42w+76jD1R7Ai1lhFy7y6MyloHKIx0hVYbVQ==}
+
+  '@ui-construction-library/styles@0.1.0':
+    resolution: {integrity: sha512-u1DiiT/4MVUi6K5/7EjP6QZy3WKiqd8rLLahQgzmfasQsGe1zqfyMF2uEWEKGm0XZc+jpcWHTNxkeqZmfWyIow==}
 
   '@ui-construction-library/tokens@0.1.0':
     resolution: {integrity: sha512-s8AAga4klXtkxzvBdSb3X24Y4MzyiB7WN5rlR+HY5T53xxmm3DRX5ZWihMF2xk9q68v4TKqPY1dhUf5NwrzIWw==}
@@ -6742,6 +6757,11 @@ snapshots:
       react: 19.2.6
       react-dom: 19.2.6(react@19.2.6)
 
+  '@ui-construction-library/primitives@0.1.2(react-dom@19.2.6(react@19.2.6))(react@19.2.6)':
+    dependencies:
+      react: 19.2.6
+      react-dom: 19.2.6(react@19.2.6)
+
   '@ui-construction-library/react-hook-form@0.1.1(@types/react-dom@18.3.7(@types/react@18.3.29))(@types/react@18.3.29)(react-dom@18.3.1(react@18.3.1))(react-hook-form@7.75.0(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@ui-construction-library/core': 0.1.1(@types/react-dom@18.3.7(@types/react@18.3.29))(@types/react@18.3.29)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -6752,6 +6772,12 @@ snapshots:
       - '@types/react'
       - '@types/react-dom'
       - lucide-react
+
+  '@ui-construction-library/registry@0.1.2': {}
+
+  '@ui-construction-library/schema@0.1.0': {}
+
+  '@ui-construction-library/styles@0.1.0': {}
 
   '@ui-construction-library/tokens@0.1.0': {}
 

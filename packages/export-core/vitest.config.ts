@@ -16,6 +16,10 @@ export default defineConfig({
         __dirname,
         '../registry/src/index.ts'
       ),
+      '@ui-construction-library/styles': resolve(
+        __dirname,
+        '../styles/src/index.ts'
+      ),
     },
   },
   test: {

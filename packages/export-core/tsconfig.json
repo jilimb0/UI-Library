@@ -8,9 +8,13 @@
     "declarationMap": true,
     "sourceMap": false,
     "noEmit": false,
-    "ignoreDeprecations": "6.0",
-    "paths": {}
+    "ignoreDeprecations": "6.0"
   },
   "include": ["src/**/*"],
-  "references": [{ "path": "../schema" }, { "path": "../registry" }, { "path": "../tokens" }]
+  "references": [
+    { "path": "../schema" },
+    { "path": "../registry" },
+    { "path": "../tokens" },
+    { "path": "../styles" }
+  ]
 }

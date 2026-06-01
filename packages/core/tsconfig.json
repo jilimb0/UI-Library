@@ -16,6 +16,7 @@
   "include": [
     "src/**/*",
     "vitest-env.d.ts",
+    "src/styles/global-css.d.ts",
     "**/*.test.tsx",
     "**/*.spec.tsx"
   ],

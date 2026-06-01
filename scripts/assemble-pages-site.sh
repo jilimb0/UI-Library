@@ -11,7 +11,7 @@ SITE_DIR="${PAGES_DIR}/${REPO_NAME}"
 rm -rf "$PAGES_DIR"
 mkdir -p "${SITE_DIR}/docs" "${SITE_DIR}/storybook" "${SITE_DIR}/builder"
 
-echo "[assemble] building internal workspace packages..."
+echo "[assemble] preparing internal workspace packages via root build graph..."
 pnpm turbo run build --filter="./packages/*"
 
 echo "[assemble] storybook..."
