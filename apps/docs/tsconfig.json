@@ -4,15 +4,7 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@ui-construction-library/core": ["../../packages/core/src"],
-      "@ui-construction-library/tokens": ["../../packages/tokens/src"],
-      "@ui-construction-library/icons": ["../../packages/icons/src"],
-      "@ui-construction-library/motion": ["../../packages/motion/src/index.ts"],
-      "@ui-construction-library/primitives": [
-        "../../packages/primitives/src/index.ts"
-      ],
-      "@ui-construction-library/dnd": ["../../packages/dnd/src/index.tsx"],
-      "@ui-construction-library/utils": ["../../packages/utils/src/index.ts"]
+
     }
   },
   "include": ["src", "vite.config.ts"],

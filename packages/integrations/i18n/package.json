@@ -1,6 +1,6 @@
 {
   "name": "@ui-construction-library/integration-i18n",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
@@ -32,5 +32,23 @@
       "require": "./dist/index.js",
       "types": "./dist/index.d.ts"
     }
-  }
+  },
+  "description": "i18next integration for @ui-construction-library — locale-aware component wrappers.",
+  "keywords": [
+    "i18n",
+    "i18next",
+    "localization",
+    "react",
+    "design-system"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jilimb0/UI-Library.git",
+    "directory": "packages/integrations/i18n"
+  },
+  "homepage": "https://github.com/jilimb0/UI-Library#readme",
+  "files": [
+    "dist",
+    "README.md"
+  ]
 }

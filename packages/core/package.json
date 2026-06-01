@@ -5,7 +5,7 @@
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
-  "description": "Modern React UI component library",
+  "description": "Primary React UI component library \u2014 atoms, molecules, organisms and templates for product surfaces.",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/src/index.d.ts",
@@ -23,7 +23,10 @@
     "./styles.css": "./dist/styles.css",
     "./styles": "./dist/styles.css"
   },
-  "sideEffects": ["*.css", "**/*.css"],
+  "sideEffects": [
+    "*.css",
+    "**/*.css"
+  ],
   "scripts": {
     "build": "rollup -c",
     "lint": "biome check src",
@@ -76,5 +79,19 @@
     "vitest": "^4.1.0"
   },
   "license": "MIT",
-  "type": "module"
+  "type": "module",
+  "keywords": [
+    "react",
+    "ui",
+    "components",
+    "design-system",
+    "typescript",
+    "accessible"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jilimb0/UI-Library.git",
+    "directory": "packages/core"
+  },
+  "homepage": "https://github.com/jilimb0/UI-Library#readme"
 }

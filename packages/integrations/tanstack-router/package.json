@@ -1,6 +1,6 @@
 {
   "name": "@ui-construction-library/integration-tanstack-router",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
@@ -33,5 +33,22 @@
       "require": "./dist/index.js",
       "types": "./dist/index.d.ts"
     }
-  }
+  },
+  "description": "TanStack Router integration for @ui-construction-library — router-bound navigation components.",
+  "keywords": [
+    "tanstack-router",
+    "routing",
+    "react",
+    "design-system"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jilimb0/UI-Library.git",
+    "directory": "packages/integrations/tanstack-router"
+  },
+  "homepage": "https://github.com/jilimb0/UI-Library#readme",
+  "files": [
+    "dist",
+    "README.md"
+  ]
 }

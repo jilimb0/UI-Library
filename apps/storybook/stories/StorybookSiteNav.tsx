@@ -1,1 +1,1 @@
-export { CrossSiteNav as StorybookSiteNav } from '@ui-construction-library/core';
+export { CrossSiteNav as StorybookSiteNav } from './CrossSiteNav';

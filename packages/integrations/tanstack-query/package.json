@@ -1,6 +1,6 @@
 {
   "name": "@ui-construction-library/integration-tanstack-query",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
@@ -36,5 +36,23 @@
       "require": "./dist/index.js",
       "types": "./dist/index.d.ts"
     }
-  }
+  },
+  "description": "TanStack Query integration for @ui-construction-library — query-backed data components.",
+  "keywords": [
+    "tanstack-query",
+    "react-query",
+    "data-fetching",
+    "react",
+    "design-system"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jilimb0/UI-Library.git",
+    "directory": "packages/integrations/tanstack-query"
+  },
+  "homepage": "https://github.com/jilimb0/UI-Library#readme",
+  "files": [
+    "dist",
+    "README.md"
+  ]
 }

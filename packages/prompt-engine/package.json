@@ -32,5 +32,13 @@
     "rollup": "^4.34.8",
     "typescript": "^6.0.3",
     "vitest": "catalog:"
-  }
+  },
+  "description": "Internal AI prompt generation engine for @ui-construction-library tooling — not for direct consumer use.",
+  "keywords": [
+    "prompt",
+    "ai",
+    "internal",
+    "tooling",
+    "design-system"
+  ]
 }

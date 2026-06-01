@@ -5,7 +5,6 @@ import {
   Button,
   Card,
   CommandPalette,
-  CrossSiteNav,
   DataTable,
   DatePicker,
   Heading,
@@ -19,6 +18,7 @@ import {
   useTheme,
 } from '@ui-construction-library/core';
 import { useMemo, useState } from 'react';
+import { CrossSiteNav } from './CrossSiteNav';
 import { QualityDashboard } from './QualityDashboard';
 
 declare const __CORE_PACKAGE_VERSION__: string;

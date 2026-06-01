@@ -8,7 +8,10 @@
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/src/index.d.ts",
-  "sideEffects": ["*.css", "**/*.css"],
+  "sideEffects": [
+    "*.css",
+    "**/*.css"
+  ],
   "exports": {
     ".": {
       "import": "./dist/index.esm.js",
@@ -22,7 +25,8 @@
   },
   "files": [
     "dist",
-    "tailwind.preset.ts"
+    "tailwind.preset.ts",
+    "README.md"
   ],
   "scripts": {
     "build": "rollup -c",
@@ -38,5 +42,19 @@
     "vitest": "catalog:"
   },
   "license": "MIT",
-  "type": "module"
+  "type": "module",
+  "description": "Design token and theme contract for @ui-construction-library \u2014 colors, typography, spacing and CSS variables.",
+  "keywords": [
+    "design-tokens",
+    "css-variables",
+    "theme",
+    "tailwind",
+    "design-system"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jilimb0/UI-Library.git",
+    "directory": "packages/tokens"
+  },
+  "homepage": "https://github.com/jilimb0/UI-Library#readme"
 }

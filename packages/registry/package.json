@@ -1,6 +1,8 @@
 {
   "name": "@ui-construction-library/registry",
   "version": "0.1.2",
+  "description": "Internal component registry for @ui-construction-library tooling — not for direct consumer use.",
+  "keywords": ["registry", "internal", "tooling", "design-system"],
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"

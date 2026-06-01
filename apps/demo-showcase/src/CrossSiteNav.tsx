@@ -1,4 +1,4 @@
-import { Button, Card, Link, Text } from '../components';
+import { Button, Card, Link, Text } from '@ui-construction-library/core';
 
 export interface CrossSiteNavProps {
   demoHref?: string;

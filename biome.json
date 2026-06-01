@@ -20,6 +20,8 @@
       "!**/.next",
       "!packages/core/src/**/*.js",
       "!packages/core/src/**/*.d.ts",
+      "!packages/primitives/src/**/*.js",
+      "!packages/primitives/src/**/*.d.ts",
       "!scratch"
     ]
   },

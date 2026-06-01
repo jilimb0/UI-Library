@@ -18,7 +18,8 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
   "scripts": {
     "build": "rollup -c",
@@ -34,5 +35,17 @@
     "rollup": "^4.34.8",
     "typescript": "^6.0.3",
     "vitest": "catalog:"
-  }
+  },
+  "description": "Internal-first infrastructure utilities for @ui-construction-library \u2014 not part of the default consumer path.",
+  "keywords": [
+    "utilities",
+    "internal",
+    "design-system"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jilimb0/UI-Library.git",
+    "directory": "packages/utils"
+  },
+  "homepage": "https://github.com/jilimb0/UI-Library#readme"
 }

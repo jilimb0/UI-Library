@@ -35,5 +35,13 @@
     "rollup": "^4.34.8",
     "typescript": "^6.0.3",
     "vitest": "catalog:"
-  }
+  },
+  "description": "Internal CSS/styles build layer for @ui-construction-library — not for direct consumer use.",
+  "keywords": [
+    "styles",
+    "css",
+    "internal",
+    "tooling",
+    "design-system"
+  ]
 }

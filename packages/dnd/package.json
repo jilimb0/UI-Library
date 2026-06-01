@@ -1,6 +1,6 @@
 {
   "name": "@ui-construction-library/dnd",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
@@ -17,7 +17,8 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
   "scripts": {
     "build": "rollup -c",
@@ -43,5 +44,20 @@
     "vitest": "catalog:"
   },
   "license": "MIT",
-  "type": "module"
+  "type": "module",
+  "description": "Optional drag-and-drop extension for @ui-construction-library — DndContext, Kanban, sortable abstractions.",
+  "keywords": [
+    "drag-and-drop",
+    "dnd",
+    "sortable",
+    "kanban",
+    "react",
+    "design-system"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jilimb0/UI-Library.git",
+    "directory": "packages/dnd"
+  },
+  "homepage": "https://github.com/jilimb0/UI-Library#readme"
 }

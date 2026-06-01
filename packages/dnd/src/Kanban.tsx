@@ -6,7 +6,7 @@ import {
   type DragEndEvent,
   useDraggable,
   useDroppable,
-} from './index';
+} from './dnd';
 
 const DndContextCompat = DndContext as unknown as React.ComponentType<
   React.ComponentProps<typeof DndContext>

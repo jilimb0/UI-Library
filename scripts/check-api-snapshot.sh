@@ -27,7 +27,7 @@ const a = strip('$SNAPSHOT');
 const b = strip('$GENERATED');
 if (a !== b) process.exit(1);
 " || {
-  echo "API snapshot mismatch. Update with: node scripts/generate-api-snapshot.mjs > $SNAPSHOT"
+  echo "API snapshot mismatch. Run: pnpm update:api"
   exit 1
 }
 

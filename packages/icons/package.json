@@ -17,7 +17,8 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
   "scripts": {
     "build": "pnpm build:icons && rollup -c",
@@ -39,5 +40,18 @@
     "typescript": "^6.0.3"
   },
   "license": "MIT",
-  "type": "module"
+  "type": "module",
+  "description": "Standalone React icon package for @ui-construction-library \u2014 tree-shakeable SVG icon components.",
+  "keywords": [
+    "icons",
+    "svg",
+    "react",
+    "design-system"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jilimb0/UI-Library.git",
+    "directory": "packages/icons"
+  },
+  "homepage": "https://github.com/jilimb0/UI-Library#readme"
 }

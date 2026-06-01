@@ -285,7 +285,12 @@ function main() {
   }
 
   let updated = 0;
+  let index = 0;
   for (const pkg of targets) {
+    index++;
+    console.log(
+      `[changelog] processing ${index}/${targets.length} ${pkg.name}`
+    );
     const content = buildChangelog(pkg);
     if (!content) {
       console.log(`[changelog] skip  ${pkg.name} — no commits found`);

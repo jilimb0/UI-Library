@@ -1,11 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import {
-  Badge,
-  Card,
-  CrossSiteNav,
-  Heading,
-  Text,
-} from '@ui-construction-library/core';
+import { Badge, Card, Heading, Text } from '@ui-construction-library/core';
+import { CrossSiteNav } from './CrossSiteNav';
 
 const highlights = [
   {

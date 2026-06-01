@@ -17,7 +17,8 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
   "scripts": {
     "build": "rollup -c",
@@ -46,5 +47,21 @@
     "vitest": "catalog:"
   },
   "license": "MIT",
-  "type": "module"
+  "type": "module",
+  "description": "Headless overlay primitives for @ui-construction-library \u2014 Dialog, Popover, ContextMenu, Accordion, Tabs, Slider, Switch.",
+  "keywords": [
+    "headless",
+    "primitives",
+    "dialog",
+    "popover",
+    "accessible",
+    "react",
+    "design-system"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jilimb0/UI-Library.git",
+    "directory": "packages/primitives"
+  },
+  "homepage": "https://github.com/jilimb0/UI-Library#readme"
 }

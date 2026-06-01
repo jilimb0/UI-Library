@@ -1,9 +1,47 @@
 import type { Preview } from '@storybook/react';
-import { CrossSiteNav, ThemeProvider } from '@ui-construction-library/core';
+import {
+  Button,
+  Card,
+  Link,
+  Text,
+  ThemeProvider,
+} from '@ui-construction-library/core';
 import type { ReactNode } from 'react';
 import './storybook.css';
 
 type ThemeMode = 'light' | 'dark';
+
+function StorybookSiteNav() {
+  return (
+    <Card className="surface-panel" style={{ padding: '1rem 1.25rem' }}>
+      <div
+        className="inline-cluster"
+        style={{ justifyContent: 'space-between', width: '100%' }}
+      >
+        <div className="stack-vertical" style={{ gap: '0.25rem' }}>
+          <Text className="field-label" style={{ textTransform: 'none' }}>
+            Cross-site navigation
+          </Text>
+          <Text className="field-hint">
+            Move between demo, docs and Storybook without losing theme context.
+          </Text>
+        </div>
+        <div className="inline-cluster">
+          <Link href="../">
+            <Button variant="outline" size="sm">
+              Open demo
+            </Button>
+          </Link>
+          <Link href="../docs/">
+            <Button variant="outline" size="sm">
+              Open docs
+            </Button>
+          </Link>
+        </div>
+      </div>
+    </Card>
+  );
+}
 
 function StorybookShell({
   children,
@@ -32,13 +70,7 @@ function StorybookShell({
             gap: 24,
           }}
         >
-          {!hideSiteNav ? (
-            <CrossSiteNav
-              current="storybook"
-              demoHref="../"
-              docsHref="../docs/"
-            />
-          ) : null}
+          {!hideSiteNav ? <StorybookSiteNav /> : null}
           {children}
         </div>
       </div>

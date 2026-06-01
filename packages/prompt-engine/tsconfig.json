@@ -10,9 +10,7 @@
     "noEmit": false,
     "ignoreDeprecations": "6.0",
     "types": ["vitest/globals"],
-    "paths": {
-      "@ui-construction-library/schema": ["../schema/src/index.ts"]
-    }
+    "paths": {}
   },
   "include": ["src/**/*"],
   "references": [{ "path": "../schema" }]

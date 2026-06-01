@@ -1,4 +1,5 @@
-import { CrossSiteNav, ThemeProvider } from '@ui-construction-library/core';
+import { ThemeProvider } from '@ui-construction-library/core';
+import { CrossSiteNav } from './CrossSiteNav';
 import { ArchitectureSection } from './components/ArchitectureSection';
 import { ComponentGalleryCard } from './components/ComponentGalleryCard';
 import { FlagshipFlowsSection } from './components/FlagshipFlowsSection';

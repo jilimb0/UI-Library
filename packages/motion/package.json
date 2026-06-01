@@ -17,7 +17,8 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
   "scripts": {
     "build": "rollup -c",
@@ -54,5 +55,18 @@
     "vitest": "catalog:"
   },
   "license": "MIT",
-  "type": "module"
+  "type": "module",
+  "description": "Optional motion extension for @ui-construction-library \u2014 FadeIn, SlideIn, Bounce and animated wrappers.",
+  "keywords": [
+    "animation",
+    "motion",
+    "react",
+    "design-system"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jilimb0/UI-Library.git",
+    "directory": "packages/motion"
+  },
+  "homepage": "https://github.com/jilimb0/UI-Library#readme"
 }

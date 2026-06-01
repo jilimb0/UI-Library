@@ -2,8 +2,6 @@
 
 export * from './components';
 export * from './hooks';
-export type { CrossSiteNavProps } from './showcase/CrossSiteNav';
-export { CrossSiteNav } from './showcase/CrossSiteNav';
 export * from './styles';
 export * from './themes';
 export * from './types';
