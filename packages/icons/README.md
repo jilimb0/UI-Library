@@ -73,6 +73,18 @@ import { PlusIcon } from '@ui-construction-library/icons';
 <Button leftIcon={<PlusIcon size={16} />}>Add item</Button>
 ```
 
+
+## Roadmap
+
+The icon package now follows a staged production roadmap with a target scope of 290 icons across 10 categories. The current implementation is focused on Batch A foundations: navigation, actions, status, users/auth, and visibility toggles.
+
+Planning source of truth:
+
+- `docs/planning/icons-roadmap.md`
+- `packages/icons/src/icon-manifest.ts`
+
+Current implemented wave includes 62 ready icon modules tracked through the package manifest and build checks.
+
 ## Compatibility
 
 - React 18 and 19

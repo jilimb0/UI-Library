@@ -10,7 +10,7 @@ export default {
   input: 'src/index.ts',
   onwarn,
   output: [
-    { file: 'dist/index.js', format: 'cjs', sourcemap: false },
+    { file: 'dist/index.cjs', format: 'cjs', sourcemap: false },
     { file: 'dist/index.esm.js', format: 'esm', sourcemap: false },
   ],
   plugins: [
