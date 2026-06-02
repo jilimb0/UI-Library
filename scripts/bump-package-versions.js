@@ -147,12 +147,17 @@ async function main() {
 
   if (!bumped.length) return;
 
-  // Regenerate per-package changelogs after bumping
+  // Regenerate per-package changelogs after bumping only for bumped packages
   console.log('[bump] regenerating package changelogs...');
-  execSync(`node ${path.join(__dirname, 'generate-package-changelogs.js')}`, {
-    cwd: ROOT,
-    stdio: 'inherit',
-  });
+  for (const pkg of bumped) {
+    execSync(
+      `node ${path.join(__dirname, 'generate-package-changelogs.js')} ${pkg.name}`,
+      {
+        cwd: ROOT,
+        stdio: 'inherit',
+      }
+    );
+  }
 
   console.log(`[bump] done — ${bumped.length} package(s) bumped`);
 }

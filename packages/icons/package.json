@@ -1,6 +1,6 @@
 {
   "name": "@ui-construction-library/icons",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
@@ -41,7 +41,7 @@
   },
   "license": "MIT",
   "type": "module",
-  "description": "Standalone React icon package for @ui-construction-library \u2014 tree-shakeable SVG icon components.",
+  "description": "Standalone React icon package for @ui-construction-library — tree-shakeable SVG icon components.",
   "keywords": [
     "icons",
     "svg",
