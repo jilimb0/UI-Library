@@ -64,6 +64,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           aria-labelledby={labelId}
           aria-describedby={descriptionId}
+          data-size={size}
+          data-error={variant === 'error' || undefined}
           {...props}
         />
         {description && (

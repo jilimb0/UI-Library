@@ -2,6 +2,17 @@ import { type QueryKey, useQuery } from '@tanstack/react-query';
 import { DataTable } from '@ui-construction-library/core';
 import type { ReactNode } from 'react';
 
+export type { QueryBoundaryProps } from './QueryBoundary';
+export { QueryBoundary } from './QueryBoundary';
+export type { QueryListPage, QueryListProps } from './QueryList';
+export { QueryList } from './QueryList';
+export type { QueryTableProps } from './QueryTable';
+export { QueryTable } from './QueryTable';
+
+// ---------------------------------------------------------------------------
+// Legacy — AsyncDataTable (kept for backward compatibility)
+// ---------------------------------------------------------------------------
+
 type Column<T> = {
   key: string;
   header: string;
@@ -18,6 +29,7 @@ interface AsyncDataTableProps<T> {
   pageSize?: number;
 }
 
+/** @deprecated Use `QueryTable` instead, which adds skeleton, error and empty states. */
 export function AsyncDataTable<T>({
   queryKey,
   queryFn,

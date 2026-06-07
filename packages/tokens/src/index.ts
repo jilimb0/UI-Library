@@ -1,6 +1,7 @@
 export * from './borders';
 export * from './breakpoints';
 export * from './colors';
+export * from './componentTokens';
 export * from './cssVariables';
 export * from './motion';
 export * from './opacity';

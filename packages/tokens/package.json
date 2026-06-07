@@ -31,7 +31,7 @@
   "scripts": {
     "build": "rollup -c",
     "build:tokens": "node scripts/build-tokens.js",
-    "test": "vitest run --config ../../vitest.config.ts src",
+    "test": "vitest run --config ./vitest.config.ts src",
     "typecheck": "tsc --noEmit",
     "lint": "biome check src"
   },

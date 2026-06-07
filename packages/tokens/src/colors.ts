@@ -28,6 +28,12 @@ export type SemanticColors = {
   popover: string;
   ring: string;
   input: string;
+  intent: {
+    success: { bg: string; fg: string; border: string };
+    error: { bg: string; fg: string; border: string };
+    warning: { bg: string; fg: string; border: string };
+    info: { bg: string; fg: string; border: string };
+  };
 };
 
 export interface ColorTokens {
@@ -131,6 +137,12 @@ export const semanticLightColors: SemanticColors = {
   popover: '#ffffff',
   ring: '#09090b',
   input: '#e4e4e7',
+  intent: {
+    success: { bg: '#ecfdf5', fg: '#065f46', border: '#a7f3d0' },
+    error: { bg: '#fef2f2', fg: '#991b1b', border: '#fecaca' },
+    warning: { bg: '#fffbeb', fg: '#92400e', border: '#fde68a' },
+    info: { bg: '#eff6ff', fg: '#1e40af', border: '#bfdbfe' },
+  },
 };
 
 export const semanticDarkColors: SemanticColors = {
@@ -150,4 +162,10 @@ export const semanticDarkColors: SemanticColors = {
   popover: '#09090b',
   ring: '#ffffff',
   input: '#27272a',
+  intent: {
+    success: { bg: '#064e3b', fg: '#a7f3d0', border: '#065f46' },
+    error: { bg: '#7f1d1d', fg: '#fecaca', border: '#991b1b' },
+    warning: { bg: '#78350f', fg: '#fde68a', border: '#92400e' },
+    info: { bg: '#1e3a8a', fg: '#bfdbfe', border: '#1e40af' },
+  },
 };

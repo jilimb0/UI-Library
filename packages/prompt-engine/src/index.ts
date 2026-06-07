@@ -1,3 +1,4 @@
+export * from './compositionPlan';
 export * from './conversion';
 export {
   diffPromptDrafts,
@@ -9,4 +10,5 @@ export * from './generation';
 export * from './normalization';
 export * from './repair';
 export * from './scoring';
+export * from './sectionBuilder';
 export * from './types';

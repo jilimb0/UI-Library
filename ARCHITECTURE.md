@@ -10,6 +10,32 @@ The machine-readable source of truth for package visibility is `config/package-s
 
 ---
 
+## Positioning
+
+`@ui-construction-library` is a modular React UI system for **data-heavy application shells**, **tight framework integrations** (Next.js, TanStack, react-hook-form), and **design-system consistency** through tokens and primitives.
+
+### What this library is NOT
+
+- **Not a full MUI / Ant Design replacement.** It does not aim to ship 100+ components covering every conceivable UI pattern. It is deliberately scoped to app-shell, dashboard, and data-UI use cases.
+- **Not a shadcn / Radix clone.** It is not a source-code generator or a bare headless toolkit. It ships a styled, opinionated component layer on top of primitives, with first-class integration packages.
+
+### Key differentiators
+
+1. **Integration depth.** Dedicated, typed adapter packages for Next.js App Router, TanStack Query, TanStack Router, react-hook-form, and i18next — not afterthoughts, but first-class citizens with SSR-safe providers, query-boundary components, and router-aware navigation.
+2. **Tokens and primitives as first-class citizens.** A three-tier token hierarchy (primitive → semantic → component) with light/dark variants, and a headless primitives layer that core components are built from — not a side-effect of styling.
+3. **App-shell / dashboard / data-UI focus.** Canonical layout organisms (AppShell, Sidebar, TopNav), data components (DataTable, QueryTable), and form integration — purpose-built for product dashboards and internal tools, not marketing sites.
+
+### Target user
+
+Advanced full-stack TypeScript developer who:
+- Maintains 1–3 products,
+- Wants a single UI language across all applications,
+- Does not want the weight of MUI/Ant, but finds shadcn/Radix alone insufficient for integrations and design-system coherence.
+
+See [`docs/architecture/target-user.md`](./docs/architecture/target-user.md) for the detailed persona.
+
+---
+
 ## Package Roles
 
 | Package | Role | Audience |

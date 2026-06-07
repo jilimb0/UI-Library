@@ -9,5 +9,9 @@
     "noEmit": false,
     "ignoreDeprecations": "6.0"
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "references": [
+    { "path": "../../core" },
+    { "path": "../../tokens" }
+  ]
 }

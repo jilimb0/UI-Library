@@ -73,6 +73,10 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           !isNativeButton && (disabled || loading) ? true : undefined
         }
         aria-busy={loading ? true : undefined}
+        data-variant={variant}
+        data-size={size}
+        data-loading={loading || undefined}
+        data-disabled={disabled || loading || undefined}
         {...props}
       >
         {loading && <span className="button__spinner" aria-hidden="true" />}

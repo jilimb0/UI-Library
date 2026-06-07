@@ -5,6 +5,8 @@ export default defineConfig({
     environment: 'node',
     include: [
       'src/auth.test.ts',
+      'src/builderControllers.test.ts',
+      'src/builderEditorController.test.ts',
       'src/commentRepository.test.ts',
       'src/dataServices.test.ts',
       'src/editorState.test.ts',
@@ -13,7 +15,6 @@ export default defineConfig({
       'src/tree.test.ts',
       'src/versionRepository.test.ts',
       'src/schemaGuard.test.ts',
-      'src/builderControllers.test.ts',
     ],
     pool: 'threads',
     coverage: {

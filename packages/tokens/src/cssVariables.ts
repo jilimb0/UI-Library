@@ -6,6 +6,11 @@ import {
   semanticDarkColors,
   semanticLightColors,
 } from './colors';
+import {
+  type ComponentTokens,
+  componentDarkTokens,
+  componentLightTokens,
+} from './componentTokens';
 import { motion } from './motion';
 import { opacity } from './opacity';
 import { shadows } from './shadows';
@@ -18,6 +23,7 @@ export interface Theme {
   mode?: ThemeName;
   colors?: Partial<ColorTokens>;
   semantic?: Partial<SemanticColors>;
+  components?: Partial<ComponentTokens>;
   overrides?: Record<string, string>;
 }
 
@@ -35,6 +41,21 @@ function toThemeLayerForRoot(name: string, lines: string[]): string {
     ...lines,
     '}',
   ].join('\n');
+}
+
+function flattenTokenObject(
+  obj: Record<string, unknown>,
+  prefix: string,
+  lines: string[]
+): void {
+  for (const [key, value] of Object.entries(obj)) {
+    const varName = `${prefix}-${key}`;
+    if (typeof value === 'string') {
+      lines.push(toCSSVarLines(varName, value));
+    } else if (value !== null && typeof value === 'object') {
+      flattenTokenObject(value as Record<string, unknown>, varName, lines);
+    }
+  }
 }
 
 export function generateCSSVariables(theme: Theme = {}): string {
@@ -68,10 +89,29 @@ export function generateCSSVariables(theme: Theme = {}): string {
   (Object.keys(semantic) as Array<keyof SemanticColors>).forEach(
     (semanticName) => {
       const semanticValue = semantic[semanticName];
-      rootLines.push(
-        toCSSVarLines(`color-${String(semanticName)}`, semanticValue)
-      );
-      rootLines.push(toCSSVarLines(String(semanticName), semanticValue));
+      if (typeof semanticValue === 'string') {
+        rootLines.push(
+          toCSSVarLines(`color-${String(semanticName)}`, semanticValue)
+        );
+        rootLines.push(toCSSVarLines(String(semanticName), semanticValue));
+      } else if (semanticName === 'intent' && semanticValue) {
+        const intentObj = semanticValue as SemanticColors['intent'];
+        (Object.keys(intentObj) as Array<keyof typeof intentObj>).forEach(
+          (intentName) => {
+            const states = intentObj[intentName];
+            (Object.keys(states) as Array<keyof typeof states>).forEach(
+              (stateName) => {
+                rootLines.push(
+                  toCSSVarLines(
+                    `intent-${String(intentName)}-${String(stateName)}`,
+                    states[stateName]
+                  )
+                );
+              }
+            );
+          }
+        );
+      }
     }
   );
 
@@ -134,10 +174,30 @@ export function generateCSSVariables(theme: Theme = {}): string {
     toCSSVarLines(k.startsWith('--') ? k.slice(2) : k, v)
   );
 
+  // Component tokens
+  const modeComponentTokens =
+    mode === 'dark' ? componentDarkTokens : componentLightTokens;
+  const mergedComponents = {
+    ...modeComponentTokens,
+    ...theme.components,
+  } as ComponentTokens;
+
+  const componentLines: string[] = [];
+  (Object.keys(mergedComponents) as Array<keyof ComponentTokens>).forEach(
+    (componentName) => {
+      const tokenGroup = mergedComponents[componentName];
+      flattenTokenObject(
+        tokenGroup as unknown as Record<string, unknown>,
+        String(componentName),
+        componentLines
+      );
+    }
+  );
+
   return [
     toThemeLayerForRoot('light', rootLines),
-    toThemeLayer('light', overrideLines),
+    toThemeLayer('light', [...componentLines, ...overrideLines]),
     toThemeLayerForRoot('dark', rootLines),
-    toThemeLayer('dark', overrideLines),
+    toThemeLayer('dark', [...componentLines, ...overrideLines]),
   ].join('\n\n');
 }

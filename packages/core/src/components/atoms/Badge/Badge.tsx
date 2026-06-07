@@ -27,6 +27,7 @@ const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
         ref={ref}
         className={cn(badgeVariants({ variant, className }))}
         style={style}
+        data-variant={variant}
         {...props}
       />
     );
