@@ -24,6 +24,7 @@
     "typecheck": "turbo run typecheck",
     "check:deps": "./scripts/check-dependency-boundaries.sh && ./scripts/check-app-dependency-policy.sh",
     "check:boundaries": "node ./scripts/check-package-boundaries.mjs",
+    "check:public-surface": "node ./scripts/check-public-surface.mjs",
     "check:api": "./scripts/check-api-snapshot.sh",
     "update:api": "node scripts/generate-api-snapshot.mjs > packages/core/api-snapshot.json",
     "check:published": "node ./scripts/check-published-versions.js",
@@ -63,7 +64,7 @@
     "sync-versions": "node scripts/sync-app-versions.js",
     "sync-versions:dry": "node scripts/sync-app-versions.js --dry-run",
     "release": "turbo run build && changeset publish",
-    "validate": "pnpm check:hygiene && pnpm check:workspace-scripts && pnpm check:boundaries && pnpm check:deps && pnpm check:api && pnpm registry:source:check && pnpm preset:check && pnpm check:gold-kits && pnpm check:launch && pnpm lint:fix && pnpm typecheck && pnpm test && pnpm build && pnpm check:bundle && pnpm check:perf",
+    "validate": "pnpm check:hygiene && pnpm check:workspace-scripts && pnpm check:boundaries && pnpm check:public-surface && pnpm check:deps && pnpm check:api && pnpm registry:source:check && pnpm preset:check && pnpm check:gold-kits && pnpm check:launch && pnpm lint:fix && pnpm typecheck && pnpm test && pnpm build && pnpm check:bundle && pnpm check:perf",
     "validate:platform": "pnpm validate && pnpm check:e2e",
     "prepare": "husky",
     "check:supabase-schema": "node ./scripts/check-supabase-schema-skeleton.js"

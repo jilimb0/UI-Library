@@ -1,5 +1,7 @@
 # @ui-construction-library/export-core
 
+> INTERNAL-ONLY: This package is not part of the public API surface.
+
 Deterministic builder-document export pipeline for generated application artifacts.
 
 ## Status

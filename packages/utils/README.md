@@ -1,5 +1,7 @@
 # @ui-construction-library/utils
 
+> INTERNAL-ONLY: This package is not part of the public API surface.
+
 Internal-first infrastructure package for the UI Construction Library. Contains shared helpers, hooks, DOM utilities, and type utilities used by `core` and extension packages.
 
 ## When to use

@@ -34,10 +34,12 @@
     "vitest": "catalog:"
   },
   "description": "Internal schema definitions for @ui-construction-library tooling — not for direct consumer use.",
+  "ui-construction": {
+    "surface": "internal",
+    "mode": "platform"
+  },
   "keywords": [
-    "schema",
     "internal",
-    "tooling",
-    "design-system"
+    "tooling"
   ]
 }

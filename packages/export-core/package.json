@@ -41,10 +41,12 @@
     "vitest": "catalog:"
   },
   "description": "Internal export pipeline for @ui-construction-library tooling — not for direct consumer use.",
+  "ui-construction": {
+    "surface": "internal",
+    "mode": "platform"
+  },
   "keywords": [
-    "export",
     "internal",
-    "tooling",
-    "design-system"
+    "tooling"
   ]
 }

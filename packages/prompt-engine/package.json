@@ -34,11 +34,12 @@
     "vitest": "catalog:"
   },
   "description": "Internal AI prompt generation engine for @ui-construction-library tooling — not for direct consumer use.",
+  "ui-construction": {
+    "surface": "internal",
+    "mode": "platform"
+  },
   "keywords": [
-    "prompt",
-    "ai",
     "internal",
-    "tooling",
-    "design-system"
+    "tooling"
   ]
 }

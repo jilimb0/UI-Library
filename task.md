@@ -4,6 +4,13 @@
 Validate
 
 ## Completed
+- Planned the P0 public/internal package surface slice from the attached roadmap.
+- Added the machine-readable package surface contract in `config/package-surface.json`.
+- Added internal package metadata and README notices for internal/platform packages.
+- Added a public surface validation script and wired it into `pnpm validate`.
+- Updated architecture docs to distinguish Library mode from Platform mode.
+- Fixed performance Vitest aliases so perf tests resolve workspace packages instead of stale published package copies.
+- Ran full `pnpm validate` successfully after the public/internal surface guardrail changes.
 - Identified which `@ui-construction-library/*` packages are published on npm.
 - Converted app/package manifests to use published semver ranges for packages already on npm.
 - Refreshed `pnpm-lock.yaml` with the updated dependency specifiers.
@@ -49,4 +56,4 @@ Validate
   green.
 
 ## Blockers
-- None for the current A+ validation slice.
+- Branch creation with the requested `tech/public-internal-surface` name succeeded after explicit approval.

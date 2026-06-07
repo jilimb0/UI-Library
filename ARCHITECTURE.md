@@ -6,6 +6,8 @@ This document defines the package architecture, public API boundaries, dependenc
 
 The goal is to make the library easy to adopt, easy to evolve, safe to integrate into external projects, and understandable for humans and AI agents.
 
+The machine-readable source of truth for package visibility is `config/package-surface.json`.
+
 ---
 
 ## Package Roles
@@ -19,7 +21,16 @@ The goal is to make the library easy to adopt, easy to evolve, safe to integrate
 | `@ui-construction-library/motion` | **Optional motion extension.** Motion-enhanced components, animation wrappers. | Consumers who explicitly want motion behaviour. |
 | `@ui-construction-library/dnd` | **Optional drag-and-drop extension.** Sortable abstractions, DnD adapters. | Consumers who explicitly need drag-and-drop. |
 | `@ui-construction-library/react-hook-form` | **Optional form adapter layer.** Bindings between `core` form primitives and `react-hook-form`. | Consumers who use `react-hook-form`. |
-| `@ui-construction-library/utils` | **Internal-first infrastructure.** Helpers, hooks, DOM utilities, type utilities. | Library maintainers and extension packages only. |
+| `@ui-construction-library/integration-i18n` | **Optional i18next integration.** Locale-aware wrappers and translation helpers. | Consumers who use i18next. |
+| `@ui-construction-library/integration-next` | **Optional Next.js integration.** SSR-safe providers and App Router glue. | Consumers who use Next.js App Router. |
+| `@ui-construction-library/integration-tanstack-query` | **Optional TanStack Query integration.** Query-backed data UI helpers. | Consumers who use TanStack Query. |
+| `@ui-construction-library/integration-tanstack-router` | **Optional TanStack Router integration.** Router-bound navigation helpers. | Consumers who use TanStack Router. |
+| `@ui-construction-library/utils` | **Internal infrastructure.** Helpers, hooks, DOM utilities, type utilities. | Library maintainers and extension packages only. |
+| `@ui-construction-library/styles` | **Internal style runtime.** CSS reset, theme layers, and style build entrypoints. | Library maintainers only. |
+| `@ui-construction-library/schema` | **Internal platform contract.** Builder/export/prompt JSON schemas. | Platform maintainers only. |
+| `@ui-construction-library/registry` | **Internal platform registry.** Component metadata for builder, docs, and export pipelines. | Platform maintainers only. |
+| `@ui-construction-library/export-core` | **Internal platform export pipeline.** Deterministic builder-document rendering. | Platform maintainers only. |
+| `@ui-construction-library/prompt-engine` | **Internal platform generation engine.** Deterministic prompt-to-builder draft generation. | Platform maintainers only. |
 
 ---
 
@@ -43,11 +54,18 @@ The goal is to make the library easy to adopt, easy to evolve, safe to integrate
                 +----> @ui-construction-library/dnd
                 |
                 +----> @ui-construction-library/react-hook-form
+                |
+                +----> @ui-construction-library/integration-*
 
 @ui-construction-library/utils
         ^
         |
    internal dependency of core / extensions only
+
+@ui-construction-library/schema / registry / export-core / prompt-engine
+        ^
+        |
+   internal platform dependency of builder / export / generation systems only
 ```
 
 ---
@@ -64,7 +82,9 @@ The goal is to make the library easy to adopt, easy to evolve, safe to integrate
 - `dnd → utils`
 - `react-hook-form → core`
 - `react-hook-form → utils`
+- `integration-* → core`
 - `core → icons` (only for intentional re-exports)
+- Platform internals may depend on other platform internals according to their package manifests.
 
 ### Forbidden
 - `tokens → core`
@@ -91,11 +111,20 @@ Consumers should import from:
 - `@ui-construction-library/motion`
 - `@ui-construction-library/dnd`
 - `@ui-construction-library/react-hook-form`
+- `@ui-construction-library/integration-i18n`
+- `@ui-construction-library/integration-next`
+- `@ui-construction-library/integration-tanstack-query`
+- `@ui-construction-library/integration-tanstack-router`
 
 ### Restricted entrypoints
 
 Consumers should **not** import from:
 - `@ui-construction-library/utils` (unless explicitly documented)
+- `@ui-construction-library/styles`
+- `@ui-construction-library/schema`
+- `@ui-construction-library/registry`
+- `@ui-construction-library/export-core`
+- `@ui-construction-library/prompt-engine`
 - `dist/*` or `src/*` paths
 - Any undocumented subpath export
 
@@ -133,7 +162,22 @@ pnpm add @ui-construction-library/icons
 pnpm add @ui-construction-library/motion
 pnpm add @ui-construction-library/dnd
 pnpm add @ui-construction-library/react-hook-form react-hook-form
+pnpm add @ui-construction-library/integration-i18n i18next react-i18next
+pnpm add @ui-construction-library/integration-next next
+pnpm add @ui-construction-library/integration-tanstack-query @tanstack/react-query
+pnpm add @ui-construction-library/integration-tanstack-router @tanstack/react-router
 ```
+
+## Library Mode vs Platform Mode
+
+The repository has two product modes:
+
+| Mode | Paths | Dependency policy |
+|---|---|---|
+| Library mode | `apps/docs`, `apps/storybook`, `apps/playground`, `apps/demo-showcase` | Public packages only. Internal package imports are forbidden. |
+| Platform mode | `apps/builder`, `supabase`, `registry/source` | May use internal platform packages to implement builder, export, registry, and prompt workflows. |
+
+Library mode is the default consumer mental model. Platform mode is intentionally documented separately so builder/export/prompt internals do not expand the ordinary UI-kit onboarding surface.
 
 ---
 
@@ -196,6 +240,7 @@ Every public package must define explicit `exports`.
 Any of the following requires an architecture review:
 - Changing package roles
 - Making `utils` part of public onboarding
+- Making any internal package part of public onboarding
 - Introducing new public subpath exports
 - Adding dependency edges outside the allowed graph
 - Re-exporting extension package APIs from `core`

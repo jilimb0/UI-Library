@@ -37,11 +37,12 @@
     "vitest": "catalog:"
   },
   "description": "Internal CSS/styles build layer for @ui-construction-library — not for direct consumer use.",
+  "ui-construction": {
+    "surface": "internal",
+    "mode": "library"
+  },
   "keywords": [
-    "styles",
-    "css",
     "internal",
-    "tooling",
-    "design-system"
+    "tooling"
   ]
 }
