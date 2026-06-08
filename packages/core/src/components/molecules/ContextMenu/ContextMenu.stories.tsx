@@ -39,6 +39,7 @@ export const Interaction: Story = {
     const canvas = within(canvasElement);
     const trigger = canvas.getByRole('button', { name: 'Right click me' });
     await userEvent.pointer([{ target: trigger, keys: '[MouseRight]' }]);
-    await expect(canvas.getByText('Open')).toBeInTheDocument();
+    const body = within(canvasElement.ownerDocument.body);
+    await expect(body.getByText('Open')).toBeInTheDocument();
   },
 };
