@@ -36,12 +36,64 @@ See [`docs/architecture/target-user.md`](./docs/architecture/target-user.md) for
 
 ---
 
+## Architecture Layers
+
+The library follows a three-layer architecture that separates framework-agnostic
+design foundations from framework-specific implementations.
+
+### Layer A — Universal Core (framework-agnostic)
+
+Zero framework dependencies. Consumable by any JS/TS environment.
+
+- **`tokens`** — Design tokens as TS objects, JSON exports, CSS custom properties (`--ucl-*` namespace), and a Tailwind preset.
+- **`styles`** — Pure CSS layer: reset, component classes (`ucl-` prefixed with backward-compat aliases), density presets, and utility classes.
+- **`behaviors`** — Pure JS state machines and ARIA logic (no React, no DOM). Factory functions like `createSwitchBehavior()`, `createDialogBehavior()` returning `{ attrs, className }`.
+- **`utils`** — Generic JS utilities: date, number, string, object helpers.
+
+### Layer B — React Adapter (reference implementation)
+
+- **`primitives`** — Headless React components consuming `behaviors` for ARIA/state delegation.
+- **`core`** — Styled React components consuming `primitives` + `styles` + `tokens`.
+- **`icons`**, **`motion`**, **`dnd`** — React-specific extension packages.
+- **`integrations/*`** — Adapters for Next.js, TanStack Query/Router, React Hook Form, i18next.
+
+### Layer C — Other Framework Adapters (future)
+
+Not yet implemented. When demand arises, new adapter packages will consume
+`tokens` + `styles` + `behaviors` from Layer A and wrap them in idiomatic
+components for Vue, Solid, Angular, or other frameworks.
+
+### Dependency flow
+
+```
+Layer A (Universal Core)
+  tokens → (no deps)
+  styles → tokens (CSS vars only)
+  behaviors → (no deps, pure JS)
+  utils → (no deps, pure JS)
+
+Layer B (React Adapter)
+  primitives → behaviors, utils
+  core → primitives, tokens, styles
+  icons, motion, dnd → core, tokens
+  integrations → core (+ third-party peer deps)
+
+Layer C (Future Adapters)
+  adapter-* → tokens, styles, behaviors (from Layer A)
+```
+
+See [`docs/architecture/package-layers.md`](./docs/architecture/package-layers.md)
+for the complete package classification inventory.
+
+---
+
 ## Package Roles
 
 | Package | Role | Audience |
 |---|---|---|
 | `@ui-construction-library/core` | **Primary public entrypoint.** Base UI components, provider/theme glue, public hooks. | Almost all consumers. |
-| `@ui-construction-library/tokens` | **Design token and theme contract.** Color, typography, spacing, semantic tokens, CSS variables. | Consumers who need theming or token-level integration. |
+| `@ui-construction-library/tokens` | **Design token and theme contract.** Color, typography, spacing, semantic tokens, CSS variables (`--ucl-*` namespace), JSON exports, Tailwind preset. | Consumers who need theming or token-level integration. |
+| `@ui-construction-library/behaviors` | **Framework-agnostic interaction logic.** Pure JS state machines, ARIA attributes, and behavior factories (no React, no DOM). | Consumers building custom components in any framework. |
 | `@ui-construction-library/icons` | **Standalone icon package.** React icon components, no component logic. | Consumers who need icons with or without `core`. |
 | `@ui-construction-library/primitives` | **Headless overlay primitives.** Dialog, Popover, ContextMenu, Accordion, Tabs, Slider, Switch. | `core` internally; advanced consumers building custom overlays. |
 | `@ui-construction-library/motion` | **Optional motion extension.** Motion-enhanced components, animation wrappers. | Consumers who explicitly want motion behaviour. |
@@ -52,7 +104,7 @@ See [`docs/architecture/target-user.md`](./docs/architecture/target-user.md) for
 | `@ui-construction-library/integration-tanstack-query` | **Optional TanStack Query integration.** Query-backed data UI helpers. | Consumers who use TanStack Query. |
 | `@ui-construction-library/integration-tanstack-router` | **Optional TanStack Router integration.** Router-bound navigation helpers. | Consumers who use TanStack Router. |
 | `@ui-construction-library/utils` | **Internal infrastructure.** Helpers, hooks, DOM utilities, type utilities. | Library maintainers and extension packages only. |
-| `@ui-construction-library/styles` | **Internal style runtime.** CSS reset, theme layers, and style build entrypoints. | Library maintainers only. |
+| `@ui-construction-library/styles` | **Universal CSS layer.** Reset, component classes (`ucl-` prefixed), density presets, utility classes. Bundled `dist/styles.css`. | Consumers who import the CSS layer directly. |
 | `@ui-construction-library/schema` | **Internal platform contract.** Builder/export/prompt JSON schemas. | Platform maintainers only. |
 | `@ui-construction-library/registry` | **Internal platform registry.** Component metadata for builder, docs, and export pipelines. | Platform maintainers only. |
 | `@ui-construction-library/export-core` | **Internal platform export pipeline.** Deterministic builder-document rendering. | Platform maintainers only. |
@@ -102,6 +154,9 @@ See [`docs/architecture/target-user.md`](./docs/architecture/target-user.md) for
 - `core → tokens`
 - `core → utils`
 - `core → primitives`
+- `core → styles`
+- `primitives → behaviors`
+- `primitives → utils`
 - `motion → core`
 - `motion → utils`
 - `dnd → core`
@@ -110,13 +165,17 @@ See [`docs/architecture/target-user.md`](./docs/architecture/target-user.md) for
 - `react-hook-form → utils`
 - `integration-* → core`
 - `core → icons` (only for intentional re-exports)
+- `behaviors → (no deps)`
 - Platform internals may depend on other platform internals according to their package manifests.
 
 ### Forbidden
 - `tokens → core`
+- `tokens → behaviors`
 - `icons → core`
 - `utils → core`
 - `primitives → core`
+- `behaviors → primitives`
+- `behaviors → core`
 - `motion → dnd`
 - `dnd → motion`
 - `react-hook-form → motion`
@@ -132,6 +191,7 @@ See [`docs/architecture/target-user.md`](./docs/architecture/target-user.md) for
 Consumers should import from:
 - `@ui-construction-library/core`
 - `@ui-construction-library/tokens`
+- `@ui-construction-library/behaviors`
 - `@ui-construction-library/icons`
 - `@ui-construction-library/primitives`
 - `@ui-construction-library/motion`
@@ -146,7 +206,6 @@ Consumers should import from:
 
 Consumers should **not** import from:
 - `@ui-construction-library/utils` (unless explicitly documented)
-- `@ui-construction-library/styles`
 - `@ui-construction-library/schema`
 - `@ui-construction-library/registry`
 - `@ui-construction-library/export-core`

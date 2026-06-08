@@ -1,0 +1,366 @@
+/* ==========================================================================
+   UCL Base Layer — Reset, semantic token aliases, and typography defaults
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Minimal CSS Reset
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: var(--ucl-font-sans, 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color-scheme: light dark;
+  background-color: var(--ucl-color-background, #ffffff);
+  color: var(--ucl-color-foreground, #09090b);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body {
+  font-size: var(--ucl-text-base, clamp(1rem, 0.96rem + 0.22vw, 1.125rem));
+  background: var(--ucl-color-background, #ffffff);
+  color: var(--ucl-color-foreground, #09090b);
+}
+
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+input, button, textarea, select {
+  font: inherit;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+/* --------------------------------------------------------------------------
+   2. Semantic Token Aliases
+   Map short semantic names to the canonical --ucl-* token namespace.
+   Components reference these short names; this section bridges them.
+   -------------------------------------------------------------------------- */
+:root {
+  /* Surfaces */
+  --ucl-background: var(--ucl-color-background, #ffffff);
+  --ucl-foreground: var(--ucl-color-foreground, #09090b);
+  --ucl-card: var(--ucl-color-card, #ffffff);
+  --ucl-card-foreground: var(--ucl-color-foreground, #09090b);
+  --ucl-popover: var(--ucl-color-popover, #ffffff);
+  --ucl-popover-foreground: var(--ucl-color-foreground, #09090b);
+
+  /* UI surfaces */
+  --ucl-muted: var(--ucl-color-muted, #f4f4f5);
+  --ucl-muted-foreground: var(--ucl-color-muted-foreground, #71717a);
+  --ucl-accent: var(--ucl-color-accent, #f4f4f5);
+  --ucl-accent-foreground: var(--ucl-color-foreground, #09090b);
+  --ucl-border: var(--ucl-color-border, #e4e4e7);
+  --ucl-input: var(--ucl-color-input, #e4e4e7);
+  --ucl-ring: var(--ucl-color-ring, #09090b);
+
+  /* Brand & feedback */
+  --ucl-primary: var(--ucl-color-primary, #09090b);
+  --ucl-primary-foreground: var(--ucl-color-background, #ffffff);
+  --ucl-secondary: var(--ucl-color-secondary, #71717a);
+  --ucl-secondary-foreground: var(--ucl-color-background, #ffffff);
+  --ucl-success: var(--ucl-color-success, #10b981);
+  --ucl-success-foreground: var(--ucl-color-background, #ffffff);
+  --ucl-warning: var(--ucl-color-warning, #f59e0b);
+  --ucl-warning-foreground: var(--ucl-color-background, #ffffff);
+  --ucl-error: var(--ucl-color-error, #ef4444);
+  --ucl-error-foreground: var(--ucl-color-background, #ffffff);
+  --ucl-info: var(--ucl-color-info, #3b82f6);
+  --ucl-info-foreground: var(--ucl-color-background, #ffffff);
+
+  /* Typography */
+  --ucl-font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --ucl-font-serif: 'Source Serif 4', ui-serif, Georgia, Cambria, 'Times New Roman', serif;
+  --ucl-font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+
+  /* Fluid type scale */
+  --ucl-text-xs: clamp(0.75rem, 0.72rem + 0.12vw, 0.875rem);
+  --ucl-text-sm: clamp(0.875rem, 0.84rem + 0.16vw, 1rem);
+  --ucl-text-base: clamp(1rem, 0.96rem + 0.22vw, 1.125rem);
+  --ucl-text-lg: clamp(1.125rem, 1.04rem + 0.36vw, 1.375rem);
+  --ucl-text-xl: clamp(1.25rem, 1.08rem + 0.72vw, 1.75rem);
+  --ucl-text-2xl: clamp(1.5rem, 1.18rem + 1.24vw, 2.375rem);
+  --ucl-text-3xl: clamp(1.875rem, 1.28rem + 2.1vw, 3rem);
+  --ucl-text-4xl: clamp(2.25rem, 1.4rem + 3vw, 4rem);
+  --ucl-text-5xl: clamp(3rem, 1.8rem + 4vw, 5rem);
+  --ucl-text-6xl: clamp(3.75rem, 2.4rem + 4.8vw, 6rem);
+
+  /* Spacing scale */
+  --ucl-spacing-0: 0px;
+  --ucl-spacing-0-5: 0.125rem;
+  --ucl-spacing-1: 0.25rem;
+  --ucl-spacing-1-5: 0.375rem;
+  --ucl-spacing-2: 0.5rem;
+  --ucl-spacing-2-5: 0.625rem;
+  --ucl-spacing-3: 0.75rem;
+  --ucl-spacing-3-5: 0.875rem;
+  --ucl-spacing-4: 1rem;
+  --ucl-spacing-5: 1.25rem;
+  --ucl-spacing-6: 1.5rem;
+  --ucl-spacing-7: 1.75rem;
+  --ucl-spacing-8: 2rem;
+  --ucl-spacing-9: 2.25rem;
+  --ucl-spacing-10: 2.5rem;
+  --ucl-spacing-11: 2.75rem;
+  --ucl-spacing-12: 3rem;
+  --ucl-spacing-14: 3.5rem;
+  --ucl-spacing-16: 4rem;
+  --ucl-spacing-20: 5rem;
+  --ucl-spacing-24: 6rem;
+  --ucl-spacing-28: 7rem;
+  --ucl-spacing-32: 8rem;
+  --ucl-spacing-36: 9rem;
+  --ucl-spacing-40: 10rem;
+  --ucl-spacing-44: 11rem;
+  --ucl-spacing-48: 12rem;
+  --ucl-spacing-56: 14rem;
+  --ucl-spacing-64: 16rem;
+
+  /* Radius & shadows */
+  --ucl-radius: 2px;
+  --ucl-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --ucl-shadow-md: 0 1px 3px 0 rgba(0, 0, 0, 0.08), 0 1px 2px -1px rgba(0, 0, 0, 0.08);
+  --ucl-shadow-lg: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.08);
+  --ucl-shadow-xl: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.08);
+
+  /* Backward-compat aliases: short names → ucl namespaced values */
+  --background: var(--ucl-background);
+  --foreground: var(--ucl-foreground);
+  --muted: var(--ucl-muted);
+  --muted-foreground: var(--ucl-muted-foreground);
+  --border: var(--ucl-border);
+  --input: var(--ucl-input);
+  --ring: var(--ucl-ring);
+  --primary: var(--ucl-primary);
+  --primary-foreground: var(--ucl-primary-foreground);
+  --secondary: var(--ucl-secondary);
+  --secondary-foreground: var(--ucl-secondary-foreground);
+  --success: var(--ucl-success);
+  --success-foreground: var(--ucl-success-foreground);
+  --warning: var(--ucl-warning);
+  --warning-foreground: var(--ucl-warning-foreground);
+  --error: var(--ucl-error);
+  --error-foreground: var(--ucl-error-foreground);
+  --info: var(--ucl-info);
+  --info-foreground: var(--ucl-info-foreground);
+  --card: var(--ucl-card);
+  --card-foreground: var(--ucl-card-foreground);
+  --popover: var(--ucl-popover);
+  --popover-foreground: var(--ucl-popover-foreground);
+  --accent: var(--ucl-accent);
+  --accent-foreground: var(--ucl-accent-foreground);
+  --font-sans: var(--ucl-font-sans);
+  --font-serif: var(--ucl-font-serif);
+  --font-mono: var(--ucl-font-mono);
+  --text-xs: var(--ucl-text-xs);
+  --text-sm: var(--ucl-text-sm);
+  --text-base: var(--ucl-text-base);
+  --text-lg: var(--ucl-text-lg);
+  --text-xl: var(--ucl-text-xl);
+  --text-2xl: var(--ucl-text-2xl);
+  --text-3xl: var(--ucl-text-3xl);
+  --text-4xl: var(--ucl-text-4xl);
+  --text-5xl: var(--ucl-text-5xl);
+  --text-6xl: var(--ucl-text-6xl);
+  --spacing-0: var(--ucl-spacing-0);
+  --spacing-0-5: var(--ucl-spacing-0-5);
+  --spacing-1: var(--ucl-spacing-1);
+  --spacing-1-5: var(--ucl-spacing-1-5);
+  --spacing-2: var(--ucl-spacing-2);
+  --spacing-2-5: var(--ucl-spacing-2-5);
+  --spacing-3: var(--ucl-spacing-3);
+  --spacing-3-5: var(--ucl-spacing-3-5);
+  --spacing-4: var(--ucl-spacing-4);
+  --spacing-5: var(--ucl-spacing-5);
+  --spacing-6: var(--ucl-spacing-6);
+  --spacing-7: var(--ucl-spacing-7);
+  --spacing-8: var(--ucl-spacing-8);
+  --spacing-9: var(--ucl-spacing-9);
+  --spacing-10: var(--ucl-spacing-10);
+  --spacing-11: var(--ucl-spacing-11);
+  --spacing-12: var(--ucl-spacing-12);
+  --spacing-14: var(--ucl-spacing-14);
+  --spacing-16: var(--ucl-spacing-16);
+  --spacing-20: var(--ucl-spacing-20);
+  --spacing-24: var(--ucl-spacing-24);
+  --spacing-28: var(--ucl-spacing-28);
+  --spacing-32: var(--ucl-spacing-32);
+  --spacing-36: var(--ucl-spacing-36);
+  --spacing-40: var(--ucl-spacing-40);
+  --spacing-44: var(--ucl-spacing-44);
+  --spacing-48: var(--ucl-spacing-48);
+  --spacing-56: var(--ucl-spacing-56);
+  --spacing-64: var(--ucl-spacing-64);
+  --radius: var(--ucl-radius);
+  --shadow-sm: var(--ucl-shadow-sm);
+  --shadow-md: var(--ucl-shadow-md);
+  --shadow-lg: var(--ucl-shadow-lg);
+  --shadow-xl: var(--ucl-shadow-xl);
+}
+
+/* --------------------------------------------------------------------------
+   3. Dark Theme
+   -------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --ucl-background: var(--ucl-color-background, #09090b);
+    --ucl-foreground: var(--ucl-color-foreground, #fafafa);
+    --ucl-muted: var(--ucl-color-muted, #18181b);
+    --ucl-muted-foreground: var(--ucl-color-muted-foreground, #a1a1aa);
+    --ucl-border: var(--ucl-color-border, #27272a);
+    --ucl-primary: var(--ucl-color-primary, #ffffff);
+    --ucl-primary-foreground: var(--ucl-color-background, #09090b);
+    --ucl-secondary: var(--ucl-color-secondary, #a1a1aa);
+    --ucl-secondary-foreground: var(--ucl-color-background, #09090b);
+    --ucl-success: var(--ucl-color-success, #10b981);
+    --ucl-success-foreground: var(--ucl-color-background, #09090b);
+    --ucl-warning: var(--ucl-color-warning, #f59e0b);
+    --ucl-warning-foreground: var(--ucl-color-background, #09090b);
+    --ucl-error: var(--ucl-color-error, #ef4444);
+    --ucl-error-foreground: var(--ucl-color-background, #09090b);
+    --ucl-info: var(--ucl-color-info, #3b82f6);
+    --ucl-info-foreground: var(--ucl-color-background, #09090b);
+    --ucl-card: var(--ucl-color-card, #09090b);
+    --ucl-card-foreground: var(--ucl-color-foreground, #fafafa);
+    --ucl-popover: var(--ucl-color-popover, #09090b);
+    --ucl-popover-foreground: var(--ucl-color-foreground, #fafafa);
+    --ucl-accent: var(--ucl-color-accent, #18181b);
+    --ucl-accent-foreground: var(--ucl-color-foreground, #fafafa);
+    --ucl-input: var(--ucl-color-input, #27272a);
+    --ucl-ring: var(--ucl-color-ring, #ffffff);
+
+    /* Backward-compat aliases */
+    --background: var(--ucl-background);
+    --foreground: var(--ucl-foreground);
+    --muted: var(--ucl-muted);
+    --muted-foreground: var(--ucl-muted-foreground);
+    --border: var(--ucl-border);
+    --input: var(--ucl-input);
+    --ring: var(--ucl-ring);
+    --primary: var(--ucl-primary);
+    --primary-foreground: var(--ucl-primary-foreground);
+    --secondary: var(--ucl-secondary);
+    --secondary-foreground: var(--ucl-secondary-foreground);
+    --success: var(--ucl-success);
+    --success-foreground: var(--ucl-success-foreground);
+    --warning: var(--ucl-warning);
+    --warning-foreground: var(--ucl-warning-foreground);
+    --error: var(--ucl-error);
+    --error-foreground: var(--ucl-error-foreground);
+    --info: var(--ucl-info);
+    --info-foreground: var(--ucl-info-foreground);
+    --card: var(--ucl-card);
+    --card-foreground: var(--ucl-card-foreground);
+    --popover: var(--ucl-popover);
+    --popover-foreground: var(--ucl-popover-foreground);
+    --accent: var(--ucl-accent);
+    --accent-foreground: var(--ucl-accent-foreground);
+  }
+}
+
+:root[data-theme='dark'] {
+  --ucl-background: var(--ucl-color-background, #09090b);
+  --ucl-foreground: var(--ucl-color-foreground, #fafafa);
+  --ucl-muted: var(--ucl-color-muted, #18181b);
+  --ucl-muted-foreground: var(--ucl-color-muted-foreground, #a1a1aa);
+  --ucl-border: var(--ucl-color-border, #27272a);
+  --ucl-primary: var(--ucl-color-primary, #ffffff);
+  --ucl-primary-foreground: var(--ucl-color-background, #09090b);
+  --ucl-secondary: var(--ucl-color-secondary, #a1a1aa);
+  --ucl-secondary-foreground: var(--ucl-color-background, #09090b);
+  --ucl-success: var(--ucl-color-success, #10b981);
+  --ucl-success-foreground: var(--ucl-color-background, #09090b);
+  --ucl-warning: var(--ucl-color-warning, #f59e0b);
+  --ucl-warning-foreground: var(--ucl-color-background, #09090b);
+  --ucl-error: var(--ucl-color-error, #ef4444);
+  --ucl-error-foreground: var(--ucl-color-background, #09090b);
+  --ucl-info: var(--ucl-color-info, #3b82f6);
+  --ucl-info-foreground: var(--ucl-color-background, #09090b);
+  --ucl-card: var(--ucl-color-card, #09090b);
+  --ucl-card-foreground: var(--ucl-color-foreground, #fafafa);
+  --ucl-popover: var(--ucl-color-popover, #09090b);
+  --ucl-popover-foreground: var(--ucl-color-foreground, #fafafa);
+  --ucl-accent: var(--ucl-color-accent, #18181b);
+  --ucl-accent-foreground: var(--ucl-color-foreground, #fafafa);
+  --ucl-input: var(--ucl-color-input, #27272a);
+  --ucl-ring: var(--ucl-color-ring, #ffffff);
+
+  /* Backward-compat aliases */
+  --background: var(--ucl-background);
+  --foreground: var(--ucl-foreground);
+  --muted: var(--ucl-muted);
+  --muted-foreground: var(--ucl-muted-foreground);
+  --border: var(--ucl-border);
+  --input: var(--ucl-input);
+  --ring: var(--ucl-ring);
+  --primary: var(--ucl-primary);
+  --primary-foreground: var(--ucl-primary-foreground);
+  --secondary: var(--ucl-secondary);
+  --secondary-foreground: var(--ucl-secondary-foreground);
+  --success: var(--ucl-success);
+  --success-foreground: var(--ucl-success-foreground);
+  --warning: var(--ucl-warning);
+  --warning-foreground: var(--ucl-warning-foreground);
+  --error: var(--ucl-error);
+  --error-foreground: var(--ucl-error-foreground);
+  --info: var(--ucl-info);
+  --info-foreground: var(--ucl-info-foreground);
+  --card: var(--ucl-card);
+  --card-foreground: var(--ucl-card-foreground);
+  --popover: var(--ucl-popover);
+  --popover-foreground: var(--ucl-popover-foreground);
+  --accent: var(--ucl-accent);
+  --accent-foreground: var(--ucl-accent-foreground);
+}
+
+/* --------------------------------------------------------------------------
+   4. Focus & Transition Defaults
+   -------------------------------------------------------------------------- */
+:focus-visible {
+  outline: 2px solid var(--ucl-ring);
+  outline-offset: 2px;
+}
+
+/* Premium smooth transitions for runtime theme switching */
+html,
+body,
+.ucl-card,
+.ucl-button,
+.ucl-input,
+.ucl-select,
+.ucl-textarea,
+.ucl-badge,
+.ucl-tag,
+.ucl-alert,
+.ucl-table,
+.ucl-table th,
+.ucl-table td,
+.ucl-dropdown-menu,
+.ucl-modal-content,
+.ucl-toast,
+.ucl-kanban-card,
+.ucl-kanban-column,
+.ucl-sidebar,
+.ucl-popover,
+.ucl-tooltip-bubble {
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}

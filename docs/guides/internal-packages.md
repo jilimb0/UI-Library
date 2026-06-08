@@ -14,14 +14,6 @@ The machine-readable source of truth is `config/package-surface.json`.
 
 ## Internal Package Reference
 
-### `@ui-construction-library/styles`
-
-**Role:** Internal style runtime — CSS reset, theme layers, and build-time style entrypoints.
-
-**Why internal:** Consumers get all styles through `@ui-construction-library/core/styles.css`. The `styles` package exists so that `core` and the builder can share CSS build pipelines without exposing the machinery to consumers.
-
----
-
 ### `@ui-construction-library/utils`
 
 **Role:** Internal infrastructure — DOM helpers, type utilities, shared hooks used by `core` and extension packages.
@@ -72,7 +64,6 @@ import { FormField } from '@ui-construction-library/react-hook-form';
 
 // Never import from internal packages in application code
 // import { ... } from '@ui-construction-library/utils';      // NO
-// import { ... } from '@ui-construction-library/styles';     // NO
 // import { ... } from '@ui-construction-library/schema';     // NO
 // import { ... } from '@ui-construction-library/registry';   // NO
 // import { ... } from '@ui-construction-library/export-core'; // NO

@@ -1,5 +1,20 @@
 # @ui-construction-library/styles
 
-> INTERNAL-ONLY: This package is not part of the public API surface.
+Universal CSS layer for the UI Construction Library.
 
-Shared style runtime package for global reset, theme layers, and CSS variable entrypoints.
+This package ships:
+- Base reset and typography
+- Utility classes (layout, spacing, text, etc.)
+- Component classes (for framework-agnostic markup)
+
+## Install
+
+```bash
+pnpm add @ui-construction-library/styles
+```
+
+## Usage
+
+```ts
+import '@ui-construction-library/styles/styles.css';
+```

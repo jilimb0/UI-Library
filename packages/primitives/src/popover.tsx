@@ -1,3 +1,4 @@
+import { createPopoverBehavior } from '@ui-construction-library/behaviors';
 import {
   createContext,
   forwardRef,
@@ -69,6 +70,7 @@ const Trigger = forwardRef<
   HTMLAttributes<HTMLElement> & { asChild?: boolean }
 >(function Trigger({ asChild, onClick, ...props }, ref) {
   const { setOpen, triggerRef } = usePopoverContext();
+  const behavior = createPopoverBehavior();
 
   return (
     <Slottable asChild={asChild}>
@@ -80,7 +82,7 @@ const Trigger = forwardRef<
             (ref as MutableRefObject<HTMLElement | null>).current = node;
         }}
         type="button"
-        aria-haspopup="dialog"
+        {...behavior.triggerAttrs}
         onClick={(e) => {
           onClick?.(e);
           if (!e.defaultPrevented) setOpen(true);
@@ -104,7 +106,8 @@ const Content = forwardRef<
     sideOffset?: number;
   }
 >(function Content({ side = 'bottom', sideOffset = 8, style, ...props }, ref) {
-  const { setOpen, triggerRef, modal } = usePopoverContext();
+  const { setOpen, triggerRef, modal, open: popoverOpen } = usePopoverContext();
+  const _behavior = createPopoverBehavior({ open: popoverOpen, modal });
   const [position, setPosition] = useState<{ top: number; left: number }>({
     top: 0,
     left: 0,

@@ -64,6 +64,8 @@ All public packages are versioned independently. Internal packages follow `0.1.x
 ### Public packages
 - `@ui-construction-library/core`
 - `@ui-construction-library/tokens`
+- `@ui-construction-library/styles`
+- `@ui-construction-library/behaviors`
 - `@ui-construction-library/primitives`
 - `@ui-construction-library/icons`
 - `@ui-construction-library/integration-next`
@@ -72,7 +74,6 @@ All public packages are versioned independently. Internal packages follow `0.1.x
 - `@ui-construction-library/integration-tanstack-router`
 
 ### Internal packages (not versioned for consumers)
-- `@ui-construction-library/styles`
 - `@ui-construction-library/utils`
 - `@ui-construction-library/schema`
 - `@ui-construction-library/registry`

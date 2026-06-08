@@ -27,8 +27,13 @@ export interface Theme {
   overrides?: Record<string, string>;
 }
 
+/**
+ * Emit a CSS custom property line with the canonical `--ucl-` prefix.
+ * Also emits a backward-compat alias without the prefix so existing
+ * `var(--*)` references continue working during the migration period.
+ */
 function toCSSVarLines(name: string, value: string): string {
-  return `  --${name}: ${value};`;
+  return [`  --ucl-${name}: ${value};`, `  --${name}: ${value};`].join('\n');
 }
 
 function toThemeLayer(name: string, lines: string[]): string {

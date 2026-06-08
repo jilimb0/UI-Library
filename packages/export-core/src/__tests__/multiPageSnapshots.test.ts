@@ -170,7 +170,7 @@ describe('multi-page export artifacts', () => {
     );
     expect(tokensJson?.content).toContain('"stylesheets"');
     expect(tokensJson?.content).toContain(
-      '@ui-construction-library/styles/dist/themes.css'
+      '@ui-construction-library/styles/styles.css'
     );
 
     const tokensCss = rendered.files.find(

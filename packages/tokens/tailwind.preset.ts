@@ -1,4 +1,12 @@
-import { colors, motion, opacity } from './src';
+import {
+  borderRadius,
+  colors,
+  motion,
+  opacity,
+  shadows,
+  spacing,
+  typography,
+} from './src';
 
 const tailwindPreset = {
   theme: {
@@ -11,6 +19,14 @@ const tailwindPreset = {
         warning: colors.warning,
         info: colors.info,
       },
+      spacing,
+      borderRadius,
+      boxShadow: shadows,
+      fontFamily: typography.fontFamily,
+      fontSize: typography.fontSize,
+      lineHeight: typography.lineHeight,
+      letterSpacing: typography.letterSpacing,
+      fontWeight: typography.fontWeight,
       transitionTimingFunction: {
         'in-ui': motion.easing.in,
         'out-ui': motion.easing.out,

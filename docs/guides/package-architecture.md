@@ -1,6 +1,6 @@
 # Package Architecture
 
-`@ui-construction-library` is a modular React UI system with one primary entrypoint and several optional extension packages. The default path starts with `core`, then adds tokens, icons, or integrations depending on project needs.
+`@ui-construction-library` ships a **Universal Core** (tokens, styles, behaviors) that works in any JS/TS framework, plus a React reference implementation (`core`) with ready-to-use components and integrations.
 
 The source of truth for package visibility is `config/package-surface.json`. Documentation, package metadata, and validation scripts must stay aligned with that matrix.
 
@@ -22,7 +22,8 @@ The source of truth for package visibility is `config/package-surface.json`. Doc
 | `@ui-construction-library/integration-tanstack-query` | TanStack Query-backed UI helpers | Public / Integration |
 | `@ui-construction-library/integration-tanstack-router` | TanStack Router-bound navigation helpers | Public / Integration |
 | `@ui-construction-library/utils` | Shared infrastructure helpers and hooks | Internal |
-| `@ui-construction-library/styles` | CSS/style runtime build layer | Internal |
+| `@ui-construction-library/styles` | Universal CSS layer (reset, utilities, component classes) | Public / Foundational |
+| `@ui-construction-library/behaviors` | Framework-agnostic behaviors (ARIA, interactions, state) | Public / Foundational |
 | `@ui-construction-library/schema` | Builder/export/prompt schemas | Internal / Platform |
 | `@ui-construction-library/registry` | Builder/docs/export component metadata registry | Internal / Platform |
 | `@ui-construction-library/export-core` | Deterministic platform export pipeline | Internal / Platform |
@@ -43,7 +44,8 @@ icons ────────────────────────�
                                     ▼                    ▼                    ▼
                                  motion                 dnd          integrations/*
 
-utils/styles ◄── internal dependencies of core and extensions only
+behaviors/styles ◄── Universal Core packages consumed by any framework (and by React packages)
+utils ◄── internal dependencies of core and extensions only
 
 schema/registry/export-core/prompt-engine ◄── platform-only internals
 ```

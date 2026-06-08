@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UCL Universal Design Core — Vanilla Demo</title>
+
+  <!-- Tokens CSS: design tokens as CSS custom properties (--ucl-* namespace) -->
+  <link rel="stylesheet" href="../../packages/tokens/dist/tokens.css" />
+
+  <!-- Styles CSS: base reset + component classes + utilities -->
+  <link rel="stylesheet" href="../../packages/styles/dist/styles.css" />
+
+  <style>
+    .demo-section {
+      padding: 2rem;
+      max-width: 48rem;
+      margin: 0 auto;
+    }
+    .demo-section + .demo-section {
+      border-top: 1px solid var(--ucl-border);
+    }
+    .demo-heading {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--ucl-foreground);
+    }
+    .demo-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .demo-swatches {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .demo-swatch {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: var(--ucl-radius, 2px);
+      border: 1px solid var(--ucl-border);
+    }
+  </style>
+</head>
+<body>
+  <!-- ====================================================================
+       Header
+       ==================================================================== -->
+  <header class="ucl-layout-header">
+    <h1 style="font-size: var(--ucl-text-xl); font-weight: 600; margin: 0;">
+      Universal Design Core — Vanilla Demo
+    </h1>
+    <p class="ucl-text ucl-text-sm ucl-text-muted" style="margin-top: 0.25rem;">
+      No framework. No build step. Just HTML + CSS from <code class="ucl-code">@ui-construction-library</code>.
+    </p>
+  </header>
+
+  <main class="ui-density-comfortable">
+
+    <!-- ==================================================================
+         Section: Buttons
+         ================================================================== -->
+    <section class="demo-section">
+      <h2 class="demo-heading">Buttons</h2>
+      <div class="demo-row">
+        <button class="ucl-button ucl-button--default">Default</button>
+        <button class="ucl-button ucl-button--secondary">Secondary</button>
+        <button class="ucl-button ucl-button--outline">Outline</button>
+        <button class="ucl-button ucl-button--ghost">Ghost</button>
+        <button class="ucl-button ucl-button--destructive">Destructive</button>
+        <button class="ucl-button ucl-button--link">Link</button>
+      </div>
+      <div class="demo-row">
+        <button class="ucl-button ucl-button--default ucl-button--sm">Small</button>
+        <button class="ucl-button ucl-button--default">Default</button>
+        <button class="ucl-button ucl-button--default ucl-button--lg">Large</button>
+        <button class="ucl-button ucl-button--default" disabled>Disabled</button>
+      </div>
+    </section>
+
+    <!-- ==================================================================
+         Section: Form Inputs
+         ================================================================== -->
+    <section class="demo-section">
+      <h2 class="demo-heading">Form Controls</h2>
+
+      <div class="ucl-stack ucl-stack--md" style="max-width: 24rem;">
+        <div>
+          <label class="ucl-field-label" for="demo-input">Text Input</label>
+          <input class="ucl-input" id="demo-input" type="text" placeholder="Type something..." />
+          <p class="ucl-field-hint">This is a hint text.</p>
+        </div>
+
+        <div>
+          <label class="ucl-field-label" for="demo-select">Select</label>
+          <select class="ucl-select" id="demo-select">
+            <option>Option A</option>
+            <option>Option B</option>
+            <option>Option C</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="ucl-field-label" for="demo-textarea">Textarea</label>
+          <textarea class="ucl-textarea" id="demo-textarea" placeholder="Write a message..."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================================================================
+         Section: Switch
+         ================================================================== -->
+    <section class="demo-section">
+      <h2 class="demo-heading">Switch</h2>
+      <div class="demo-row">
+        <button
+          class="ucl-switch ucl-switch--md"
+          role="switch"
+          data-state="unchecked"
+          onclick="
+            const s = this.dataset.state === 'checked' ? 'unchecked' : 'checked';
+            this.dataset.state = s;
+            this.setAttribute('aria-checked', s === 'checked');
+          "
+        >
+          <span class="ucl-switch-thumb"></span>
+        </button>
+        <span class="ucl-text ucl-text-sm">Click to toggle</span>
+      </div>
+    </section>
+
+    <!-- ==================================================================
+         Section: Cards & Badges
+         ================================================================== -->
+    <section class="demo-section">
+      <h2 class="demo-heading">Cards & Badges</h2>
+      <div class="demo-row" style="align-items: flex-start;">
+        <div class="ucl-card" style="flex: 1; min-width: 16rem;">
+          <h3 class="ucl-text ucl-text--lg" style="font-weight: 600; margin-bottom: 0.5rem;">
+            Card Title
+          </h3>
+          <p class="ucl-text ucl-text-sm">
+            This is a card component using <code class="ucl-code">ucl-card</code> class.
+            It inherits theme tokens automatically.
+          </p>
+        </div>
+        <div class="ucl-cluster ucl-cluster--sm">
+          <span class="ucl-badge ucl-badge--default">Default</span>
+          <span class="ucl-badge ucl-badge--success">Success</span>
+          <span class="ucl-badge ucl-badge--warning">Warning</span>
+          <span class="ucl-badge ucl-badge--error">Error</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================================================================
+         Section: Alerts
+         ================================================================== -->
+    <section class="demo-section">
+      <h2 class="demo-heading">Alerts</h2>
+      <div class="ucl-stack ucl-stack--sm">
+        <div class="ucl-alert ucl-alert--default">Informational message with left border accent.</div>
+        <div class="ucl-alert ucl-alert--success">Operation completed successfully.</div>
+        <div class="ucl-alert ucl-alert--warning">Please review before proceeding.</div>
+        <div class="ucl-alert ucl-alert--error">Something went wrong. Please try again.</div>
+      </div>
+    </section>
+
+    <!-- ==================================================================
+         Section: Table
+         ================================================================== -->
+    <section class="demo-section">
+      <h2 class="demo-heading">Table</h2>
+      <table class="ucl-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Alice</td>
+            <td>Engineer</td>
+            <td><span class="ucl-badge ucl-badge--success">Active</span></td>
+          </tr>
+          <tr>
+            <td>Bob</td>
+            <td>Designer</td>
+            <td><span class="ucl-badge ucl-badge--default">Inactive</span></td>
+          </tr>
+          <tr>
+            <td>Charlie</td>
+            <td>PM</td>
+            <td><span class="ucl-badge ucl-badge--warning">Pending</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ==================================================================
+         Section: Tabs (interactive)
+         ================================================================== -->
+    <section class="demo-section">
+      <h2 class="demo-heading">Tabs</h2>
+      <div class="ucl-tabs-list" role="tablist">
+        <button
+          class="ucl-tabs-trigger"
+          role="tab"
+          data-state="active"
+          aria-selected="true"
+          onclick="activateTab(this, 'tab-overview')"
+        >Overview</button>
+        <button
+          class="ucl-tabs-trigger"
+          role="tab"
+          data-state="inactive"
+          aria-selected="false"
+          onclick="activateTab(this, 'tab-details')"
+        >Details</button>
+        <button
+          class="ucl-tabs-trigger"
+          role="tab"
+          data-state="inactive"
+          aria-selected="false"
+          onclick="activateTab(this, 'tab-settings')"
+        >Settings</button>
+      </div>
+      <div id="tab-overview" class="ucl-tabs-content" role="tabpanel">
+        <p class="ucl-text ucl-text-sm">Overview panel — visible by default.</p>
+      </div>
+      <div id="tab-details" class="ucl-tabs-content" role="tabpanel" hidden>
+        <p class="ucl-text ucl-text-sm">Details panel — additional information here.</p>
+      </div>
+      <div id="tab-settings" class="ucl-tabs-content" role="tabpanel" hidden>
+        <p class="ucl-text ucl-text-sm">Settings panel — configure preferences.</p>
+      </div>
+    </section>
+
+    <!-- ==================================================================
+         Section: Progress & Skeleton
+         ================================================================== -->
+    <section class="demo-section">
+      <h2 class="demo-heading">Progress & Skeleton</h2>
+      <div class="ucl-stack ucl-stack--md">
+        <div>
+          <p class="ucl-text ucl-text-sm ucl-text-muted" style="margin-bottom: 0.25rem;">Progress bar (65%)</p>
+          <div class="ucl-progress">
+            <div class="ucl-progress__bar" style="width: 65%;"></div>
+          </div>
+        </div>
+        <div>
+          <p class="ucl-text ucl-text-sm ucl-text-muted" style="margin-bottom: 0.25rem;">Skeleton loaders</p>
+          <div class="ucl-stack ucl-stack--xs" style="max-width: 20rem;">
+            <div class="ucl-skeleton" style="height: 1rem; width: 80%;"></div>
+            <div class="ucl-skeleton" style="height: 1rem; width: 60%;"></div>
+            <div class="ucl-skeleton" style="height: 1rem; width: 90%;"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================================================================
+         Section: Token Swatches
+         ================================================================== -->
+    <section class="demo-section">
+      <h2 class="demo-heading">Design Tokens</h2>
+      <p class="ucl-text ucl-text-sm ucl-text-muted" style="margin-bottom: 0.75rem;">
+        Colors from the <code class="ucl-code">--ucl-*</code> CSS custom property namespace:
+      </p>
+      <div class="demo-swatches">
+        <div class="demo-swatch" style="background: var(--ucl-color-primary-500);" title="primary-500"></div>
+        <div class="demo-swatch" style="background: var(--ucl-color-primary-400);" title="primary-400"></div>
+        <div class="demo-swatch" style="background: var(--ucl-color-primary-300);" title="primary-300"></div>
+        <div class="demo-swatch" style="background: var(--ucl-color-success-500);" title="success-500"></div>
+        <div class="demo-swatch" style="background: var(--ucl-color-warning-500);" title="warning-500"></div>
+        <div class="demo-swatch" style="background: var(--ucl-color-error-500);" title="error-500"></div>
+        <div class="demo-swatch" style="background: var(--ucl-color-info-500);" title="info-500"></div>
+      </div>
+    </section>
+
+    <!-- ==================================================================
+         Section: Theme Toggle
+         ================================================================== -->
+    <section class="demo-section">
+      <h2 class="demo-heading">Theme Toggle</h2>
+      <div class="demo-row">
+        <button class="ucl-button ucl-button--outline" onclick="document.documentElement.setAttribute('data-theme', 'light')">
+          Light
+        </button>
+        <button class="ucl-button ucl-button--outline" onclick="document.documentElement.setAttribute('data-theme', 'dark')">
+          Dark
+        </button>
+        <button class="ucl-button ucl-button--ghost" onclick="document.documentElement.removeAttribute('data-theme')">
+          System
+        </button>
+      </div>
+      <p class="ucl-text ucl-text-sm ucl-text-muted">
+        The stylesheet respects <code class="ucl-code">prefers-color-scheme</code> by default.
+        Force a theme with <code class="ucl-code">data-theme</code> attribute.
+      </p>
+    </section>
+
+    <!-- ==================================================================
+         Section: Density
+         ================================================================== -->
+    <section class="demo-section">
+      <h2 class="demo-heading">Density Presets</h2>
+      <div class="demo-row">
+        <button class="ucl-button ucl-button--outline" onclick="document.querySelector('main').className = 'ui-density-comfortable'">
+          Comfortable
+        </button>
+        <button class="ucl-button ucl-button--outline" onclick="document.querySelector('main').className = 'ui-density-compact'">
+          Compact
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <footer style="padding: 2rem; text-align: center; border-top: 1px solid var(--ucl-border);">
+    <p class="ucl-text ucl-text-sm ucl-text-muted">
+      Built with <code class="ucl-code">@ui-construction-library</code> Universal Core — zero framework dependencies.
+    </p>
+  </footer>
+
+  <script>
+    // Simple tab activation — no framework needed
+    function activateTab(trigger, panelId) {
+      // Deactivate all triggers
+      document.querySelectorAll('.ucl-tabs-trigger').forEach(function(btn) {
+        btn.dataset.state = 'inactive';
+        btn.setAttribute('aria-selected', 'false');
+      });
+      // Hide all panels
+      document.querySelectorAll('[role="tabpanel"]').forEach(function(panel) {
+        panel.hidden = true;
+      });
+      // Activate clicked trigger
+      trigger.dataset.state = 'active';
+      trigger.setAttribute('aria-selected', 'true');
+      // Show target panel
+      document.getElementById(panelId).hidden = false;
+    }
+  </script>
+</body>
+</html>

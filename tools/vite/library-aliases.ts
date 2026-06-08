@@ -38,6 +38,18 @@ export function libraryAliases() {
       'packages/tokens/src',
       'packages/tokens/dist/index.esm.js'
     ),
+    '@ui-construction-library/behaviors': resolveEntry(
+      'packages/behaviors/src',
+      'packages/behaviors/dist/index.esm.js'
+    ),
+    '@ui-construction-library/styles': resolveEntry(
+      'packages/styles/src',
+      'packages/styles/dist/index.esm.js'
+    ),
+    '@ui-construction-library/styles/styles.css': resolveEntry(
+      'packages/styles/src/styles.css',
+      'packages/styles/dist/styles.css'
+    ),
     '@ui-construction-library/utils': resolveEntry(
       'packages/utils/src',
       'packages/utils/dist/index.esm.js'

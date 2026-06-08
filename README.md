@@ -1,6 +1,6 @@
 # UI Construction Library
 
-Composable React UI system for product teams that need a consistent design language across demos, docs, Storybook and application surfaces.
+Universal Design Core (tokens, styles, behaviors) for any JS/TS framework, plus a React reference implementation with ready-to-use components and integrations.
 
 ---
 
@@ -32,6 +32,8 @@ export function App() {
 |---|---|---|
 | `@ui-construction-library/core` | **Primary entrypoint** — components, themes, hooks | Always — start here |
 | `@ui-construction-library/tokens` | Design tokens, CSS variables, Tailwind preset | Explicit theming or token access |
+| `@ui-construction-library/styles` | Universal CSS layer (reset, utilities, component classes) | You need framework-agnostic CSS |
+| `@ui-construction-library/behaviors` | Framework-agnostic behaviors (ARIA, interactions, state) | You need headless logic outside React |
 | `@ui-construction-library/icons` | Standalone React icon components | You need icons |
 | `@ui-construction-library/primitives` | Headless overlay primitives (Dialog, Popover…) | Building custom overlays |
 | `@ui-construction-library/motion` | Animation extensions (FadeIn, SlideIn, Bounce…) | You want animated transitions |
@@ -49,6 +51,8 @@ export function App() {
 |---|---|
 | Basic UI | `pnpm add @ui-construction-library/core` |
 | UI + explicit theming | `pnpm add @ui-construction-library/core @ui-construction-library/tokens` |
+| Framework-agnostic CSS | `pnpm add @ui-construction-library/styles @ui-construction-library/tokens` |
+| Framework-agnostic behaviors | `pnpm add @ui-construction-library/behaviors @ui-construction-library/styles @ui-construction-library/tokens` |
 | UI + icons | `pnpm add @ui-construction-library/core @ui-construction-library/icons` |
 | UI + forms | `pnpm add @ui-construction-library/core @ui-construction-library/react-hook-form react-hook-form` |
 | UI + drag and drop | `pnpm add @ui-construction-library/core @ui-construction-library/dnd` |
@@ -60,6 +64,12 @@ export function App() {
 ```ts
 // ✅ Components — always from core
 import { Button, Modal, DataTable } from '@ui-construction-library/core'
+
+// ✅ Universal Core — tokens, styles, behaviors
+import { rawTokens, semanticTokens } from '@ui-construction-library/tokens'
+import '@ui-construction-library/tokens/css'
+import '@ui-construction-library/styles/styles.css'
+import { createDialogBehavior } from '@ui-construction-library/behaviors'
 
 // ✅ Icons — from icons
 import { SearchIcon } from '@ui-construction-library/icons'

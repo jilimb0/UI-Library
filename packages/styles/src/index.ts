@@ -1,9 +1,10 @@
 export const globalStylesheetPath =
-  '@ui-construction-library/styles/dist/global.css';
-export const themeStylesheetPath =
-  '@ui-construction-library/styles/dist/themes.css';
+  '@ui-construction-library/styles/styles.css';
+export const themeStylesheetPath = '@ui-construction-library/styles/styles.css';
 export const variablesStylesheetPath =
-  '@ui-construction-library/styles/dist/variables.css';
+  '@ui-construction-library/styles/styles.css';
+/** Canonical stylesheet containing base + components + utilities with ucl- prefix */
+export const stylesPath = '@ui-construction-library/styles/styles.css';
 
 export type DensityPreset = 'comfortable' | 'compact';
 

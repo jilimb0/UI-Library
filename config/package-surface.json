@@ -74,9 +74,15 @@
       "mode": "library",
       "recommended": false
     },
+    "@ui-construction-library/behaviors": {
+      "surface": "public",
+      "role": "foundational",
+      "mode": "library",
+      "recommended": false
+    },
     "@ui-construction-library/styles": {
-      "surface": "internal",
-      "role": "style-runtime",
+      "surface": "public",
+      "role": "foundational",
       "mode": "library",
       "recommended": false
     },
@@ -109,7 +115,10 @@
     "apps/docs",
     "apps/storybook",
     "apps/playground",
-    "apps/demo-showcase"
+    "apps/demo-showcase",
+    "apps/vue-dashboard",
+    "apps/solid-dashboard",
+    "apps/svelte-dashboard"
   ],
   "platformApps": [
     "apps/builder"
