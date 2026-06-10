@@ -39,10 +39,11 @@ export const Interaction: Story = {
   render: Default.render,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
+    const body = within(canvasElement.ownerDocument.body);
     const input = canvas.getByPlaceholderText('Search...');
     await userEvent.click(input);
     await userEvent.type(input, 'Re');
-    await userEvent.click(canvas.getByRole('button', { name: 'React' }));
+    await userEvent.click(await body.findByRole('button', { name: 'React' }));
     await expect(input).toHaveValue('React');
   },
 };

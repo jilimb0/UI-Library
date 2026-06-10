@@ -9,7 +9,7 @@ export default defineConfig({
     preserveSymlinks: false,
     alias: {
       '@ui-construction-library/export-core': fileURLToPath(
-        new URL('../../packages/export-core/dist/index.esm.js', import.meta.url)
+        new URL('../../packages/export-core/src/index.ts', import.meta.url)
       ),
     },
   },

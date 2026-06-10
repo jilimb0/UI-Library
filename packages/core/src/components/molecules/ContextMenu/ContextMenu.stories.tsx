@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, userEvent, within } from 'storybook/test';
-import { Button } from '../../atoms/Button';
 import { ContextMenu } from './ContextMenu';
 
 const meta: Meta<typeof ContextMenu> = {
@@ -28,7 +27,7 @@ const ITEMS = [
 
 export const Default: Story = {
   args: {
-    trigger: <Button>Right click me</Button>,
+    trigger: <span className="button button--default">Right click me</span>,
     items: ITEMS,
   },
 };

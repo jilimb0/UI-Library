@@ -61,11 +61,12 @@ export const Interaction: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
+    const body = within(canvasElement.ownerDocument.body);
     const trigger = canvas.getByRole('button', { name: /select an option/i });
     await userEvent.click(trigger);
-    await userEvent.click(canvas.getByText('Option 2'));
+    await userEvent.click(await body.findByText('Option 2'));
     await expect(
-      canvas.getByRole('button', { name: /option 2/i })
+      await canvas.findByRole('button', { name: /option 2/i })
     ).toHaveTextContent('Option 2');
   },
 };

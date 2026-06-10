@@ -53,7 +53,7 @@ export const Interaction: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const item = canvas.getByText('Clickable Menu Item');
+    const item = canvas.getByRole('button', { name: 'Clickable Menu Item' });
     await userEvent.click(item);
     await expect(item).toBeInTheDocument();
   },

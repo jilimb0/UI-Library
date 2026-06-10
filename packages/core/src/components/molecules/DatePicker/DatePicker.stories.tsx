@@ -73,6 +73,6 @@ export const Interaction: Story = {
     const canvas = within(canvasElement);
     const nextMonth = canvas.getByRole('button', { name: 'Next month' });
     await userEvent.click(nextMonth);
-    await expect(canvas.getByText(/^\w+\s\d{4}$/)).toBeInTheDocument();
+    await expect(await canvas.findByText(/^\w+\s\d{4}$/)).toBeInTheDocument();
   },
 };
