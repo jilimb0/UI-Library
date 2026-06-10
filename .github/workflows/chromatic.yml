@@ -10,6 +10,7 @@ on:
       - 'packages/**'
       - 'apps/storybook/**'
       - '.github/workflows/chromatic.yml'
+      - '.github/actions/setup-workspace/**'
 
 jobs:
   visual-tests:

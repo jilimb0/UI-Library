@@ -1,2 +1,2 @@
-# Full validation before push — mirrors CI exactly
-pnpm build && pnpm typecheck && pnpm test
+# Full validation before push — identical to the main GitHub CI gate
+pnpm validate

@@ -16,45 +16,24 @@ on:
       - 'pnpm-workspace.yaml'
       - 'turbo.json'
       - '.github/workflows/ci.yml'
+      - '.github/actions/setup-workspace/**'
       - 'playwright.config.ts'
 
 jobs:
   ci:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v5
-        with:
-          node-version: 24
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm check:hygiene
-      - run: pnpm check:workspace-scripts
-      - run: pnpm check:deps
-      - run: pnpm check:api
-      - run: pnpm registry:source:check
-      - run: pnpm preset:check
-      - run: pnpm check:gold-kits
-      - run: pnpm check:launch
-      - run: pnpm lint
-      - run: pnpm build
-      - run: pnpm typecheck
-      - run: pnpm test
+      - uses: ./.github/actions/setup-workspace
+      - run: pnpm validate:platform
       - run: pnpm check:security
         continue-on-error: true
       - run: pnpm check:contracts
-      - run: pnpm check:supabase-schema
       - run: pnpm check:published
       - name: Upload contract compliance report
         uses: actions/upload-artifact@v4
         with:
           name: contract-compliance-report
           path: artifacts/contract-compliance.md
-      - run: pnpm exec playwright install chromium --with-deps
-      - run: pnpm check:e2e
-        env:
-          CI: true
       - name: Upload coverage
         uses: codecov/codecov-action@v5
         with:

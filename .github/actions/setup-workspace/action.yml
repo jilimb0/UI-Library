@@ -1,0 +1,27 @@
+name: Setup workspace
+
+description: Checkout repository, install pnpm, setup Node.js with pnpm cache, and install dependencies.
+
+inputs:
+  node-version:
+    description: Node.js version to use
+    required: false
+    default: '24'
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v5
+    - uses: pnpm/action-setup@v4
+    - uses: actions/setup-node@v5
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: pnpm
+        cache-dependency-path: pnpm-lock.yaml
+    - name: Print Node/pnpm versions for cache diagnostics
+      shell: bash
+      run: |
+        echo "node: $(node -v)"
+        echo "pnpm: $(pnpm -v)"
+    - shell: bash
+      run: pnpm install --frozen-lockfile
