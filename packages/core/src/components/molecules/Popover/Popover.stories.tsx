@@ -30,7 +30,8 @@ export const Interaction: Story = {
   args: Default.args,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
+    const body = within(canvasElement.ownerDocument.body);
     await userEvent.click(canvas.getByRole('button', { name: 'Open popover' }));
-    await expect(canvas.getByText('Popover Title')).toBeInTheDocument();
+    await expect(await body.findByText('Popover Title')).toBeInTheDocument();
   },
 };

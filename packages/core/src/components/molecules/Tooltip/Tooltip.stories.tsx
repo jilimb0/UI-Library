@@ -44,8 +44,9 @@ export const Interaction: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
+    const body = within(canvasElement.ownerDocument.body);
     const trigger = canvas.getByRole('button', { name: 'Hover me' });
     await userEvent.hover(trigger);
-    await expect(canvas.getByText('Tooltip content')).toBeInTheDocument();
+    await expect(await body.findByText('Tooltip content')).toBeInTheDocument();
   },
 };

@@ -11,6 +11,9 @@ export default defineConfig({
       '@ui-construction-library/export-core': fileURLToPath(
         new URL('../../packages/export-core/src/index.ts', import.meta.url)
       ),
+      '@ui-construction-library/prompt-engine': fileURLToPath(
+        new URL('../../packages/prompt-engine/src/index.ts', import.meta.url)
+      ),
     },
   },
 });
