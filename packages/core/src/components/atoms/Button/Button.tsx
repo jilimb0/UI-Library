@@ -1,6 +1,7 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 import {
   type ButtonHTMLAttributes,
+  type ComponentPropsWithoutRef,
   type ElementType,
   forwardRef,
   type ReactNode,
@@ -43,7 +44,7 @@ export interface ButtonProps
   rightIcon?: ReactNode;
 }
 
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+const Button = forwardRef<HTMLElement, ButtonProps>(
   (
     {
       as,
@@ -77,7 +78,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         data-size={size}
         data-loading={loading || undefined}
         data-disabled={disabled || loading || undefined}
-        {...props}
+        {...(props as ComponentPropsWithoutRef<typeof Component>)}
       >
         {loading && <span className="button__spinner" aria-hidden="true" />}
         {leftIcon && <span className="button__icon">{leftIcon}</span>}
