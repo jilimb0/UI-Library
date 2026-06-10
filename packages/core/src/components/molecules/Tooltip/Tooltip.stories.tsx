@@ -44,8 +44,6 @@ export const Interaction: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(
-      canvas.getByRole('tooltip', { name: /tooltip content/i })
-    ).toBeInTheDocument();
+    await expect(canvas.getByText('Tooltip content')).toBeInTheDocument();
   },
 };
