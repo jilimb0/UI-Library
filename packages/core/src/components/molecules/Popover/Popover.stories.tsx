@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, userEvent, within } from 'storybook/test';
-import { Button } from '../../atoms/Button';
 import { Popover } from './Popover';
 
 const meta: Meta<typeof Popover> = {
@@ -17,7 +16,7 @@ type Story = StoryObj<typeof Popover>;
 
 export const Default: Story = {
   args: {
-    trigger: <Button>Open popover</Button>,
+    trigger: <span className="button button--default">Open popover</span>,
     content: (
       <div style={{ minWidth: 220 }}>
         <strong>Popover Title</strong>

@@ -5,6 +5,6 @@ export default defineConfig({
   base: process.env.BUILDER_BASE_PATH || '/builder/',
   plugins: [react()],
   resolve: {
-    preserveSymlinks: true,
+    preserveSymlinks: false,
   },
 });
