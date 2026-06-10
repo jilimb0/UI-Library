@@ -1,2 +1,2 @@
+# Lint & format only staged files (fast)
 pnpm exec lint-staged
-pnpm typecheck

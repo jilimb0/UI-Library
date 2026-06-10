@@ -1,6 +1,14 @@
+import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      '@ui-construction-library/registry': fileURLToPath(
+        new URL('../../packages/registry/src/index.ts', import.meta.url)
+      ),
+    },
+  },
   test: {
     environment: 'node',
     include: [

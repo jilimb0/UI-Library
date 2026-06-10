@@ -38,9 +38,9 @@ jobs:
       - run: pnpm check:gold-kits
       - run: pnpm check:launch
       - run: pnpm lint
+      - run: pnpm build
       - run: pnpm typecheck
       - run: pnpm test
-      - run: pnpm build
       - run: pnpm check:security
         continue-on-error: true
       - run: pnpm check:contracts

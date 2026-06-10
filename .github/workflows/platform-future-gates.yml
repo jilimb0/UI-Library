@@ -32,6 +32,8 @@ jobs:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @ui-construction-library/tokens build
+      - run: pnpm --filter @ui-construction-library/registry build
       - run: pnpm --filter @ui-construction-library/export-core test -- --runInBand
       - run: pnpm --filter @ui-construction-library/export-core build
 
@@ -58,6 +60,7 @@ jobs:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @ui-construction-library/registry build
       - run: pnpm --filter @ui-app/builder test
       - run: pnpm --filter @ui-app/builder typecheck
       - run: pnpm check:supabase-schema
