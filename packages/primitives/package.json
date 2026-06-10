@@ -1,6 +1,6 @@
 {
   "name": "@ui-construction-library/primitives",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
@@ -51,7 +51,7 @@
   },
   "license": "MIT",
   "type": "module",
-  "description": "Headless overlay primitives for @ui-construction-library \u2014 Dialog, Popover, ContextMenu, Accordion, Tabs, Slider, Switch.",
+  "description": "Headless overlay primitives for @ui-construction-library — Dialog, Popover, ContextMenu, Accordion, Tabs, Slider, Switch.",
   "keywords": [
     "headless",
     "primitives",

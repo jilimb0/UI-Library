@@ -1,6 +1,6 @@
 {
   "name": "@ui-construction-library/tokens",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
@@ -47,7 +47,7 @@
   },
   "license": "MIT",
   "type": "module",
-  "description": "Design token and theme contract for @ui-construction-library \u2014 colors, typography, spacing and CSS variables.",
+  "description": "Design token and theme contract for @ui-construction-library — colors, typography, spacing and CSS variables.",
   "keywords": [
     "design-tokens",
     "css-variables",

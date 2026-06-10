@@ -1,5 +1,11 @@
 # @ui-construction-library/tokens
 
+## 0.2.0
+
+### Minor Changes
+
+- 8e364a3: Upgrade product readiness
+
 <!-- AUTO-GENERATED — do not edit manually; run pnpm changelog:packages -->
 
 ## 0.1.1 — 2026-05-30
@@ -19,7 +25,7 @@
 
 - update styles and tokens for consistency and improved design ([1b9fb2e](../../commit/1b9fb2e))
 - update README and workflows for improved structure and clarity ([790d046](../../commit/790d046))
-- rename packages from '@ui-lib/*' to '@ui-construction-library/*' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
+- rename packages from '@ui-lib/_' to '@ui-construction-library/_' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
 
 ### Chores
 
@@ -59,7 +65,7 @@
 
 - update styles and tokens for consistency and improved design ([1b9fb2e](../../commit/1b9fb2e))
 - update README and workflows for improved structure and clarity ([790d046](../../commit/790d046))
-- rename packages from '@ui-lib/*' to '@ui-construction-library/*' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
+- rename packages from '@ui-lib/_' to '@ui-construction-library/_' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
 
 ### Chores
 
@@ -99,7 +105,7 @@
 
 - update styles and tokens for consistency and improved design ([1b9fb2e](../../commit/1b9fb2e))
 - update README and workflows for improved structure and clarity ([790d046](../../commit/790d046))
-- rename packages from '@ui-lib/*' to '@ui-construction-library/*' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
+- rename packages from '@ui-lib/_' to '@ui-construction-library/_' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
 
 ### Chores
 
@@ -139,7 +145,7 @@
 
 - update styles and tokens for consistency and improved design ([1b9fb2e](../../commit/1b9fb2e))
 - update README and workflows for improved structure and clarity ([790d046](../../commit/790d046))
-- rename packages from '@ui-lib/*' to '@ui-construction-library/*' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
+- rename packages from '@ui-lib/_' to '@ui-construction-library/_' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
 
 ### Chores
 
@@ -179,7 +185,7 @@
 
 - update styles and tokens for consistency and improved design ([1b9fb2e](../../commit/1b9fb2e))
 - update README and workflows for improved structure and clarity ([790d046](../../commit/790d046))
-- rename packages from '@ui-lib/*' to '@ui-construction-library/*' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
+- rename packages from '@ui-lib/_' to '@ui-construction-library/_' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
 
 ### Chores
 
@@ -219,7 +225,7 @@
 
 - update styles and tokens for consistency and improved design ([1b9fb2e](../../commit/1b9fb2e))
 - update README and workflows for improved structure and clarity ([790d046](../../commit/790d046))
-- rename packages from '@ui-lib/*' to '@ui-construction-library/*' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
+- rename packages from '@ui-lib/_' to '@ui-construction-library/_' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
 
 ### Chores
 
@@ -259,7 +265,7 @@
 
 - update styles and tokens for consistency and improved design ([1b9fb2e](../../commit/1b9fb2e))
 - update README and workflows for improved structure and clarity ([790d046](../../commit/790d046))
-- rename packages from '@ui-lib/*' to '@ui-construction-library/*' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
+- rename packages from '@ui-lib/_' to '@ui-construction-library/_' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
 
 ### Chores
 

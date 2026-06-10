@@ -1,5 +1,12 @@
 # @ui-construction-library/motion
 
+## 0.1.4
+
+### Patch Changes
+
+- Updated dependencies [8e364a3]
+  - @ui-construction-library/core@0.2.0
+
 <!-- AUTO-GENERATED — do not edit manually; run pnpm changelog:packages -->
 
 ## 0.1.3 — 2026-05-30

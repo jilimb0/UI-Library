@@ -1,5 +1,11 @@
 # @ui-construction-library/styles
 
+## 0.2.0
+
+### Minor Changes
+
+- 8e364a3: Upgrade product readiness
+
 <!-- AUTO-GENERATED — do not edit manually; run pnpm changelog:packages -->
 
 ## 0.1.1

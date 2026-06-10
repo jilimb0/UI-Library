@@ -1,6 +1,6 @@
 {
   "name": "@ui-construction-library/motion",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
@@ -39,7 +39,7 @@
     }
   },
   "dependencies": {
-    "@ui-construction-library/core": "^0.1.2"
+    "@ui-construction-library/core": "^0.2.0"
   },
   "devDependencies": {
     "@types/react": "catalog:",

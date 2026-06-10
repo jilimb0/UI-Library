@@ -1,5 +1,17 @@
 # @ui-construction-library/prompt-engine
 
+## 0.2.0
+
+### Minor Changes
+
+- 8e364a3: Upgrade product readiness
+
+### Patch Changes
+
+- Updated dependencies [8e364a3]
+  - @ui-construction-library/registry@0.2.0
+  - @ui-construction-library/schema@0.2.0
+
 <!-- AUTO-GENERATED — do not edit manually; run pnpm changelog:packages -->
 
 ## 0.1.2 — 2026-05-30

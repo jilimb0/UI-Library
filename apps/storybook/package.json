@@ -11,7 +11,7 @@
     "chromatic": "chromatic --project-token=$CHROMATIC_PROJECT_TOKEN"
   },
   "dependencies": {
-    "@ui-construction-library/core": "^0.1.2",
+    "@ui-construction-library/core": "^0.2.0",
     "react": "catalog:",
     "react-dom": "catalog:"
   },
