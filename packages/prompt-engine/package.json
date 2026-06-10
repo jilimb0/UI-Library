@@ -1,6 +1,6 @@
 {
   "name": "@ui-construction-library/prompt-engine",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -24,8 +24,8 @@
     "test": "vitest run --config ./vitest.config.ts"
   },
   "dependencies": {
-    "@ui-construction-library/registry": "^0.1.2",
-    "@ui-construction-library/schema": "^0.1.0"
+    "@ui-construction-library/registry": "^0.2.0",
+    "@ui-construction-library/schema": "^0.2.0"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^12.1.2",

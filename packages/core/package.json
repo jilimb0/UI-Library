@@ -1,11 +1,11 @@
 {
   "name": "@ui-construction-library/core",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
-  "description": "Primary React UI component library \u2014 atoms, molecules, organisms and templates for product surfaces.",
+  "description": "Primary React UI component library — atoms, molecules, organisms and templates for product surfaces.",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/src/index.d.ts",
@@ -50,10 +50,10 @@
     }
   },
   "dependencies": {
-    "@ui-construction-library/icons": "^0.1.1",
-    "@ui-construction-library/primitives": "^0.1.2",
-    "@ui-construction-library/tokens": "^0.1.1",
-    "@ui-construction-library/utils": "^0.1.1",
+    "@ui-construction-library/icons": "^0.2.0",
+    "@ui-construction-library/primitives": "^0.2.0",
+    "@ui-construction-library/tokens": "^0.2.0",
+    "@ui-construction-library/utils": "^0.2.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.0.0",
     "tailwind-merge": "^2.5.5",

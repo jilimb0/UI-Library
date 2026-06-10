@@ -1,6 +1,6 @@
 {
   "name": "@ui-construction-library/dnd",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
@@ -31,7 +31,7 @@
     "react-dom": ">=18.0.0"
   },
   "dependencies": {
-    "@ui-construction-library/core": "^0.1.2"
+    "@ui-construction-library/core": "^0.2.0"
   },
   "devDependencies": {
     "@types/react": "catalog:",
