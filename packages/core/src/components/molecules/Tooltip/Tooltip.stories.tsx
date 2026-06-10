@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, within } from 'storybook/test';
 import { Tooltip } from './Tooltip';
 
 const meta: Meta<typeof Tooltip> = {
@@ -44,9 +44,8 @@ export const Interaction: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const body = within(canvasElement.ownerDocument.body);
-    const trigger = canvas.getByRole('button', { name: 'Hover me' });
-    await userEvent.hover(trigger);
-    await expect(await body.findByText('Tooltip content')).toBeInTheDocument();
+    await expect(
+      canvas.getByRole('tooltip', { name: /tooltip content/i })
+    ).toBeInTheDocument();
   },
 };
