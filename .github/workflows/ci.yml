@@ -16,6 +16,22 @@ on:
       - 'pnpm-workspace.yaml'
       - 'turbo.json'
       - '.github/workflows/ci.yml'
+      - '.github/workflows/release.yml'
+      - '.github/actions/setup-workspace/**'
+      - 'playwright.config.ts'
+  push:
+    branches: [main]
+    paths:
+      - 'packages/**'
+      - 'apps/**'
+      - 'scripts/**'
+      - 'tests/**'
+      - 'pnpm-lock.yaml'
+      - 'package.json'
+      - 'pnpm-workspace.yaml'
+      - 'turbo.json'
+      - '.github/workflows/ci.yml'
+      - '.github/workflows/release.yml'
       - '.github/actions/setup-workspace/**'
       - 'playwright.config.ts'
 
