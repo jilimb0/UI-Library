@@ -1,3 +1,4 @@
+import { createSwitchBehavior } from '@ui-construction-library/behaviors';
 import {
   type ButtonHTMLAttributes,
   createContext,
@@ -39,6 +40,11 @@ const Root = forwardRef<HTMLButtonElement, SwitchProps>(function Root(
     onChange: onCheckedChange,
   });
 
+  const behavior = createSwitchBehavior({
+    checked: Boolean(current),
+    disabled,
+  });
+
   return (
     <SwitchContext.Provider
       value={{ checked: Boolean(current), setChecked, disabled }}
@@ -46,10 +52,7 @@ const Root = forwardRef<HTMLButtonElement, SwitchProps>(function Root(
       <button
         ref={ref}
         type="button"
-        role="switch"
-        aria-checked={Boolean(current)}
-        data-state={current ? 'checked' : 'unchecked'}
-        disabled={disabled}
+        {...behavior.rootAttrs}
         onClick={(e) => {
           onClick?.(e);
           if (!e.defaultPrevented && !disabled) setChecked(!current);
@@ -65,13 +68,8 @@ const Root = forwardRef<HTMLButtonElement, SwitchProps>(function Root(
 const Thumb = forwardRef<HTMLSpanElement, HTMLAttributes<HTMLSpanElement>>(
   function Thumb(props, ref) {
     const ctx = useContext(SwitchContext);
-    return (
-      <span
-        ref={ref}
-        data-state={ctx?.checked ? 'checked' : 'unchecked'}
-        {...props}
-      />
-    );
+    const behavior = createSwitchBehavior({ checked: ctx?.checked ?? false });
+    return <span ref={ref} {...behavior.thumbAttrs} {...props} />;
   }
 );
 

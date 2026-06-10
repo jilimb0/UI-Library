@@ -248,10 +248,10 @@ describe('export-core pipeline', () => {
     );
     expect(tokensJson?.content).toContain('"stylesheets"');
     expect(tokensJson?.content).toContain(
-      '@ui-construction-library/styles/dist/themes.css'
+      '@ui-construction-library/styles/styles.css'
     );
     expect(tokensJson?.content).toContain(
-      '@ui-construction-library/styles/dist/variables.css'
+      '@ui-construction-library/styles/styles.css'
     );
 
     const tokensCss = first.files.find(

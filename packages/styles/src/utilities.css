@@ -1,0 +1,143 @@
+/* ==========================================================================
+   UCL Utilities Layer — Density presets, spacing helpers, and common utils
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Density Presets
+   -------------------------------------------------------------------------- */
+.ui-density-comfortable {
+  --ucl-density-spacing-y: var(--ucl-spacing-4, 1rem);
+  --ucl-density-spacing-x: var(--ucl-spacing-4, 1rem);
+  --ucl-density-gap: var(--ucl-spacing-4, 1rem);
+  --ucl-density-padding: var(--ucl-spacing-4, 1rem);
+  --ucl-density-input-height: 2.25rem;
+  --ucl-density-font-size: 0.875rem;
+}
+
+.ui-density-compact {
+  --ucl-density-spacing-y: var(--ucl-spacing-2, 0.5rem);
+  --ucl-density-spacing-x: var(--ucl-spacing-3, 0.75rem);
+  --ucl-density-gap: var(--ucl-spacing-2, 0.5rem);
+  --ucl-density-padding: var(--ucl-spacing-2, 0.5rem);
+  --ucl-density-input-height: 2rem;
+  --ucl-density-font-size: 0.75rem;
+}
+
+/* --------------------------------------------------------------------------
+   2. Spacing Utilities
+   Utility classes mapped to token values. Use with ucl- prefix.
+   -------------------------------------------------------------------------- */
+.ucl-stack { display: flex; flex-direction: column; gap: var(--ucl-density-gap, 1rem); }
+.ucl-stack--xs { gap: var(--ucl-spacing-1, 0.25rem); }
+.ucl-stack--sm { gap: var(--ucl-spacing-2, 0.5rem); }
+.ucl-stack--md { gap: var(--ucl-spacing-4, 1rem); }
+.ucl-stack--lg { gap: var(--ucl-spacing-6, 1.5rem); }
+.ucl-stack--xl { gap: var(--ucl-spacing-8, 2rem); }
+
+.ucl-cluster { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ucl-density-gap, 0.5rem); }
+.ucl-cluster--xs { gap: var(--ucl-spacing-1, 0.25rem); }
+.ucl-cluster--sm { gap: var(--ucl-spacing-2, 0.5rem); }
+.ucl-cluster--md { gap: var(--ucl-spacing-3, 0.75rem); }
+.ucl-cluster--lg { gap: var(--ucl-spacing-4, 1rem); }
+
+/* Padding utilities */
+.ucl-p-0 { padding: 0; }
+.ucl-p-1 { padding: var(--ucl-spacing-1, 0.25rem); }
+.ucl-p-2 { padding: var(--ucl-spacing-2, 0.5rem); }
+.ucl-p-3 { padding: var(--ucl-spacing-3, 0.75rem); }
+.ucl-p-4 { padding: var(--ucl-spacing-4, 1rem); }
+.ucl-p-5 { padding: var(--ucl-spacing-5, 1.25rem); }
+.ucl-p-6 { padding: var(--ucl-spacing-6, 1.5rem); }
+.ucl-p-8 { padding: var(--ucl-spacing-8, 2rem); }
+
+.ucl-px-0 { padding-left: 0; padding-right: 0; }
+.ucl-px-2 { padding-left: var(--ucl-spacing-2, 0.5rem); padding-right: var(--ucl-spacing-2, 0.5rem); }
+.ucl-px-4 { padding-left: var(--ucl-spacing-4, 1rem); padding-right: var(--ucl-spacing-4, 1rem); }
+.ucl-px-6 { padding-left: var(--ucl-spacing-6, 1.5rem); padding-right: var(--ucl-spacing-6, 1.5rem); }
+
+.ucl-py-0 { padding-top: 0; padding-bottom: 0; }
+.ucl-py-2 { padding-top: var(--ucl-spacing-2, 0.5rem); padding-bottom: var(--ucl-spacing-2, 0.5rem); }
+.ucl-py-4 { padding-top: var(--ucl-spacing-4, 1rem); padding-bottom: var(--ucl-spacing-4, 1rem); }
+.ucl-py-6 { padding-top: var(--ucl-spacing-6, 1.5rem); padding-bottom: var(--ucl-spacing-6, 1.5rem); }
+
+/* Margin utilities */
+.ucl-m-0 { margin: 0; }
+.ucl-m-2 { margin: var(--ucl-spacing-2, 0.5rem); }
+.ucl-m-4 { margin: var(--ucl-spacing-4, 1rem); }
+.ucl-mt-0 { margin-top: 0; }
+.ucl-mt-2 { margin-top: var(--ucl-spacing-2, 0.5rem); }
+.ucl-mt-4 { margin-top: var(--ucl-spacing-4, 1rem); }
+.ucl-mt-6 { margin-top: var(--ucl-spacing-6, 1.5rem); }
+.ucl-mb-0 { margin-bottom: 0; }
+.ucl-mb-2 { margin-bottom: var(--ucl-spacing-2, 0.5rem); }
+.ucl-mb-4 { margin-bottom: var(--ucl-spacing-4, 1rem); }
+.ucl-mb-6 { margin-bottom: var(--ucl-spacing-6, 1.5rem); }
+
+/* --------------------------------------------------------------------------
+   3. Layout Utilities
+   -------------------------------------------------------------------------- */
+.ucl-hidden { display: none !important; }
+.ucl-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.ucl-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   4. Text Utilities
+   -------------------------------------------------------------------------- */
+.ucl-text-xs { font-size: var(--ucl-text-xs, 0.75rem); }
+.ucl-text-sm { font-size: var(--ucl-text-sm, 0.875rem); }
+.ucl-text-base { font-size: var(--ucl-text-base, 1rem); }
+.ucl-text-lg { font-size: var(--ucl-text-lg, 1.125rem); }
+.ucl-text-xl { font-size: var(--ucl-text-xl, 1.25rem); }
+.ucl-text-2xl { font-size: var(--ucl-text-2xl, 1.5rem); }
+
+.ucl-font-normal { font-weight: 400; }
+.ucl-font-medium { font-weight: 500; }
+.ucl-font-semibold { font-weight: 600; }
+.ucl-font-bold { font-weight: 700; }
+
+.ucl-text-muted { color: var(--ucl-muted-foreground); }
+.ucl-text-primary { color: var(--ucl-primary); }
+.ucl-text-success { color: var(--ucl-success); }
+.ucl-text-warning { color: var(--ucl-warning); }
+.ucl-text-error { color: var(--ucl-error); }
+
+/* --------------------------------------------------------------------------
+   5. Surface Utilities
+   -------------------------------------------------------------------------- */
+.ucl-surface {
+  background: var(--ucl-card);
+  color: var(--ucl-card-foreground);
+  border: 1px solid var(--ucl-border);
+  border-radius: var(--ucl-radius, 2px);
+}
+
+.ucl-surface--elevated {
+  box-shadow: var(--ucl-shadow-md);
+}
+
+.ucl-divider {
+  margin: var(--ucl-spacing-4, 1rem) 0;
+  border: 0;
+  border-top: 1px solid var(--ucl-border);
+}
+
+/* Backward-compat unprefixed aliases */
+.stack-vertical { display: flex; flex-direction: column; gap: 1rem; }
+.inline-cluster { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+.hidden { display: none !important; }
+.form-stack { display: flex; flex-direction: column; gap: 1rem; }

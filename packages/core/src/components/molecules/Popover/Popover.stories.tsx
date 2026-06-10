@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, userEvent, within } from 'storybook/test';
-import { Button } from '../../atoms/Button';
 import { Popover } from './Popover';
 
 const meta: Meta<typeof Popover> = {
@@ -17,7 +16,7 @@ type Story = StoryObj<typeof Popover>;
 
 export const Default: Story = {
   args: {
-    trigger: <Button>Open popover</Button>,
+    trigger: <span className="button button--default">Open popover</span>,
     content: (
       <div style={{ minWidth: 220 }}>
         <strong>Popover Title</strong>
@@ -31,7 +30,8 @@ export const Interaction: Story = {
   args: Default.args,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
+    const body = within(canvasElement.ownerDocument.body);
     await userEvent.click(canvas.getByRole('button', { name: 'Open popover' }));
-    await expect(canvas.getByText('Popover Title')).toBeInTheDocument();
+    await expect(await body.findByText('Popover Title')).toBeInTheDocument();
   },
 };

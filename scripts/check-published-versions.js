@@ -6,6 +6,7 @@ const { execFileSync } = require('node:child_process');
 
 const repoRoot = resolve(__dirname, '..');
 const searchRoots = ['packages', 'packages/integrations', 'apps'];
+const unpublishedAllowed = new Set(['@ui-construction-library/behaviors']);
 
 function collectPackageJsonFiles(dir) {
   const results = [];
@@ -67,6 +68,11 @@ for (const pkg of packages) {
     );
     hasMismatch = true;
   } catch {
+    if (unpublishedAllowed.has(pkg.name)) {
+      console.log(`ALLOWED       ${pkg.name}@${pkg.version} (unpublished)`);
+      continue;
+    }
+
     console.log(`UNPUBLISHED   ${pkg.name}@${pkg.version}`);
     hasMismatch = true;
   }

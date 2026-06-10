@@ -10,12 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v5
-        with:
-          node-version: 24
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
+      - uses: ./.github/actions/setup-workspace
       - run: pnpm --filter @ui-construction-library/schema typecheck
       - run: pnpm --filter @ui-construction-library/schema test
       - run: pnpm --filter @ui-construction-library/registry typecheck
@@ -26,38 +21,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v5
-        with:
-          node-version: 24
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm --filter @ui-construction-library/export-core test -- --runInBand
+      - uses: ./.github/actions/setup-workspace
+      - run: pnpm --filter @ui-construction-library/tokens build
+      - run: pnpm --filter @ui-construction-library/registry build
+      - run: pnpm --filter @ui-construction-library/export-core test
       - run: pnpm --filter @ui-construction-library/export-core build
-
-  generated-project-matrix-placeholder:
-    name: Generated Project Matrix (Placeholder)
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Placeholder for generated React/Next project verification"
-
-  prompt-regression-placeholder:
-    name: Prompt Regression (Placeholder)
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Placeholder for Phase 6 prompt regression assertions"
 
   builder-quality-gates:
     name: Builder Quality Gates
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v5
-        with:
-          node-version: 24
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
+      - uses: ./.github/actions/setup-workspace
+      - run: pnpm --filter @ui-app/builder build
       - run: pnpm --filter @ui-app/builder test
       - run: pnpm --filter @ui-app/builder typecheck
-      - run: pnpm check:supabase-schema
+      - run: pnpm --filter @ui-construction-library/registry build

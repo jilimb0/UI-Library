@@ -1,3 +1,4 @@
+import { createSliderBehavior } from '@ui-construction-library/behaviors';
 import {
   type ButtonHTMLAttributes,
   createContext,
@@ -53,6 +54,14 @@ const Root = forwardRef<HTMLDivElement, SliderRootProps>(function Root(
   });
   const trackRef = useRef<HTMLDivElement>(null);
 
+  const _behavior = createSliderBehavior({
+    value: (current ?? defaultValue)[0],
+    min,
+    max,
+    step,
+    disabled,
+  });
+
   return (
     <SliderContext.Provider
       value={{
@@ -91,16 +100,13 @@ const Range = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
     const ctx = useContext(SliderContext);
     if (!ctx) return <div ref={ref} {...props} />;
     const [val] = ctx.value;
-    const percent = ((val - ctx.min) / (ctx.max - ctx.min)) * 100;
+    const behavior = createSliderBehavior({
+      value: val,
+      min: ctx.min,
+      max: ctx.max,
+    });
 
-    return (
-      <div
-        ref={ref}
-        style={{ width: `${percent}%` }}
-        data-orientation="horizontal"
-        {...props}
-      />
-    );
+    return <div ref={ref} {...behavior.rangeAttrs} {...props} />;
   }
 );
 
@@ -140,30 +146,30 @@ const Thumb = forwardRef<
   );
 
   if (!ctx) {
+    const fallback = createSliderBehavior({ value: 0 });
     return (
       <button
         ref={ref as Ref<HTMLButtonElement>}
         type="button"
-        role="slider"
-        aria-valuemin={0}
-        aria-valuemax={100}
-        aria-valuenow={0}
-        aria-orientation="horizontal"
+        {...fallback.thumbAttrs}
         {...props}
       />
     );
   }
   const [val] = ctx.value;
+  const behavior = createSliderBehavior({
+    value: val,
+    min: ctx.min,
+    max: ctx.max,
+    step: ctx.step,
+    disabled: ctx.disabled,
+  });
 
   return (
     <button
       ref={ref as Ref<HTMLButtonElement>}
       type="button"
-      role="slider"
-      aria-valuemin={ctx.min}
-      aria-valuemax={ctx.max}
-      aria-valuenow={val}
-      aria-orientation="horizontal"
+      {...behavior.thumbAttrs}
       disabled={ctx.disabled}
       onPointerDown={onPointerDown}
       className={className}

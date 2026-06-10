@@ -1,4 +1,8 @@
 import {
+  createAccordionContentBehavior,
+  createAccordionTriggerBehavior,
+} from '@ui-construction-library/behaviors';
+import {
   type ButtonHTMLAttributes,
   createContext,
   forwardRef,
@@ -93,13 +97,13 @@ const Trigger = forwardRef<
   const itemCtx = useContext(ItemContext);
   const itemValue = value ?? itemCtx ?? '';
   const open = ctx?.openItems.has(itemValue) ?? false;
+  const behavior = createAccordionTriggerBehavior({ open });
 
   return (
     <button
       ref={ref}
       type="button"
-      aria-expanded={open}
-      data-state={open ? 'open' : 'closed'}
+      {...behavior.triggerAttrs}
       onClick={(e) => {
         onClick?.(e);
         if (itemValue) ctx?.toggle(itemValue);
@@ -117,11 +121,12 @@ const Content = forwardRef<
   const itemCtx = useContext(ItemContext);
   const itemValue = value ?? itemCtx ?? '';
   const open = ctx?.openItems.has(itemValue) ?? false;
+  const behavior = createAccordionContentBehavior({ open });
 
   if (!open) return null;
 
   return (
-    <section ref={ref} data-state="open" {...props}>
+    <section ref={ref} {...behavior.contentAttrs} {...props}>
       {children}
     </section>
   );

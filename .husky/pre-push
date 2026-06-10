@@ -1,1 +1,2 @@
-pnpm test
+# Full validation before push — identical to the main GitHub CI gate
+pnpm validate

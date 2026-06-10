@@ -1,9 +1,12 @@
+import { createPopoverBehavior } from '@ui-construction-library/behaviors';
 import {
   createContext,
   forwardRef,
   type HTMLAttributes,
   type MutableRefObject,
+  type MouseEvent as ReactMouseEvent,
   type ReactNode,
+  type Ref,
   useContext,
   useEffect,
   useRef,
@@ -67,27 +70,41 @@ function Root({
 const Trigger = forwardRef<
   HTMLElement,
   HTMLAttributes<HTMLElement> & { asChild?: boolean }
->(function Trigger({ asChild, onClick, ...props }, ref) {
+>(function Trigger({ asChild, onClick, children, ...props }, ref) {
   const { setOpen, triggerRef } = usePopoverContext();
+  const behavior = createPopoverBehavior();
+
+  const mergedRef = (node: HTMLElement | null) => {
+    triggerRef.current = node;
+    if (typeof ref === 'function') ref(node);
+    else if (ref) (ref as MutableRefObject<HTMLElement | null>).current = node;
+  };
+
+  const sharedProps = {
+    ...behavior.triggerAttrs,
+    onClick: (e: ReactMouseEvent<HTMLElement>) => {
+      onClick?.(e as ReactMouseEvent<HTMLElement>);
+      if (!e.defaultPrevented) setOpen(true);
+    },
+    ...props,
+  };
+
+  if (asChild) {
+    return (
+      <Slottable asChild ref={mergedRef} {...sharedProps}>
+        {children}
+      </Slottable>
+    );
+  }
 
   return (
-    <Slottable asChild={asChild}>
-      <button
-        ref={(node) => {
-          triggerRef.current = node;
-          if (typeof ref === 'function') ref(node as HTMLElement);
-          else if (ref)
-            (ref as MutableRefObject<HTMLElement | null>).current = node;
-        }}
-        type="button"
-        aria-haspopup="dialog"
-        onClick={(e) => {
-          onClick?.(e);
-          if (!e.defaultPrevented) setOpen(true);
-        }}
-        {...props}
-      />
-    </Slottable>
+    <button
+      ref={mergedRef as Ref<HTMLButtonElement>}
+      type="button"
+      {...sharedProps}
+    >
+      {children}
+    </button>
   );
 });
 
@@ -104,7 +121,8 @@ const Content = forwardRef<
     sideOffset?: number;
   }
 >(function Content({ side = 'bottom', sideOffset = 8, style, ...props }, ref) {
-  const { setOpen, triggerRef, modal } = usePopoverContext();
+  const { setOpen, triggerRef, modal, open: popoverOpen } = usePopoverContext();
+  const _behavior = createPopoverBehavior({ open: popoverOpen, modal });
   const [position, setPosition] = useState<{ top: number; left: number }>({
     top: 0,
     left: 0,

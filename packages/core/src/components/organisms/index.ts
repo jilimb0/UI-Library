@@ -1,4 +1,5 @@
 export * from './Accordion';
+export * from './AppShell';
 export * from './Calendar';
 export * from './CommandPalette';
 export * from './DataTable';
@@ -7,8 +8,10 @@ export * from './EmptyState';
 export * from './Form';
 export * from './Modal';
 export * from './Navigation';
+export * from './PageHeader';
 export * from './Sidebar';
 export * from './Table';
 export * from './Tabs';
 export * from './Timeline';
+export * from './TopNav';
 export * from './TreeView';

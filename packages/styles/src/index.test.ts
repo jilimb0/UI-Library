@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   densityClassMap,
   globalStylesheetPath,
+  stylesPath,
   themeStylesheetPath,
   variablesStylesheetPath,
 } from './index';
@@ -9,14 +10,15 @@ import {
 describe('@ui-construction-library/styles', () => {
   it('exports stable stylesheet entrypoints', () => {
     expect(globalStylesheetPath).toBe(
-      '@ui-construction-library/styles/dist/global.css'
+      '@ui-construction-library/styles/styles.css'
     );
     expect(themeStylesheetPath).toBe(
-      '@ui-construction-library/styles/dist/themes.css'
+      '@ui-construction-library/styles/styles.css'
     );
     expect(variablesStylesheetPath).toBe(
-      '@ui-construction-library/styles/dist/variables.css'
+      '@ui-construction-library/styles/styles.css'
     );
+    expect(stylesPath).toBe('@ui-construction-library/styles/styles.css');
   });
 
   it('maps density presets to classes', () => {

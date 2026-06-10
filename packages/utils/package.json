@@ -37,10 +37,13 @@
     "vitest": "catalog:"
   },
   "description": "Internal-first infrastructure utilities for @ui-construction-library \u2014 not part of the default consumer path.",
+  "ui-construction": {
+    "surface": "internal",
+    "mode": "library"
+  },
   "keywords": [
-    "utilities",
     "internal",
-    "design-system"
+    "tooling"
   ],
   "repository": {
     "type": "git",

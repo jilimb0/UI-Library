@@ -7,7 +7,7 @@ const onwarn = (warning, warn) => {
 };
 
 export default {
-  input: 'src/index.ts',
+  input: 'src/index.tsx',
   onwarn,
   output: [
     { file: 'dist/index.js', format: 'cjs', sourcemap: true },

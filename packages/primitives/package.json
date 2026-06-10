@@ -26,6 +26,9 @@
     "lint": "biome check src",
     "test": "vitest run --config ./vitest.config.ts"
   },
+  "dependencies": {
+    "@ui-construction-library/behaviors": "workspace:*"
+  },
   "peerDependencies": {
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0"

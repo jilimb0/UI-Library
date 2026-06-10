@@ -25,8 +25,9 @@
     "dist"
   ],
   "scripts": {
-    "build": "rollup -c",
-    "test": "vitest run --config ../../vitest.config.ts src",
+    "build": "rollup -c && node scripts/build-css.js",
+    "build:css": "node scripts/build-css.js",
+    "test": "vitest run --config ./vitest.config.ts src",
     "typecheck": "tsc --noEmit",
     "lint": "biome check src"
   },
@@ -36,12 +37,15 @@
     "typescript": "^6.0.3",
     "vitest": "catalog:"
   },
-  "description": "Internal CSS/styles build layer for @ui-construction-library — not for direct consumer use.",
+  "description": "Universal CSS layer for @ui-construction-library — reset, utilities, and component classes built on design tokens.",
+  "ui-construction": {
+    "surface": "public",
+    "mode": "library"
+  },
   "keywords": [
-    "styles",
     "css",
-    "internal",
-    "tooling",
-    "design-system"
+    "design-system",
+    "styles",
+    "utilities"
   ]
 }

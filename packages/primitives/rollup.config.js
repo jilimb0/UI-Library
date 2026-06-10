@@ -2,7 +2,12 @@ import typescript from '@rollup/plugin-typescript';
 
 export default {
   input: 'src/index.ts',
-  external: ['react', 'react-dom', 'react/jsx-runtime'],
+  external: [
+    'react',
+    'react-dom',
+    'react/jsx-runtime',
+    '@ui-construction-library/behaviors',
+  ],
   output: [
     { file: 'dist/index.js', format: 'cjs', sourcemap: true },
     { file: 'dist/index.esm.js', format: 'esm', sourcemap: true },

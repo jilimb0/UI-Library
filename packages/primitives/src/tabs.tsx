@@ -1,4 +1,8 @@
 import {
+  createTabContentBehavior,
+  createTabTriggerBehavior,
+} from '@ui-construction-library/behaviors';
+import {
   type ButtonHTMLAttributes,
   createContext,
   forwardRef,
@@ -58,15 +62,14 @@ const Trigger = forwardRef<
   ButtonHTMLAttributes<HTMLButtonElement> & { value: string }
 >(function Trigger({ value: tabValue, ...props }, ref) {
   const { value, setValue } = useTabsContext();
-  const active = value === tabValue;
+  const _active = value === tabValue;
+  const behavior = createTabTriggerBehavior({ value, tabValue });
 
   return (
     <button
       ref={ref}
       type="button"
-      role="tab"
-      aria-selected={active}
-      data-state={active ? 'active' : 'inactive'}
+      {...behavior.triggerAttrs}
       onClick={() => setValue(tabValue)}
       {...props}
     />
@@ -79,13 +82,13 @@ const Content = forwardRef<
 >(function Content({ value: tabValue, hidden, ...props }, ref) {
   const { value } = useTabsContext();
   const active = value === tabValue;
+  const behavior = createTabContentBehavior({ value, tabValue });
 
   return (
     <div
       ref={ref}
-      role="tabpanel"
+      {...behavior.contentAttrs}
       hidden={!active || hidden}
-      data-state={active ? 'active' : 'inactive'}
       {...props}
     />
   );

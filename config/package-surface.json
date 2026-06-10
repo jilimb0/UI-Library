@@ -1,0 +1,131 @@
+{
+  "$schema": "./package-surface.schema.json",
+  "description": "Machine-readable package surface contract for public API and internal platform boundaries.",
+  "packages": {
+    "@ui-construction-library/core": {
+      "surface": "public",
+      "role": "primary",
+      "mode": "library",
+      "recommended": true
+    },
+    "@ui-construction-library/tokens": {
+      "surface": "public",
+      "role": "foundational",
+      "mode": "library",
+      "recommended": true
+    },
+    "@ui-construction-library/icons": {
+      "surface": "public",
+      "role": "foundational",
+      "mode": "library",
+      "recommended": true
+    },
+    "@ui-construction-library/primitives": {
+      "surface": "public",
+      "role": "advanced",
+      "mode": "library",
+      "recommended": false
+    },
+    "@ui-construction-library/motion": {
+      "surface": "public",
+      "role": "extension",
+      "mode": "library",
+      "recommended": false
+    },
+    "@ui-construction-library/dnd": {
+      "surface": "public",
+      "role": "extension",
+      "mode": "library",
+      "recommended": false
+    },
+    "@ui-construction-library/react-hook-form": {
+      "surface": "public",
+      "role": "integration",
+      "mode": "library",
+      "recommended": false
+    },
+    "@ui-construction-library/integration-i18n": {
+      "surface": "public",
+      "role": "integration",
+      "mode": "library",
+      "recommended": false
+    },
+    "@ui-construction-library/integration-next": {
+      "surface": "public",
+      "role": "integration",
+      "mode": "library",
+      "recommended": false
+    },
+    "@ui-construction-library/integration-tanstack-query": {
+      "surface": "public",
+      "role": "integration",
+      "mode": "library",
+      "recommended": false
+    },
+    "@ui-construction-library/integration-tanstack-router": {
+      "surface": "public",
+      "role": "integration",
+      "mode": "library",
+      "recommended": false
+    },
+    "@ui-construction-library/utils": {
+      "surface": "internal",
+      "role": "infrastructure",
+      "mode": "library",
+      "recommended": false
+    },
+    "@ui-construction-library/behaviors": {
+      "surface": "public",
+      "role": "foundational",
+      "mode": "library",
+      "recommended": false
+    },
+    "@ui-construction-library/styles": {
+      "surface": "public",
+      "role": "foundational",
+      "mode": "library",
+      "recommended": false
+    },
+    "@ui-construction-library/schema": {
+      "surface": "internal",
+      "role": "platform-contract",
+      "mode": "platform",
+      "recommended": false
+    },
+    "@ui-construction-library/registry": {
+      "surface": "internal",
+      "role": "platform-registry",
+      "mode": "platform",
+      "recommended": false
+    },
+    "@ui-construction-library/export-core": {
+      "surface": "internal",
+      "role": "platform-export",
+      "mode": "platform",
+      "recommended": false
+    },
+    "@ui-construction-library/prompt-engine": {
+      "surface": "internal",
+      "role": "platform-generation",
+      "mode": "platform",
+      "recommended": false
+    }
+  },
+  "libraryApps": [
+    "apps/docs",
+    "apps/storybook",
+    "apps/playground",
+    "apps/demo-showcase",
+    "apps/vue-dashboard",
+    "apps/solid-dashboard",
+    "apps/svelte-dashboard"
+  ],
+  "platformApps": [
+    "apps/builder"
+  ],
+  "platformPaths": [
+    "apps/builder",
+    "supabase",
+    "registry/source"
+  ]
+}

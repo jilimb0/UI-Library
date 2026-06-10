@@ -1,5 +1,7 @@
 # @ui-construction-library/prompt-engine
 
+> INTERNAL-ONLY: This package is not part of the public API surface.
+
 Deterministic prompt-to-UI draft generation for builder-compatible projects.
 
 ## Status

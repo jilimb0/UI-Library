@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-01T18:51:52.844Z",
+  "generatedAt": "2026-06-07T15:07:18.871Z",
   "package": "@ui-construction-library/core",
   "barrelExports": [
     "./components",
@@ -52,6 +52,7 @@
     "molecules/Toast",
     "molecules/Tooltip",
     "organisms/Accordion",
+    "organisms/AppShell",
     "organisms/Calendar",
     "organisms/CommandPalette",
     "organisms/DataTable",
@@ -60,10 +61,12 @@
     "organisms/Form",
     "organisms/Modal",
     "organisms/Navigation",
+    "organisms/PageHeader",
     "organisms/Sidebar",
     "organisms/Table",
     "organisms/Tabs",
     "organisms/Timeline",
+    "organisms/TopNav",
     "organisms/TreeView"
   ]
 }

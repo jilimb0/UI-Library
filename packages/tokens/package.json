@@ -21,17 +21,21 @@
     "./tailwind.preset": {
       "default": "./tailwind.preset.ts"
     },
-    "./css": "./dist/tokens.css"
+    "./css": "./dist/tokens.css",
+    "./json": "./dist/tokens.raw.json",
+    "./semantic": "./dist/tokens.semantic.json",
+    "./component": "./dist/tokens.component.json"
   },
   "files": [
     "dist",
     "tailwind.preset.ts",
-    "README.md"
+    "README.md",
+    "scripts"
   ],
   "scripts": {
-    "build": "rollup -c",
+    "build": "rollup -c && node scripts/build-tokens.js",
     "build:tokens": "node scripts/build-tokens.js",
-    "test": "vitest run --config ../../vitest.config.ts src",
+    "test": "vitest run --config ./vitest.config.ts src",
     "typecheck": "tsc --noEmit",
     "lint": "biome check src"
   },

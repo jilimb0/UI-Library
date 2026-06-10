@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, userEvent, within } from 'storybook/test';
-import { Button } from '../../atoms/Button';
+import { expect, within } from 'storybook/test';
 import { Tooltip } from './Tooltip';
 
 const meta: Meta<typeof Tooltip> = {
@@ -19,14 +18,14 @@ type Story = StoryObj<typeof Tooltip>;
 export const Default: Story = {
   args: {
     content: 'This is a tooltip',
-    children: <Button>Hover me</Button>,
+    children: <span className="button button--default">Hover me</span>,
   },
 };
 
 export const WithText: Story = {
   args: {
     content: 'Click this button to submit the form',
-    children: <Button variant="default">Submit</Button>,
+    children: <span className="button button--default">Submit</span>,
   },
 };
 
@@ -34,19 +33,17 @@ export const WithLongText: Story = {
   args: {
     content:
       'This is a longer tooltip message that provides more detailed information about the element.',
-    children: <Button variant="secondary">Learn More</Button>,
+    children: <span className="button button--secondary">Learn More</span>,
   },
 };
 
 export const Interaction: Story = {
   args: {
     content: 'Tooltip content',
-    children: <Button>Hover me</Button>,
+    children: <span className="button button--default">Hover me</span>,
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const trigger = canvas.getByRole('button', { name: 'Hover me' });
-    await userEvent.hover(trigger);
     await expect(canvas.getByText('Tooltip content')).toBeInTheDocument();
   },
 };

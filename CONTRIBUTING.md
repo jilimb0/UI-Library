@@ -28,6 +28,8 @@ pnpm validate              # deps, API snapshot, lint, typecheck, test, build, p
 pnpm validate:platform     # above + E2E (assembles Pages site; slow first run)
 ```
 
+Подробнее о quality gates и требованиях для разработчика/CI/release см. [docs/quality/quality-gates.md](docs/quality/quality-gates.md).
+
 Release channels: `pnpm publish:canary` / `pnpm publish:stable` (see [CANARY_RELEASE.md](docs/release/CANARY_RELEASE.md)).
 
 ## Workflow

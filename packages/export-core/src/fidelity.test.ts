@@ -56,8 +56,8 @@ describe('export fidelity helpers', () => {
           'assets/icons/placeholder-app-icon.svg -> placeholder-icon-transform',
         ],
         fontPolicies: [
-          'shared-theme-stylesheet:@ui-construction-library/styles/dist/themes.css',
-          'shared-variables-stylesheet:@ui-construction-library/styles/dist/variables.css',
+          'shared-theme-stylesheet:@ui-construction-library/styles/styles.css',
+          'shared-variables-stylesheet:@ui-construction-library/styles/styles.css',
           'font-manifest-missing',
         ],
       },

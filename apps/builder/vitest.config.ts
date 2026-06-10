@@ -1,10 +1,23 @@
+import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      '@ui-construction-library/registry': fileURLToPath(
+        new URL('../../packages/registry/src/index.ts', import.meta.url)
+      ),
+      '@ui-construction-library/prompt-engine': fileURLToPath(
+        new URL('../../packages/prompt-engine/src/index.ts', import.meta.url)
+      ),
+    },
+  },
   test: {
     environment: 'node',
     include: [
       'src/auth.test.ts',
+      'src/builderControllers.test.ts',
+      'src/builderEditorController.test.ts',
       'src/commentRepository.test.ts',
       'src/dataServices.test.ts',
       'src/editorState.test.ts',
@@ -13,7 +26,6 @@ export default defineConfig({
       'src/tree.test.ts',
       'src/versionRepository.test.ts',
       'src/schemaGuard.test.ts',
-      'src/builderControllers.test.ts',
     ],
     pool: 'threads',
     coverage: {

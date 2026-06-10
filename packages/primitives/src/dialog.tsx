@@ -1,3 +1,4 @@
+import { createDialogBehavior } from '@ui-construction-library/behaviors';
 import {
   createContext,
   forwardRef,
@@ -107,13 +108,14 @@ function PortalWrapper({ children }: { children: ReactNode }) {
 
 const Overlay = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   function Overlay(props, ref) {
-    const { setOpen } = useDialogContext();
+    const { open, setOpen } = useDialogContext();
+    const behavior = createDialogBehavior({ open: Boolean(open) });
     return (
       // biome-ignore lint/a11y/noStaticElementInteractions: modal backdrop
       <div
         ref={ref}
         role="presentation"
-        data-state="open"
+        {...behavior.overlayAttrs}
         tabIndex={-1}
         onClick={() => setOpen(false)}
         onKeyDown={(e) => {
@@ -127,8 +129,13 @@ const Overlay = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
 
 const Content = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   function Content({ onClick, onKeyDown: onKeyDownProp, ...props }, ref) {
-    const { setOpen, titleId, descriptionId } = useDialogContext();
+    const { open, setOpen, titleId, descriptionId } = useDialogContext();
     const contentRef = useRef<HTMLDivElement | null>(null);
+    const behavior = createDialogBehavior({
+      open: Boolean(open),
+      titleId,
+      descriptionId,
+    });
 
     useEffect(() => {
       const node = contentRef.current;
@@ -143,11 +150,8 @@ const Content = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
           if (typeof ref === 'function') ref(node);
           else if (ref) ref.current = node;
         }}
+        {...behavior.contentAttrs}
         role="dialog"
-        aria-modal="true"
-        aria-labelledby={titleId}
-        aria-describedby={descriptionId}
-        data-state="open"
         onClick={(e) => {
           onClick?.(e);
           e.stopPropagation();

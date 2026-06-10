@@ -53,6 +53,12 @@
       ],
       "@ui-construction-library/react-hook-form": [
         "packages/integrations/react-hook-form/src/index.ts"
+      ],
+      "@ui-construction-library/export-core": [
+        "packages/export-core/src/index.ts"
+      ],
+      "@ui-construction-library/prompt-engine": [
+        "packages/prompt-engine/src/index.ts"
       ]
     }
   },

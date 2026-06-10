@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "UI Construction Library package surface matrix",
+  "type": "object",
+  "required": ["packages", "libraryApps", "platformApps", "platformPaths"],
+  "properties": {
+    "description": {
+      "type": "string"
+    },
+    "packages": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["surface", "role", "mode", "recommended"],
+        "properties": {
+          "surface": {
+            "enum": ["public", "internal"]
+          },
+          "role": {
+            "type": "string"
+          },
+          "mode": {
+            "enum": ["library", "platform"]
+          },
+          "recommended": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "libraryApps": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "platformApps": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "platformPaths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}

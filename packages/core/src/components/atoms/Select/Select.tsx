@@ -83,6 +83,8 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             )}
             ref={ref}
             onChange={handleChange}
+            data-size={size}
+            data-error={error || undefined}
             {...props}
           >
             {options?.map((opt) => (
