@@ -15,9 +15,8 @@ on:
 jobs:
   perf-checks:
     runs-on: ubuntu-latest
-    # Runs after main CI so build artifacts may be cached
-    needs: ci
     steps:
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/setup-workspace
       - run: pnpm build
       - run: pnpm exec vitest run --config tests/performance/vitest.config.js

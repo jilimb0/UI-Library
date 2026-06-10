@@ -9,10 +9,8 @@ jobs:
     name: Schema And Registry Gates
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/setup-workspace
-      - uses: ./.github/actions/setup-turbo-cache
-        with:
-          turbo-token: ${{ secrets.TURBO_TOKEN }}
       - run: pnpm --filter @ui-construction-library/schema typecheck
       - run: pnpm --filter @ui-construction-library/schema test
       - run: pnpm --filter @ui-construction-library/registry typecheck
@@ -22,10 +20,8 @@ jobs:
     name: Export Smoke Builds
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/setup-workspace
-      - uses: ./.github/actions/setup-turbo-cache
-        with:
-          turbo-token: ${{ secrets.TURBO_TOKEN }}
       - run: pnpm --filter @ui-construction-library/tokens build
       - run: pnpm --filter @ui-construction-library/registry build
       - run: pnpm --filter @ui-construction-library/export-core test
@@ -35,10 +31,8 @@ jobs:
     name: Builder Quality Gates
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/setup-workspace
-      - uses: ./.github/actions/setup-turbo-cache
-        with:
-          turbo-token: ${{ secrets.TURBO_TOKEN }}
       - run: pnpm --filter @ui-app/builder build
       - run: pnpm --filter @ui-app/builder test
       - run: pnpm --filter @ui-app/builder typecheck
