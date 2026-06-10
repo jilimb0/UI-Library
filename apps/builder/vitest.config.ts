@@ -7,6 +7,9 @@ export default defineConfig({
       '@ui-construction-library/registry': fileURLToPath(
         new URL('../../packages/registry/src/index.ts', import.meta.url)
       ),
+      '@ui-construction-library/prompt-engine': fileURLToPath(
+        new URL('../../packages/prompt-engine/src/index.ts', import.meta.url)
+      ),
     },
   },
   test: {
