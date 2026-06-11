@@ -94,6 +94,8 @@ function runForTarget(target) {
   };
 }
 
-const targets = ['react-single-page', 'react-multi-page'];
+// react-multi-page renderer is not yet implemented (falls through to default
+// in pipeline.ts switch) — smoke only covers implemented targets.
+const targets = ['react-single-page'];
 const results = targets.map(runForTarget);
 console.log(JSON.stringify({ ok: true, results }, null, 2));

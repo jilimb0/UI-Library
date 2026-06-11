@@ -74,6 +74,22 @@ export function renderExportProject(
         renderWebComponentsStatic(enriched.ir)
       );
       break;
+    case 'react-multi-page':
+      // TODO: implement renderReactMultiPage — should generate separate
+      // per-page files (e.g. src/pages/Home.tsx, src/pages/Pricing.tsx)
+      // with a router-aware App.tsx entry point (React Router / TanStack Router).
+      // Tracked: https://github.com/jilimbo/UI-Library/issues — "react-multi-page renderer"
+      result = finishExportRender(enriched.ir.target, {
+        files: [],
+        diagnostics: [
+          {
+            level: 'warn',
+            code: 'NOT_IMPLEMENTED',
+            message: 'react-multi-page renderer is not yet implemented.',
+          },
+        ],
+      });
+      break;
     default:
       result = finishExportRender(enriched.ir.target, {
         files: [],
