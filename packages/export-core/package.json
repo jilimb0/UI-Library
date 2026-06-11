@@ -23,7 +23,7 @@
   },
   "sideEffects": false,
   "scripts": {
-    "build": "rollup -c",
+    "build": "rollup -c && tsc -p tsconfig.json --emitDeclarationOnly --declarationMap",
     "typecheck": "tsc --noEmit",
     "lint": "biome check src",
     "test": "vitest run --config ./vitest.config.ts"
@@ -40,7 +40,7 @@
     "typescript": "^6.0.3",
     "vitest": "catalog:"
   },
-  "description": "Internal export pipeline for @ui-construction-library tooling — not for direct consumer use.",
+  "description": "Internal export pipeline for @ui-construction-library tooling \u2014 not for direct consumer use.",
   "ui-construction": {
     "surface": "internal",
     "mode": "platform"

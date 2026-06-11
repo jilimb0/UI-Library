@@ -22,7 +22,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "rollup -c",
+    "build": "rollup -c && tsc -p tsconfig.build.json --emitDeclarationOnly --declarationMap",
     "lint": "biome check src",
     "lint:fix": "biome check --write src",
     "test": "vitest run --config ./vitest.config.ts",
@@ -36,7 +36,7 @@
     "typescript": "^6.0.3",
     "vitest": "catalog:"
   },
-  "description": "Internal-first infrastructure utilities for @ui-construction-library — not part of the default consumer path.",
+  "description": "Internal-first infrastructure utilities for @ui-construction-library \u2014 not part of the default consumer path.",
   "ui-construction": {
     "surface": "internal",
     "mode": "library"

@@ -21,7 +21,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "rollup -c",
+    "build": "rollup -c && tsc -p tsconfig.json --emitDeclarationOnly --declarationMap",
     "typecheck": "tsc --noEmit",
     "lint": "biome check src",
     "test": "vitest run --config ./vitest.config.ts"
@@ -45,7 +45,7 @@
   },
   "license": "MIT",
   "type": "module",
-  "description": "Optional drag-and-drop extension for @ui-construction-library — DndContext, Kanban, sortable abstractions.",
+  "description": "Optional drag-and-drop extension for @ui-construction-library \u2014 DndContext, Kanban, sortable abstractions.",
   "keywords": [
     "drag-and-drop",
     "dnd",

@@ -9,7 +9,7 @@
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "rollup -c",
+    "build": "rollup -c && tsc -p tsconfig.json --emitDeclarationOnly --declarationMap",
     "test": "vitest run --config ./vitest.config.ts src",
     "typecheck": "tsc --noEmit",
     "lint": "biome check src"
@@ -38,7 +38,7 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "description": "TanStack Query integration for @ui-construction-library — query-backed data components.",
+  "description": "TanStack Query integration for @ui-construction-library \u2014 query-backed data components.",
   "keywords": [
     "tanstack-query",
     "react-query",

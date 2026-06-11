@@ -1,7 +1,7 @@
 {
   "name": "@ui-construction-library/registry",
   "version": "0.2.0",
-  "description": "Internal component registry for @ui-construction-library tooling — not for direct consumer use.",
+  "description": "Internal component registry for @ui-construction-library tooling \u2014 not for direct consumer use.",
   "keywords": [
     "internal",
     "tooling"
@@ -16,14 +16,14 @@
   },
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
-  "types": "dist/index.d.ts",
+  "types": "dist/src/index.d.ts",
   "type": "module",
   "sideEffects": false,
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "rollup -c",
+    "build": "rollup -c && tsc -p tsconfig.json --emitDeclarationOnly --declarationMap",
     "typecheck": "tsc --noEmit",
     "lint": "biome check src",
     "test": "vitest run --config ./vitest.config.ts"
@@ -36,7 +36,7 @@
   },
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
+      "types": "./dist/src/index.d.ts",
       "import": "./dist/index.esm.js",
       "require": "./dist/index.js",
       "default": "./dist/index.esm.js"

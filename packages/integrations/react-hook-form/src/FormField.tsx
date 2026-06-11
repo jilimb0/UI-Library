@@ -1,5 +1,6 @@
 import { Input } from '@ui-construction-library/core';
-import type { ComponentPropsWithRef, ReactNode } from 'react';
+import type React from 'react';
+import type { ReactNode } from 'react';
 import {
   type Control,
   type FieldValues,
@@ -8,9 +9,20 @@ import {
   useController,
 } from 'react-hook-form';
 
-// Derive Input props directly from the component to avoid importing the type
-// from core's dist/index.d.ts which may not re-export it in all environments.
-type InputComponentProps = ComponentPropsWithRef<typeof Input>;
+// Cast Input to a plain FC signature so TypeScript resolves props directly
+// from InputHTMLAttributes rather than through ForwardRefExoticComponent<T>.
+// ForwardRefExoticComponent with @types/react@18.3 loses the prop types when
+// used via ComponentPropsWithRef in certain monorepo resolution scenarios where
+// dist/index.d.ts and dist/src/index.d.ts coexist.
+const InputField = Input as unknown as (
+  props: Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> & {
+    ref?: React.Ref<HTMLInputElement>;
+    variant?: 'default' | 'error';
+    label?: string;
+    description?: string;
+    size?: 'default' | 'sm' | 'lg';
+  }
+) => React.ReactElement | null;
 
 export type FormFieldProps<T extends FieldValues> = {
   name: Path<T>;
@@ -39,23 +51,21 @@ export function FormField<T extends FieldValues>({
   const descriptionText =
     typeof description === 'string' ? description : undefined;
 
-  const inputOverrides: Partial<InputComponentProps> = {
-    ref: field.ref as InputComponentProps['ref'],
-    name: field.name,
-    value: field.value as string | undefined,
-    onChange: field.onChange,
-    onBlur: field.onBlur,
-    disabled: field.disabled ?? disabled,
-    variant: fieldState.error ? 'error' : undefined,
-    label: labelText,
-    description: descriptionText,
-  };
-
   return (
     <div className="form-stack" style={{ gap: '0.25rem' }}>
-      <Input
-        {...(inputProps as Omit<InputComponentProps, 'ref'>)}
-        {...inputOverrides}
+      <InputField
+        ref={field.ref}
+        name={field.name}
+        value={field.value as string | undefined}
+        onChange={field.onChange}
+        onBlur={field.onBlur}
+        disabled={field.disabled ?? disabled}
+        variant={fieldState.error ? 'error' : undefined}
+        label={labelText}
+        description={descriptionText}
+        placeholder={inputProps.placeholder}
+        className={inputProps.className}
+        size={inputProps.size}
       />
       {fieldState.error?.message ? (
         <p

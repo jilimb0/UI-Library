@@ -33,7 +33,7 @@
     "scripts"
   ],
   "scripts": {
-    "build": "rollup -c && node scripts/build-tokens.js",
+    "build": "rollup -c && node scripts/build-tokens.js && tsc -p tsconfig.json --emitDeclarationOnly --declarationMap",
     "build:tokens": "node scripts/build-tokens.js",
     "test": "vitest run --config ./vitest.config.ts src",
     "typecheck": "tsc --noEmit",
@@ -47,7 +47,7 @@
   },
   "license": "MIT",
   "type": "module",
-  "description": "Design token and theme contract for @ui-construction-library — colors, typography, spacing and CSS variables.",
+  "description": "Design token and theme contract for @ui-construction-library \u2014 colors, typography, spacing and CSS variables.",
   "keywords": [
     "design-tokens",
     "css-variables",

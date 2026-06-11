@@ -8,7 +8,7 @@
   "description": "Primary React UI component library — atoms, molecules, organisms and templates for product surfaces.",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
-  "types": "dist/src/index.d.ts",
+  "types": "dist/index.d.ts",
   "files": [
     "dist",
     "README.md",
@@ -18,7 +18,7 @@
     ".": {
       "import": "./dist/index.esm.js",
       "require": "./dist/index.js",
-      "types": "./dist/src/index.d.ts"
+      "types": "./dist/index.d.ts"
     },
     "./styles.css": "./dist/styles.css",
     "./styles": "./dist/styles.css"
@@ -28,7 +28,7 @@
     "**/*.css"
   ],
   "scripts": {
-    "build": "rollup -c",
+    "build": "rollup -c && tsc -p tsconfig.json --emitDeclarationOnly --declarationMap",
     "lint": "biome check src",
     "lint:fix": "biome check --write src",
     "test": "vitest run --config ./vitest.config.ts src",

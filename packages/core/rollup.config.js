@@ -25,9 +25,10 @@ export default [
       commonjs(),
       typescript({
         tsconfig: './tsconfig.json',
-        outputToFilesystem: true,
         declaration: true,
         declarationDir: 'dist',
+        declarationMap: true,
+        noEmit: false,
         exclude: ['**/*.test.ts', '**/*.test.tsx', '**/*.stories.tsx'],
       }),
       postcss({ extract: 'styles.css', minimize: false }),

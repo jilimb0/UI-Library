@@ -21,7 +21,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "rollup -c",
+    "build": "rollup -c && tsc -p tsconfig.json --emitDeclarationOnly --declarationMap",
     "test": "vitest run --config ./vitest.config.ts src",
     "typecheck": "tsc --noEmit",
     "lint": "biome check src"
@@ -34,7 +34,7 @@
   },
   "license": "MIT",
   "type": "module",
-  "description": "Framework-agnostic behavior layer for @ui-construction-library — pure JS state machines, ARIA attributes, and interaction logic.",
+  "description": "Framework-agnostic behavior layer for @ui-construction-library \u2014 pure JS state machines, ARIA attributes, and interaction logic.",
   "keywords": [
     "behaviors",
     "state-machine",
