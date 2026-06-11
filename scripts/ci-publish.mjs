@@ -17,7 +17,6 @@
 
 import { execSync } from 'node:child_process';
 import { readFileSync, writeFileSync, readdirSync, statSync } from 'node:fs';
-import { homedir } from 'node:os';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -25,21 +24,11 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '..');
 const LOG_FILE = `/tmp/ci-publish-${Date.now()}.log`;
 
-// Ensure npm auth token is written to ~/.npmrc.
-// changesets/action sets NODE_AUTH_TOKEN in env but its own .npmrc creation
-// does not always include the token line — write it explicitly.
-{
-  const token = process.env.NODE_AUTH_TOKEN || process.env.NPM_TOKEN;
-  if (token) {
-    const npmrcPath = resolve(homedir(), '.npmrc');
-    const line = `//registry.npmjs.org/:_authToken=${token}`;
-    let existing = '';
-    try { existing = readFileSync(npmrcPath, 'utf-8'); } catch {}
-    if (!existing.includes('_authToken')) {
-      writeFileSync(npmrcPath, existing + (existing.endsWith('\n') ? '' : '\n') + line + '\n');
-    }
-  }
-}
+// Auth: this project uses npm Trusted Publisher (OIDC) — no NPM_TOKEN needed.
+// npm publish --provenance automatically exchanges the GitHub OIDC token for
+// a short-lived npm token via ACTIONS_ID_TOKEN_REQUEST_URL / REQUEST_TOKEN
+// which GitHub Actions injects into every child process env automatically.
+// Nothing to configure here.
 
 function log(msg) {
   const line = `[ci-publish] ${msg}`;
@@ -186,15 +175,9 @@ for (const { path: pkgPath, dir, pkg } of packages) {
   try {
     const cmd = `npm publish --access public ${provenanceFlag}`.trim();
     log(`  $ ${cmd}`);
-    // Explicitly forward NODE_AUTH_TOKEN so npm can authenticate regardless
-    // of how the parent process was spawned (e.g. inside changesets/action).
-    const publishEnv = {
-      ...process.env,
-      NODE_AUTH_TOKEN: process.env.NODE_AUTH_TOKEN ?? '',
-    };
     let publishOut = '';
     try {
-      publishOut = execSync(cmd, { cwd: dir, stdio: ['ignore', 'pipe', 'pipe'], encoding: 'utf-8', env: publishEnv });
+      publishOut = execSync(cmd, { cwd: dir, stdio: ['ignore', 'pipe', 'pipe'], encoding: 'utf-8' });
       log(publishOut.trim());
     } catch (publishErr) {
       const stderr = (publishErr.stderr || '').trim();

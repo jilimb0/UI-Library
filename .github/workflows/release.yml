@@ -3,9 +3,9 @@ name: Release
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
   HUSKY: 0
-  # Private GitHub repo — npm provenance requires Trusted Publisher setup on npmjs.com.
-  # Set to "true" only after configuring Trusted Publisher.
-  NPM_PUBLISH_PROVENANCE: "false"
+  # Uses npm Trusted Publisher (OIDC) — no NPM_TOKEN secret needed.
+  # --provenance causes npm to exchange the GitHub OIDC token for auth automatically.
+  NPM_PUBLISH_PROVENANCE: "true"
 
 # Trigger directly on push to main — simpler and more reliable than
 # workflow_run which introduced a stale-SHA race condition: if a new commit
@@ -82,8 +82,6 @@ jobs:
           commit: 'chore: version packages'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       # Upload a flag artifact so published-smoke.yml can be triggered.
       - name: Upload publish flag
