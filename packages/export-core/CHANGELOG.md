@@ -4,6 +4,25 @@
 
 ### Minor Changes
 
+- bbc8ff1: feat(export-core): add React multi-page renderer target
+
+  New `react-multi-page-target.ts` pipeline target for rendering multi-page
+  React documents. Integrates into the existing export pipeline alongside
+  performance tests for accessibility.
+
+### Patch Changes
+
+- ae9901c: fix: post-release patch fixes for build reliability and TypeScript correctness
+
+  - **core**: correct `tsconfig.json` include globs — scoped test patterns to `src/` to prevent accidental inclusion of files outside source tree
+  - **react-hook-form**: fix TS2322 in `FormField` — cast `Input` to plain FC signature to avoid `RefAttributes<any>` type collapse under TS6 + strict project references
+  - **export-core**: fix import path in smoke test script
+  - **prompt-engine**: update diagnostic level from `warn` to `warning`, add `NOT_IMPLEMENTED` code
+
+## 0.2.0
+
+### Minor Changes
+
 - 8e364a3: Upgrade product readiness
 
 ### Patch Changes
