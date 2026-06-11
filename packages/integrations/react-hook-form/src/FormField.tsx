@@ -37,11 +37,11 @@ export function FormField<T extends FieldValues>({
   return (
     <div className="form-stack" style={{ gap: '0.25rem' }}>
       <Input
-        label={labelText}
-        description={descriptionText}
         variant={fieldState.error ? 'error' : undefined}
         {...inputProps}
         {...field}
+        label={labelText}
+        description={descriptionText}
       />
       {fieldState.error?.message ? (
         <p
