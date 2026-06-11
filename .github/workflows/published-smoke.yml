@@ -76,5 +76,8 @@ jobs:
             echo "✅ $PKG confirmed on registry"
           done
 
+      - name: Install export-core for smoke
+        run: npm install --no-save @ui-construction-library/export-core
+
       - name: Export smoke check
         run: node scripts/check-export-smoke.mjs

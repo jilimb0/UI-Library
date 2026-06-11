@@ -6,7 +6,7 @@ import {
   enrichExportProject,
   normalizeExportProject,
   renderExportProject,
-} from '../packages/export-core/src/index.ts';
+} from '@ui-construction-library/export-core';
 
 const fixture = {
   id: 'smoke-builder-project',
