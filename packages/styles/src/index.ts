@@ -6,9 +6,9 @@ export const variablesStylesheetPath =
 /** Canonical stylesheet containing base + components + utilities with ucl- prefix */
 export const stylesPath = '@ui-construction-library/styles/styles.css';
 
-export type DensityPreset = 'comfortable' | 'compact';
-
-export const densityClassMap: Record<DensityPreset, string> = {
+export const densityClassMap = {
   comfortable: 'ui-density-comfortable',
   compact: 'ui-density-compact',
-};
+} as const;
+
+export type DensityPreset = keyof typeof densityClassMap;
