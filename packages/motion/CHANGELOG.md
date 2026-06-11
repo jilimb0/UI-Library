@@ -4,6 +4,13 @@
 
 ### Patch Changes
 
+- Updated dependencies [ae9901c]
+  - @ui-construction-library/core@0.2.1
+
+## 0.1.4
+
+### Patch Changes
+
 - Updated dependencies [8e364a3]
   - @ui-construction-library/core@0.2.0
 
