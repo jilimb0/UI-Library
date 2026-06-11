@@ -29,10 +29,10 @@
     "test": "vitest run --config ./vitest.config.ts"
   },
   "dependencies": {
-    "@ui-construction-library/registry": "^0.2.0",
-    "@ui-construction-library/schema": "^0.2.0",
-    "@ui-construction-library/styles": "^0.2.0",
-    "@ui-construction-library/tokens": "^0.2.0"
+    "@ui-construction-library/registry": "workspace:*",
+    "@ui-construction-library/schema": "workspace:*",
+    "@ui-construction-library/styles": "workspace:*",
+    "@ui-construction-library/tokens": "workspace:*"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^12.1.2",
