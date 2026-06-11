@@ -8,6 +8,8 @@ import {
   useContext,
   useRef,
 } from 'react';
+import { assignRef } from './internal/helpers/assignRef';
+import { normalizeAriaOrientation } from './internal/helpers/normalizeAria';
 import { useControllableState } from './internal/useControllableState';
 
 type SliderContextValue = {
@@ -18,6 +20,7 @@ type SliderContextValue = {
   step: number;
   disabled?: boolean;
   trackRef: { current: HTMLDivElement | null };
+  orientation: 'horizontal' | 'vertical';
 };
 
 const SliderContext = createContext<SliderContextValue | null>(null);
@@ -29,16 +32,41 @@ function useSliderContext() {
   return ctx;
 }
 
+/**
+ * Slider primitive - a control for selecting a value from a range.
+ *
+ * @example
+ * ```tsx
+ * <Slider.Root min={0} max={100} step={1} defaultValue={[50]}>
+ *   <Slider.Track>
+ *     <Slider.Range />
+ *   </Slider.Track>
+ *   <SliderThumb aria-label="Volume" />
+ * </Slider.Root>
+ * ```
+ */
 export type SliderRootProps = HTMLAttributes<HTMLDivElement> & {
+  /** Initial value (controlled) */
   value?: number[];
+  /** Initial value (uncontrolled) */
   defaultValue?: number[];
+  /** Callback when value changes */
   onValueChange?: (value: number[]) => void;
+  /** Minimum value (default: 0) */
   min?: number;
+  /** Maximum value (default: 100) */
   max?: number;
+  /** Step increment (default: 1) */
   step?: number;
+  /** Disable the slider */
   disabled?: boolean;
+  /** Orientation: 'horizontal' (default) or 'vertical' */
+  orientation?: 'horizontal' | 'vertical';
 };
 
+/**
+ * Slider.Root - The container component that provides context and state.
+ */
 const Root = forwardRef<HTMLDivElement, SliderRootProps>(function Root(
   {
     value,
@@ -48,6 +76,7 @@ const Root = forwardRef<HTMLDivElement, SliderRootProps>(function Root(
     max = 100,
     step = 1,
     disabled,
+    orientation = 'horizontal',
     ...props
   },
   ref
@@ -65,6 +94,7 @@ const Root = forwardRef<HTMLDivElement, SliderRootProps>(function Root(
     max,
     step,
     disabled,
+    orientation,
   });
 
   return (
@@ -77,13 +107,22 @@ const Root = forwardRef<HTMLDivElement, SliderRootProps>(function Root(
         step,
         disabled,
         trackRef,
+        orientation,
       }}
     >
-      <div ref={ref} data-disabled={disabled ? '' : undefined} {...props} />
+      <div
+        ref={ref}
+        data-disabled={disabled ? '' : undefined}
+        data-orientation={orientation}
+        {...props}
+      />
     </SliderContext.Provider>
   );
 });
 
+/**
+ * Slider.Track - The track container that holds the range.
+ */
 const Track = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   function Track(props, ref) {
     const ctx = useContext(SliderContext);
@@ -91,12 +130,7 @@ const Track = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
       <div
         ref={(node) => {
           if (ctx) ctx.trackRef.current = node;
-          if (typeof ref === 'function') {
-            ref(node);
-          } else if (ref && node) {
-            (ref as React.MutableRefObject<HTMLDivElement | null>).current =
-              node;
-          }
+          assignRef(ref, node);
         }}
         {...props}
       />
@@ -104,6 +138,9 @@ const Track = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   }
 );
 
+/**
+ * Slider.Range - The filled range indicator showing selected value.
+ */
 const Range = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   function Range(props, ref) {
     const ctx = useContext(SliderContext);
@@ -119,10 +156,21 @@ const Range = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   }
 );
 
+/**
+ * Slider.Thumb - The draggable control for adjusting the value.
+ *
+ * Supports:
+ * - Pointer drag (mouse/touch)
+ * - Keyboard navigation (Arrow keys, Home, End)
+ * - Both horizontal and vertical orientations
+ */
 const Thumb = forwardRef<
   HTMLButtonElement,
   React.ButtonHTMLAttributes<HTMLButtonElement>
->(function Thumb({ className, style, onPointerDown, ...props }, ref) {
+>(function Thumb(
+  { className, style, onPointerDown, onKeyDown, ...props },
+  ref
+) {
   const ctx = useSliderContext();
 
   const onPointerDownInternal = useCallback(
@@ -131,11 +179,15 @@ const Thumb = forwardRef<
       if (event.defaultPrevented) return;
 
       const startX = event.clientX;
+      const startY = event.clientY;
       const startValue = ctx.value[0];
 
       const onMove = (moveEvent: PointerEvent) => {
         if (moveEvent.buttons === 0) return;
-        const delta = moveEvent.clientX - startX;
+        const delta =
+          ctx.orientation === 'horizontal'
+            ? moveEvent.clientX - startX
+            : moveEvent.clientY - startY;
         const nextValue = Math.min(
           ctx.max,
           Math.max(ctx.min, startValue + delta)
@@ -154,18 +206,63 @@ const Thumb = forwardRef<
     [ctx, onPointerDown]
   );
 
+  const onKeyboardDown = useCallback(
+    (event: React.KeyboardEvent<HTMLButtonElement>) => {
+      onKeyDown?.(event);
+      if (event.defaultPrevented) return;
+
+      const step = ctx.step;
+      let nextValue = ctx.value[0];
+
+      switch (event.key) {
+        case 'ArrowLeft':
+          if (ctx.orientation === 'horizontal') {
+            nextValue = nextValue - step;
+          }
+          break;
+        case 'ArrowRight':
+          if (ctx.orientation === 'horizontal') {
+            nextValue = nextValue + step;
+          }
+          break;
+        case 'ArrowDown':
+          if (ctx.orientation === 'vertical') {
+            nextValue = nextValue - step;
+          } else {
+            nextValue = nextValue - step;
+          }
+          break;
+        case 'ArrowUp':
+          if (ctx.orientation === 'vertical') {
+            nextValue = nextValue + step;
+          } else {
+            nextValue = nextValue + step;
+          }
+          break;
+        case 'Home':
+          nextValue = ctx.min;
+          break;
+        case 'End':
+          nextValue = ctx.max;
+          break;
+        default:
+          return;
+      }
+
+      nextValue = Math.min(ctx.max, Math.max(ctx.min, nextValue));
+      ctx.setValue([nextValue]);
+      event.preventDefault();
+    },
+    [ctx, onKeyDown]
+  );
+
   if (!ctx) {
     const fallback = createSliderBehavior({ value: 0 });
-    // Normalize aria-orientation to match React's expected type
-    const normalizedThumbAttrs = {
-      ...fallback.thumbAttrs,
-      'aria-orientation': fallback.thumbAttrs['aria-orientation'] as
-        | 'horizontal'
-        | 'vertical'
-        | undefined,
-    };
     const fallbackProps = {
-      ...normalizedThumbAttrs,
+      ...fallback.thumbAttrs,
+      'aria-orientation': normalizeAriaOrientation(
+        fallback.thumbAttrs['aria-orientation']
+      ),
       type: 'button' as const,
       ...props,
     } satisfies React.ButtonHTMLAttributes<HTMLButtonElement>;
@@ -180,22 +277,18 @@ const Thumb = forwardRef<
     max: ctx.max,
     step: ctx.step,
     disabled: ctx.disabled,
+    orientation: ctx.orientation,
   });
 
-  // Normalize aria-orientation to match React's expected type
-  const normalizedThumbAttrs = {
-    ...behavior.thumbAttrs,
-    'aria-orientation': behavior.thumbAttrs['aria-orientation'] as
-      | 'horizontal'
-      | 'vertical'
-      | undefined,
-  };
-
   const buttonProps = {
-    ...normalizedThumbAttrs,
+    ...behavior.thumbAttrs,
+    'aria-orientation': normalizeAriaOrientation(
+      behavior.thumbAttrs['aria-orientation']
+    ),
     type: 'button' as const,
     disabled: ctx.disabled,
     onPointerDown: onPointerDownInternal,
+    onKeyDown: onKeyboardDown,
     className,
     style,
     ...props,
@@ -205,11 +298,3 @@ const Thumb = forwardRef<
 });
 
 export { Range, Root, Thumb, Track };
-
-// Namespace export for Slider with subcomponents
-export const Slider = {
-  Root,
-  Track,
-  Range,
-  Thumb,
-};

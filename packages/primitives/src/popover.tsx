@@ -13,6 +13,8 @@ import {
   useState,
 } from 'react';
 import { trapFocus } from './internal/focusTrap';
+import { assignRef } from './internal/helpers/assignRef';
+import { normalizeAriaHasPopup } from './internal/helpers/normalizeAria';
 import { Portal } from './internal/Portal';
 import { Slottable } from './internal/Slottable';
 import { useControllableState } from './internal/useControllableState';
@@ -76,22 +78,14 @@ const Trigger = forwardRef<
 
   const mergedRef = (node: HTMLElement | null) => {
     triggerRef.current = node;
-    if (typeof ref === 'function') ref(node);
-    else if (ref) (ref as MutableRefObject<HTMLElement | null>).current = node;
+    assignRef(ref, node);
   };
 
   const sharedProps = {
     ...behavior.triggerAttrs,
-    'aria-haspopup': behavior.triggerAttrs['aria-haspopup'] as
-      | boolean
-      | 'dialog'
-      | 'true'
-      | 'false'
-      | 'menu'
-      | 'listbox'
-      | 'tree'
-      | 'grid'
-      | undefined,
+    'aria-haspopup': normalizeAriaHasPopup(
+      behavior.triggerAttrs['aria-haspopup']
+    ),
     onClick: (e: ReactMouseEvent<HTMLElement>) => {
       onClick?.(e as ReactMouseEvent<HTMLElement>);
       if (!e.defaultPrevented) setOpen(true);

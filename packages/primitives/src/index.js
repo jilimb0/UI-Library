@@ -4,6 +4,6 @@ export { Dialog } from './dialog';
 export { getFocusableElements, trapFocus } from './internal/focusTrap';
 export { useControllableState } from './internal/useControllableState';
 export { Popover } from './popover';
-export { Slider } from './slider';
+export { Range, Root, Thumb, Track } from './slider';
 export { Switch } from './switch';
 export { Tabs } from './tabs';

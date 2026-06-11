@@ -1,4 +1,9 @@
-import { Slider as PrimitiveSlider } from '@ui-construction-library/primitives';
+import {
+  Range as SliderRange,
+  Root as SliderRoot,
+  Thumb as SliderThumb,
+  Track as SliderTrack,
+} from '@ui-construction-library/primitives';
 
 export interface SliderProps {
   value?: number[];
@@ -8,6 +13,7 @@ export interface SliderProps {
   min?: number;
   max?: number;
   step?: number;
+  orientation?: 'horizontal' | 'vertical';
   className?: string;
   style?: React.CSSProperties;
 }
@@ -20,6 +26,7 @@ export function Slider({
   min = 0,
   max = 100,
   step = 1,
+  orientation = 'horizontal',
   className,
   style,
 }: SliderProps) {
@@ -31,25 +38,26 @@ export function Slider({
   };
 
   return (
-    <PrimitiveSlider.Root
+    <SliderRoot
       value={resolvedValue}
       onValueChange={handleValueChange}
       min={min}
       max={max}
       step={step}
+      orientation={orientation}
       className={className ?? 'slider'}
       style={style}
     >
-      <PrimitiveSlider.Track className="slider__track">
-        <PrimitiveSlider.Range className="slider__range" />
-      </PrimitiveSlider.Track>
+      <SliderTrack className="slider__track">
+        <SliderRange className="slider__range" />
+      </SliderTrack>
       {thumbKeys.map((thumbKey, i) => (
-        <PrimitiveSlider.Thumb
+        <SliderThumb
           key={thumbKey}
           className="slider__thumb"
           aria-label={`Thumb ${i + 1}`}
         />
       ))}
-    </PrimitiveSlider.Root>
+    </SliderRoot>
   );
 }

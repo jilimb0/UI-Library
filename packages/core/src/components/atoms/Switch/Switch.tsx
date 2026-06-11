@@ -9,6 +9,13 @@ export interface SwitchProps extends PrimitiveSwitchProps {
   label?: string;
   description?: string;
   size?: 'sm' | 'default' | 'md' | 'lg';
+  className?: string;
+  id?: string;
+  disabled?: boolean;
+  style?: React.CSSProperties;
+  checked?: boolean;
+  defaultChecked?: boolean;
+  onCheckedChange?: (checked: boolean) => void;
 }
 
 export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
@@ -21,6 +28,9 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
       id,
       disabled,
       style,
+      checked,
+      defaultChecked,
+      onCheckedChange,
       ...props
     },
     ref
@@ -34,6 +44,9 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
           id={switchId}
           ref={ref}
           disabled={disabled}
+          checked={checked}
+          defaultChecked={defaultChecked}
+          onCheckedChange={onCheckedChange}
           className={cn(
             'switch',
             {

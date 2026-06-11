@@ -1,7 +1,7 @@
-export { Accordion } from './accordion';
+export { Accordion, type AccordionRootProps } from './accordion';
 export { Box, type BoxProps } from './box';
 export { ContextMenu } from './context-menu';
-export { Dialog } from './dialog';
+export { Dialog, type DialogRootProps } from './dialog';
 export {
   Field,
   type FieldProps,
@@ -17,7 +17,7 @@ export { Grid, type GridProps } from './grid';
 export { getFocusableElements, trapFocus } from './internal/focusTrap';
 export { useControllableState } from './internal/useControllableState';
 export { Popover } from './popover';
-export { Slider } from './slider';
+export { Range, Root, Thumb, Track } from './slider';
 export {
   Stack,
   type StackAlign,

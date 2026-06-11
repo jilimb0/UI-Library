@@ -17,6 +17,7 @@
   "scripts": {
     "build": "turbo run build",
     "build:ci": "turbo run build --force",
+    "clean": "bash clean.sh",
     "dev": "turbo run dev",
     "test": "bash scripts/test.sh",
     "lint": "biome check .",

@@ -2,7 +2,7 @@ import { jsx as _jsx } from "react/jsx-runtime";
 import { createContext, forwardRef, useCallback, useContext, useRef, } from 'react';
 import { useControllableState } from './internal/useControllableState';
 const SliderContext = createContext(null);
-const Root = forwardRef(function Root({ value, defaultValue = [0], onValueChange, min = 0, max = 100, step = 1, disabled, ...props }, ref) {
+const Root = forwardRef(function Root({ value, defaultValue = [0], onValueChange, min = 0, max = 100, step = 1, disabled, orientation = 'horizontal', ...props }, ref) {
     const [current, setValue] = useControllableState({
         value,
         defaultValue,
@@ -17,7 +17,8 @@ const Root = forwardRef(function Root({ value, defaultValue = [0], onValueChange
             step,
             disabled,
             trackRef,
-        }, children: _jsx("div", { ref: ref, "data-disabled": disabled ? '' : undefined, ...props }) }));
+            orientation,
+        }, children: _jsx("div", { ref: ref, "data-disabled": disabled ? '' : undefined, "data-orientation": orientation, ...props }) }));
 });
 const Track = forwardRef(function Track(props, ref) {
     const ctx = useContext(SliderContext);
@@ -35,37 +36,70 @@ const Range = forwardRef(function Range(props, ref) {
     if (!ctx)
         return _jsx("div", { ref: ref, ...props });
     const [val] = ctx.value;
-    const percent = ((val - ctx.min) / (ctx.max - ctx.min)) * 100;
-    return (_jsx("div", { ref: ref, style: { width: `${percent}%` }, "data-orientation": "horizontal", ...props }));
+    return (_jsx("div", { ref: ref, "data-orientation": ctx.orientation, ...props, style: {
+            ...(props.style || {}),
+            ...(ctx.orientation === 'horizontal'
+                ? { width: `${((val - ctx.min) / (ctx.max - ctx.min)) * 100}%` }
+                : { height: `${((val - ctx.min) / (ctx.max - ctx.min)) * 100}%` }),
+        } }));
 });
-const Thumb = forwardRef(function Thumb({ className, style, ...props }, ref) {
+const Thumb = forwardRef(function Thumb({ className, style, onPointerDown, onKeyDown, ...props }, ref) {
     const ctx = useContext(SliderContext);
-    const onPointerDown = useCallback((event) => {
-        if (!ctx?.trackRef.current || ctx.disabled)
+    const onPointerDownInternal = useCallback((event) => {
+        onPointerDown?.(event);
+        if (event.defaultPrevented || !ctx?.trackRef.current || ctx.disabled)
             return;
-        event.currentTarget.setPointerCapture(event.pointerId);
-        const update = (clientX) => {
-            const rect = ctx.trackRef.current?.getBoundingClientRect();
-            if (!rect)
-                return;
-            const ratio = Math.min(1, Math.max(0, (clientX - rect.left) / rect.width));
+        const rect = ctx.trackRef.current.getBoundingClientRect();
+        const startValue = ctx.value[0];
+        const startPos = ctx.orientation === 'horizontal' ? event.clientX : event.clientY;
+        const update = (pos) => {
+            const ratio = Math.min(1, Math.max(0, ctx.orientation === 'horizontal'
+                ? (pos - rect.left) / rect.width
+                : (pos - rect.top) / rect.height));
             const raw = ctx.min + ratio * (ctx.max - ctx.min);
             const stepped = Math.round(raw / ctx.step) * ctx.step;
             ctx.setValue([stepped]);
         };
-        update(event.clientX);
-        const onMove = (e) => update(e.clientX);
+        update(startPos);
+        const onMove = (e) => update(ctx.orientation === 'horizontal' ? e.clientX : e.clientY);
         const onUp = () => {
             window.removeEventListener('pointermove', onMove);
             window.removeEventListener('pointerup', onUp);
         };
         window.addEventListener('pointermove', onMove);
         window.addEventListener('pointerup', onUp);
-    }, [ctx]);
+    }, [ctx, onPointerDown]);
+    const onKeyboardDown = useCallback((event) => {
+        onKeyDown?.(event);
+        if (event.defaultPrevented || !ctx)
+            return;
+        let nextValue = ctx.value[0];
+        switch (event.key) {
+            case 'ArrowLeft':
+            case 'ArrowDown':
+                nextValue -= ctx.step;
+                break;
+            case 'ArrowRight':
+            case 'ArrowUp':
+                nextValue += ctx.step;
+                break;
+            case 'Home':
+                nextValue = ctx.min;
+                break;
+            case 'End':
+                nextValue = ctx.max;
+                break;
+            default:
+                return;
+        }
+        ctx.setValue([Math.min(ctx.max, Math.max(ctx.min, nextValue))]);
+        event.preventDefault();
+    }, [ctx, onKeyDown]);
     if (!ctx) {
         return (_jsx("button", { ref: ref, type: "button", role: "slider", "aria-valuemin": 0, "aria-valuemax": 100, "aria-valuenow": 0, "aria-orientation": "horizontal", ...props }));
     }
     const [val] = ctx.value;
-    return (_jsx("button", { ref: ref, type: "button", role: "slider", "aria-valuemin": ctx.min, "aria-valuemax": ctx.max, "aria-valuenow": val, "aria-orientation": "horizontal", disabled: ctx.disabled, onPointerDown: onPointerDown, className: className, style: style, ...props }));
+    return (_jsx("button", { ref: ref, type: "button", role: "slider", "aria-valuemin": ctx.min, "aria-valuemax": ctx.max, "aria-valuenow": val, "aria-orientation": ctx.orientation, disabled: ctx.disabled, onPointerDown: onPointerDownInternal, onKeyDown: onKeyboardDown, className: className, style: style, ...props }));
 });
-export const Slider = { Root, Track, Range, Thumb };
+export { Range, Root, Thumb, Track };
+
