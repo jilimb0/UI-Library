@@ -77,7 +77,11 @@ jobs:
           done
 
       - name: Install export-core for smoke
-        run: npm install --no-save @ui-construction-library/export-core
+        run: |
+          mkdir -p /tmp/smoke
+          echo '{"type":"module"}' > /tmp/smoke/package.json
+          npm install --prefix /tmp/smoke @ui-construction-library/export-core
+          cp scripts/check-export-smoke.mjs /tmp/smoke/check-export-smoke.mjs
 
       - name: Export smoke check
-        run: node scripts/check-export-smoke.mjs
+        run: node /tmp/smoke/check-export-smoke.mjs
