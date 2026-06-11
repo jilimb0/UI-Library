@@ -83,7 +83,7 @@ export function renderExportProject(
         files: [],
         diagnostics: [
           {
-            level: 'warn',
+            level: 'warning',
             code: 'NOT_IMPLEMENTED',
             message: 'react-multi-page renderer is not yet implemented.',
           },
