@@ -52,11 +52,13 @@ function resolveAppDepVersion(current, packageVersion) {
     return null;
   }
 
-  // workspace:*, workspace:^old, or mistaken bare semver from older sync
+  // Only update if the app already uses a real semver range (^x.y.z, ~x.y.z, bare digit).
+  // Leave workspace:* untouched — those packages are not yet published to npm
+  // and must keep resolving from the local workspace until a successful publish.
   if (
-    current.startsWith('workspace:') ||
-    /^\d/.test(current) ||
-    current === '*'
+    current.startsWith('^') ||
+    current.startsWith('~') ||
+    /^\d/.test(current)
   ) {
     return target;
   }

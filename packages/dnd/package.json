@@ -1,6 +1,6 @@
 {
   "name": "@ui-construction-library/dnd",
-  "version": "0.1.6",
+  "version": "0.1.5",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
@@ -45,7 +45,7 @@
   },
   "license": "MIT",
   "type": "module",
-  "description": "Optional drag-and-drop extension for @ui-construction-library \u2014 DndContext, Kanban, sortable abstractions.",
+  "description": "Optional drag-and-drop extension for @ui-construction-library — DndContext, Kanban, sortable abstractions.",
   "keywords": [
     "drag-and-drop",
     "dnd",

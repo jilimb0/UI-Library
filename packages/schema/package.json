@@ -1,6 +1,6 @@
 {
   "name": "@ui-construction-library/schema",
-  "version": "0.2.0",
+  "version": "0.1.0",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
@@ -33,7 +33,7 @@
     "typescript": "^6.0.3",
     "vitest": "catalog:"
   },
-  "description": "Internal schema definitions for @ui-construction-library tooling \u2014 not for direct consumer use.",
+  "description": "Internal schema definitions for @ui-construction-library tooling — not for direct consumer use.",
   "ui-construction": {
     "surface": "internal",
     "mode": "platform"

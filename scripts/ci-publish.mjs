@@ -169,7 +169,18 @@ for (const { path: pkgPath, dir, pkg } of packages) {
   try {
     const cmd = `npm publish --access public --no-git-checks ${provenanceFlag}`.trim();
     log(`  $ ${cmd}`);
-    execSync(cmd, { cwd: dir, stdio: 'inherit' });
+    // Use pipe instead of inherit so we capture stdout+stderr into the log file.
+    // On failure execSync throws with .stderr / .stdout attached.
+    let publishOut = '';
+    try {
+      publishOut = execSync(cmd, { cwd: dir, stdio: ['ignore', 'pipe', 'pipe'], encoding: 'utf-8' });
+      log(publishOut.trim());
+    } catch (publishErr) {
+      const stderr = (publishErr.stderr || '').trim();
+      const stdout = (publishErr.stdout || '').trim();
+      const detail = [stderr, stdout].filter(Boolean).join('\n');
+      throw new Error(`npm publish failed:\n${detail || publishErr.message}`);
+    }
 
     // Confirm appearance on registry
     confirmPublished(name, version);

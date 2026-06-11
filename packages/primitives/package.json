@@ -1,6 +1,6 @@
 {
   "name": "@ui-construction-library/primitives",
-  "version": "0.2.0",
+  "version": "0.1.2",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"

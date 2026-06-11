@@ -1,6 +1,6 @@
 {
   "name": "@ui-construction-library/motion",
-  "version": "0.1.4",
+  "version": "0.1.3",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
@@ -56,7 +56,7 @@
   },
   "license": "MIT",
   "type": "module",
-  "description": "Optional motion extension for @ui-construction-library \u2014 FadeIn, SlideIn, Bounce and animated wrappers.",
+  "description": "Optional motion extension for @ui-construction-library — FadeIn, SlideIn, Bounce and animated wrappers.",
   "keywords": [
     "animation",
     "motion",

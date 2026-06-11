@@ -1,6 +1,6 @@
 {
   "name": "@ui-construction-library/prompt-engine",
-  "version": "0.2.0",
+  "version": "0.1.0",
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -33,7 +33,7 @@
     "typescript": "^6.0.3",
     "vitest": "catalog:"
   },
-  "description": "Internal AI prompt generation engine for @ui-construction-library tooling \u2014 not for direct consumer use.",
+  "description": "Internal AI prompt generation engine for @ui-construction-library tooling — not for direct consumer use.",
   "ui-construction": {
     "surface": "internal",
     "mode": "platform"
