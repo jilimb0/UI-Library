@@ -82,12 +82,22 @@ const Trigger = forwardRef<
 
   const sharedProps = {
     ...behavior.triggerAttrs,
+    'aria-haspopup': behavior.triggerAttrs['aria-haspopup'] as
+      | boolean
+      | 'dialog'
+      | 'true'
+      | 'false'
+      | 'menu'
+      | 'listbox'
+      | 'tree'
+      | 'grid'
+      | undefined,
     onClick: (e: ReactMouseEvent<HTMLElement>) => {
       onClick?.(e as ReactMouseEvent<HTMLElement>);
       if (!e.defaultPrevented) setOpen(true);
     },
     ...props,
-  };
+  } satisfies HTMLAttributes<HTMLElement>;
 
   if (asChild) {
     return (

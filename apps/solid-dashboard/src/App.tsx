@@ -6,7 +6,13 @@ import {
 import { createMemo, createSignal } from 'solid-js';
 
 type ThemeMode = 'light' | 'dark' | 'system';
+
 type TabValue = 'overview' | 'details';
+
+const switchRole = 'switch' as const;
+const tabRole = 'tab' as const;
+const tabListRole = 'tablist' as const;
+const tabPanelRole = 'tabpanel' as const;
 
 export function App() {
   const [checked, setChecked] = createSignal(false);
@@ -99,6 +105,7 @@ export function App() {
                 type="button"
                 class="ucl-switch ucl-switch--md"
                 {...switchBehavior().rootAttrs}
+                role={switchRole}
                 onClick={() => setChecked((v) => !v)}
               >
                 <span
@@ -119,11 +126,12 @@ export function App() {
             >
               Tabs behavior
             </h2>
-            <div class="ucl-tabs-list" role="tablist">
+            <div class="ucl-tabs-list" role={tabListRole}>
               <button
                 type="button"
                 class="ucl-tabs-trigger"
                 {...tabOverview().triggerAttrs}
+                role={tabRole}
                 onClick={() => setActiveTab('overview')}
               >
                 Overview
@@ -132,17 +140,26 @@ export function App() {
                 type="button"
                 class="ucl-tabs-trigger"
                 {...tabDetails().triggerAttrs}
+                role={tabRole}
                 onClick={() => setActiveTab('details')}
               >
                 Details
               </button>
             </div>
-            <div class="ucl-tabs-content" {...panelOverview().contentAttrs}>
+            <div
+              class="ucl-tabs-content"
+              {...panelOverview().contentAttrs}
+              role={tabPanelRole}
+            >
               <p class="ucl-text ucl-text-sm">
                 Overview panel — controlled by behaviors.
               </p>
             </div>
-            <div class="ucl-tabs-content" {...panelDetails().contentAttrs}>
+            <div
+              class="ucl-tabs-content"
+              {...panelDetails().contentAttrs}
+              role={tabPanelRole}
+            >
               <p class="ucl-text ucl-text-sm">
                 Details panel — controlled by behaviors.
               </p>

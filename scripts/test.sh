@@ -1,5 +1,15 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-# Скрипт тестирования проекта
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT"
 
-npm test
+ARGS=()
+for arg in "$@"; do
+  case "$arg" in
+    --runInBand) ;;
+    *) ARGS+=("$arg") ;;
+  esac
+done
+
+exec pnpm turbo run test -- "${ARGS[@]}"

@@ -12,7 +12,8 @@
       "@ui-construction-library/react-hook-form": [
         "../../packages/integrations/react-hook-form/src/index.ts"
       ]
-    }
+    },
+    "ignoreDeprecations": "6.0"
   },
   "include": ["src", "vite.config.ts"]
 }

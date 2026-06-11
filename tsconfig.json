@@ -19,7 +19,7 @@
     "jsx": "react-jsx",
     "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
-    "ignoreDeprecations": "6.0",
+    "ignoreDeprecations": "",
     "paths": {
       "@ui-construction-library/core": [
         "packages/core/src/index.ts"

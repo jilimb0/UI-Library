@@ -1,11 +1,9 @@
 import { createSliderBehavior } from '@ui-construction-library/behaviors';
 import {
-  type ButtonHTMLAttributes,
   createContext,
   forwardRef,
   type HTMLAttributes,
   type PointerEvent as ReactPointerEvent,
-  type Ref,
   useCallback,
   useContext,
   useRef,
@@ -23,6 +21,13 @@ type SliderContextValue = {
 };
 
 const SliderContext = createContext<SliderContextValue | null>(null);
+
+function useSliderContext() {
+  const ctx = useContext(SliderContext);
+  if (!ctx)
+    throw new Error('Slider components must be used within Slider.Root');
+  return ctx;
+}
 
 export type SliderRootProps = HTMLAttributes<HTMLDivElement> & {
   value?: number[];
@@ -54,7 +59,7 @@ const Root = forwardRef<HTMLDivElement, SliderRootProps>(function Root(
   });
   const trackRef = useRef<HTMLDivElement>(null);
 
-  const _behavior = createSliderBehavior({
+  createSliderBehavior({
     value: (current ?? defaultValue)[0],
     min,
     max,
@@ -86,8 +91,12 @@ const Track = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
       <div
         ref={(node) => {
           if (ctx) ctx.trackRef.current = node;
-          if (typeof ref === 'function') ref(node);
-          else if (ref) ref.current = node;
+          if (typeof ref === 'function') {
+            ref(node);
+          } else if (ref && node) {
+            (ref as React.MutableRefObject<HTMLDivElement | null>).current =
+              node;
+          }
         }}
         {...props}
       />
@@ -112,50 +121,58 @@ const Range = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
 
 const Thumb = forwardRef<
   HTMLButtonElement,
-  ButtonHTMLAttributes<HTMLButtonElement>
->(function Thumb({ className, style, ...props }, ref) {
-  const ctx = useContext(SliderContext);
-  const onPointerDown = useCallback(
-    (event: ReactPointerEvent<HTMLButtonElement>) => {
-      if (!ctx?.trackRef.current || ctx.disabled) return;
-      event.currentTarget.setPointerCapture(event.pointerId);
+  React.ButtonHTMLAttributes<HTMLButtonElement>
+>(function Thumb({ className, style, onPointerDown, ...props }, ref) {
+  const ctx = useSliderContext();
 
-      const update = (clientX: number) => {
-        const rect = ctx.trackRef.current?.getBoundingClientRect();
-        if (!rect) return;
-        const ratio = Math.min(
-          1,
-          Math.max(0, (clientX - rect.left) / rect.width)
+  const onPointerDownInternal = useCallback(
+    (event: ReactPointerEvent<HTMLButtonElement>) => {
+      onPointerDown?.(event);
+      if (event.defaultPrevented) return;
+
+      const startX = event.clientX;
+      const startValue = ctx.value[0];
+
+      const onMove = (moveEvent: PointerEvent) => {
+        if (moveEvent.buttons === 0) return;
+        const delta = moveEvent.clientX - startX;
+        const nextValue = Math.min(
+          ctx.max,
+          Math.max(ctx.min, startValue + delta)
         );
-        const raw = ctx.min + ratio * (ctx.max - ctx.min);
-        const stepped = Math.round(raw / ctx.step) * ctx.step;
-        ctx.setValue([stepped]);
+        ctx.setValue([nextValue]);
       };
 
-      update(event.clientX);
-
-      const onMove = (e: globalThis.PointerEvent) => update(e.clientX);
       const onUp = () => {
         window.removeEventListener('pointermove', onMove);
         window.removeEventListener('pointerup', onUp);
       };
+
       window.addEventListener('pointermove', onMove);
       window.addEventListener('pointerup', onUp);
     },
-    [ctx]
+    [ctx, onPointerDown]
   );
 
   if (!ctx) {
     const fallback = createSliderBehavior({ value: 0 });
-    return (
-      <button
-        ref={ref as Ref<HTMLButtonElement>}
-        type="button"
-        {...fallback.thumbAttrs}
-        {...props}
-      />
-    );
+    // Normalize aria-orientation to match React's expected type
+    const normalizedThumbAttrs = {
+      ...fallback.thumbAttrs,
+      'aria-orientation': fallback.thumbAttrs['aria-orientation'] as
+        | 'horizontal'
+        | 'vertical'
+        | undefined,
+    };
+    const fallbackProps = {
+      ...normalizedThumbAttrs,
+      type: 'button' as const,
+      ...props,
+    } satisfies React.ButtonHTMLAttributes<HTMLButtonElement>;
+
+    return <button {...fallbackProps} ref={ref} />;
   }
+
   const [val] = ctx.value;
   const behavior = createSliderBehavior({
     value: val,
@@ -165,18 +182,34 @@ const Thumb = forwardRef<
     disabled: ctx.disabled,
   });
 
-  return (
-    <button
-      ref={ref as Ref<HTMLButtonElement>}
-      type="button"
-      {...behavior.thumbAttrs}
-      disabled={ctx.disabled}
-      onPointerDown={onPointerDown}
-      className={className}
-      style={style}
-      {...props}
-    />
-  );
+  // Normalize aria-orientation to match React's expected type
+  const normalizedThumbAttrs = {
+    ...behavior.thumbAttrs,
+    'aria-orientation': behavior.thumbAttrs['aria-orientation'] as
+      | 'horizontal'
+      | 'vertical'
+      | undefined,
+  };
+
+  const buttonProps = {
+    ...normalizedThumbAttrs,
+    type: 'button' as const,
+    disabled: ctx.disabled,
+    onPointerDown: onPointerDownInternal,
+    className,
+    style,
+    ...props,
+  } satisfies React.ButtonHTMLAttributes<HTMLButtonElement>;
+
+  return <button {...buttonProps} ref={ref} />;
 });
 
-export const Slider = { Root, Track, Range, Thumb };
+export { Range, Root, Thumb, Track };
+
+// Namespace export for Slider with subcomponents
+export const Slider = {
+  Root,
+  Track,
+  Range,
+  Thumb,
+};

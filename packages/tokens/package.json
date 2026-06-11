@@ -7,7 +7,7 @@
   },
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
-  "types": "dist/src/index.d.ts",
+  "types": "dist/index.d.ts",
   "sideEffects": [
     "*.css",
     "**/*.css"
@@ -16,7 +16,7 @@
     ".": {
       "import": "./dist/index.esm.js",
       "require": "./dist/index.js",
-      "types": "./dist/src/index.d.ts"
+      "types": "./dist/index.d.ts"
     },
     "./tailwind.preset": {
       "default": "./tailwind.preset.ts"
@@ -35,7 +35,7 @@
   "scripts": {
     "build": "rollup -c && node scripts/build-tokens.js && tsc -p tsconfig.json --emitDeclarationOnly --declarationMap",
     "build:tokens": "node scripts/build-tokens.js",
-    "test": "vitest run --config ./vitest.config.ts src",
+    "test": "vitest run --config ./vitest.config.ts",
     "typecheck": "tsc --noEmit",
     "lint": "biome check src"
   },

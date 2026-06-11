@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import {
   announceToScreenReader,
   generateId,
@@ -41,7 +42,7 @@ describe('accessibility', () => {
       element.innerHTML = `<button>Only</button>`;
       document.body.appendChild(element);
 
-      const onEscape = vi.fn();
+      const onEscape = vi.fn<[], void>();
       const cleanup = trapFocus(element, onEscape);
 
       const event = new KeyboardEvent('keydown', {
