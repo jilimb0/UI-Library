@@ -26,6 +26,7 @@ export function FormField<T extends FieldValues>({
   control,
   label,
   description,
+  disabled,
   ...inputProps
 }: FormFieldProps<T>) {
   const { field, fieldState } = useController({ name, control });
@@ -37,9 +38,14 @@ export function FormField<T extends FieldValues>({
   return (
     <div className="form-stack" style={{ gap: '0.25rem' }}>
       <Input
-        variant={fieldState.error ? 'error' : undefined}
         {...inputProps}
-        {...field}
+        ref={field.ref}
+        name={field.name}
+        value={field.value as string | undefined}
+        onChange={field.onChange}
+        onBlur={field.onBlur}
+        disabled={field.disabled ?? disabled}
+        variant={fieldState.error ? 'error' : undefined}
         label={labelText}
         description={descriptionText}
       />
