@@ -1,0 +1,80 @@
+name: Published Smoke
+
+# Triggered after the Release workflow uploads the publish-flag artifact.
+# Waits for the package to appear on the registry, then runs a quick import smoke test.
+on:
+  workflow_run:
+    workflows: ["Release"]
+    types: [completed]
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  smoke:
+    if: >
+      github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Download publish flag
+        uses: actions/download-artifact@v4
+        with:
+          name: publish-flag
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+
+      - name: Check flag exists
+        run: |
+          test -f flag.txt || (echo "No publish flag — skipping smoke" && exit 0)
+
+      # Confirm that all published packages are resolvable from the registry.
+      # Retries up to 5 times with 15 s backoff to account for registry propagation.
+      - name: Registry propagation check
+        run: |
+          set -euo pipefail
+          PACKAGES=$(node -e "
+            const { readdirSync, readFileSync, statSync } = require('fs');
+            const { resolve } = require('path');
+            const root = process.cwd();
+            const dirs = ['packages'];
+            const results = [];
+            for (const d of dirs) {
+              for (const pkg of readdirSync(resolve(root, d))) {
+                const p = resolve(root, d, pkg, 'package.json');
+                try {
+                  const json = JSON.parse(readFileSync(p, 'utf8'));
+                  if (!json.private && json.name && json.version) {
+                    results.push(json.name + '@' + json.version);
+                  }
+                } catch {}
+              }
+            }
+            console.log(results.join(' '));
+          ")
+          for PKG in $PACKAGES; do
+            ATTEMPTS=0
+            until npm view "$PKG" version --registry https://registry.npmjs.org 2>/dev/null | grep -q .; do
+              ATTEMPTS=$((ATTEMPTS + 1))
+              if [ $ATTEMPTS -ge 5 ]; then
+                echo "::error::$PKG not found on registry after $ATTEMPTS attempts"
+                exit 1
+              fi
+              echo "Waiting for $PKG on registry (attempt $ATTEMPTS/5)..."
+              sleep 15
+            done
+            echo "✅ $PKG confirmed on registry"
+          done
+
+      - name: Export smoke check
+        run: node scripts/check-export-smoke.mjs

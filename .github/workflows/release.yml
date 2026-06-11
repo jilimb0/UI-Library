@@ -3,36 +3,35 @@ name: Release
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
   HUSKY: 0
+  # Private GitHub repo — npm provenance requires Trusted Publisher setup on npmjs.com.
+  # Set to "true" only after configuring Trusted Publisher.
+  NPM_PUBLISH_PROVENANCE: "false"
 
+# Trigger directly on push to main — simpler and more reliable than
+# workflow_run which introduced a stale-SHA race condition: if a new commit
+# landed between CI completing and the release job starting, changesets
+# would operate on the wrong SHA.
 on:
   workflow_dispatch:
-  workflow_run:
-    workflows: ["CI"]
-    types: [completed]
+  push:
+    branches:
+      - main
 
 jobs:
   release:
-    # Run on manual trigger OR after CI passes on main
-    if: |
-      github.event_name == 'workflow_dispatch' ||
-      (github.event.workflow_run.conclusion == 'success' &&
-       github.event.workflow_run.head_branch == 'main')
     runs-on: ubuntu-latest
     permissions:
       contents: write
       pull-requests: write
       id-token: write
     concurrency:
-      group: release-${{ github.event_name == 'workflow_dispatch' && github.ref || github.event.workflow_run.head_branch }}
+      group: release-main
       cancel-in-progress: false
-    env:
-      # Private GitHub repo — npm provenance not supported
-      NPM_PUBLISH_PROVENANCE: "false"
     steps:
       - uses: actions/checkout@v5
         with:
+          # Full history is required for changesets to compute correct version bumps.
           fetch-depth: 0
-          ref: ${{ github.event_name == 'workflow_dispatch' && github.ref || github.event.workflow_run.head_sha }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: pnpm/action-setup@v4
@@ -43,32 +42,68 @@ jobs:
           cache: pnpm
           registry-url: 'https://registry.npmjs.org'
 
-      - name: Upgrade npm for trusted publishing
-        run: npm i -g npm@latest
+      # Pin npm to a specific version for reproducible publish behaviour.
+      # npm@latest is not pinned and can introduce breaking changes mid-run.
+      - name: Pin npm version
+        run: |
+          sudo npm i -g npm@11.8.0
+          npm -v
 
-      - run: pnpm install --frozen-lockfile
+      # Release job always uses --no-frozen-lockfile:
+      # changesets/action updates package.json versions BEFORE publish runs,
+      # so the lockfile is intentionally out of date at that point in the flow.
+      # Using --frozen-lockfile here would break the Version PR creation step.
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
 
       - name: Build all packages
         run: pnpm build
 
-      - name: Verify OIDC context
+      - name: Tooling versions (diagnostics)
         run: |
-          test -n "${ACTIONS_ID_TOKEN_REQUEST_URL}"
-          test -n "${ACTIONS_ID_TOKEN_REQUEST_TOKEN}"
-          echo "OIDC context available"
-
-      - name: Drop token auth to force OIDC trusted publishing
-        run: |
-          rm -f "${NPM_CONFIG_USERCONFIG:-$HOME/.npmrc}" || true
-          rm -f "$HOME/.npmrc" || true
+          node -v && npm -v && pnpm -v
+          echo "registry=$(npm config get registry)"
 
       - name: Create Release PR or Publish
         uses: changesets/action@v1.5.3
         with:
-          publish: pnpm -r publish --access public --no-git-checks
-          version: pnpm changeset version
+          # version: runs on every push — creates/updates the Version PR.
+          # Calls changeset version then syncs apps/*/package.json so semver
+          # refs to @ui-construction-library/* are kept up to date.
+          version: bash scripts/changeset-version.sh
+
+          # publish: runs only when the Version PR is merged.
+          # ci-publish.mjs rewrites workspace:* → real semver before each
+          # `npm publish`, confirms the package appears on the registry,
+          # then restores the original workspace refs.
+          publish: node scripts/ci-publish.mjs
+
           title: 'chore: version packages'
           commit: 'chore: version packages'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NODE_AUTH_TOKEN: ""
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # Upload a flag artifact so published-smoke.yml can be triggered.
+      - name: Upload publish flag
+        if: success()
+        run: |
+          mkdir -p publish-flag
+          echo "published" > publish-flag/flag.txt
+      - uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: publish-flag
+          path: publish-flag/flag.txt
+          retention-days: 1
+
+      # Always upload full logs so failures are easy to diagnose.
+      - name: Upload release logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-logs-${{ github.run_id }}
+          path: |
+            /tmp/ci-publish-*.log
+          retention-days: 7
+          if-no-files-found: ignore
