@@ -1,4 +1,5 @@
-import { Input } from '@ui-construction-library/core';
+import { Input, type InputProps } from '@ui-construction-library/core';
+import type React from 'react';
 import type { ReactNode } from 'react';
 import {
   type Control,
@@ -35,11 +36,13 @@ export function FormField<T extends FieldValues>({
   const descriptionText =
     typeof description === 'string' ? description : undefined;
 
+  const inputRef = field.ref as React.Ref<HTMLInputElement>;
+
   return (
     <div className="form-stack" style={{ gap: '0.25rem' }}>
       <Input
-        {...inputProps}
-        ref={field.ref}
+        {...(inputProps as Omit<InputProps, 'ref'>)}
+        ref={inputRef}
         name={field.name}
         value={field.value as string | undefined}
         onChange={field.onChange}
