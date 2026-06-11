@@ -88,4 +88,4 @@ jobs:
           pnpm --filter @ui-construction-library/export-core build
 
       - name: Export smoke check
-        run: node scripts/check-export-smoke.mjs
+        run: pnpm exec tsx scripts/check-export-smoke.mjs
