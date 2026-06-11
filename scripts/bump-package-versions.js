@@ -17,7 +17,7 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
-const { execSync } = require('node:child_process');
+const { spawnSync } = require('node:child_process');
 
 const ROOT = path.resolve(__dirname, '..');
 const ALLOWED_STATUSES = new Set([
@@ -150,8 +150,10 @@ async function main() {
   // Regenerate per-package changelogs after bumping only for bumped packages
   console.log('[bump] regenerating package changelogs...');
   for (const pkg of bumped) {
-    execSync(
-      `node ${path.join(__dirname, 'generate-package-changelogs.js')} ${pkg.name}`,
+    // Use spawnSync with separate args to avoid shell injection via pkg.name
+    spawnSync(
+      process.execPath,
+      [path.join(__dirname, 'generate-package-changelogs.js'), pkg.name],
       {
         cwd: ROOT,
         stdio: 'inherit',

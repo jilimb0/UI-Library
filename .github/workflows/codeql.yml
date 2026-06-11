@@ -37,5 +37,8 @@ jobs:
       - uses: github/codeql-action/init@v4
         with:
           languages: javascript
-      - run: pnpm build
+      # Build source packages only — exclude storybook to avoid scanning
+      # generated vendor bundles (storybook-static) which produce false positives.
+      # Generated bundles are also excluded via .codeqlignore.
+      - run: pnpm build --filter='!@ui-app/storybook'
       - uses: github/codeql-action/analyze@v4

@@ -1,0 +1,5 @@
+# Generated build artifacts — not source code, not fixable
+apps/storybook/storybook-static/**
+apps/*/dist/**
+packages/*/dist/**
+**/node_modules/**
