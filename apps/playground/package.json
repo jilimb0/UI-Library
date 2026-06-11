@@ -10,9 +10,9 @@
     "lint": "biome check src"
   },
   "dependencies": {
-    "@ui-construction-library/core": "^0.2.0",
-    "@ui-construction-library/icons": "^0.2.0",
-    "@ui-construction-library/utils": "^0.2.0",
+    "@ui-construction-library/core": "^0.1.2",
+    "@ui-construction-library/icons": "^0.1.1",
+    "@ui-construction-library/utils": "^0.1.1",
     "react": "catalog:",
     "react-dom": "catalog:"
   },

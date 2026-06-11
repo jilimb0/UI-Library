@@ -10,11 +10,11 @@
     "lint": "biome check src"
   },
   "dependencies": {
-    "@ui-construction-library/core": "^0.2.0",
-    "@ui-construction-library/dnd": "^0.1.6",
-    "@ui-construction-library/icons": "^0.2.0",
-    "@ui-construction-library/motion": "^0.1.4",
-    "@ui-construction-library/react-hook-form": "^0.2.0",
+    "@ui-construction-library/core": "^0.1.2",
+    "@ui-construction-library/dnd": "^0.1.1",
+    "@ui-construction-library/icons": "^0.1.1",
+    "@ui-construction-library/motion": "^0.1.1",
+    "@ui-construction-library/react-hook-form": "^0.1.1",
     "react": "catalog:",
     "react-dom": "catalog:",
     "react-hook-form": "^7.53.0"

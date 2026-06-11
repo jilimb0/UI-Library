@@ -23,5 +23,8 @@ runs:
       run: |
         echo "node: $(node -v)"
         echo "pnpm: $(pnpm -v)"
+    # Cannot use --frozen-lockfile: apps/solid-dashboard, svelte-dashboard,
+    # vue-dashboard and builder use workspace:* deps which are never reflected
+    # in pnpm-lock.yaml as real registry versions.
     - shell: bash
-      run: pnpm install --frozen-lockfile
+      run: pnpm install --no-frozen-lockfile

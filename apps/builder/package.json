@@ -10,7 +10,7 @@
     "lint": "biome check src"
   },
   "dependencies": {
-    "@ui-construction-library/core": "^0.2.0",
+    "@ui-construction-library/core": "^0.1.2",
     "@ui-construction-library/export-core": "workspace:*",
     "@ui-construction-library/registry": "workspace:*",
     "@ui-construction-library/schema": "workspace:*",
