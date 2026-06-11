@@ -1,6 +1,5 @@
 export type ExportTarget =
   | 'react-single-page'
-  // TODO: react-multi-page renderer not yet implemented (see pipeline.ts)
   | 'react-multi-page'
   | 'html-static'
   | 'web-components-static'

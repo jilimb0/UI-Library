@@ -38,6 +38,8 @@ export default {
       'packages/*/src/**/*.spec.{ts,tsx}',
       'packages/integrations/*/src/**/*.test.{ts,tsx}',
       'packages/integrations/*/src/**/*.spec.{ts,tsx}',
+      'tests/**/*.test.{ts,tsx,js}',
+      'tests/**/*.spec.{ts,tsx,js}',
     ],
 
     server: {
