@@ -1,6 +1,6 @@
 # Contract Compliance Report
 
-- Generated: 2026-05-30T15:05:44Z
+- Generated: 2026-06-11T02:57:40Z
 - Scope: packages/core contracted components (W3-W4)
 
 | Component | Behavior Test | A11y Test | Keyboard/Focus Test | Status |
@@ -11,5 +11,5 @@
 | Tooltip | ✅ | ✅ | ❌ | ⚠️ |
 | Popover | ✅ | ✅ | ❌ | ⚠️ |
 | Toast | ✅ | ✅ | ❌ | ⚠️ |
-| Kanban | ✅ | ❌ | ✅ | ⚠️ |
+| Kanban | ❌ | ❌ | ❌ | ⚠️ |
 

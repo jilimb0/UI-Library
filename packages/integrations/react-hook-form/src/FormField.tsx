@@ -1,6 +1,5 @@
-import { Input, type InputProps } from '@ui-construction-library/core';
-import type React from 'react';
-import type { ReactNode } from 'react';
+import { Input } from '@ui-construction-library/core';
+import type { ComponentPropsWithRef, ReactNode } from 'react';
 import {
   type Control,
   type FieldValues,
@@ -8,6 +7,10 @@ import {
   type UseControllerProps,
   useController,
 } from 'react-hook-form';
+
+// Derive Input props directly from the component to avoid importing the type
+// from core's dist/index.d.ts which may not re-export it in all environments.
+type InputComponentProps = ComponentPropsWithRef<typeof Input>;
 
 export type FormFieldProps<T extends FieldValues> = {
   name: Path<T>;
@@ -36,21 +39,23 @@ export function FormField<T extends FieldValues>({
   const descriptionText =
     typeof description === 'string' ? description : undefined;
 
-  const inputRef = field.ref as React.Ref<HTMLInputElement>;
+  const inputOverrides: Partial<InputComponentProps> = {
+    ref: field.ref as InputComponentProps['ref'],
+    name: field.name,
+    value: field.value as string | undefined,
+    onChange: field.onChange,
+    onBlur: field.onBlur,
+    disabled: field.disabled ?? disabled,
+    variant: fieldState.error ? 'error' : undefined,
+    label: labelText,
+    description: descriptionText,
+  };
 
   return (
     <div className="form-stack" style={{ gap: '0.25rem' }}>
       <Input
-        {...(inputProps as Omit<InputProps, 'ref'>)}
-        ref={inputRef}
-        name={field.name}
-        value={field.value as string | undefined}
-        onChange={field.onChange}
-        onBlur={field.onBlur}
-        disabled={field.disabled ?? disabled}
-        variant={fieldState.error ? 'error' : undefined}
-        label={labelText}
-        description={descriptionText}
+        {...(inputProps as Omit<InputComponentProps, 'ref'>)}
+        {...inputOverrides}
       />
       {fieldState.error?.message ? (
         <p
