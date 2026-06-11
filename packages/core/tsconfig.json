@@ -17,9 +17,7 @@
     "src/**/*",
     "vitest-env.d.ts",
     "src/styles/global-css.d.ts",
-    "src/styles/*.css.d.ts",
-    "**/*.test.tsx",
-    "**/*.spec.tsx"
+    "src/styles/*.css.d.ts"
   ],
-  "exclude": ["src/**/*.test.*", "src/**/*.stories.*", "dist"]
+  "exclude": ["src/**/*.test.*", "src/**/*.spec.*", "src/**/*.stories.*", "dist"]
 }
