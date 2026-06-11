@@ -167,13 +167,17 @@ for (const { path: pkgPath, dir, pkg } of packages) {
   }
 
   try {
-    const cmd = `npm publish --access public --no-git-checks ${provenanceFlag}`.trim();
+    const cmd = `npm publish --access public ${provenanceFlag}`.trim();
     log(`  $ ${cmd}`);
-    // Use pipe instead of inherit so we capture stdout+stderr into the log file.
-    // On failure execSync throws with .stderr / .stdout attached.
+    // Explicitly forward NODE_AUTH_TOKEN so npm can authenticate regardless
+    // of how the parent process was spawned (e.g. inside changesets/action).
+    const publishEnv = {
+      ...process.env,
+      NODE_AUTH_TOKEN: process.env.NODE_AUTH_TOKEN ?? '',
+    };
     let publishOut = '';
     try {
-      publishOut = execSync(cmd, { cwd: dir, stdio: ['ignore', 'pipe', 'pipe'], encoding: 'utf-8' });
+      publishOut = execSync(cmd, { cwd: dir, stdio: ['ignore', 'pipe', 'pipe'], encoding: 'utf-8', env: publishEnv });
       log(publishOut.trim());
     } catch (publishErr) {
       const stderr = (publishErr.stderr || '').trim();

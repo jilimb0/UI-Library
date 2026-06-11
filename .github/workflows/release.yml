@@ -64,6 +64,12 @@ jobs:
           node -v && npm -v && pnpm -v
           echo "registry=$(npm config get registry)"
 
+      - name: Configure npm auth
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" >> .npmrc
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
       - name: Create Release PR or Publish
         uses: changesets/action@v1.5.3
         with:
