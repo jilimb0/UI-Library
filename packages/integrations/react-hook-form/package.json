@@ -37,7 +37,7 @@
     "vitest": "catalog:"
   },
   "dependencies": {
-    "@ui-construction-library/core": "^0.2.0"
+    "@ui-construction-library/core": "workspace:*"
   },
   "license": "MIT",
   "type": "module",

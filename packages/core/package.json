@@ -50,10 +50,10 @@
     }
   },
   "dependencies": {
-    "@ui-construction-library/icons": "^0.2.0",
-    "@ui-construction-library/primitives": "^0.2.0",
-    "@ui-construction-library/tokens": "^0.2.0",
-    "@ui-construction-library/utils": "^0.2.0",
+    "@ui-construction-library/icons": "workspace:*",
+    "@ui-construction-library/primitives": "workspace:*",
+    "@ui-construction-library/tokens": "workspace:*",
+    "@ui-construction-library/utils": "workspace:*",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.0.0",
     "tailwind-merge": "^2.5.5",

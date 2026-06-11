@@ -20,7 +20,7 @@
     "react-dom": ">=18.0.0"
   },
   "dependencies": {
-    "@ui-construction-library/core": "^0.2.0"
+    "@ui-construction-library/core": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "catalog:",
