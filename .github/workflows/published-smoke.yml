@@ -76,12 +76,16 @@ jobs:
             echo "✅ $PKG confirmed on registry"
           done
 
-      - name: Install export-core for smoke
+      - name: Install workspace dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Build export-core and its deps
         run: |
-          mkdir -p /tmp/smoke
-          echo '{"type":"module"}' > /tmp/smoke/package.json
-          npm install --prefix /tmp/smoke @ui-construction-library/export-core
-          cp scripts/check-export-smoke.mjs /tmp/smoke/check-export-smoke.mjs
+          pnpm --filter @ui-construction-library/tokens build
+          pnpm --filter @ui-construction-library/styles build
+          pnpm --filter @ui-construction-library/schema build
+          pnpm --filter @ui-construction-library/registry build
+          pnpm --filter @ui-construction-library/export-core build
 
       - name: Export smoke check
-        run: node /tmp/smoke/check-export-smoke.mjs
+        run: node scripts/check-export-smoke.mjs
