@@ -17,12 +17,29 @@
 
 import { execSync } from 'node:child_process';
 import { readFileSync, writeFileSync, readdirSync, statSync } from 'node:fs';
+import { homedir } from 'node:os';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '..');
 const LOG_FILE = `/tmp/ci-publish-${Date.now()}.log`;
+
+// Ensure npm auth token is written to ~/.npmrc.
+// changesets/action sets NODE_AUTH_TOKEN in env but its own .npmrc creation
+// does not always include the token line — write it explicitly.
+{
+  const token = process.env.NODE_AUTH_TOKEN || process.env.NPM_TOKEN;
+  if (token) {
+    const npmrcPath = resolve(homedir(), '.npmrc');
+    const line = `//registry.npmjs.org/:_authToken=${token}`;
+    let existing = '';
+    try { existing = readFileSync(npmrcPath, 'utf-8'); } catch {}
+    if (!existing.includes('_authToken')) {
+      writeFileSync(npmrcPath, existing + (existing.endsWith('\n') ? '' : '\n') + line + '\n');
+    }
+  }
+}
 
 function log(msg) {
   const line = `[ci-publish] ${msg}`;
