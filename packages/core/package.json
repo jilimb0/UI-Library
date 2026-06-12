@@ -20,8 +20,14 @@
       "require": "./dist/index.js",
       "types": "./dist/index.d.ts"
     },
-    "./styles.css": "./dist/styles.css",
-    "./styles": "./dist/styles.css"
+    "./styles.css": {
+      "import": "./dist/styles.css",
+      "default": "./dist/styles.css"
+    },
+    "./styles": {
+      "import": "./dist/styles.css",
+      "default": "./dist/styles.css"
+    }
   },
   "sideEffects": [
     "*.css",
