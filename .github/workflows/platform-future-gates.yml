@@ -23,6 +23,8 @@ jobs:
       - uses: actions/checkout@v5
       - uses: ./.github/actions/setup-workspace
       - run: pnpm --filter @ui-construction-library/tokens build
+      - run: pnpm --filter @ui-construction-library/schema build
+      - run: pnpm --filter @ui-construction-library/styles build
       - run: pnpm --filter @ui-construction-library/registry build
       - run: pnpm --filter @ui-construction-library/export-core test
       - run: pnpm --filter @ui-construction-library/export-core build
@@ -33,6 +35,8 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: ./.github/actions/setup-workspace
+      - name: Build package dependencies
+        run: pnpm build --filter='!@ui-app/*'
       - run: pnpm --filter @ui-app/builder build
       - run: pnpm --filter @ui-app/builder test
       - run: pnpm --filter @ui-app/builder typecheck

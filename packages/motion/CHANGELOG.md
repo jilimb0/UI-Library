@@ -1,5 +1,12 @@
 # @ui-construction-library/motion
 
+## 0.1.5
+
+### Patch Changes
+
+- Updated dependencies [656cfdf]
+  - @ui-construction-library/core@0.2.2
+
 ## 0.1.4
 
 ### Patch Changes

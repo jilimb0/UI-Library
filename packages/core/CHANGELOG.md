@@ -1,5 +1,13 @@
 # @ui-construction-library/core
 
+## 0.2.2
+
+### Patch Changes
+
+- 656cfdf: Improvements
+- Updated dependencies [656cfdf]
+  - @ui-construction-library/primitives@0.1.3
+
 ## 0.2.1
 
 ### Patch Changes

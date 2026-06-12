@@ -4,7 +4,7 @@
     "composite": false,
     "declaration": true,
     "declarationMap": true,
-    "rootDir": "."
+    "rootDir": "src"
   },
   "include": ["src/**/*.ts", "src/**/*.json"],
   "exclude": ["node_modules", "dist", "src/**/*.test.ts", "src/test/**"]

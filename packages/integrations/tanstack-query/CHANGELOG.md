@@ -1,5 +1,12 @@
 # @ui-construction-library/integration-tanstack-query
 
+## 0.2.2
+
+### Patch Changes
+
+- Updated dependencies [656cfdf]
+  - @ui-construction-library/core@0.2.2
+
 ## 0.2.1
 
 ### Patch Changes
