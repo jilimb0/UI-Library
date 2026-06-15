@@ -1,5 +1,20 @@
 # @ui-construction-library/core
 
+## 0.3.0
+
+### Minor Changes
+
+- 2285993: Improvement product readiness
+
+### Patch Changes
+
+- Updated dependencies [2285993]
+  - @ui-construction-library/primitives@0.2.0
+  - @ui-construction-library/behaviors@0.2.0
+  - @ui-construction-library/tokens@0.3.0
+  - @ui-construction-library/icons@0.3.0
+  - @ui-construction-library/utils@0.3.0
+
 ## 0.2.2
 
 ### Patch Changes
