@@ -73,8 +73,8 @@ const Trigger = forwardRef<
   HTMLElement,
   HTMLAttributes<HTMLElement> & { asChild?: boolean }
 >(function Trigger({ asChild, onClick, children, ...props }, ref) {
-  const { setOpen, triggerRef } = usePopoverContext();
-  const behavior = createPopoverBehavior();
+  const { setOpen, triggerRef, open } = usePopoverContext();
+  const behavior = createPopoverBehavior({ open });
 
   const mergedRef = (node: HTMLElement | null) => {
     triggerRef.current = node;

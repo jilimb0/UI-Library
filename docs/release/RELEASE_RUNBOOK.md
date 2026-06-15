@@ -21,7 +21,7 @@ Create/update changesets, then version packages:
 ```bash
 pnpm changeset
 pnpm version-packages
-node scripts/sync-app-versions.js   # apps → workspace:^x.y.z (local packages)
+node scripts/utils/sync-app-versions.js   # apps → workspace:^x.y.z (local packages)
 pnpm install
 ```
 

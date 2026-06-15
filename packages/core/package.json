@@ -21,7 +21,8 @@
       "types": "./dist/index.d.ts"
     },
     "./styles.css": "./dist/styles.css",
-    "./styles": "./dist/styles.css"
+    "./styles": "./dist/styles.css",
+    "./experimental": "./dist/experimental/index.js"
   },
   "sideEffects": [
     "*.css",
@@ -50,6 +51,7 @@
     }
   },
   "dependencies": {
+    "@ui-construction-library/behaviors": "workspace:*",
     "@ui-construction-library/icons": "workspace:*",
     "@ui-construction-library/primitives": "workspace:*",
     "@ui-construction-library/tokens": "workspace:*",

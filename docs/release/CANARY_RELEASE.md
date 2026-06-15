@@ -6,7 +6,7 @@ This is a supporting note for canary/stable promotion. The canonical process is 
 
 ```bash
 pnpm changeset version
-node scripts/sync-app-versions.js
+node scripts/utils/sync-app-versions.js
 pnpm install
 pnpm publish:canary
 ```

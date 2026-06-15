@@ -70,13 +70,13 @@ jobs:
           # version: runs on every push — creates/updates the Version PR.
           # Calls changeset version then syncs apps/*/package.json so semver
           # refs to @ui-construction-library/* are kept up to date.
-          version: bash scripts/changeset-version.sh
+          version: bash scripts/ci/changeset-version.sh
 
           # publish: runs only when the Version PR is merged.
           # ci-publish.mjs rewrites workspace:* → real semver before each
           # `npm publish`, confirms the package appears on the registry,
           # then restores the original workspace refs.
-          publish: node scripts/ci-publish.mjs
+          publish: node scripts/ci/ci-publish.mjs
 
           title: 'chore: version packages'
           commit: 'chore: version packages'

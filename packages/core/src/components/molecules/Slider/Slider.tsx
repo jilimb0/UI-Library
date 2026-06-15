@@ -4,8 +4,28 @@ import {
   Thumb as SliderThumb,
   Track as SliderTrack,
 } from '@ui-construction-library/primitives';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { cn } from '../../../utils/cn';
 
-export interface SliderProps {
+export const sliderVariants = cva('slider', {
+  variants: {
+    size: {
+      sm: 'slider--sm',
+      md: 'slider--md',
+      lg: 'slider--lg',
+    },
+    orientation: {
+      horizontal: 'slider--horizontal',
+      vertical: 'slider--vertical',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+    orientation: 'horizontal',
+  },
+});
+
+export interface SliderProps extends VariantProps<typeof sliderVariants> {
   value?: number[];
   defaultValue?: number[];
   onChange?: (value: number[]) => void;
@@ -13,7 +33,6 @@ export interface SliderProps {
   min?: number;
   max?: number;
   step?: number;
-  orientation?: 'horizontal' | 'vertical';
   className?: string;
   style?: React.CSSProperties;
 }
@@ -26,12 +45,12 @@ export function Slider({
   min = 0,
   max = 100,
   step = 1,
+  size,
   orientation = 'horizontal',
   className,
   style,
 }: SliderProps) {
   const resolvedValue = value ?? defaultValue;
-  const thumbKeys = resolvedValue.map((_, i) => `thumb-${i}`);
   const handleValueChange = (nextValue: number[]) => {
     onValueChange?.(nextValue);
     onChange?.(nextValue);
@@ -44,16 +63,17 @@ export function Slider({
       min={min}
       max={max}
       step={step}
-      orientation={orientation}
-      className={className ?? 'slider'}
+      orientation={orientation ?? 'horizontal'}
+      className={cn(sliderVariants({ size, orientation }), className)}
       style={style}
     >
       <SliderTrack className="slider__track">
         <SliderRange className="slider__range" />
       </SliderTrack>
-      {thumbKeys.map((thumbKey, i) => (
+      {resolvedValue.map((_, i) => (
         <SliderThumb
-          key={thumbKey}
+          // biome-ignore lint/suspicious/noArrayIndexKey: thumbs are stable by index
+          key={`thumb-${i}`}
           className="slider__thumb"
           aria-label={`Thumb ${i + 1}`}
         />

@@ -2,7 +2,7 @@ import {
   type CSSProperties,
   forwardRef,
   type HTMLAttributes,
-  useEffect,
+  useInsertionEffect,
   useMemo,
   useRef,
   useState,
@@ -11,8 +11,8 @@ import {
 type MotionValue = number | string | number[];
 
 export interface MotionTransition {
-  duration?: number;
-  delay?: number;
+  duration?: number | string;
+  delay?: number | string;
   ease?: string;
   repeat?: number;
 }
@@ -23,28 +23,23 @@ export interface MotionProps extends HTMLAttributes<HTMLDivElement> {
   exit?: Record<string, MotionValue>;
   variants?: Record<string, Record<string, MotionValue>>;
   transition?: MotionTransition;
+  /** CSS class for animation when using CSS-only mode */
+  motionClass?: string;
 }
 
-function _toKeyframes(
-  key: string,
-  _from: MotionValue | undefined,
-  to: MotionValue | undefined
-): string | undefined {
-  if (to === undefined) return undefined;
-  if (key === 'opacity') {
-    const end = Array.isArray(to) ? to[to.length - 1] : to;
-    return String(end);
-  }
-  if (key === 'x') {
-    const end = Array.isArray(to) ? to[to.length - 1] : to;
-    return `translateX(${end}px)`;
-  }
-  if (key === 'y') {
-    const values = Array.isArray(to) ? to : [to];
-    const frames = values.map((v) => `translateY(${v}px)`);
-    return frames.join('; ');
-  }
-  return undefined;
+/** Resolve a duration value to a CSS-compatible string, preferring CSS vars. */
+function resolveDuration(
+  value: number | string | undefined,
+  fallback: string
+): string {
+  if (value === undefined) return fallback;
+  if (typeof value === 'string') return value;
+  return `${value}s`;
+}
+
+/** Resolve an easing value, preferring CSS vars. */
+function resolveEasing(value: string | undefined, fallback: string): string {
+  return value ?? fallback;
 }
 
 function buildStyle(
@@ -53,9 +48,15 @@ function buildStyle(
   transition?: MotionTransition
 ): CSSProperties {
   const style: CSSProperties = {};
-  const duration = transition?.duration ?? 0.3;
-  const delay = transition?.delay ?? 0;
-  const easing = transition?.ease ?? 'ease';
+  const duration = resolveDuration(
+    transition?.duration,
+    'var(--ucl-motion-duration-normal, 300ms)'
+  );
+  const delay = resolveDuration(transition?.delay, '0ms');
+  const easing = resolveEasing(
+    transition?.ease,
+    'var(--ucl-motion-easing-out, ease-out)'
+  );
   const repeat = transition?.repeat;
 
   if (animate?.opacity !== undefined) {
@@ -77,25 +78,16 @@ function buildStyle(
   if (animate?.y !== undefined) {
     const values = Array.isArray(animate.y) ? animate.y : [animate.y];
     if (values.length > 1 || repeat !== undefined) {
-      const name = `--ucl-motion-y-${Math.random().toString(36).slice(2, 8)}`;
+      const name = `ucl-motion-y-${Math.random().toString(36).slice(2, 8)}`;
       const keyframes = values
         .map((v, i) => {
           const pct = (i / (values.length - 1)) * 100;
           return `${pct}% { transform: translateY(${v}px); }`;
         })
         .join(' ');
-      style.animation = `${name} ${duration}s ${easing} ${delay}s ${repeat === Infinity ? 'infinite' : (repeat ?? 0)} alternate`;
+      style.animation = `${name} ${duration} ${easing} ${delay} ${repeat === Infinity ? 'infinite' : (repeat ?? 0)} alternate`;
       (style as Record<string, string>)['--motion-keyframes'] =
         `@keyframes ${name} { ${keyframes} }`;
-      if (typeof document !== 'undefined') {
-        const id = `ucl-${name}`;
-        if (!document.getElementById(id)) {
-          const el = document.createElement('style');
-          el.id = id;
-          el.textContent = `@keyframes ${name} { ${keyframes} }`;
-          document.head.appendChild(el);
-        }
-      }
     } else {
       style.transform = `translateY(${values[0]}px)`;
     }
@@ -105,10 +97,30 @@ function buildStyle(
     !style.animation &&
     (animate?.opacity !== undefined || animate?.x !== undefined)
   ) {
-    style.transition = `opacity ${duration}s ${easing} ${delay}s, transform ${duration}s ${easing} ${delay}s`;
+    style.transition = `opacity ${duration} ${easing} ${delay}, transform ${duration} ${easing} ${delay}`;
   }
 
   return style;
+}
+
+/** SSR-safe keyframe injection via useInsertionEffect */
+function useMotionKeyframes(style: CSSProperties) {
+  const keyframes = (style as Record<string, string>)['--motion-keyframes'];
+  const insertedRef = useRef(false);
+
+  useInsertionEffect(() => {
+    if (!keyframes || insertedRef.current) return;
+    if (typeof document === 'undefined') return;
+
+    const id = `ucl-motion-${keyframes.match(/ucl-motion-y-[a-z0-9]+/)?.[0] ?? 'kf'}`;
+    if (!document.getElementById(id)) {
+      const el = document.createElement('style');
+      el.id = id;
+      el.textContent = keyframes;
+      document.head.appendChild(el);
+    }
+    insertedRef.current = true;
+  }, [keyframes]);
 }
 
 const MotionDiv = forwardRef<HTMLDivElement, MotionProps>(function MotionDiv(
@@ -118,8 +130,10 @@ const MotionDiv = forwardRef<HTMLDivElement, MotionProps>(function MotionDiv(
     exit: _exit,
     variants,
     transition,
+    motionClass,
     style,
     children,
+    className,
     ...props
   },
   ref
@@ -134,7 +148,7 @@ const MotionDiv = forwardRef<HTMLDivElement, MotionProps>(function MotionDiv(
   const [mounted, setMounted] = useState(false);
   const innerRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
+  useInsertionEffect(() => {
     const id = requestAnimationFrame(() => setMounted(true));
     return () => cancelAnimationFrame(id);
   }, []);
@@ -149,6 +163,12 @@ const MotionDiv = forwardRef<HTMLDivElement, MotionProps>(function MotionDiv(
     [mounted, resolved, transition]
   );
 
+  useMotionKeyframes(motionStyle);
+
+  const combinedClassName = motionClass
+    ? `${className ?? ''} ${motionClass}`.trim()
+    : className;
+
   return (
     <div
       ref={(node) => {
@@ -157,6 +177,7 @@ const MotionDiv = forwardRef<HTMLDivElement, MotionProps>(function MotionDiv(
         else if (ref) ref.current = node;
       }}
       style={{ ...motionStyle, ...style }}
+      className={combinedClassName}
       {...props}
     >
       {children}

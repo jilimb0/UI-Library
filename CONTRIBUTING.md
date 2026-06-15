@@ -15,7 +15,7 @@ pnpm playwright:install   # one-time: downloads Chromium for E2E
 E2E expects the **assembled Pages layout** (same as GitHub Pages), not `demo:preview` alone:
 
 ```bash
-./scripts/serve-pages-preview.sh   # terminal 1 — serves /UI-Library/ with rewrites
+./scripts/pages/serve-pages-preview.sh   # terminal 1 — serves /UI-Library/ with rewrites
 pnpm check:e2e                     # terminal 2 — or use default webServer in playwright.config
 ```
 

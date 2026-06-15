@@ -22,6 +22,7 @@ const distDir = resolve(root, 'dist');
 // ---------------------------------------------------------------------------
 const baseCss = readFileSync(resolve(root, 'src/base.css'), 'utf-8');
 const utilitiesCss = readFileSync(resolve(root, 'src/utilities.css'), 'utf-8');
+const motionCss = readFileSync(resolve(root, 'src/motion.css'), 'utf-8');
 
 // Components CSS lives in the core package (the canonical source of truth)
 const componentsCssPath = resolve(root, '../core/src/styles/components.css');
@@ -246,6 +247,9 @@ const finalCss = [
   header,
   '/* ── Base Layer ── */',
   baseCss,
+  separator,
+  '/* ── Motion Layer ── */',
+  motionCss,
   separator,
   '/* ── Component Layer (ucl- prefixed) ── */',
   prefixedComponents,

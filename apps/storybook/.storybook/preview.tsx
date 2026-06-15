@@ -28,12 +28,12 @@ function StorybookSiteNav() {
         </div>
         <div className="inline-cluster">
           <Link href="../">
-            <Button variant="outline" size="sm">
+            <Button variant="ghost" size="sm">
               Open demo
             </Button>
           </Link>
           <Link href="../docs/">
-            <Button variant="outline" size="sm">
+            <Button variant="ghost" size="sm">
               Open docs
             </Button>
           </Link>

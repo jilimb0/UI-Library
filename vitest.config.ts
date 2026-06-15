@@ -9,6 +9,14 @@ export default {
         __dirname,
         'packages/core/src'
       ),
+      '@ui-construction-library/primitives': path.resolve(
+        __dirname,
+        'packages/primitives/src'
+      ),
+      '@ui-construction-library/behaviors': path.resolve(
+        __dirname,
+        'packages/behaviors/src'
+      ),
       '@ui-construction-library/icons': path.resolve(
         __dirname,
         'packages/icons/src'

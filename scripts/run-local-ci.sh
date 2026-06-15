@@ -5,6 +5,8 @@
 # Usage:
 #   bash scripts/run-local-ci.sh              # full (validate:platform)
 #   bash scripts/run-local-ci.sh --no-platform # code-only (validate)
+#
+# Script paths follow the organised structure under scripts/:
 # ---------------------------------------------------------------------------
 set -euo pipefail
 
@@ -80,18 +82,18 @@ trap print_summary EXIT
 # ── Steps ───────────────────────────────────────────────────────────────────
 
 # — Static / structural checks —
-step "repo hygiene"            node scripts/check-repo-hygiene.js
-step "workspace scripts"       node scripts/check-workspace-scripts.js
-step "package boundaries"      node scripts/check-package-boundaries.mjs
-step "public surface"          node scripts/check-public-surface.mjs
+step "repo hygiene"            node scripts/checks/check-repo-hygiene.js
+step "workspace scripts"       node scripts/checks/check-workspace-scripts.js
+step "package boundaries"      node scripts/checks/check-package-boundaries.mjs
+step "public surface"          node scripts/checks/check-public-surface.mjs
 step "surface tests"           pnpm exec vitest run --config tests/surface/vitest.config.mjs
-step "dependency boundaries"   bash scripts/check-dependency-boundaries.sh
-step "app dependency policy"   bash scripts/check-app-dependency-policy.sh
-step "api snapshot"            bash scripts/check-api-snapshot.sh
-step "source registry"         node scripts/check-source-registry.js
-step "preset docs"             node scripts/check-preset-docs.js
-step "gold kits"               node scripts/check-gold-kits.js
-step "launch readiness"        node scripts/check-launch-readiness.js
+step "dependency boundaries"   bash scripts/checks/check-dependency-boundaries.sh
+step "app dependency policy"   bash scripts/checks/check-app-dependency-policy.sh
+step "api snapshot"            bash scripts/checks/check-api-snapshot.sh
+step "source registry"         node scripts/checks/check-source-registry.js
+step "preset docs"             node scripts/checks/check-preset-docs.js
+step "gold kits"               node scripts/checks/check-gold-kits.js
+step "launch readiness"        node scripts/checks/check-launch-readiness.js
 
 # — Code quality —
 step "lint"                    pnpm exec biome check .
@@ -107,15 +109,15 @@ step "unit tests"              pnpm exec turbo run test
 step "build storybook"         pnpm --filter @ui-app/storybook build-storybook
 
 # — Bundle & performance —
-step "bundle size"             node scripts/check-bundle-size.js
+step "bundle size"             node scripts/checks/check-bundle-size.js
 step "performance"             pnpm exec vitest run --config tests/performance/vitest.config.js
 
 # ── Platform-only steps (skipped with --no-platform) ────────────────────────
 if $PLATFORM; then
-  step "supabase schema"       node scripts/check-supabase-schema-skeleton.js
+  step "supabase schema"       node scripts/checks/check-supabase-schema-skeleton.js
   soft_step "security audit"   pnpm audit --audit-level=high
-  step "contract compliance"   bash scripts/check-contract-compliance.sh
-  soft_step "published versions" node scripts/check-published-versions.js
+  step "contract compliance"   bash scripts/checks/check-contract-compliance.sh
+  soft_step "published versions" node scripts/checks/check-published-versions.js
   step "e2e tests"             bash -c 'playwright install chromium --with-deps 2>/dev/null; playwright test'
 fi
 

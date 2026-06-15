@@ -92,12 +92,17 @@ const Header = forwardRef<
 const Trigger = forwardRef<
   HTMLButtonElement,
   ButtonHTMLAttributes<HTMLButtonElement> & { value?: string }
->(function Trigger({ value, onClick, ...props }, ref) {
+>(function Trigger({ value, onClick, onKeyDown, ...props }, ref) {
   const ctx = useContext(AccordionContext);
   const itemCtx = useContext(ItemContext);
   const itemValue = value ?? itemCtx ?? '';
   const open = ctx?.openItems.has(itemValue) ?? false;
-  const behavior = createAccordionTriggerBehavior({ open });
+  const behavior = createAccordionTriggerBehavior({
+    open,
+    onToggle: () => {
+      if (itemValue) ctx?.toggle(itemValue);
+    },
+  });
 
   return (
     <button
@@ -105,8 +110,12 @@ const Trigger = forwardRef<
       type="button"
       {...behavior.triggerAttrs}
       onClick={(e) => {
+        behavior.handlers.onClick?.();
         onClick?.(e);
-        if (itemValue) ctx?.toggle(itemValue);
+      }}
+      onKeyDown={(e) => {
+        behavior.handlers.onKeyDown?.(e);
+        onKeyDown?.(e);
       }}
       {...props}
     />

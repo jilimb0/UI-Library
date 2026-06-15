@@ -1,0 +1,16 @@
+{
+  "name": "@ui-construction-library/examples-vanilla",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite"
+  },
+  "dependencies": {
+    "@ui-construction-library/behaviors": "workspace:*",
+    "@ui-construction-library/styles": "workspace:*"
+  },
+  "devDependencies": {
+    "vite": "catalog:"
+  }
+}

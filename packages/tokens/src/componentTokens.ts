@@ -36,11 +36,11 @@ export interface ButtonTokens {
 
 export const buttonLightTokens: ButtonTokens = {
   primary: {
-    default: '#09090b',
-    hover: '#27272a',
-    active: '#3f3f46',
-    focus: '#09090b',
-    disabled: '#d4d4d8',
+    default: '#7c3aed',
+    hover: '#6d28d9',
+    active: '#5b21b6',
+    focus: '#7c3aed',
+    disabled: '#ddd6fe',
     fg: '#ffffff',
   },
   secondary: {
@@ -71,11 +71,11 @@ export const buttonLightTokens: ButtonTokens = {
 
 export const buttonDarkTokens: ButtonTokens = {
   primary: {
-    default: '#fafafa',
-    hover: '#e4e4e7',
-    active: '#d4d4d8',
-    focus: '#fafafa',
-    disabled: '#3f3f46',
+    default: '#a78bfa',
+    hover: '#c4b5fd',
+    active: '#ddd6fe',
+    focus: '#a78bfa',
+    disabled: '#4c1d95',
     fg: '#09090b',
   },
   secondary: {
@@ -128,13 +128,13 @@ export const inputLightTokens: InputTokens = {
     default: '#e4e4e7',
     hover: '#d4d4d8',
     active: '#a1a1aa',
-    focus: '#09090b',
+    focus: '#7c3aed',
     disabled: '#e4e4e7',
     error: '#ef4444',
   },
   fg: '#09090b',
   placeholder: '#a1a1aa',
-  ring: '#09090b',
+  ring: '#7c3aed',
 };
 
 export const inputDarkTokens: InputTokens = {
@@ -149,13 +149,13 @@ export const inputDarkTokens: InputTokens = {
     default: '#27272a',
     hover: '#3f3f46',
     active: '#52525b',
-    focus: '#fafafa',
+    focus: '#a78bfa',
     disabled: '#27272a',
     error: '#ef4444',
   },
   fg: '#fafafa',
   placeholder: '#71717a',
-  ring: '#fafafa',
+  ring: '#a78bfa',
 };
 
 // ---------------------------------------------------------------------------
@@ -232,7 +232,7 @@ export const selectLightTokens: SelectTokens = {
     default: '#e4e4e7',
     hover: '#d4d4d8',
     active: '#a1a1aa',
-    focus: '#09090b',
+    focus: '#7c3aed',
     disabled: '#e4e4e7',
     error: '#ef4444',
   },
@@ -253,7 +253,7 @@ export const selectDarkTokens: SelectTokens = {
     default: '#27272a',
     hover: '#3f3f46',
     active: '#52525b',
-    focus: '#fafafa',
+    focus: '#a78bfa',
     disabled: '#27272a',
     error: '#ef4444',
   },
@@ -272,12 +272,12 @@ export interface SwitchTokens {
 }
 
 export const switchLightTokens: SwitchTokens = {
-  track: { off: '#d4d4d8', on: '#09090b', disabled: '#e4e4e7' },
+  track: { off: '#d4d4d8', on: '#7c3aed', disabled: '#e4e4e7' },
   thumb: '#ffffff',
 };
 
 export const switchDarkTokens: SwitchTokens = {
-  track: { off: '#3f3f46', on: '#fafafa', disabled: '#27272a' },
+  track: { off: '#3f3f46', on: '#a78bfa', disabled: '#27272a' },
   thumb: '#09090b',
 };
 

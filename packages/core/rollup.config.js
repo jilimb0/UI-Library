@@ -8,6 +8,7 @@ import postcss from 'rollup-plugin-postcss';
 const onwarn = (warning, warn) => {
   if (warning.code === 'MODULE_LEVEL_DIRECTIVE') return;
   if (warning.code === 'UNRESOLVED_IMPORT') return;
+  if (warning.code === 'TS2882') return;
   warn(warning);
 };
 
@@ -29,6 +30,8 @@ export default [
         declarationDir: 'dist',
         declarationMap: true,
         noEmit: false,
+        allowArbitraryExtensions: true,
+        outputToFilesystem: true,
         exclude: ['**/*.test.ts', '**/*.test.tsx', '**/*.stories.tsx'],
       }),
       postcss({ extract: 'styles.css', minimize: false }),

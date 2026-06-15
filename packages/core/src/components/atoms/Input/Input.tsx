@@ -1,28 +1,9 @@
-import { cva, type VariantProps } from 'class-variance-authority';
+import { createFieldBehavior } from '@ui-construction-library/behaviors';
 import { forwardRef, type InputHTMLAttributes, useId } from 'react';
 import { cn } from '../../../utils/cn';
 
-const inputVariants = cva('input', {
-  variants: {
-    size: {
-      default: '',
-      sm: 'input--sm',
-      lg: 'input--lg',
-    },
-    variant: {
-      default: '',
-      error: 'input--error',
-    },
-  },
-  defaultVariants: {
-    size: 'default',
-    variant: 'default',
-  },
-});
-
 export interface InputProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'>,
-    VariantProps<typeof inputVariants> {
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
   size?: 'default' | 'sm' | 'lg';
   label?: string;
   description?: string;
@@ -36,41 +17,70 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       className,
       type = 'text',
       size,
-      variant,
       label,
       description,
+      error,
+      errorMessage,
       id,
       style,
+      disabled,
+      required,
       ...props
     },
     ref
   ) => {
     const uid = useId();
     const inputId = id ?? `input-${uid}`;
-    const labelId = label ? `${inputId}-label` : undefined;
     const descriptionId = description ? `${inputId}-description` : undefined;
+    const errorId = error && errorMessage ? `${inputId}-error` : undefined;
+
+    const {
+      labelAttrs,
+      labelClassName,
+      inputAttrs,
+      inputClassName,
+      errorAttrs,
+      errorClassName,
+    } = createFieldBehavior({
+      fieldId: inputId,
+      descriptionId,
+      errorId,
+      hasError: error,
+      disabled,
+      required,
+    });
 
     return (
       <div style={style}>
         {label && (
-          <label id={labelId} htmlFor={inputId}>
+          <label {...labelAttrs} htmlFor={inputId} className={labelClassName}>
             {label}
           </label>
         )}
         <input
+          {...inputAttrs}
+          aria-required={required || undefined}
+          aria-describedby={error && errorMessage ? errorId : descriptionId}
+          aria-invalid={error || undefined}
           id={inputId}
           type={type}
-          className={cn(inputVariants({ size, variant }), className)}
+          className={cn(
+            inputClassName,
+            size === 'sm' && 'ucl-input--sm',
+            size === 'lg' && 'ucl-input--lg',
+            className
+          )}
           ref={ref}
-          aria-labelledby={labelId}
-          aria-describedby={descriptionId}
-          data-size={size}
-          data-error={variant === 'error' || undefined}
           {...props}
         />
-        {description && (
-          <div id={descriptionId} className="field-hint">
+        {description && !error && (
+          <div id={descriptionId} className="ucl-field-hint">
             {description}
+          </div>
+        )}
+        {error && errorMessage && (
+          <div {...errorAttrs} className={errorClassName} aria-live="polite">
+            {errorMessage}
           </div>
         )}
       </div>
@@ -79,4 +89,4 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 );
 Input.displayName = 'Input';
 
-export { Input, inputVariants };
+export { Input };

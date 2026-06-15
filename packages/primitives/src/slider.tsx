@@ -88,15 +88,6 @@ const Root = forwardRef<HTMLDivElement, SliderRootProps>(function Root(
   });
   const trackRef = useRef<HTMLDivElement>(null);
 
-  createSliderBehavior({
-    value: (current ?? defaultValue)[0],
-    min,
-    max,
-    step,
-    disabled,
-    orientation,
-  });
-
   return (
     <SliderContext.Provider
       value={{

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-07T15:07:18.871Z",
+  "generatedAt": "2026-06-15T20:42:36.401Z",
   "package": "@ui-construction-library/core",
   "barrelExports": [
     "./components",
@@ -31,6 +31,7 @@
     "atoms/Tag",
     "atoms/Text",
     "atoms/TextArea",
+    "molecules/Accordion",
     "molecules/Alert",
     "molecules/Breadcrumb",
     "molecules/Card",
@@ -38,6 +39,7 @@
     "molecules/ComboBox",
     "molecules/ContextMenu",
     "molecules/DatePicker",
+    "molecules/Dialog",
     "molecules/Dropdown",
     "molecules/Field",
     "molecules/FileUpload",
@@ -49,6 +51,7 @@
     "molecules/SearchInput",
     "molecules/Slider",
     "molecules/Stepper",
+    "molecules/Tabs",
     "molecules/Toast",
     "molecules/Tooltip",
     "organisms/Accordion",

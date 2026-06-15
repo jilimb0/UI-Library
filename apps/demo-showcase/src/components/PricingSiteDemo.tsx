@@ -123,7 +123,7 @@ export function PricingSiteDemo() {
               ))}
             </ul>
             <Button
-              variant={tier.highlighted ? 'default' : 'outline'}
+              variant={tier.highlighted ? 'default' : 'ghost'}
               style={{ marginTop: '0.5rem' }}
             >
               {tier.cta}

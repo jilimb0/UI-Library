@@ -111,3 +111,6 @@ export function isValidEditingSurface(value: unknown): value is EditingSurface {
     (VALID_EDITING_SURFACES as readonly string[]).includes(value)
   );
 }
+
+// ── Zod schemas for runtime validation ───────────────────────────────────
+export * from './zod';

@@ -56,7 +56,7 @@ Done
 - Isolated the builder E2E role override behind a typed helper.
 - Fixed peerDependency gaps: added react-dom to icons, integration-i18n, integration-next,
   integration-tanstack-query, integration-tanstack-router for consistent public package contract.
-- Extracted surface checker logic into scripts/surface-checker.mjs (importable module) and
+- Extracted surface checker logic into scripts/checks/surface-checker.mjs (importable module) and
   refactored check-public-surface.mjs as a thin CLI wrapper — behaviour unchanged.
 - Added tests/surface/check-public-surface.test.mjs: 20 unit tests covering metadata checks,
   README notices, matrix completeness, import boundary detection, and importPattern correctness.

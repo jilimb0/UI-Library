@@ -1,6 +1,6 @@
 {
   "name": "@ui-construction-library/export-core",
-  "version": "0.2.0",
+  "version": "0.1.0",
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -14,11 +14,6 @@
       "import": "./dist/index.esm.js",
       "require": "./dist/index.js",
       "types": "./dist/index.d.ts"
-    },
-    "./targets": {
-      "import": "./dist/targets.js",
-      "require": "./dist/targets.js",
-      "types": "./dist/targets.d.ts"
     }
   },
   "repository": {
@@ -34,9 +29,7 @@
   },
   "dependencies": {
     "@ui-construction-library/registry": "workspace:*",
-    "@ui-construction-library/schema": "workspace:*",
-    "@ui-construction-library/styles": "workspace:*",
-    "@ui-construction-library/tokens": "workspace:*"
+    "@ui-construction-library/schema": "workspace:*"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^12.1.2",
@@ -44,13 +37,9 @@
     "typescript": "^6.0.3",
     "vitest": "catalog:"
   },
-  "description": "Internal export pipeline for @ui-construction-library tooling — not for direct consumer use.",
+  "description": "Core export logic for @ui-construction-library — export project analysis and rendering.",
   "ui-construction": {
     "surface": "internal",
     "mode": "platform"
-  },
-  "keywords": [
-    "internal",
-    "tooling"
-  ]
+  }
 }

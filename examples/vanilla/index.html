@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UCL Vanilla — Behaviors Demo</title>
+
+  <!-- Base CSS from @ui-construction-library/styles -->
+  <link rel="stylesheet" href="../../packages/styles/dist/base.css" />
+  <link rel="stylesheet" href="../../packages/styles/dist/styles.css" />
+</head>
+<body>
+  <main style="padding: 2rem; max-width: 48rem; margin: 0 auto;">
+    <h1 style="font-size: var(--ucl-text-xl); font-weight: 600; margin-bottom: 1rem;">
+      Vanilla JS + Behaviors Demo
+    </h1>
+    <p style="margin-bottom: 2rem; color: var(--ucl-muted-foreground);">
+      This page uses <code>@ui-construction-library/behaviors</code> directly in vanilla JavaScript.
+    </p>
+
+    <section style="margin-bottom: 2rem;">
+      <h2 style="font-size: var(--ucl-text-lg); font-weight: 600; margin-bottom: 1rem;">Button</h2>
+      <div class="demo-row" style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+        <button id="btn-default">Default</button>
+        <button id="btn-destructive">Destructive</button>
+        <button id="btn-disabled" disabled>Disabled</button>
+        <button id="btn-loading">Loading</button>
+      </div>
+    </section>
+
+    <section style="margin-bottom: 2rem;">
+      <h2 style="font-size: var(--ucl-text-lg); font-weight: 600; margin-bottom: 1rem;">Switch</h2>
+      <div class="demo-row" style="display: flex; gap: 0.75rem; align-items: center;">
+        <button id="switch-demo" aria-label="Toggle feature"></button>
+        <span id="switch-label">Feature is off</span>
+      </div>
+    </section>
+
+    <section style="margin-bottom: 2rem;">
+      <h2 style="font-size: var(--ucl-text-lg); font-weight: 600; margin-bottom: 1rem;">Checkbox</h2>
+      <div class="demo-row" style="display: flex; gap: 0.75rem; align-items: center;">
+        <button id="checkbox-demo" aria-label="Accept terms"></button>
+        <span id="checkbox-label">Accept terms</span>
+      </div>
+    </section>
+
+    <section style="margin-bottom: 2rem;">
+      <h2 style="font-size: var(--ucl-text-lg); font-weight: 600; margin-bottom: 1rem;">Tabs</h2>
+      <div id="tabs-list" role="tablist" style="display: flex; gap: 0.25rem; border-bottom: 1px solid var(--ucl-border); margin-bottom: 1rem;"></div>
+      <div id="tabs-content"></div>
+    </section>
+  </main>
+
+  <script type="module" src="./main.js"></script>
+</body>
+</html>

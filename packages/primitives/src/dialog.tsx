@@ -1,8 +1,12 @@
 import { createDialogBehavior } from '@ui-construction-library/behaviors';
 import {
+  type ButtonHTMLAttributes,
+  cloneElement,
   createContext,
   forwardRef,
   type HTMLAttributes,
+  isValidElement,
+  type MouseEvent,
   type ReactNode,
   useContext,
   useEffect,
@@ -63,40 +67,78 @@ function Root({ open, defaultOpen, onOpenChange, children }: DialogRootProps) {
 const Trigger = forwardRef<
   HTMLButtonElement,
   HTMLAttributes<HTMLButtonElement> & { asChild?: boolean }
->(function Trigger({ asChild, onClick, ...props }, ref) {
-  const { setOpen } = useDialogContext();
+>(function Trigger({ asChild, onClick, children, ...props }, ref) {
+  const { open, setOpen } = useDialogContext();
+  const behavior = createDialogBehavior({ open });
+
+  if (asChild && isValidElement(children)) {
+    return (
+      <Slottable asChild>
+        {cloneElement(children, {
+          ref,
+          type: 'button',
+          ...(behavior.triggerAttrs as ButtonHTMLAttributes<HTMLButtonElement>),
+          onClick: (e: MouseEvent<HTMLButtonElement>) => {
+            onClick?.(e);
+            if (!e.defaultPrevented) setOpen(true);
+            children.props.onClick?.(e);
+          },
+          ...props,
+        })}
+      </Slottable>
+    );
+  }
+
   return (
-    <Slottable asChild={asChild}>
-      <button
-        ref={ref}
-        type="button"
-        onClick={(e) => {
-          onClick?.(e);
-          if (!e.defaultPrevented) setOpen(true);
-        }}
-        {...props}
-      />
-    </Slottable>
+    <button
+      ref={ref}
+      type="button"
+      {...(behavior.triggerAttrs as ButtonHTMLAttributes<HTMLButtonElement>)}
+      onClick={(e: MouseEvent<HTMLButtonElement>) => {
+        onClick?.(e);
+        if (!e.defaultPrevented) setOpen(true);
+      }}
+      {...props}
+    >
+      {children}
+    </button>
   );
 });
 
 const Close = forwardRef<
   HTMLButtonElement,
   HTMLAttributes<HTMLButtonElement> & { asChild?: boolean }
->(function Close({ asChild, onClick, ...props }, ref) {
+>(function Close({ asChild, onClick, children, ...props }, ref) {
   const { setOpen } = useDialogContext();
+  if (asChild && isValidElement(children)) {
+    return (
+      <Slottable asChild>
+        {cloneElement(children, {
+          ref,
+          type: 'button',
+          onClick: (e: MouseEvent<HTMLButtonElement>) => {
+            onClick?.(e);
+            if (!e.defaultPrevented) setOpen(false);
+            children.props.onClick?.(e);
+          },
+          ...props,
+        })}
+      </Slottable>
+    );
+  }
+
   return (
-    <Slottable asChild={asChild}>
-      <button
-        ref={ref}
-        type="button"
-        onClick={(e) => {
-          onClick?.(e);
-          if (!e.defaultPrevented) setOpen(false);
-        }}
-        {...props}
-      />
-    </Slottable>
+    <button
+      ref={ref}
+      type="button"
+      onClick={(e: MouseEvent<HTMLButtonElement>) => {
+        onClick?.(e);
+        if (!e.defaultPrevented) setOpen(false);
+      }}
+      {...props}
+    >
+      {children}
+    </button>
   );
 });
 

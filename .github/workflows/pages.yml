@@ -15,7 +15,7 @@ on:
       - 'package.json'
       - 'pnpm-workspace.yaml'
       - 'turbo.json'
-      - 'scripts/assemble-pages-site.sh'
+      - 'scripts/pages/assemble-pages-site.sh'
       - '.github/workflows/pages.yml'
       - '.github/actions/setup-workspace/**'
   workflow_dispatch:
@@ -37,7 +37,7 @@ jobs:
       - uses: ./.github/actions/setup-workspace
 
       - name: Assemble Pages site
-        run: ./scripts/assemble-pages-site.sh
+        run: ./scripts/pages/assemble-pages-site.sh
         env:
           GITHUB_REPOSITORY_NAME: ${{ github.event.repository.name }}
 

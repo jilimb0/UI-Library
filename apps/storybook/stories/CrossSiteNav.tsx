@@ -30,14 +30,14 @@ export function CrossSiteNav({
         <div className="inline-cluster">
           {current !== 'demo' ? (
             <Link href={demoHref}>
-              <Button variant="outline" size="sm">
+              <Button variant="ghost" size="sm">
                 Open demo
               </Button>
             </Link>
           ) : null}
           {current !== 'docs' ? (
             <Link href={docsHref}>
-              <Button variant="outline" size="sm">
+              <Button variant="ghost" size="sm">
                 Open docs
               </Button>
             </Link>

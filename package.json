@@ -1,13 +1,13 @@
 {
   "name": "ui-library-monorepo",
   "private": true,
-  "packageManager": "pnpm@11.1.2",
+  "packageManager": "pnpm@11.7.0",
   "engines": {
     "node": ">=24"
   },
   "volta": {
     "node": "24.11.0",
-    "pnpm": "11.1.2"
+    "pnpm": "11.7.0"
   },
   "workspaces": [
     "packages/*",
@@ -19,58 +19,58 @@
     "build:ci": "turbo run build --force",
     "clean": "bash clean.sh",
     "dev": "turbo run dev",
-    "test": "bash scripts/test.sh",
+    "test": "bash scripts/core/test.sh",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "format": "biome format --write .",
     "typecheck": "turbo run typecheck",
-    "check:deps": "./scripts/check-dependency-boundaries.sh && ./scripts/check-app-dependency-policy.sh",
-    "check:boundaries": "node ./scripts/check-package-boundaries.mjs",
-    "check:public-surface": "node ./scripts/check-public-surface.mjs",
-    "check:api": "./scripts/check-api-snapshot.sh",
-    "update:api": "node scripts/generate-api-snapshot.mjs > packages/core/api-snapshot.json",
-    "check:published": "node ./scripts/check-published-versions.js",
-    "check:published:code": "node ./scripts/check-published-code.js",
-    "check:bundle": "node ./scripts/check-bundle-size.js",
-    "check:contracts": "./scripts/check-contract-compliance.sh",
+    "check:deps": "./scripts/checks/check-dependency-boundaries.sh && ./scripts/checks/check-app-dependency-policy.sh",
+    "check:boundaries": "node ./scripts/checks/check-package-boundaries.mjs",
+    "check:public-surface": "node ./scripts/checks/check-public-surface.mjs",
+    "check:api": "./scripts/checks/check-api-snapshot.sh",
+    "update:api": "node scripts/checks/generate-api-snapshot.mjs > packages/core/api-snapshot.json",
+    "check:published": "node ./scripts/checks/check-published-versions.js",
+    "check:published:code": "node ./scripts/checks/check-published-code.js",
+    "check:bundle": "node ./scripts/checks/check-bundle-size.js",
+    "check:contracts": "./scripts/checks/check-contract-compliance.sh",
     "playwright:install": "playwright install chromium",
     "check:e2e": "pnpm playwright:install && playwright test",
     "check:security": "pnpm audit --audit-level=high",
-    "check:hygiene": "node ./scripts/check-repo-hygiene.js",
-    "check:workspace-scripts": "node ./scripts/check-workspace-scripts.js",
+    "check:hygiene": "node ./scripts/checks/check-repo-hygiene.js",
+    "check:workspace-scripts": "node ./scripts/checks/check-workspace-scripts.js",
     "check:perf": "pnpm exec vitest run --config tests/performance/vitest.config.js",
     "check:surface-tests": "pnpm exec vitest run --config tests/surface/vitest.config.mjs",
-    "publish:canary": "./scripts/publish-canary.sh",
-    "publish:stable": "./scripts/publish-stable.sh",
-    "changelog:packages": "node ./scripts/generate-package-changelogs.js",
-    "release:prepare": "./scripts/prepare-release.sh",
-    "release:prepare:patch": "./scripts/prepare-release.sh --bump=patch",
-    "release:prepare:minor": "./scripts/prepare-release.sh --bump=minor",
-    "release:prepare:major": "./scripts/prepare-release.sh --bump=major",
-    "version:bump": "node ./scripts/check-published-code.js --json | node ./scripts/bump-package-versions.js",
-    "version:bump:dry": "node ./scripts/check-published-code.js --json | node ./scripts/bump-package-versions.js --dry-run",
+    "publish:canary": "./scripts/ci/publish-canary.sh",
+    "publish:stable": "./scripts/ci/publish-stable.sh",
+    "changelog:packages": "node ./scripts/generators/generate-package-changelogs.js",
+    "release:prepare": "./scripts/ci/prepare-release.sh",
+    "release:prepare:patch": "./scripts/ci/prepare-release.sh --bump=patch",
+    "release:prepare:minor": "./scripts/ci/prepare-release.sh --bump=minor",
+    "release:prepare:major": "./scripts/ci/prepare-release.sh --bump=major",
+    "version:bump": "node ./scripts/checks/check-published-code.js --json | node ./scripts/utils/bump-package-versions.js",
+    "version:bump:dry": "node ./scripts/checks/check-published-code.js --json | node ./scripts/utils/bump-package-versions.js --dry-run",
     "storybook": "turbo run storybook",
     "build-storybook": "pnpm --filter @ui-app/storybook build-storybook",
     "demo:dev": "pnpm --filter @ui-app/demo-showcase dev",
     "demo:build": "pnpm --filter @ui-app/demo-showcase build",
     "demo:preview": "pnpm --filter @ui-app/demo-showcase preview",
     "demo:typecheck": "pnpm --filter @ui-app/demo-showcase typecheck",
-    "release:preflight": "./scripts/release-preflight.sh",
-    "upgrade:doctor": "node ./scripts/upgrade-doctor.js",
-    "registry:source:check": "node ./scripts/check-source-registry.js",
-    "preset:bootstrap": "node ./scripts/bootstrap-preset.js",
-    "preset:check": "node ./scripts/check-preset-docs.js",
-    "check:gold-kits": "node ./scripts/check-gold-kits.js",
-    "check:launch": "node ./scripts/check-launch-readiness.js",
+    "release:preflight": "./scripts/ci/release-preflight.sh",
+    "upgrade:doctor": "node ./scripts/utils/upgrade-doctor.js",
+    "registry:source:check": "node ./scripts/checks/check-source-registry.js",
+    "preset:bootstrap": "node ./scripts/utils/bootstrap-preset.js",
+    "preset:check": "node ./scripts/checks/check-preset-docs.js",
+    "check:gold-kits": "node ./scripts/checks/check-gold-kits.js",
+    "check:launch": "node ./scripts/checks/check-launch-readiness.js",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "sync-versions": "node scripts/sync-app-versions.js",
-    "sync-versions:dry": "node scripts/sync-app-versions.js --dry-run",
+    "sync-versions": "node scripts/utils/sync-app-versions.js",
+    "sync-versions:dry": "node scripts/utils/sync-app-versions.js --dry-run",
     "release": "turbo run build && changeset publish",
     "validate": "bash scripts/run-local-ci.sh --no-platform",
     "validate:platform": "bash scripts/run-local-ci.sh",
     "prepare": "husky",
-    "check:supabase-schema": "node ./scripts/check-supabase-schema-skeleton.js"
+    "check:supabase-schema": "node ./scripts/checks/check-supabase-schema-skeleton.js"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,cjs}": [
@@ -79,35 +79,6 @@
     "*.{json,jsonc,css,md,yml,yaml}": [
       "biome format --write --no-errors-on-unmatched"
     ]
-  },
-  "pnpm": {
-    "overrides": {
-      "happy-dom": ">=20.8.9",
-      "esbuild": "^0.25.0",
-      "vite": "^8.0.0",
-      "postcss": ">=8.5.10",
-      "react": "^18.3.1",
-      "react-dom": "^18.3.1",
-      "@types/react": "^18.3.27",
-      "@types/react-dom": "^18.3.7"
-    },
-    "packageExtensions": {
-      "@storybook/builder-vite@*": {
-        "peerDependencies": {
-          "vite": "^8.0.0"
-        }
-      },
-      "@storybook/react-vite@*": {
-        "peerDependencies": {
-          "vite": "^8.0.0"
-        }
-      },
-      "next@*": {
-        "dependencies": {
-          "postcss": ">=8.5.10"
-        }
-      }
-    }
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.11.3",

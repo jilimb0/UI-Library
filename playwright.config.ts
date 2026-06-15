@@ -18,7 +18,7 @@ export default defineConfig({
   webServer: process.env.UI_LIBRARY_SKIP_WEB_SERVER
     ? undefined
     : {
-        command: './scripts/serve-pages-preview.sh',
+        command: './scripts/pages/serve-pages-preview.sh',
         url: baseURL,
         timeout: 600_000,
         reuseExistingServer: !process.env.CI,

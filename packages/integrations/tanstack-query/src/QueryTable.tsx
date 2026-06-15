@@ -65,8 +65,11 @@ export function QueryTable<T>({
           style={{ display: 'grid', gap: '0.5rem' }}
         >
           {Array.from({ length: skeletonRows }).map((_, i) => (
-            // biome-ignore lint/suspicious/noArrayIndexKey: Skeleton rows are a static placeholder list, never reordered.
-            <Skeleton key={i} style={{ height: '2rem', width: '100%' }} />
+            <Skeleton
+              // biome-ignore lint/suspicious/noArrayIndexKey: skeleton rows are stable by index
+              key={`table-skeleton-${i}`}
+              style={{ height: '2rem', width: '100%' }}
+            />
           ))}
         </div>
       )

@@ -69,7 +69,7 @@ export function HeroSection() {
           <Button as="a" href={DOCS_URL} size="lg">
             Open docs
           </Button>
-          <Button as="a" href={STORYBOOK_URL} variant="outline" size="lg">
+          <Button as="a" href={STORYBOOK_URL} variant="ghost" size="lg">
             Open Storybook
           </Button>
           <Button

@@ -74,7 +74,7 @@ export function SettingsAppDemo() {
       <div
         style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }}
       >
-        <Button variant="outline">Cancel</Button>
+        <Button variant="ghost">Cancel</Button>
         <Button onClick={handleSave}>
           {saved ? 'Saved!' : 'Save preferences'}
         </Button>

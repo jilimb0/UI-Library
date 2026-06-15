@@ -1,0 +1,206 @@
+/* ==========================================================================
+   UCL Motion CSS — Framework-agnostic animation layer
+   Works with any framework: React, Vue, vanilla JS, SSR
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. CSS Custom Properties (tokens override these)
+   -------------------------------------------------------------------------- */
+:root {
+  --ucl-motion-duration-fast: 150ms;
+  --ucl-motion-duration-normal: 300ms;
+  --ucl-motion-duration-slow: 500ms;
+  --ucl-motion-easing-in: cubic-bezier(0.4, 0, 1, 1);
+  --ucl-motion-easing-out: cubic-bezier(0, 0, 0.2, 1);
+  --ucl-motion-easing-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ucl-motion-easing-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* --------------------------------------------------------------------------
+   2. Entrance animations
+   -------------------------------------------------------------------------- */
+
+/* Fade in */
+.ucl-fade-in {
+  animation: ucl-fade-in var(--ucl-motion-duration-normal, 300ms) var(--ucl-motion-easing-out, ease-out) forwards;
+}
+
+@keyframes ucl-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Fade out */
+.ucl-fade-out {
+  animation: ucl-fade-out var(--ucl-motion-duration-fast, 150ms) var(--ucl-motion-easing-in, ease-in) forwards;
+}
+
+@keyframes ucl-fade-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+/* Slide in from bottom */
+.ucl-slide-in-up {
+  animation: ucl-slide-in-up var(--ucl-motion-duration-normal, 300ms) var(--ucl-motion-easing-out, ease-out) forwards;
+}
+
+@keyframes ucl-slide-in-up {
+  from { transform: translateY(8px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+/* Slide in from top */
+.ucl-slide-in-down {
+  animation: ucl-slide-in-down var(--ucl-motion-duration-normal, 300ms) var(--ucl-motion-easing-out, ease-out) forwards;
+}
+
+@keyframes ucl-slide-in-down {
+  from { transform: translateY(-8px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+/* Slide in from left */
+.ucl-slide-in-left {
+  animation: ucl-slide-in-left var(--ucl-motion-duration-normal, 300ms) var(--ucl-motion-easing-out, ease-out) forwards;
+}
+
+@keyframes ucl-slide-in-left {
+  from { transform: translateX(-8px); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+
+/* Slide in from right */
+.ucl-slide-in-right {
+  animation: ucl-slide-in-right var(--ucl-motion-duration-normal, 300ms) var(--ucl-motion-easing-out, ease-out) forwards;
+}
+
+@keyframes ucl-slide-in-right {
+  from { transform: translateX(8px); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+
+/* Scale in (zoom) */
+.ucl-scale-in {
+  animation: ucl-scale-in var(--ucl-motion-duration-normal, 300ms) var(--ucl-motion-easing-out, ease-out) forwards;
+}
+
+@keyframes ucl-scale-in {
+  from { transform: scale(0.95); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+/* Scale out */
+.ucl-scale-out {
+  animation: ucl-scale-out var(--ucl-motion-duration-fast, 150ms) var(--ucl-motion-easing-in, ease-in) forwards;
+}
+
+@keyframes ucl-scale-out {
+  from { transform: scale(1); opacity: 1; }
+  to   { transform: scale(0.95); opacity: 0; }
+}
+
+/* Bounce */
+.ucl-bounce {
+  animation: ucl-bounce var(--ucl-motion-duration-slow, 500ms) var(--ucl-motion-easing-bounce, ease-in-out) forwards;
+}
+
+@keyframes ucl-bounce {
+  0%   { transform: translateY(0); }
+  40%  { transform: translateY(-12px); }
+  60%  { transform: translateY(4px); }
+  80%  { transform: translateY(-2px); }
+  100% { transform: translateY(0); }
+}
+
+/* --------------------------------------------------------------------------
+   3. Data-state driven transitions (Dialog, Popover, Accordion, etc.)
+   -------------------------------------------------------------------------- */
+
+[data-state="open"],
+[data-state="active"] {
+  animation: ucl-fade-in var(--ucl-motion-duration-fast, 200ms) var(--ucl-motion-easing-out, ease-out) forwards;
+}
+
+[data-state="closed"],
+[data-state="inactive"] {
+  animation: ucl-fade-out var(--ucl-motion-duration-fast, 150ms) var(--ucl-motion-easing-in, ease-in) forwards;
+}
+
+/* Dialog / Popover overlay + content scale-in */
+.ucl-dialog-overlay[data-state="open"],
+.ucl-popover-overlay[data-state="open"] {
+  animation: ucl-fade-in var(--ucl-motion-duration-fast, 200ms) var(--ucl-motion-easing-out, ease-out) forwards;
+}
+
+.ucl-dialog-content[data-state="open"],
+.ucl-popover-content[data-state="open"] {
+  animation: ucl-scale-in var(--ucl-motion-duration-normal, 300ms) var(--ucl-motion-easing-out, ease-out) forwards;
+}
+
+.ucl-dialog-content[data-state="closed"],
+.ucl-popover-content[data-state="closed"] {
+  animation: ucl-scale-out var(--ucl-motion-duration-fast, 150ms) var(--ucl-motion-easing-in, ease-in) forwards;
+}
+
+/* Accordion content */
+.ucl-accordion-content[data-state="open"] {
+  animation: ucl-slide-in-down var(--ucl-motion-duration-fast, 200ms) var(--ucl-motion-easing-out, ease-out) forwards;
+}
+
+/* Tabs content */
+.ucl-tabs-content[data-state="active"] {
+  animation: ucl-fade-in var(--ucl-motion-duration-fast, 200ms) var(--ucl-motion-easing-out, ease-out) forwards;
+}
+
+/* Tooltip */
+.ucl-tooltip-bubble[data-state="open"] {
+  animation: ucl-fade-in var(--ucl-motion-duration-fast, 150ms) var(--ucl-motion-easing-out, ease-out) forwards;
+}
+
+/* --------------------------------------------------------------------------
+   4. Utility transition classes (for manual use)
+   -------------------------------------------------------------------------- */
+
+.ucl-transition {
+  transition: background-color var(--ucl-motion-duration-fast, 150ms) var(--ucl-motion-easing-in-out, ease-in-out),
+              border-color     var(--ucl-motion-duration-fast, 150ms) var(--ucl-motion-easing-in-out, ease-in-out),
+              color            var(--ucl-motion-duration-fast, 150ms) var(--ucl-motion-easing-in-out, ease-in-out),
+              transform        var(--ucl-motion-duration-fast, 150ms) var(--ucl-motion-easing-in-out, ease-in-out),
+              opacity          var(--ucl-motion-duration-fast, 150ms) var(--ucl-motion-easing-in-out, ease-in-out),
+              box-shadow       var(--ucl-motion-duration-fast, 150ms) var(--ucl-motion-easing-in-out, ease-in-out);
+}
+
+.ucl-transition-fast {
+  transition-duration: var(--ucl-motion-duration-fast, 150ms);
+}
+
+.ucl-transition-normal {
+  transition-duration: var(--ucl-motion-duration-normal, 300ms);
+}
+
+.ucl-transition-slow {
+  transition-duration: var(--ucl-motion-duration-slow, 500ms);
+}
+
+/* --------------------------------------------------------------------------
+   5. Prefers-reduced-motion respect
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .ucl-fade-in,
+  .ucl-fade-out,
+  .ucl-slide-in-up,
+  .ucl-slide-in-down,
+  .ucl-slide-in-left,
+  .ucl-slide-in-right,
+  .ucl-scale-in,
+  .ucl-scale-out,
+  .ucl-bounce,
+  [data-state="open"],
+  [data-state="active"],
+  [data-state="closed"],
+  [data-state="inactive"] {
+    animation: none !important;
+    transition: none !important;
+  }
+}

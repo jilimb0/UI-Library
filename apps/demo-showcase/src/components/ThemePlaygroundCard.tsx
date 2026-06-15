@@ -22,7 +22,7 @@ export function ThemePlaygroundCard() {
       <div className="stack">
         <div className="row wrap-row">
           <Button
-            variant={theme === 'light' ? 'default' : 'outline'}
+            variant={theme === 'light' ? 'default' : 'ghost'}
             onClick={() => {
               setTheme('light');
               setModeLabel('Light product surface applied');
@@ -31,7 +31,7 @@ export function ThemePlaygroundCard() {
             Light workspace
           </Button>
           <Button
-            variant={theme === 'dark' ? 'default' : 'outline'}
+            variant={theme === 'dark' ? 'default' : 'ghost'}
             onClick={() => {
               setTheme('dark');
               setModeLabel('Dark product surface applied');

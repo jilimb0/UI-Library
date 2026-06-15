@@ -213,4 +213,95 @@ export const navigationComponents: RegistryComponent[] = [
     export: { react: 'supported', next: 'supported' },
     compatibility: baseCompatibility,
   },
+  {
+    id: 'tabs',
+    slug: 'tabs',
+    displayName: 'Tabs',
+    package: '@ui-construction-library/core',
+    version: '0.1.0',
+    category: 'navigation',
+    description: 'Tabbed interface for switching between content panels.',
+    status: 'stable',
+    tags: ['navigation', 'tabs', 'switcher'],
+    props: [
+      {
+        name: 'value',
+        type: 'string',
+        category: 'content',
+        editingSurface: 'content-edit',
+        description: 'Controlled active tab value.',
+      },
+      {
+        name: 'defaultValue',
+        type: 'string',
+        category: 'content',
+        editingSurface: 'content-edit',
+        description: 'Uncontrolled initial active tab value.',
+      },
+      {
+        name: 'onValueChange',
+        type: '(value: string) => void',
+        category: 'behavior',
+        editingSurface: 'hidden',
+        semantics: 'computed',
+        description: 'Callback when active tab changes.',
+      },
+      commonClassNameProp,
+      commonChildrenProp,
+    ],
+    slots: ['list', 'trigger', 'content'],
+    events: ['onValueChange'],
+    states: ['inactive', 'active'],
+    a11y: {
+      role: 'tablist',
+      ariaRequired: [
+        'aria-selected on triggers',
+        'aria-controls linking trigger to panel',
+      ],
+      keyboard: [
+        'Tab to enter tablist',
+        'ArrowLeft / ArrowRight to navigate',
+        'Home / End to first/last',
+      ],
+      focusBehavior:
+        'Tab enters the tablist; arrow keys navigate between tabs (roving tabindex).',
+      screenReaderNotes: [
+        'Tab panels must be labelled by their corresponding tab triggers.',
+        'Ensure tab panel content is accessible when shown.',
+      ],
+      invalidCombinations: [
+        'tabs without tablist role',
+        'tab triggers without aria-selected',
+      ],
+    },
+    responsiveBehavior: [
+      'horizontal scroll on mobile',
+      'vertical stack on narrow viewports',
+    ],
+    styleHooks: ['tabs.list.bg', 'tabs.trigger.active', 'tabs.content'],
+    builder: {
+      editingSurface: 'layout-container',
+      allowChildren: true,
+      insertionRules: { blockedInsideInteractive: false },
+    },
+    recipes: [
+      {
+        id: 'settings-tabs',
+        label: 'Settings Tabs',
+        description: 'Tab interface for settings categories.',
+        requiredProps: ['children'],
+        recommendedDefaults: {},
+      },
+    ],
+    antiPatterns: [
+      {
+        id: 'tabs-without-panels',
+        description: 'Tab triggers without associated tab panels.',
+        reason: 'Breaks ARIA tab pattern and confuses screen readers.',
+        fix: 'Always pair TabsTrigger with TabsContent.',
+      },
+    ],
+    export: { react: 'supported', next: 'supported' },
+    compatibility: baseCompatibility,
+  },
 ];

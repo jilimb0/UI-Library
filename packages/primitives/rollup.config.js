@@ -12,5 +12,10 @@ export default {
     { file: 'dist/index.js', format: 'cjs', sourcemap: true },
     { file: 'dist/index.esm.js', format: 'esm', sourcemap: true },
   ],
-  plugins: [typescript({ tsconfig: './tsconfig.build.json' })],
+  plugins: [
+    typescript({
+      tsconfig: './tsconfig.build.json',
+      outputToFilesystem: true,
+    }),
+  ],
 };

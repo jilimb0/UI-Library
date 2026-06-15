@@ -168,7 +168,7 @@ export function ComponentGalleryCard() {
       <div className="stack">
         <div className="row wrap-row">
           <Button onClick={() => setActiveFilter('primary')}>Primary</Button>
-          <Button variant="outline" onClick={() => setActiveFilter('outline')}>
+          <Button variant="ghost" onClick={() => setActiveFilter('outline')}>
             Outline
           </Button>
           <Button variant="ghost" onClick={() => setActiveFilter('ghost')}>
@@ -218,7 +218,7 @@ export function ComponentGalleryCard() {
           <RadioButton label="Stable release" name="release" value="stable" />
           <RadioButton label="Canary release" name="release" value="canary" />
           <Tooltip content="Tooltips, modals and toasts are part of the same package surface.">
-            <Button variant="outline">Hover for tooltip</Button>
+            <Button variant="ghost">Hover for tooltip</Button>
           </Tooltip>
         </div>
 
@@ -235,7 +235,7 @@ export function ComponentGalleryCard() {
           <Button onClick={() => setModalOpen(true)}>
             Open quickstart modal
           </Button>
-          <Button variant="outline" onClick={() => setToastVisible(true)}>
+          <Button variant="ghost" onClick={() => setToastVisible(true)}>
             Trigger toast
           </Button>
         </div>
@@ -275,7 +275,7 @@ export function ComponentGalleryCard() {
           </Modal.Body>
           <Modal.Footer>
             <Modal.Close asChild>
-              <Button variant="outline">Close</Button>
+              <Button variant="ghost">Close</Button>
             </Modal.Close>
           </Modal.Footer>
         </Modal.Content>

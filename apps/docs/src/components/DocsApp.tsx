@@ -415,7 +415,7 @@ function DocsContent() {
             <Button variant="ghost">Open Storybook</Button>
           </Link>
           <Button
-            variant="outline"
+            variant="ghost"
             onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
           >
             {theme === 'light' ? 'Dark mode' : 'Light mode'}
@@ -461,7 +461,7 @@ function DocsContent() {
                 <Button>Open Storybook</Button>
               </Link>
               <Link href={DEMO_URL}>
-                <Button variant="outline">Open demo</Button>
+                <Button variant="ghost">Open demo</Button>
               </Link>
             </div>
           </div>
@@ -550,7 +550,7 @@ function DocsContent() {
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
               />
-              <Button variant="outline" onClick={() => setModalOpen(true)}>
+              <Button variant="ghost" onClick={() => setModalOpen(true)}>
                 Open quickstart
               </Button>
             </div>

@@ -1,4 +1,14 @@
-import { forwardRef, type HTMLAttributes, type ReactNode, useId } from 'react';
+import { createTooltipBehavior } from '@ui-construction-library/behaviors';
+import {
+  cloneElement,
+  forwardRef,
+  type HTMLAttributes,
+  isValidElement,
+  type ReactElement,
+  type ReactNode,
+  useId,
+  useState,
+} from 'react';
 import { cn } from '../../../utils/cn';
 
 export interface TooltipProps
@@ -11,32 +21,61 @@ export interface TooltipProps
   delayMs?: number;
 }
 
-const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
+const Tooltip = forwardRef<HTMLElement, TooltipProps>(
   ({ content, side = 'top', delayMs, className, children, ...props }, ref) => {
     const tooltipId = useId();
+    const [open, setOpen] = useState(false);
 
-    return (
-      <div
-        ref={ref}
-        className={cn('tooltip-trigger', className)}
-        aria-describedby={tooltipId}
-        data-tooltip-trigger
-        style={
-          delayMs != null
-            ? ({ '--tooltip-delay': `${delayMs}ms` } as React.CSSProperties)
-            : undefined
-        }
+    const {
+      triggerAttrs,
+      triggerClassName,
+      tooltipAttrs,
+      tooltipClassName,
+      handlers,
+    } = createTooltipBehavior({
+      open,
+      tooltipId,
+      onOpenChange: setOpen,
+    });
+
+    const triggerProps = {
+      ...triggerAttrs,
+      'aria-describedby': tooltipId,
+    };
+
+    const triggerContent = isValidElement(children) ? (
+      cloneElement(children as ReactElement, {
+        ...triggerProps,
+        ...handlers,
+        className: cn(
+          (children as ReactElement).props.className,
+          triggerClassName
+        ),
+        ref,
+      })
+    ) : (
+      <span
+        ref={ref as React.ForwardedRef<HTMLSpanElement>}
+        className={triggerClassName}
+        {...triggerProps}
+        {...handlers}
         {...props}
       >
         {children}
+      </span>
+    );
+
+    return (
+      <span className={cn(triggerClassName, className)} {...props}>
+        {triggerContent}
         <div
-          id={tooltipId}
-          className={cn('tooltip-bubble', `tooltip-bubble--${side}`)}
+          {...tooltipAttrs}
+          className={cn(tooltipClassName, `tooltip-bubble--${side}`)}
           role="tooltip"
         >
           {content}
         </div>
-      </div>
+      </span>
     );
   }
 );

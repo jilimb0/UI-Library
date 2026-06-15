@@ -1,5 +1,5 @@
 /**
- * Unit tests for scripts/surface-checker.mjs
+ * Unit tests for scripts/checks/surface-checker.mjs
  *
  * Each test builds a minimal fixture workspace in a temp directory, calls
  * checkSurface(root), and asserts the violation list.  No process spawning —
@@ -15,7 +15,7 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 // Resolve checker relative to this test file's location.
 const SCRIPTS_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '../../scripts');
 const { checkSurface, importPattern, INTERNAL_NOTICE } = await import(
-  `${SCRIPTS_DIR}/surface-checker.mjs`
+  `${SCRIPTS_DIR}/checks/surface-checker.mjs`
 );
 
 // ─── Fixture helpers ─────────────────────────────────────────────────────────

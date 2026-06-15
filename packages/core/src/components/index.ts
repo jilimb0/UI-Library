@@ -3,7 +3,22 @@
 // Theme exports
 export * from '../themes';
 // Type exports
-export * from '../types';
+export type {
+  BadgeVariant,
+  ButtonBehaviorOptions,
+  ButtonSize,
+  ButtonVariant,
+  ComponentSize,
+  DropdownSize,
+  InputSize,
+  ModalSize,
+  PopoverSize,
+  SelectSize,
+  TextAreaSize,
+  TextAreaVariant,
+  TextSize,
+  TextWeight,
+} from '../types';
 export * from '../utils';
 export * from './atoms';
 export * from './molecules';

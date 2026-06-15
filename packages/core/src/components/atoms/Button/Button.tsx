@@ -1,4 +1,4 @@
-import { cva, type VariantProps } from 'class-variance-authority';
+import { createButtonBehavior } from '@ui-construction-library/behaviors';
 import {
   type ButtonHTMLAttributes,
   type ComponentPropsWithoutRef,
@@ -6,34 +6,14 @@ import {
   forwardRef,
   type ReactNode,
 } from 'react';
+import type {
+  ButtonBehaviorOptions,
+  ButtonSize,
+  ButtonVariant,
+} from '../../../types/component-types';
 import { cn } from '../../../utils/cn';
 
-const buttonVariants = cva('button', {
-  variants: {
-    variant: {
-      default: 'button--default',
-      destructive: 'button--destructive',
-      outline: 'button--outline',
-      secondary: 'button--secondary',
-      ghost: 'button--ghost',
-      link: 'button--link',
-    },
-    size: {
-      default: '',
-      sm: 'button--sm',
-      lg: 'button--lg',
-      icon: 'button--icon',
-    },
-  },
-  defaultVariants: {
-    variant: 'default',
-    size: 'default',
-  },
-});
-
-export interface ButtonProps
-  extends ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   as?: ElementType;
   /** When `as="a"`, pass the link target. */
   href?: string;
@@ -42,6 +22,8 @@ export interface ButtonProps
   loading?: boolean;
   leftIcon?: ReactNode;
   rightIcon?: ReactNode;
+  variant?: ButtonVariant;
+  size?: ButtonSize;
 }
 
 const Button = forwardRef<HTMLElement, ButtonProps>(
@@ -57,33 +39,37 @@ const Button = forwardRef<HTMLElement, ButtonProps>(
       disabled,
       style,
       children,
+      onClick,
       ...props
     },
     ref
   ) => {
+    const {
+      attrs,
+      className: behaviorClassName,
+      handlers,
+    } = createButtonBehavior({
+      variant,
+      size,
+      loading,
+      disabled,
+      onClick,
+    } satisfies ButtonBehaviorOptions);
     const Component = (as ?? 'button') as ElementType;
-    const isNativeButton = Component === 'button';
 
     return (
       <Component
         ref={ref}
-        className={cn(buttonVariants({ variant, size, className }))}
+        {...attrs}
+        {...handlers}
+        className={cn(behaviorClassName, className)}
         style={style}
-        disabled={isNativeButton ? disabled || loading : undefined}
-        aria-disabled={
-          !isNativeButton && (disabled || loading) ? true : undefined
-        }
-        aria-busy={loading ? true : undefined}
-        data-variant={variant}
-        data-size={size}
-        data-loading={loading || undefined}
-        data-disabled={disabled || loading || undefined}
         {...(props as ComponentPropsWithoutRef<typeof Component>)}
       >
-        {loading && <span className="button__spinner" aria-hidden="true" />}
-        {leftIcon && <span className="button__icon">{leftIcon}</span>}
+        {loading && <span className="ucl-button__spinner" aria-hidden="true" />}
+        {leftIcon && <span className="ucl-button__icon">{leftIcon}</span>}
         {children}
-        {rightIcon && <span className="button__icon">{rightIcon}</span>}
+        {rightIcon && <span className="ucl-button__icon">{rightIcon}</span>}
       </Component>
     );
   }
@@ -91,4 +77,4 @@ const Button = forwardRef<HTMLElement, ButtonProps>(
 
 Button.displayName = 'Button';
 
-export { Button, buttonVariants };
+export { Button };

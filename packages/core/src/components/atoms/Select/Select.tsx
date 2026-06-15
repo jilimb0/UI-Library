@@ -1,5 +1,4 @@
 import { ChevronDownIcon } from '@ui-construction-library/icons';
-import { cva, type VariantProps } from 'class-variance-authority';
 import {
   type ChangeEvent,
   forwardRef,
@@ -9,24 +8,10 @@ import {
 } from 'react';
 import { cn } from '../../../utils/cn';
 
-export const selectVariants = cva('select', {
-  variants: {
-    size: {
-      default: '',
-      sm: 'select--sm',
-      lg: 'select--lg',
-    },
-  },
-  defaultVariants: {
-    size: 'default',
-  },
-});
-
 type Option = { value: string; label: string };
 
 export interface SelectProps
-  extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'size'>,
-    VariantProps<typeof selectVariants> {
+  extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'size'> {
   size?: 'default' | 'sm' | 'lg';
   label?: string;
   description?: string;
@@ -50,6 +35,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
       id,
       onChange,
       icon,
+      disabled,
       ...props
     },
     ref
@@ -58,33 +44,42 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     const selectId = id ?? internalId;
     const labelId = `${selectId}-label`;
     const descriptionId = `${selectId}-description`;
+    const errorId = error && errorMessage ? `${selectId}-error` : undefined;
+
+    const describedBy =
+      [descriptionId, errorId].filter(Boolean).join(' ') || undefined;
 
     const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
       onChange?.(e);
     };
 
     return (
-      <div className="form-stack" style={{ gap: '0.25rem' }}>
+      <div className="ucl-form-stack" style={{ gap: '0.25rem' }}>
         {label && (
-          <label id={labelId} htmlFor={selectId} className="field-label">
+          <label id={labelId} htmlFor={selectId} className="ucl-field-label">
             {label}
           </label>
         )}
-        <div style={{ position: 'relative', width: '100%' }}>
+        <div
+          className={cn('ucl-select-wrapper', className)}
+          style={{ position: 'relative', width: '100%' }}
+        >
           <select
             id={selectId}
             aria-labelledby={label ? labelId : undefined}
-            aria-describedby={
-              description || (error && errorMessage) ? descriptionId : undefined
-            }
+            aria-describedby={describedBy}
+            aria-invalid={error || undefined}
             className={cn(
-              selectVariants({ size, className }),
-              error && 'select--error'
+              'ucl-select',
+              size === 'sm' && 'ucl-select--sm',
+              size === 'lg' && 'ucl-select--lg',
+              error && 'ucl-select--error'
             )}
             ref={ref}
             onChange={handleChange}
             data-size={size}
             data-error={error || undefined}
+            disabled={disabled}
             {...props}
           >
             {options?.map((opt) => (
@@ -110,7 +105,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           </span>
         </div>
         {(description || (error && errorMessage)) && (
-          <p id={descriptionId} className="field-hint">
+          <p id={describedBy} className="ucl-field-hint">
             {error && errorMessage ? errorMessage : description}
           </p>
         )}

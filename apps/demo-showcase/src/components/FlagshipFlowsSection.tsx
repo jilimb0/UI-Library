@@ -129,7 +129,7 @@ export function FlagshipFlowsSection() {
 
           <div style={{ marginTop: '1rem' }}>
             <Button
-              variant="outline"
+              variant="ghost"
               size="sm"
               onClick={() => setShowDemo((prev) => !prev)}
             >

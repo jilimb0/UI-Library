@@ -16,7 +16,7 @@ The [Self-Owned Platform program](../guides/self-owned-platform.md) requires a c
 
 2. **`packages/icons` is the only other approved Lucide entry** (icon source until SVG generator ships).
 
-3. **CI enforces the boundary** via `scripts/check-dependency-boundaries.sh` (`pnpm check:deps`), run on every PR touching packages/apps.
+3. **CI enforces the boundary** via `scripts/checks/check-dependency-boundaries.sh` (`pnpm check:deps`), run on every PR touching packages/apps.
 
 4. **Replacements swap adapter implementations** (or delete adapters) while keeping public component APIs stable.
 
@@ -37,10 +37,10 @@ The [Self-Owned Platform program](../guides/self-owned-platform.md) requires a c
 
 - Phase 1: internal motion + icon generator; remove Framer/Lucide from hot path.
 - Phase 2: `@ui-construction-library/primitives` and `dnd`; drop Radix/dnd-kit from `core` dependencies.
-- Extend enforcement to `apps/*/package.json` forbidden deps via `scripts/check-app-dependency-policy.sh` (included in `pnpm check:deps`).
+- Extend enforcement to `apps/*/package.json` forbidden deps via `scripts/checks/check-app-dependency-policy.sh` (included in `pnpm check:deps`).
 
 ## References
 
 - `packages/core/src/adapters/`
-- `scripts/check-dependency-boundaries.sh`
+- `scripts/checks/check-dependency-boundaries.sh`
 - [Dependency policy](../guides/dependency-policy.md)

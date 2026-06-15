@@ -105,9 +105,8 @@ for the complete package classification inventory.
 | `@ui-construction-library/integration-tanstack-router` | **Optional TanStack Router integration.** Router-bound navigation helpers. | Consumers who use TanStack Router. |
 | `@ui-construction-library/utils` | **Internal infrastructure.** Helpers, hooks, DOM utilities, type utilities. | Library maintainers and extension packages only. |
 | `@ui-construction-library/styles` | **Universal CSS layer.** Reset, component classes (`ucl-` prefixed), density presets, utility classes. Bundled `dist/styles.css`. | Consumers who import the CSS layer directly. |
-| `@ui-construction-library/schema` | **Internal platform contract.** Builder/export/prompt JSON schemas. | Platform maintainers only. |
-| `@ui-construction-library/registry` | **Internal platform registry.** Component metadata for builder, docs, and export pipelines. | Platform maintainers only. |
-| `@ui-construction-library/export-core` | **Internal platform export pipeline.** Deterministic builder-document rendering. | Platform maintainers only. |
+| `@ui-construction-library/schema` | **Internal platform contract.** Builder/export/prompt JSON schemas + Zod validators for component props and theme. | Platform maintainers; server-side validation. |
+| `@ui-construction-library/registry` | **Component registry.** Metadata for all components in `core` + `primitives` for builder, docs, and CLI (`ucl add`). | Platform maintainers; CLI consumers. |
 | `@ui-construction-library/prompt-engine` | **Internal platform generation engine.** Deterministic prompt-to-builder draft generation. | Platform maintainers only. |
 
 ---
@@ -117,13 +116,18 @@ for the complete package classification inventory.
 ```
 @ui-construction-library/tokens      @ui-construction-library/icons
                 |                                   |
-                v                                   |
-        @ui-construction-library/core <-------------|
-                ^
-                |
-        @ui-construction-library/primitives
-                |
-        (used by core internally)
+                v                                   v
+        @ui-construction-library/core <------------|
+                ^                                   |
+                |                                   |
+        @ui-construction-library/primitives -------|
+                ^                                   |
+                |                                   |
+@ui-construction-library/behaviors                 |
+                |                                   |
+                +----> @ui-construction-library/core (direct)
+                |                                   |
+                +----> Future: Vue / Solid / Angular adapters
 
         @ui-construction-library/core
                 |
@@ -140,7 +144,7 @@ for the complete package classification inventory.
         |
    internal dependency of core / extensions only
 
-@ui-construction-library/schema / registry / export-core / prompt-engine
+@ui-construction-library/schema / registry / prompt-engine
         ^
         |
    internal platform dependency of builder / export / generation systems only
@@ -154,6 +158,7 @@ for the complete package classification inventory.
 - `core → tokens`
 - `core → utils`
 - `core → primitives`
+- `core → behaviors` (for simple atoms without complex state)
 - `core → styles`
 - `primitives → behaviors`
 - `primitives → utils`
@@ -184,7 +189,33 @@ for the complete package classification inventory.
 
 ---
 
-## Public API Rules
+## primitives vs behaviors — Role Boundary
+
+These two packages are adjacent but have strictly different responsibilities. This boundary must never be violated.
+
+### `behaviors` — Pure JS, zero framework assumptions
+- **Output:** `{ attrs, className, handlers }` — plain objects
+- **No React, no DOM, no Context, no hooks**
+- **Use when:** building components in Vue, Svelte, Solid, vanilla JS, or server-side rendering
+- **Examples:** `createButtonBehavior()`, `createDialogBehavior()`, `createSwitchBehavior()`
+
+### `primitives` — Headless React, stateful
+- **Output:** React components with internal state via Context
+- **Contains:** React hooks, Context providers, DOM event wiring
+- **Depends on:** `behaviors` for ARIA attrs, but adds React state management
+- **Use when:** you need React-specific headless components (like Radix)
+- **Examples:** `<Dialog.Root>`, `<Popover.Root>`, `<Tabs.Root>`, `<Slider.Root>`
+
+### Dependency rule
+```
+behaviors → (no deps)
+    ↓
+primitives → behaviors (only for ARIA attrs)
+    ↓
+core → primitives (for state) + behaviors (for className/handlers in simple atoms)
+```
+
+`core` may use `behaviors` directly for simple atoms (Button, Switch, Checkbox) where no complex React state is needed. For molecules (Dialog, Accordion, Tabs) `core` must consume `primitives` which internally consume `behaviors`.
 
 ### Stable public entrypoints
 
@@ -208,7 +239,7 @@ Consumers should **not** import from:
 - `@ui-construction-library/utils` (unless explicitly documented)
 - `@ui-construction-library/schema`
 - `@ui-construction-library/registry`
-- `@ui-construction-library/export-core`
+- `@ui-construction-library/export-core` (removed, replaced by placeholder)
 - `@ui-construction-library/prompt-engine`
 - `dist/*` or `src/*` paths
 - Any undocumented subpath export

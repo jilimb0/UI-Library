@@ -1,5 +1,5 @@
 /**
- * Field behavior — framework-agnostic form field ARIA wiring.
+ * Field behavior — framework-agnostic form field ARIA wiring + className.
  */
 
 export interface FieldBehaviorOptions {
@@ -23,9 +23,11 @@ export function createFieldBehavior(opts: FieldBehaviorOptions) {
       'data-error': opts.hasError || undefined,
       'data-disabled': opts.disabled || undefined,
     },
+    fieldClassName: 'ucl-field',
     labelAttrs: {
       htmlFor: opts.fieldId,
     },
+    labelClassName: 'ucl-field-label',
     inputAttrs: {
       id: opts.fieldId,
       disabled: opts.disabled,
@@ -35,5 +37,15 @@ export function createFieldBehavior(opts: FieldBehaviorOptions) {
         describedByParts.length > 0 ? describedByParts.join(' ') : undefined,
       'data-error': opts.hasError || undefined,
     },
+    inputClassName: `ucl-input ${opts.hasError ? 'ucl-input--error' : ''}`,
+    hintAttrs: {
+      id: opts.descriptionId,
+    },
+    hintClassName: 'ucl-field-hint',
+    errorAttrs: {
+      id: opts.errorId,
+      'aria-live': 'polite' as const,
+    },
+    errorClassName: 'ucl-field-error',
   };
 }

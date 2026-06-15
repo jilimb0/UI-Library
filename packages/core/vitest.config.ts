@@ -12,6 +12,10 @@ export default defineConfig({
         __dirname,
         '../primitives/src/index.ts'
       ),
+      '@ui-construction-library/behaviors': resolve(
+        __dirname,
+        '../behaviors/src/index.ts'
+      ),
       '@ui-construction-library/tokens': resolve(
         __dirname,
         '../tokens/src/index.ts'

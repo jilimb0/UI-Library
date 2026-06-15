@@ -51,7 +51,11 @@ const Field = forwardRef<HTMLDivElement, FieldProps>(
         {control}
         {description && <p className="field-hint">{description}</p>}
         {error && (
-          <p className="field-hint" style={{ color: 'var(--error)' }}>
+          <p
+            className="field-hint"
+            style={{ color: 'var(--error)' }}
+            aria-live="polite"
+          >
             {error}
           </p>
         )}

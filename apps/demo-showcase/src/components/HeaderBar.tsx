@@ -63,7 +63,7 @@ export function HeaderBar({ scrollTo }: { scrollTo: (id: string) => void }) {
           Flagship flows
         </button>
         <Button
-          variant="outline"
+          variant="ghost"
           size="sm"
           onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
           aria-label="Toggle theme"

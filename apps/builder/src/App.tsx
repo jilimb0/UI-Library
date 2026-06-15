@@ -2043,19 +2043,26 @@ export function App() {
                   <strong>Export diagnostics</strong>
                   <div>
                     Diagnostics:{' '}
-                    {exportPreview.rendered.diagnostics.length +
-                      exportPreview.analyzed.diagnostics.length}
+                    {(exportPreview.rendered as { diagnostics: unknown[] })
+                      .diagnostics.length +
+                      (exportPreview.analyzed as { diagnostics: unknown[] })
+                        .diagnostics.length}
                   </div>
                   <div>
                     Unsupported nodes:{' '}
-                    {exportPreview.analyzed.unsupportedNodeIds.length}
+                    {
+                      (
+                        exportPreview.analyzed as {
+                          unsupportedNodeIds: unknown[];
+                        }
+                      ).unsupportedNodeIds.length
+                    }
                   </div>
                   <div>
                     Doctor status:{' '}
-                    {exportPreview.rendered.files.some(
-                      (file: { path: string }) =>
-                        file.path === 'EXPORT_DOCTOR.md'
-                    )
+                    {(
+                      exportPreview.rendered as { files: { path: string }[] }
+                    ).files.some((file) => file.path === 'EXPORT_DOCTOR.md')
                       ? 'available'
                       : 'missing'}
                   </div>

@@ -99,7 +99,7 @@ export function MotionAndHooksCard() {
             </div>
             <Text>{asyncMessage}</Text>
             <Button
-              variant="outline"
+              variant="ghost"
               size="sm"
               onClick={() => void handleRunAsync()}
               disabled={loading}
@@ -131,7 +131,7 @@ export function MotionAndHooksCard() {
 
         <div className="row wrap-row">
           <Button
-            variant="outline"
+            variant="ghost"
             onClick={() => setMotionReplay((value) => value + 1)}
           >
             Replay motion
@@ -220,7 +220,7 @@ export function MotionAndHooksCard() {
               </Text>
             </div>
           ) : (
-            <Button variant="outline" onClick={() => toggle()}>
+            <Button variant="ghost" onClick={() => toggle()}>
               Re-open floating inspector
             </Button>
           )}

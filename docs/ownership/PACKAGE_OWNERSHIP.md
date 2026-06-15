@@ -4,7 +4,7 @@ Ownership means **review authority, incident response, and roadmap accountabilit
 
 | Area | Package / path | Primary owner | Backup | Notes |
 | --- | --- | --- | --- | --- |
-| Platform / CI | `.github/workflows`, `scripts/check-dependency-boundaries.sh`, root `package.json` | platform | core | Release gates, `check:deps` |
+| Platform / CI | `.github/workflows`, `scripts/checks/check-dependency-boundaries.sh`, root `package.json` | platform | core | Release gates, `check:deps` |
 | Foundation | `@ui-construction-library/tokens` | tokens | core | Scales, semantic colors, CSS vars |
 | Icons | `@ui-construction-library/icons` | icons | core | Lucide today → SVG program Phase 1 |
 | Components | `@ui-construction-library/core` | core | — | Atoms → templates |

@@ -37,7 +37,7 @@ export function SaasLandingDemo() {
         >
           <Button variant="secondary">Start free trial</Button>
           <Button
-            variant="outline"
+            variant="ghost"
             style={{ borderColor: 'rgba(255,255,255,0.4)', color: 'inherit' }}
           >
             View demo

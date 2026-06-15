@@ -54,7 +54,13 @@ export function Popover({
       defaultOpen={defaultOpen}
       onOpenChange={onOpenChange}
     >
-      <PrimitivePopover.Trigger asChild>{trigger}</PrimitivePopover.Trigger>
+      <PrimitivePopover.Trigger asChild>
+        {typeof trigger === 'string' || typeof trigger === 'number' ? (
+          <button type="button">{trigger}</button>
+        ) : (
+          trigger
+        )}
+      </PrimitivePopover.Trigger>
       <PrimitivePopover.Portal>
         <PrimitivePopover.Content
           side={side}

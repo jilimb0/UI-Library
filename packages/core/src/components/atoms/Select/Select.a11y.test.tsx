@@ -1,41 +1,82 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { Select } from './Select';
 import '@testing-library/jest-dom';
-
-const options = [
-  { value: '1', label: 'Option 1' },
-  { value: '2', label: 'Option 2' },
-];
+import { axe } from 'jest-axe';
 
 describe('Select Accessibility', () => {
-  it('should have proper ARIA attributes', () => {
-    render(
+  it('has no accessibility violations', async () => {
+    const { container } = render(
       <Select
-        label="Test"
-        description="Description"
-        aria-labelledby="test-label"
-        options={options}
+        label="Country"
+        options={[
+          { value: 'us', label: 'United States' },
+          { value: 'ca', label: 'Canada' },
+        ]}
       />
     );
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
 
+  it('renders as combobox', () => {
+    render(
+      <Select
+        label="Country"
+        options={[{ value: 'us', label: 'United States' }]}
+      />
+    );
+    expect(screen.getByRole('combobox')).toBeInTheDocument();
+  });
+
+  it('associates label with select via htmlFor', () => {
+    render(
+      <Select
+        label="Country"
+        id="country"
+        options={[{ value: 'us', label: 'United States' }]}
+      />
+    );
+    const label = screen.getByText('Country');
+    expect(label).toHaveAttribute('for', 'country');
+  });
+
+  it('has aria-describedby when description is present', () => {
+    render(
+      <Select
+        label="Country"
+        description="Choose your country of residence"
+        options={[{ value: 'us', label: 'United States' }]}
+      />
+    );
     const select = screen.getByRole('combobox');
-    expect(select).toHaveAttribute('aria-labelledby');
     expect(select).toHaveAttribute('aria-describedby');
   });
 
-  it('should support keyboard navigation', async () => {
+  it('has aria-invalid when error is present', () => {
+    render(
+      <Select
+        label="Country"
+        error
+        errorMessage="Please select a country"
+        options={[{ value: 'us', label: 'United States' }]}
+      />
+    );
+    const select = screen.getByRole('combobox');
+    expect(select).toHaveAttribute('aria-invalid', 'true');
+  });
+
+  it('supports keyboard focus', async () => {
     const user = userEvent.setup();
-    const onChange = vi.fn();
-
-    render(<Select label="Test" onChange={onChange} options={options} />);
-
+    render(
+      <Select
+        label="Country"
+        options={[{ value: 'us', label: 'United States' }]}
+      />
+    );
     const select = screen.getByRole('combobox');
     await user.tab();
     expect(select).toHaveFocus();
-
-    await user.selectOptions(screen.getByRole('combobox'), '2');
-    expect(onChange).toHaveBeenCalled();
   });
 });

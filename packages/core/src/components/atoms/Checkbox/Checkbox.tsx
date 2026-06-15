@@ -1,9 +1,22 @@
+import { createCheckboxBehavior } from '@ui-construction-library/behaviors';
 import { CheckIcon } from '@ui-construction-library/icons';
-import { forwardRef, type InputHTMLAttributes, useId } from 'react';
+import {
+  type ChangeEvent,
+  forwardRef,
+  type InputHTMLAttributes,
+  type KeyboardEvent,
+  type MouseEvent,
+  useEffect,
+  useId,
+  useRef,
+} from 'react';
 import { cn } from '../../../utils/cn';
 
 export interface CheckboxProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'size'> {
+  extends Omit<
+    InputHTMLAttributes<HTMLButtonElement>,
+    'type' | 'size' | 'checked' | 'onChange'
+  > {
   label?: string;
   description?: string;
   error?: boolean;
@@ -11,9 +24,18 @@ export interface CheckboxProps
   indeterminate?: boolean;
   size?: 'sm' | 'default' | 'md' | 'lg';
   variant?: 'default' | 'success' | 'warning' | 'danger';
+  checked?: boolean;
+  onCheckedChange?: (checked: boolean) => void;
+  onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
+  /** Native form name */
+  name?: string;
+  /** Native form value */
+  value?: string;
+  /** Native form association */
+  form?: string;
 }
 
-export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
+export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
   (
     {
       className,
@@ -22,34 +44,123 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
       error,
       errorMessage,
       size = 'default',
+      indeterminate,
+      checked,
+      onCheckedChange,
+      onChange,
+      id,
+      name,
+      value,
+      form,
       ...props
     },
     ref
   ) => {
-    const id = useId();
-    const labelId = `${id}-label`;
-    const descriptionId = `${id}-description`;
+    const uid = useId();
+    const checkboxId = id ?? `checkbox-${uid}`;
+    const labelId = `${checkboxId}-label`;
+    const descriptionId = `${checkboxId}-description`;
+    const errorId = `${checkboxId}-error`;
+    const hiddenInputRef = useRef<HTMLInputElement>(null);
+
+    const handleCheckedChange = (
+      nextChecked: boolean,
+      event?:
+        | ChangeEvent<HTMLInputElement>
+        | KeyboardEvent<HTMLButtonElement>
+        | MouseEvent<HTMLButtonElement>
+    ) => {
+      onCheckedChange?.(nextChecked);
+
+      if (onChange) {
+        const changeEvent =
+          event && 'target' in event
+            ? event
+            : ({
+                target: { checked: nextChecked },
+              } as ChangeEvent<HTMLInputElement>);
+        onChange(changeEvent as ChangeEvent<HTMLInputElement>);
+      }
+    };
+
+    const { checkboxAttrs, checkboxClassName, handlers } =
+      createCheckboxBehavior({
+        checked,
+        indeterminate,
+        disabled: props.disabled,
+        onCheckedChange,
+        id: checkboxId,
+        labelId: label ? labelId : undefined,
+        descriptionId: description ? descriptionId : undefined,
+        errorId: error && errorMessage ? errorId : undefined,
+        hasError: error,
+      });
+
+    useEffect(() => {
+      if (hiddenInputRef.current) {
+        hiddenInputRef.current.indeterminate = indeterminate ?? false;
+      }
+    }, [indeterminate]);
 
     return (
-      <div className="control-field">
+      <div className="ucl-control-field">
         <div style={{ position: 'relative' }}>
+          {/* Hidden native input for form submission and Constraint Validation */}
           <input
-            id={id}
-            aria-labelledby={labelId}
+            ref={hiddenInputRef}
             type="checkbox"
+            name={name}
+            value={value}
+            form={form}
+            checked={checked}
+            disabled={props.disabled}
+            required={props.required}
+            aria-hidden="true"
+            tabIndex={-1}
+            style={{
+              position: 'absolute',
+              opacity: 0,
+              pointerEvents: 'none',
+              width: 1,
+              height: 1,
+              margin: -1,
+              overflow: 'hidden',
+              clip: 'rect(0, 0, 0, 0)',
+              whiteSpace: 'nowrap',
+              borderWidth: 0,
+            }}
+            onChange={(event) => {
+              if (!props.disabled) {
+                handleCheckedChange(!checked, event);
+              }
+            }}
+          />
+          <button
+            type="button"
             ref={ref}
+            {...checkboxAttrs}
+            {...handlers}
+            aria-label={label ?? props['aria-label']}
             className={cn(
-              'checkbox-box',
+              checkboxClassName,
               {
+                'checkbox-box': true,
                 'checkbox-box--sm': size === 'sm',
                 'checkbox-box--lg': size === 'lg',
               },
-              error && 'input--error',
               className
             )}
-            aria-describedby={
-              description || (error && errorMessage) ? descriptionId : undefined
-            }
+            onKeyDown={(event) => {
+              if (
+                event.key === ' ' ||
+                event.key === 'Space' ||
+                event.key === 'Spacebar'
+              ) {
+                event.preventDefault();
+                handleCheckedChange(!checked, event);
+              }
+            }}
+            onClick={(event) => handleCheckedChange(!checked, event)}
             {...props}
           />
 
@@ -61,23 +172,23 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
         </div>
 
         {(label || description || (error && errorMessage)) && (
-          <div className="control-stack">
+          <div className="ucl-control-stack">
             {label ? (
-              <label htmlFor={id} id={labelId} className="field-label">
+              <label
+                htmlFor={checkboxId}
+                id={labelId}
+                className="ucl-field-label"
+              >
                 {label}
               </label>
             ) : null}
             {description ? (
-              <p id={descriptionId} className="field-hint">
+              <p id={descriptionId} className="ucl-field-hint">
                 {description}
               </p>
             ) : null}
             {error && errorMessage ? (
-              <p
-                className="field-hint"
-                style={{ color: 'var(--error)' }}
-                aria-live="polite"
-              >
+              <p id={errorId} className="ucl-field-error" aria-live="polite">
                 {errorMessage}
               </p>
             ) : null}

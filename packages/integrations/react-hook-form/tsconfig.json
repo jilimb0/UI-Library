@@ -9,7 +9,6 @@
     "sourceMap": true,
     "noEmit": false,
     "jsx": "react-jsx",
-    "ignoreDeprecations": "5.0",
     "paths": {}
   },
   "include": ["src/**/*"],
