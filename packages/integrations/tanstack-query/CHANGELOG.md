@@ -1,5 +1,16 @@
 # @ui-construction-library/integration-tanstack-query
 
+## 0.3.0
+
+### Minor Changes
+
+- 2285993: Improvement product readiness
+
+### Patch Changes
+
+- Updated dependencies [2285993]
+  - @ui-construction-library/core@0.3.0
+
 ## 0.2.2
 
 ### Patch Changes

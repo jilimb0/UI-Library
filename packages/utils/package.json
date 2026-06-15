@@ -1,6 +1,6 @@
 {
   "name": "@ui-construction-library/utils",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
@@ -36,7 +36,7 @@
     "typescript": "^6.0.3",
     "vitest": "catalog:"
   },
-  "description": "Internal-first infrastructure utilities for @ui-construction-library \u2014 not part of the default consumer path.",
+  "description": "Internal-first infrastructure utilities for @ui-construction-library — not part of the default consumer path.",
   "ui-construction": {
     "surface": "internal",
     "mode": "library"
