@@ -21,6 +21,20 @@ export function appendDoctorArtifacts(_input: unknown, _rendered: unknown) {
     diagnostics: [],
   };
 }
+export function createExportAcceptanceChecklist(
+  _enriched: unknown,
+  _rendered: unknown
+) {
+  const enriched = _enriched as Record<string, unknown> | undefined;
+  const rendered = _rendered as Record<string, unknown> | undefined;
+  const pages = Array.isArray(enriched?.pages) ? enriched.pages : [];
+  const files = Array.isArray(rendered?.files) ? rendered.files : [];
+  return {
+    hasPages: pages.length > 0,
+    deterministicRenderer: typeof rendered === 'object' && rendered !== null,
+    builderFixtureCompatible: files.length > 0,
+  };
+}
 export function createExportRequestFromBuilderProject(
   _project: unknown,
   _target: string
@@ -51,8 +65,11 @@ export function renderExportProject(_input: unknown) {
   return {
     ...((_input as object) ?? {}),
     files: [
+      { path: 'README.md', content: '' },
       { path: 'src/App.tsx', content: '' },
       { path: 'package.json', content: '' },
+      { path: 'tokens/design-tokens.json', content: '' },
+      { path: 'tokens/design-tokens.css', content: '' },
     ],
     diagnostics: [],
     pageCount,
