@@ -118,7 +118,7 @@ if $PLATFORM; then
   soft_step "security audit"   pnpm audit --audit-level=high
   step "contract compliance"   bash scripts/checks/check-contract-compliance.sh
   soft_step "published versions" node scripts/checks/check-published-versions.js
-  step "e2e tests"             bash -c 'playwright install chromium --with-deps 2>/dev/null; playwright test'
+  step "e2e tests"             bash -c 'playwright install chromium --with-deps 2>/dev/null; playwright test --project=chromium'
 fi
 
 # summary printed by trap

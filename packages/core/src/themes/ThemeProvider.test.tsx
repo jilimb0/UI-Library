@@ -38,10 +38,7 @@ describe('ThemeProvider', () => {
   });
 
   it('does not persist controlled theme updates to localStorage', () => {
-    const setItemSpy = vi.spyOn(
-      Object.getPrototypeOf(window.localStorage),
-      'setItem'
-    );
+    const setItemSpy = vi.spyOn(window.localStorage, 'setItem');
     window.localStorage.removeItem('ui-library-theme');
 
     render(
