@@ -146,6 +146,43 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
 ---
 
+## Error boundaries
+
+Components from `@ui-construction-library/core` are designed to fail gracefully when wrapped in a React error boundary. We recommend wrapping your app (or at minimum each route/page) with an error boundary:
+
+```tsx
+import { Component, type ReactNode, type ErrorInfo } from 'react';
+import { Text } from '@ui-construction-library/core';
+
+class AppErrorBoundary extends Component<
+  { children: ReactNode; fallback?: ReactNode },
+  { hasError: boolean; error: Error | null }
+> {
+  state = { hasError: false, error: null };
+
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, info: ErrorInfo) {
+    console.error('[UI Library] Caught render error:', error, info.componentStack);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback ?? (
+        <div style={{ padding: '2rem' }}>
+          <Text>Something went wrong. Please refresh the page.</Text>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+```
+
+The library's theme provider (`ThemeProvider`) does not catch rendering errors in its children — always wrap it with your own error boundary.
+
 ## Package boundaries
 
 - **Always import components from `core`** — never from `utils`, `styles`, `schema`, `registry`, `export-core`, or `prompt-engine`.

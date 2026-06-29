@@ -99,6 +99,45 @@ These surfaces are not covered by stability guarantees. APIs may change without 
 | 4.x | not supported |
 
 ---
+## Browser compatibility
+
+`@ui-construction-library` is tested against the following browser matrix. The library does not ship polyfills — consumers are expected to provide them if targeting older browsers.
+
+| Browser | Minimum version | Status |
+|---------|----------------|--------|
+| Chrome | 90+ | ✅ Fully tested (E2E, visual, a11y) |
+| Firefox | 91+ | ✅ Fully tested (E2E, a11y) |
+| Safari | 15.4+ | ✅ Fully tested (E2E, a11y) |
+| Edge | 90+ | ✅ Covered by Chrome testing |
+| Samsung Internet | 17+ | ⚠️ Community-tested, no CI |
+| iOS Safari | 15.4+ | ⚠️ Community-tested, no CI |
+
+### CSS compatibility
+
+All tokens use widely-supported CSS custom properties. The library intentionally avoids:
+
+- `:has()` selector (Safari 15.4+ — partial support in older versions)
+- Container queries (Safari 16.2+)
+- `@layer` (Safari 15.4+)
+
+### Polyfills you may need
+
+If targeting browsers below the minimum versions above, provide:
+
+- `css-vars-ponyfill` for CSS custom properties in very old browsers
+- `core-js` for modern JS APIs used by integration packages
+
+### Bundler support
+
+| Bundler | Supported | Notes |
+|---------|-----------|-------|
+| Vite 5+ | ✅ Primary | Official integration kit |
+| Next.js 15+ (App Router) | ✅ Primary | Official integration kit |
+| Rollup 4+ | ✅ Used internally | |
+| webpack 5 | ✅ Community-tested | CSS loader required |
+| esbuild | ✅ Via Vite | |
+
+---
 
 ## What is guaranteed
 

@@ -1,0 +1,38 @@
+name: Cross-Browser E2E
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'packages/**'
+      - 'apps/demo-showcase/**'
+      - 'tests/e2e/**'
+      - 'playwright.config.ts'
+      - 'pnpm-lock.yaml'
+  schedule:
+    - cron: '0 6 * * 1'  # every Monday at 06:00 UTC
+  workflow_dispatch:
+
+jobs:
+  cross-browser-e2e:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        browser: [chromium, firefox, webkit]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup-workspace
+      - name: Install Playwright system deps
+        run: pnpm playwright install --with-deps ${{ matrix.browser }}
+      - name: Run E2E tests
+        run: pnpm playwright test --project=${{ matrix.browser }}
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report-${{ matrix.browser }}
+          path: playwright-report/
+          retention-days: 7

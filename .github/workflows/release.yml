@@ -83,6 +83,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # Generate SBOM (CycloneDX format) for supply chain transparency
+      - name: Generate SBOM
+        uses: anchore/sbom-action@v0
+        with:
+          path: ./
+          format: cyclonedx-json
+          output-file: ./artifacts/sbom.cyclonedx.json
+
       # Upload a flag artifact so published-smoke.yml can be triggered.
       - name: Upload publish flag
         if: success()

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "instructions": ["AGENTS.md"],
+  "lsp": true,
+  "formatter": {
+    "biome": {
+      "command": ["pnpm", "exec", "biome", "format", "--write", "$FILE"],
+      "extensions": [".ts", ".tsx", ".json"]
+    }
+  },
+  "agent": {
+    "component-review": {
+      "description": "Reviews React component implementations against UI-Library conventions",
+      "mode": "subagent",
+      "prompt": "You are a UI component reviewer. Check: accessibility (axe-core), Tailwind v4 conventions, framework-agnostic patterns, proper TypeScript types, and Storybook stories. Line width 80, single quotes, ES5 trailing commas.",
+      "permission": { "edit": "deny", "bash": "deny" }
+    }
+  }
+}

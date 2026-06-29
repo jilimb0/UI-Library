@@ -3,3 +3,4 @@ apps/storybook/storybook-static/**
 apps/*/dist/**
 packages/*/dist/**
 **/node_modules/**
+**/stryker-tmp/**

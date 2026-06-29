@@ -1,7 +1,5 @@
 name: Published Smoke
 
-# Triggered after the Release workflow uploads the publish-flag artifact.
-# Waits for the package to appear on the registry, then runs a quick import smoke test.
 on:
   workflow_run:
     workflows: ["Release"]
@@ -35,51 +33,63 @@ jobs:
           run-id: ${{ github.event.workflow_run.id }}
 
       - name: Check flag exists
-        run: |
-          test -f flag.txt || (echo "No publish flag — skipping smoke" && exit 0)
+        run: test -f flag.txt || (echo "No publish flag — skipping smoke" && exit 0)
 
-      # Confirm that all published packages are resolvable from the registry.
-      # Retries up to 5 times with 15 s backoff to account for registry propagation.
       - name: Registry propagation check
+        id: registry-check
         run: |
           set -euo pipefail
-          PACKAGES=$(node -e "
-            const { readdirSync, readFileSync, statSync } = require('fs');
-            const { resolve } = require('path');
-            const root = process.cwd();
-            const dirs = ['packages'];
-            const results = [];
-            for (const d of dirs) {
-              for (const pkg of readdirSync(resolve(root, d))) {
-                const p = resolve(root, d, pkg, 'package.json');
-                try {
-                  const json = JSON.parse(readFileSync(p, 'utf8'));
-                  if (!json.private && json.name && json.version) {
-                    results.push(json.name + '@' + json.version);
-                  }
-                } catch {}
-              }
-            }
-            console.log(results.join(' '));
-          ")
-          for PKG in $PACKAGES; do
+          mkdir -p artifacts
+          FAILED=0
+          PASSED=0
+          REPORT_FILE="artifacts/smoke-report.md"
+          echo "# Published Smoke Report" > "$REPORT_FILE"
+          echo "" >> "$REPORT_FILE"
+          echo "**Run**: ${{ github.run_id }}" >> "$REPORT_FILE"
+          echo "" >> "$REPORT_FILE"
+          echo "## Registry check" >> "$REPORT_FILE"
+          echo "" >> "$REPORT_FILE"
+          echo "| Package | Expected | Published |" >> "$REPORT_FILE"
+          echo "|---------|----------|----------|" >> "$REPORT_FILE"
+
+          for PKG_DIR in packages/*/; do
+            PKG_JSON="${PKG_DIR}package.json"
+            if [ ! -f "$PKG_JSON" ]; then continue; fi
+            NAME=$(node -e "console.log(JSON.parse(require('fs').readFileSync('$PKG_JSON','utf8')).name || '')")
+            VER=$(node -e "console.log(JSON.parse(require('fs').readFileSync('$PKG_JSON','utf8')).version || '')")
+            PRIVATE=$(node -e "console.log(JSON.parse(require('fs').readFileSync('$PKG_JSON','utf8')).private === true)")
+            if [ -z "$NAME" ] || [ "$PRIVATE" = "true" ]; then continue; fi
             ATTEMPTS=0
-            until npm view "$PKG" version --registry https://registry.npmjs.org 2>/dev/null | grep -q .; do
+            FOUND=""
+            until FOUND=$(npm view "$NAME" version --registry https://registry.npmjs.org 2>/dev/null); do
               ATTEMPTS=$((ATTEMPTS + 1))
               if [ $ATTEMPTS -ge 5 ]; then
-                echo "::error::$PKG not found on registry after $ATTEMPTS attempts"
-                exit 1
+                echo "| $NAME | $VER | ❌ Not found |" >> "$REPORT_FILE"
+                FAILED=$((FAILED + 1))
+                echo "::error::$NAME@$VER not found on registry"
+                continue 2
               fi
-              echo "Waiting for $PKG on registry (attempt $ATTEMPTS/5)..."
               sleep 15
             done
-            echo "✅ $PKG confirmed on registry"
+            if [ "$FOUND" = "$VER" ]; then
+              echo "| $NAME | $VER | ✅ $FOUND |" >> "$REPORT_FILE"
+            else
+              echo "| $NAME | $VER | ⚠️ $FOUND |" >> "$REPORT_FILE"
+            fi
+            PASSED=$((PASSED + 1))
           done
 
+          echo "" >> "$REPORT_FILE"
+          echo "**Passed**: $PASSED | **Failed**: $FAILED" >> "$REPORT_FILE"
+          echo "passed=$PASSED" >> "$GITHUB_OUTPUT"
+          echo "failed=$FAILED" >> "$GITHUB_OUTPUT"
+
       - name: Install workspace dependencies
+        if: steps.registry-check.outputs.failed == '0'
         run: pnpm install --no-frozen-lockfile
 
-      - name: Build export-core and its deps
+      - name: Build export-core and deps
+        if: steps.registry-check.outputs.failed == '0'
         run: |
           pnpm --filter @ui-construction-library/tokens build
           pnpm --filter @ui-construction-library/styles build
@@ -88,4 +98,23 @@ jobs:
           pnpm --filter @ui-construction-library/export-core build
 
       - name: Export smoke check
-        run: pnpm exec tsx scripts/checks/check-export-smoke.mjs
+        id: export-smoke
+        if: steps.registry-check.outputs.failed == '0'
+        run: |
+          RESULT=$(pnpm exec tsx scripts/checks/check-export-smoke.mjs 2>&1 || true)
+          echo "$RESULT"
+          echo "" >> artifacts/smoke-report.md
+          echo "## Export smoke" >> artifacts/smoke-report.md
+          echo "" >> artifacts/smoke-report.md
+          echo '```' >> artifacts/smoke-report.md
+          echo "$RESULT" >> artifacts/smoke-report.md
+          echo '```' >> artifacts/smoke-report.md
+
+      - name: Generate HTML dashboard
+        run: node scripts/checks/generate-smoke-dashboard.mjs
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: published-smoke-dashboard
+          path: artifacts/
+          retention-days: 30

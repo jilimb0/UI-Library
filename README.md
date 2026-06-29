@@ -1,5 +1,15 @@
 # UI Construction Library
 
+[![npm version](https://img.shields.io/npm/v/@ui-construction-library/core?label=core&logo=npm)](https://www.npmjs.com/package/@ui-construction-library/core)
+[![npm bundle size](https://img.shields.io/bundlephobia/minzip/@ui-construction-library/core?label=bundle)](https://bundlephobia.com/package/@ui-construction-library/core)
+[![CI](https://github.com/jilimb0/UI-Library/actions/workflows/ci.yml/badge.svg)](https://github.com/jilimb0/UI-Library/actions/workflows/ci.yml)
+[![Chromatic](https://img.shields.io/badge/visual-Chromatic-8444FF?logo=storybook)](https://main--6692d4e8c3a6b656d6e58e60.chromatic.com)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![npm downloads](https://img.shields.io/npm/dm/@ui-construction-library/core?label=downloads)](https://www.npmjs.com/package/@ui-construction-library/core)
+
+[![Open in StackBlitz](https://img.shields.io/badge/Open%20in-StackBlitz-1269D3?logo=stackblitz)](https://stackblitz.com/github/jilimb0/UI-Library/tree/main/apps/playground)
+[![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-151515?logo=codesandbox)](https://githubbox.com/jilimb0/UI-Library/tree/main/apps/playground)
+
 Universal Design Core (tokens, styles, behaviors) for any JS/TS framework, plus a React reference implementation with ready-to-use components and integrations.
 
 ---
@@ -117,3 +127,13 @@ pnpm release:preflight  # pre-release checks
 - [AI agent guide](./docs/guides/ai-agent-guide.md) — import rules and recipes for AI agents
 - [Accessibility contract](./docs/guides/accessibility-contract.md) — WCAG 2.1 AA audit per component
 - [Support policy](./docs/guides/support-policy.md) — compatibility matrix and stability guarantees
+
+## Community
+
+- [GitHub Discussions](https://github.com/jilimb0/UI-Library/discussions) — Q&A, ideas, community
+- [Roadmap](./ROADMAP.md) — public product roadmap
+- [Contributing](./.github/CONTRIBUTING.md) — how to contribute
+- [Code of Conduct](./.github/CODE_OF_CONDUCT.md) — community standards
+- [Security](./.github/SECURITY.md) — reporting vulnerabilities
+- [Governance](./GOVERNANCE.md) — project governance
+- [Support](./SUPPORT.md) — where to get help

@@ -1,0 +1,7 @@
+>= 0.5%
+last 2 major versions
+not dead
+Chrome >= 90
+Firefox >= 91
+Safari >= 15.4
+edge >= 90
