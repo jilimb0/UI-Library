@@ -1,5 +1,16 @@
 # @ui-construction-library/dnd
 
+## 0.3.0
+
+### Minor Changes
+
+- e0c5394: feat: 10/10 business readiness — real SECURITY.md with PGP key and disclosure SLA, full CODE_OF_CONDUCT.md with enforcement, dependency review + SBOM in CI, signed commits policy, browser compatibility matrix, cross-browser E2E (chromium + firefox + webkit), .browserslistrc, error boundary docs, v1.0 release checklist, DataTable load tests, per-package npm READMEs (behaviors, i18n, next, tanstack-query, tanstack-router), root README badges, create-ucl-app CLI, GOVERNANCE.md, SUPPORT.md, public ROADMAP.md, expanded Component API docs (64 components), English utilities API, mutation testing (Stryker), post-publish smoke dashboard
+
+### Patch Changes
+
+- Updated dependencies [e0c5394]
+  - @ui-construction-library/core@0.4.0
+
 ## 0.2.0
 
 ### Minor Changes
