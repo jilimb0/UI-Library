@@ -16,7 +16,11 @@ type Story = StoryObj<typeof Popover>;
 
 export const Default: Story = {
   args: {
-    trigger: <span className="button button--default">Open popover</span>,
+    trigger: (
+      <button type="button" className="button button--default">
+        Open popover
+      </button>
+    ),
     content: (
       <div style={{ minWidth: 220 }}>
         <strong>Popover Title</strong>
