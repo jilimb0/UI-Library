@@ -4,13 +4,8 @@ env:
   HUSKY: 0
   # Uses npm Trusted Publisher (OIDC) — no NPM_TOKEN secret needed.
   # --provenance causes npm to exchange the GitHub OIDC token for auth automatically.
-  # Fallback: set NPM_TOKEN in GitHub secrets for non-OIDC auth.
   NPM_PUBLISH_PROVENANCE: "true"
 
-# Trigger directly on push to main — simpler and more reliable than
-# workflow_run which introduced a stale-SHA race condition: if a new commit
-# landed between CI completing and the release job starting, changesets
-# would operate on the wrong SHA.
 on:
   workflow_dispatch:
   push:
@@ -30,7 +25,6 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          # Full history is required for changesets to compute correct version bumps.
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -42,53 +36,47 @@ jobs:
           cache: pnpm
           registry-url: 'https://registry.npmjs.org'
 
-      # Pin npm to a specific version for reproducible publish behaviour.
-      # npm@latest is not pinned and can introduce breaking changes mid-run.
-      - name: Pin npm version
-        run: |
-          sudo npm i -g npm@11.8.0
-          npm -v
-
-      # Ensure .npmrc has the correct registry for provenance-based publish
-      - name: Configure npm for OIDC publish
+      # Write clean .npmrc — no stale tokens to interfere with OIDC provenance
+      - name: Configure npm for OIDC
         run: |
           echo "registry=https://registry.npmjs.org/" > ~/.npmrc
+          echo "//registry.npmjs.org/:_authToken=" >> ~/.npmrc
 
-      # Release job always uses --no-frozen-lockfile:
-      # changesets/action updates package.json versions BEFORE publish runs,
-      # so the lockfile is intentionally out of date at that point in the flow.
-      # Using --frozen-lockfile here would break the Version PR creation step.
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
 
       - name: Build all packages
         run: pnpm build:ci
 
-      - name: Tooling versions (diagnostics)
+      - name: Check for unpublished packages
+        id: check-publish
         run: |
-          node -v && npm -v && pnpm -v
-          echo "registry=$(npm config get registry)"
+          if ls .changeset/*.md >/dev/null 2>&1; then
+            echo "changesets found — skip publish step"
+            echo "has_changesets=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "no changesets — will publish"
+            echo "has_changesets=false" >> "$GITHUB_OUTPUT"
+          fi
 
-      - name: Create Release PR or Publish
+      # Always create/update Version PR when changesets exist
+      - name: Create Release PR
+        if: steps.check-publish.outputs.has_changesets == 'true'
         uses: changesets/action@v1.5.3
         with:
-          # version: runs on every push — creates/updates the Version PR.
-          # Calls changeset version then syncs apps/*/package.json so semver
-          # refs to @ui-construction-library/* are kept up to date.
           version: bash scripts/ci/changeset-version.sh
-
-          # publish: runs only when the Version PR is merged.
-          # ci-publish.mjs rewrites workspace:* → real semver before each
-          # `npm publish`, confirms the package appears on the registry,
-          # then restores the original workspace refs.
-          publish: node scripts/ci/ci-publish.mjs
-
           title: 'chore: version packages'
           commit: 'chore: version packages'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Generate SBOM (CycloneDX format) for supply chain transparency
+      # Publish directly (not through changesets/action) for full OIDC control
+      - name: Publish to npm
+        if: steps.check-publish.outputs.has_changesets == 'false'
+        run: node scripts/ci/ci-publish.mjs
+        env:
+          NPM_PUBLISH_PROVENANCE: "true"
+
       - name: Generate SBOM
         uses: anchore/sbom-action@v0
         with:
@@ -96,7 +84,6 @@ jobs:
           format: cyclonedx-json
           output-file: ./artifacts/sbom.cyclonedx.json
 
-      # Upload a flag artifact so published-smoke.yml can be triggered.
       - name: Upload publish flag
         if: success()
         run: |
@@ -109,7 +96,6 @@ jobs:
           path: publish-flag/flag.txt
           retention-days: 1
 
-      # Always upload full logs so failures are easy to diagnose.
       - name: Upload release logs
         if: always()
         uses: actions/upload-artifact@v4
