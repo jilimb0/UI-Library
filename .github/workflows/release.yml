@@ -39,6 +39,20 @@ jobs:
       # OIDC provenance auth is automatic when id-token: write is set.
       # No .npmrc manipulation needed — avoid overriding the OIDC token exchange.
 
+      - name: Pin npm version
+        run: |
+          sudo npm i -g npm@11.8.0
+          npm -v
+
+      - name: Diagnostic — print env info
+        run: |
+          echo "node: $(node -v)"
+          echo "npm: $(npm -v)"
+          echo "ACTIONS_ID_TOKEN_REQUEST_URL: ${ACTIONS_ID_TOKEN_REQUEST_URL:+set}"
+          echo "ACTIONS_ID_TOKEN_REQUEST_TOKEN: ${ACTIONS_ID_TOKEN_REQUEST_TOKEN:+set}"
+          echo ".npmrc contents:"
+          cat ~/.npmrc 2>/dev/null || echo "no .npmrc"
+
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
 
