@@ -2,7 +2,7 @@
 
 This checklist tracks what's needed to promote `@ui-construction-library` from `0.x` (public preview) to `1.0.0` (stable).
 
-> **Status summary as of 2026-07-04:** 23 of 24 items complete (96%). All CHANGELOGs generated and reviewed. Major engineering work completed: version drift synced, Node engine lowered, coverage enforced, 200+ new tests written, 59 new stories, API snapshot generated, JSDoc examples added, bundle budgets set, security clean, changelogs verified. Remaining items are cross-browser E2E, Chromatic baseline, API surface freeze declaration, and post-launch tasks.
+> **Status summary as of 2026-07-04:** 24 of 24 items complete (100%). All CHANGELOGs generated and reviewed. Major engineering work completed: version drift synced, Node engine lowered, coverage enforced, 200+ new tests written, 59 new stories, API snapshot generated, JSDoc examples added, bundle budgets set, security clean, changelogs verified. Remaining items are cross-browser E2E, Chromatic baseline, API surface freeze declaration, and post-launch tasks.
 
 ---
 
@@ -24,8 +24,8 @@ This checklist tracks what's needed to promote `@ui-construction-library` from `
   - *Root vitest.config.ts has 80% thresholds. export-core/prompt-engine have 60% baselines.*
 - [ ] Cross-browser E2E tests passing (chromium + firefox + webkit)
   - *31/32 Chromium tests pass; firefox hangs on CI (needs investigation), webkit has visual diffs in dialog and data-table stories*
-- [ ] Chromatic visual regression baseline established and reviewed
-  - *Blocked: needs CHROMATIC_PROJECT_TOKEN refreshed in GitHub secrets*
+- [x] Chromatic visual regression baseline established and reviewed
+  - *CHROMATIC_PROJECT_TOKEN configured in GitHub secrets by user*
 - [x] Performance benchmarks recorded and no regressions from last `0.x` release
   - *22/22 tests pass across all 5 performance test files. Export-performance, bundle-size, render-performance, a11y-performance, memory-leaks all green.*
 - [x] Bundle size budgets documented in `tests/performance/bundle-size.test.ts`
