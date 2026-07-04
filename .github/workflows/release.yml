@@ -41,7 +41,6 @@ jobs:
           node-version: 22
           cache: pnpm
           registry-url: 'https://registry.npmjs.org'
-          scope: '@ui-construction-library'
 
       # Pin npm to a specific version for reproducible publish behaviour.
       # npm@latest is not pinned and can introduce breaking changes mid-run.
@@ -50,20 +49,10 @@ jobs:
           sudo npm i -g npm@11.8.0
           npm -v
 
-      # Configure npm auth if NPM_TOKEN is set in GitHub secrets.
-      # GitHub Actions does not allow secrets in `if:` conditionals,
-      # so we rely on the token env being empty as a no-op.
-      - name: Configure npm auth
+      # Ensure .npmrc has the correct registry for provenance-based publish
+      - name: Configure npm for OIDC publish
         run: |
-          if [ -n "$NPM_TOKEN" ]; then
-            echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-            echo "registry=https://registry.npmjs.org/" >> ~/.npmrc
-            echo "npm auth configured with token"
-          else
-            echo "NPM_TOKEN not set — relying on OIDC provenance"
-          fi
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          echo "registry=https://registry.npmjs.org/" > ~/.npmrc
 
       # Release job always uses --no-frozen-lockfile:
       # changesets/action updates package.json versions BEFORE publish runs,
