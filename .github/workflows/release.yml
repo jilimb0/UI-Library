@@ -4,6 +4,7 @@ env:
   HUSKY: 0
   # Uses npm Trusted Publisher (OIDC) — no NPM_TOKEN secret needed.
   # --provenance causes npm to exchange the GitHub OIDC token for auth automatically.
+  # Fallback: set NPM_TOKEN in GitHub secrets for non-OIDC auth.
   NPM_PUBLISH_PROVENANCE: "true"
 
 # Trigger directly on push to main — simpler and more reliable than
@@ -40,6 +41,7 @@ jobs:
           node-version: 22
           cache: pnpm
           registry-url: 'https://registry.npmjs.org'
+          scope: '@ui-construction-library'
 
       # Pin npm to a specific version for reproducible publish behaviour.
       # npm@latest is not pinned and can introduce breaking changes mid-run.
@@ -47,6 +49,13 @@ jobs:
         run: |
           sudo npm i -g npm@11.8.0
           npm -v
+
+      # If NPM_TOKEN secret is set, configure .npmrc for token-based auth
+      - name: Configure npm auth
+        if: secrets.NPM_TOKEN != ''
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> ~/.npmrc
+          echo "registry=https://registry.npmjs.org/" >> ~/.npmrc
 
       # Release job always uses --no-frozen-lockfile:
       # changesets/action updates package.json versions BEFORE publish runs,

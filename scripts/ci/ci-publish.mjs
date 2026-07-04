@@ -146,10 +146,19 @@ function confirmPublished(name, version) {
 
 const packages = getPublishablePackages();
 const versionMap = buildWorkspaceVersionMap(packages);
-const provenanceFlag = process.env.NPM_PUBLISH_PROVENANCE === 'true' ? '--provenance' : '';
+
+// Prefer token-based auth (NODE_AUTH_TOKEN from setup-node or .npmrc) over --provenance
+// --provenance requires npm OIDC trusted publisher which may not be configured for all packages
+const hasNodeAuth = process.env.NODE_AUTH_TOKEN || process.env.npm_config__authToken;
+const provenanceFlag = !hasNodeAuth && process.env.NPM_PUBLISH_PROVENANCE === 'true' ? '--provenance' : '';
 
 log(`publishing ${packages.length} package(s)`);
 log(`log file: ${LOG_FILE}`);
+if (provenanceFlag) {
+  log(`using OIDC provenance for auth`);
+} else if (hasNodeAuth) {
+  log(`using NODE_AUTH_TOKEN for auth`);
+}
 
 const errors = [];
 
