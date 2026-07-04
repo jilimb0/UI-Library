@@ -39,11 +39,7 @@ jobs:
           node-version: 22
           registry-url: 'https://registry.npmjs.org'
 
-      # Pin npm AFTER setup-node so the OIDC-capable version handles publish.
-      - name: Pin npm version
-        run: |
-          sudo npm i -g npm@11.8.0
-          npm -v
+      # Use default npm from runner (no pin) — npm 10+ includes full OIDC provenance support
 
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
@@ -51,17 +47,26 @@ jobs:
       - name: Build all packages
         run: pnpm build:ci
 
-      - name: Create Release PR or Publish
-        id: changesets
+      - name: Create Release PR
         uses: changesets/action@v1.5.3
         with:
           version: bash scripts/ci/changeset-version.sh
-          publish: node scripts/ci/ci-publish.mjs
           title: 'chore: version packages'
           commit: 'chore: version packages'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # NPM_PUBLISH_PROVENANCE is inherited from job env
+
+      # Publish step — runs when no changesets exist (version PR already merged).
+      # Checked separately because changesets/action only runs publish on version commits,
+      # which prevents retrying after a transient publish failure.
+      - name: Publish to npm
+        run: |
+          if ls .changeset/*.md >/dev/null 2>&1; then
+            echo "changesets exist — skipping publish"
+          else
+            echo "no changesets — publishing unpublished packages"
+            node scripts/ci/ci-publish.mjs
+          fi
 
       - name: Generate SBOM
         uses: anchore/sbom-action@v0
