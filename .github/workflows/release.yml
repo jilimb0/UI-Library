@@ -2,6 +2,7 @@ name: Release
 
 env:
   HUSKY: 0
+  NPM_PUBLISH_PROVENANCE: "true"
 
 on:
   workflow_dispatch:
@@ -50,35 +51,17 @@ jobs:
       - name: Build all packages
         run: pnpm build:ci
 
-      - name: Check for unpublished packages
-        id: check-publish
-        run: |
-          if ls .changeset/*.md >/dev/null 2>&1; then
-            echo "changesets found — skip publish step"
-            echo "has_changesets=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "no changesets — will publish"
-            echo "has_changesets=false" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Create Release PR
-        if: steps.check-publish.outputs.has_changesets == 'true'
+      - name: Create Release PR or Publish
+        id: changesets
         uses: changesets/action@v1.5.3
         with:
           version: bash scripts/ci/changeset-version.sh
+          publish: node scripts/ci/ci-publish.mjs
           title: 'chore: version packages'
           commit: 'chore: version packages'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # Do NOT set NODE_AUTH_TOKEN here.
-      # npm publish --provenance with id-token:write performs the full OIDC
-      # token exchange automatically via ACTIONS_ID_TOKEN_REQUEST_URL.
-      - name: Publish to npm
-        if: steps.check-publish.outputs.has_changesets == 'false'
-        run: node scripts/ci/ci-publish.mjs
-        env:
-          NPM_PUBLISH_PROVENANCE: "true"
+          # NPM_PUBLISH_PROVENANCE is inherited from job env
 
       - name: Generate SBOM
         uses: anchore/sbom-action@v0
