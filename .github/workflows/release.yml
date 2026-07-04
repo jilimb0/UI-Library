@@ -36,11 +36,8 @@ jobs:
           cache: pnpm
           registry-url: 'https://registry.npmjs.org'
 
-      # Write clean .npmrc — no stale tokens to interfere with OIDC provenance
-      - name: Configure npm for OIDC
-        run: |
-          echo "registry=https://registry.npmjs.org/" > ~/.npmrc
-          echo "//registry.npmjs.org/:_authToken=" >> ~/.npmrc
+      # OIDC provenance auth is automatic when id-token: write is set.
+      # No .npmrc manipulation needed — avoid overriding the OIDC token exchange.
 
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
