@@ -50,12 +50,20 @@ jobs:
           sudo npm i -g npm@11.8.0
           npm -v
 
-      # If NPM_TOKEN secret is set, configure .npmrc for token-based auth
+      # Configure npm auth if NPM_TOKEN is set in GitHub secrets.
+      # GitHub Actions does not allow secrets in `if:` conditionals,
+      # so we rely on the token env being empty as a no-op.
       - name: Configure npm auth
-        if: secrets.NPM_TOKEN != ''
         run: |
-          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> ~/.npmrc
-          echo "registry=https://registry.npmjs.org/" >> ~/.npmrc
+          if [ -n "$NPM_TOKEN" ]; then
+            echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+            echo "registry=https://registry.npmjs.org/" >> ~/.npmrc
+            echo "npm auth configured with token"
+          else
+            echo "NPM_TOKEN not set — relying on OIDC provenance"
+          fi
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       # Release job always uses --no-frozen-lockfile:
       # changesets/action updates package.json versions BEFORE publish runs,
