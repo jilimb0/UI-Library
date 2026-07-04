@@ -1,6 +1,6 @@
 {
   "name": "@ui-construction-library/utils",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
@@ -50,5 +50,5 @@
     "url": "git+https://github.com/jilimb0/UI-Library.git",
     "directory": "packages/utils"
   },
-  "homepage": "https://github.com/jilimb0/UI-Library#readme"
+  "homepage": "https://github.com/jilimbo/UI-Library#readme"
 }
