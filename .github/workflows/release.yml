@@ -27,17 +27,18 @@ jobs:
 
       - uses: pnpm/action-setup@v4
 
-      # registry-url is REQUIRED — it writes the
-      # //registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN} line into ~/.npmrc
-      # that npm needs to locate the OIDC token exchange endpoint.
-      # With id-token: write + --provenance, npm exchanges the OIDC token
-      # automatically — no static NPM_TOKEN needed.
+      # registry-url is required — setup-node writes
+      # //registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN} into ~/.npmrc
+      # which tells npm where the registry is for the OIDC token exchange.
+      # NODE_AUTH_TOKEN must NOT be set in the publish step below —
+      # setting it to GITHUB_TOKEN causes npm to use it as a bearer token
+      # instead of doing the OIDC exchange, resulting in 404.
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-          cache: pnpm
           registry-url: 'https://registry.npmjs.org'
 
+      # Pin npm AFTER setup-node so the OIDC-capable version handles publish.
       - name: Pin npm version
         run: |
           sudo npm i -g npm@11.8.0
@@ -70,12 +71,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # Do NOT set NODE_AUTH_TOKEN here.
+      # npm publish --provenance with id-token:write performs the full OIDC
+      # token exchange automatically via ACTIONS_ID_TOKEN_REQUEST_URL.
       - name: Publish to npm
         if: steps.check-publish.outputs.has_changesets == 'false'
         run: node scripts/ci/ci-publish.mjs
         env:
           NPM_PUBLISH_PROVENANCE: "true"
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Generate SBOM
         uses: anchore/sbom-action@v0
