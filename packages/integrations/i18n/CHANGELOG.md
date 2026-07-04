@@ -1,5 +1,11 @@
 # @ui-construction-library/integration-i18n
 
+## 0.6.0
+
+### Minor Changes
+
+- ea184fe: Minor bump — product readiness improvements: 200+ new tests, 59 new stories, coverage enforcement, bundle budgets, Node 22 support, SBOM, security audit.
+
 <!-- AUTO-GENERATED — do not edit manually; run pnpm changelog:packages -->
 
 ## 0.5.0
@@ -63,7 +69,7 @@
 
 ### Refactoring
 
-- rename packages from '@ui-lib/*' to '@ui-construction-library/*' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
+- rename packages from '@ui-lib/_' to '@ui-construction-library/_' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
 
 ### Chores
 
@@ -138,7 +144,7 @@
 
 ### Refactoring
 
-- rename packages from '@ui-lib/*' to '@ui-construction-library/*' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
+- rename packages from '@ui-lib/_' to '@ui-construction-library/_' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
 
 ### Chores
 
@@ -213,7 +219,7 @@
 
 ### Refactoring
 
-- rename packages from '@ui-lib/*' to '@ui-construction-library/*' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
+- rename packages from '@ui-lib/_' to '@ui-construction-library/_' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
 
 ### Chores
 

@@ -1,5 +1,16 @@
 # @ui-construction-library/react-hook-form
 
+## 0.6.0
+
+### Minor Changes
+
+- ea184fe: Minor bump — product readiness improvements: 200+ new tests, 59 new stories, coverage enforcement, bundle budgets, Node 22 support, SBOM, security audit.
+
+### Patch Changes
+
+- Updated dependencies [ea184fe]
+  - @ui-construction-library/core@0.5.0
+
 <!-- AUTO-GENERATED — do not edit manually; run pnpm changelog:packages -->
 
 ## 0.5.0
@@ -23,7 +34,7 @@
 - **FormField:** correctly type ref and avoid JSX type collapse ([66e88de](../../commit/66e88de))
 - **react-hook-form:** TS2322 — avoid {...field} spread that collapses JSX type to RefAttributes<any> ([815fb1f](../../commit/815fb1f))
 - **react-hook-form:** TS2322 — pass label/description explicitly after field spread ([9507278](../../commit/9507278))
-- **packages:** use workspace:* for all internal cross-package deps ([2eb897e](../../commit/2eb897e))
+- **packages:** use workspace:\* for all internal cross-package deps ([2eb897e](../../commit/2eb897e))
 
 ### Chores
 
@@ -67,7 +78,7 @@
 ### Refactoring
 
 - enhance contributing guidelines and remove unnecessary files ([b8f186d](../../commit/b8f186d))
-- rename packages from '@ui-lib/*' to '@ui-construction-library/*' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
+- rename packages from '@ui-lib/_' to '@ui-construction-library/_' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
 
 ### Chores
 
@@ -109,7 +120,7 @@
 - **FormField:** correctly type ref and avoid JSX type collapse ([66e88de](../../commit/66e88de))
 - **react-hook-form:** TS2322 — avoid {...field} spread that collapses JSX type to RefAttributes<any> ([815fb1f](../../commit/815fb1f))
 - **react-hook-form:** TS2322 — pass label/description explicitly after field spread ([9507278](../../commit/9507278))
-- **packages:** use workspace:* for all internal cross-package deps ([2eb897e](../../commit/2eb897e))
+- **packages:** use workspace:\* for all internal cross-package deps ([2eb897e](../../commit/2eb897e))
 
 ### Chores
 
@@ -153,7 +164,7 @@
 ### Refactoring
 
 - enhance contributing guidelines and remove unnecessary files ([b8f186d](../../commit/b8f186d))
-- rename packages from '@ui-lib/*' to '@ui-construction-library/*' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
+- rename packages from '@ui-lib/_' to '@ui-construction-library/_' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
 
 ### Chores
 
@@ -195,7 +206,7 @@
 - **FormField:** correctly type ref and avoid JSX type collapse ([66e88de](../../commit/66e88de))
 - **react-hook-form:** TS2322 — avoid {...field} spread that collapses JSX type to RefAttributes<any> ([815fb1f](../../commit/815fb1f))
 - **react-hook-form:** TS2322 — pass label/description explicitly after field spread ([9507278](../../commit/9507278))
-- **packages:** use workspace:* for all internal cross-package deps ([2eb897e](../../commit/2eb897e))
+- **packages:** use workspace:\* for all internal cross-package deps ([2eb897e](../../commit/2eb897e))
 
 ### Chores
 
@@ -239,7 +250,7 @@
 ### Refactoring
 
 - enhance contributing guidelines and remove unnecessary files ([b8f186d](../../commit/b8f186d))
-- rename packages from '@ui-lib/*' to '@ui-construction-library/*' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
+- rename packages from '@ui-lib/_' to '@ui-construction-library/_' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
 
 ### Chores
 
