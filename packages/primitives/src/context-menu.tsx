@@ -100,12 +100,13 @@ const Content = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
     const { setOpen, position } = useContextMenu();
 
     useEffect(() => {
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         const firstItem = document.querySelector(
           '[role="menuitem"]'
         ) as HTMLElement;
         firstItem?.focus();
       }, 50);
+      return () => clearTimeout(timer);
     }, []);
 
     useEffect(() => {

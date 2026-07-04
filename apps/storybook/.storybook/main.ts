@@ -6,11 +6,25 @@ import { libraryAliases } from '../../../tools/vite/library-aliases.ts';
 
 const storybookDir = dirname(fileURLToPath(import.meta.url));
 const coreStoriesDir = resolve(storybookDir, '../../../packages/core/src');
+const primitivesStoriesDir = resolve(
+  storybookDir,
+  '../../../packages/primitives/src'
+);
+const motionStoriesDir = resolve(storybookDir, '../../../packages/motion/src');
+const iconsStoriesDir = resolve(storybookDir, '../../../packages/icons/src');
+const behaviorsStoriesDir = resolve(
+  storybookDir,
+  '../../../packages/behaviors/src'
+);
 
 const config: StorybookConfig = {
   stories: [
     '../stories/**/*.stories.@(js|jsx|ts|tsx)',
     `${coreStoriesDir}/**/*.stories.@(js|jsx|ts|tsx)`,
+    `${primitivesStoriesDir}/**/*.stories.@(js|jsx|ts|tsx)`,
+    `${motionStoriesDir}/**/*.stories.@(js|jsx|ts|tsx)`,
+    `${iconsStoriesDir}/**/*.stories.@(js|jsx|ts|tsx)`,
+    `${behaviorsStoriesDir}/**/*.stories.@(js|jsx|ts|tsx)`,
   ],
   addons: ['@storybook/addon-a11y', '@storybook/addon-docs'],
   framework: {

@@ -12,6 +12,14 @@
 | TanStack Query | `5.x` | Via integration package |
 | TanStack Router | `1.x` | Via integration package |
 
+## Browser Support
+
+| Browser | Supported | CI Validation |
+| --- | --- | --- |
+| Chromium (Chrome, Edge) | Latest 2 major versions | Playwright E2E |
+| Firefox | Latest 2 major versions | Playwright E2E |
+| WebKit (Safari) | Latest 2 major versions | Playwright E2E |
+
 ## Package Guarantees
 
 | Package | Compatibility Contract |

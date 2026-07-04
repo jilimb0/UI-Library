@@ -22,6 +22,28 @@ export interface SelectProps
   icon?: ReactNode;
 }
 
+/**
+ * Select dropdown component with label, options, error state, and custom icon support.
+ *
+ * @example
+ * ```tsx
+ * <Select
+ *   label="Country"
+ *   options={[
+ *     { value: 'us', label: 'United States' },
+ *     { value: 'ca', label: 'Canada' },
+ *   ]}
+ * />
+ * ```
+ *
+ * @example
+ * ```tsx
+ * <Select label="Size" size="sm" error errorMessage="Please select a size">
+ *   <option value="sm">Small</option>
+ *   <option value="md">Medium</option>
+ * </Select>
+ * ```
+ */
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(
   (
     {

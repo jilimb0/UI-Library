@@ -50,6 +50,29 @@ export default {
       'tests/**/*.spec.{ts,tsx,js}',
     ],
 
+    coverage: {
+      enabled: true,
+      provider: 'v8',
+      reporter: ['text', 'json', 'html', 'lcov'],
+      reportsDirectory: './coverage',
+      thresholds: {
+        global: {
+          branches: 80,
+          functions: 80,
+          lines: 80,
+          statements: 80,
+        },
+      },
+      include: ['packages/*/src/**', 'packages/integrations/*/src/**'],
+      exclude: [
+        '**/*.test.*',
+        '**/*.spec.*',
+        '**/*.stories.*',
+        '**/*.d.ts',
+        '**/types/**',
+      ],
+    },
+
     server: {
       deps: {
         inline: ['jest-axe'],

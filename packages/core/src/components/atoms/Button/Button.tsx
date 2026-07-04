@@ -26,6 +26,30 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: ButtonSize;
 }
 
+/**
+ * Primary button component with support for variants, sizes, icons, and loading state.
+ *
+ * @example
+ * ```tsx
+ * <Button variant="primary" onClick={() => console.log('clicked')}>
+ *   Click me
+ * </Button>
+ * ```
+ *
+ * @example
+ * ```tsx
+ * <Button variant="secondary" size="sm" leftIcon={<Icon name="plus" />}>
+ *   Add item
+ * </Button>
+ * ```
+ *
+ * @example
+ * ```tsx
+ * <Button as="a" href="/docs" variant="ghost">
+ *   Documentation
+ * </Button>
+ * ```
+ */
 const Button = forwardRef<HTMLElement, ButtonProps>(
   (
     {

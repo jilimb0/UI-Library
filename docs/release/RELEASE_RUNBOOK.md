@@ -5,6 +5,19 @@ Related policies:
 - [LTS, Versioning, and Deprecation Policy](./LTS_VERSIONING_POLICY.md)
 - [Compatibility Matrix](../guides/compatibility-matrix.md)
 
+## 0. Pre-release checklist
+
+Before starting the release process, run through the full checklist:
+
+- [ ] Review [V1 Release Checklist](./V1_RELEASE_CHECKLIST.md) — all items must be complete or explicitly skipped
+- [ ] Verify Node.js version ≥22.0.0 (`node --version`)
+- [ ] Verify pnpm version ≥11.7.0 (`pnpm --version`)
+- [ ] Run `pnpm check:deps` — dependency boundaries must pass
+- [ ] Run `pnpm release:preflight` — preflight checks must pass
+- [ ] Run `pnpm audit --audit-level=high` — zero high/critical vulnerabilities
+- [ ] Run `pnpm validate:platform` — all checks (lint, typecheck, build, test) pass
+- [ ] Verify all packages are at their intended versions (`pnpm check:published`)
+
 ## 1. Preflight
 
 Run full verification:
@@ -15,6 +28,8 @@ pnpm release:preflight
 ```
 
 ## 2. Versioning
+
+**Requirement:** Node.js ≥22.0.0 (enforced in `package.json` engines and `.github/workflows/*`).
 
 Create/update changesets, then version packages:
 
@@ -76,7 +91,24 @@ First-time packages (`motion`, `primitives`, `dnd`, etc.) require your npm user 
 - Verify Storybook URL opens
 - Verify release notes published in GitHub Releases
 
-## 6. Announce
+## 6. Rollback procedure
+
+If a release introduces a critical issue:
+
+1. **Immediate:** `npm deprecate @ui-construction-library/<package>@<bad-version> "contains a critical issue — use <previous-version> instead"`
+2. **Patch:** Bump the version and release a fix via the normal process (sections 2-5)
+3. **Git revert:** If the release commit introduced issues beyond a single package, revert it:
+   ```bash
+   git revert <release-commit-sha>
+   git push origin main
+   ```
+4. **GitHub Release:** Mark the affected release as "Pre-release" in GitHub Releases UI
+5. **Notify:** Announce the rollback in the team channel and via GitHub issue with `[ROLLBACK]` in the title
+6. **Post-mortem:** File an issue documenting root cause, detection gap, and preventive measures
+
+Rollback is reserved for **P0/P1 incidents** (broken builds, data loss, security vulnerabilities). For minor issues, ship a patch.
+
+## 7. Announce
 
 Use prepared content:
 

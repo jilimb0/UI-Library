@@ -7,6 +7,21 @@ export interface FormProps
   onSubmit: (data: FormSubmitData) => void;
 }
 
+/**
+ * Form component with built-in preventDefault and typed form data extraction.
+ *
+ * @example
+ * ```tsx
+ * <Form
+ *   onSubmit={(data) => {
+ *     console.log('Form submitted:', data);
+ *   }}
+ * >
+ *   <Input name="email" label="Email" type="email" required />
+ *   <Button type="submit">Submit</Button>
+ * </Form>
+ * ```
+ */
 export const Form = forwardRef<HTMLFormElement, FormProps>(
   ({ onSubmit, children, style, ...props }, ref) => {
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {

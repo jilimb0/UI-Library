@@ -27,6 +27,23 @@ export interface SwitchProps {
   required?: boolean;
 }
 
+/**
+ * Toggle switch component with label, description, and form submission support.
+ *
+ * @example
+ * ```tsx
+ * <Switch
+ *   label="Notifications"
+ *   checked={notificationsEnabled}
+ *   onCheckedChange={setNotificationsEnabled}
+ * />
+ * ```
+ *
+ * @example
+ * ```tsx
+ * <Switch label="Dark mode" size="sm" defaultChecked />
+ * ```
+ */
 export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
   (
     {

@@ -11,6 +11,21 @@ export interface DialogProps {
   className?: string;
 }
 
+/**
+ * Accessible dialog/modal component built on primitives with trigger, overlay, and content slots.
+ *
+ * @example
+ * ```tsx
+ * <Dialog
+ *   trigger={<button type="button">Open dialog</button>}
+ *   onOpenChange={(open) => console.log(open)}
+ * >
+ *   <DialogTitle>Confirm</DialogTitle>
+ *   <DialogDescription>Are you sure?</DialogDescription>
+ *   <DialogClose />
+ * </Dialog>
+ * ```
+ */
 export function Dialog({
   open,
   defaultOpen,

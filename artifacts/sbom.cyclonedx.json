@@ -1,0 +1,188 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.5",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-07-03T08:41:30.554Z",
+    "tools": [
+      {
+        "vendor": "manual",
+        "name": "npm-ls-to-sbom",
+        "version": "1.0"
+      }
+    ],
+    "component": {
+      "type": "library",
+      "name": "@ui-construction-library/monorepo",
+      "version": "0.0.0"
+    }
+  },
+  "components": [
+    {
+      "type": "library",
+      "version": "4.11.3"
+    },
+    {
+      "type": "library",
+      "version": "2.4.15"
+    },
+    {
+      "type": "library",
+      "version": "2.31.0"
+    },
+    {
+      "type": "library",
+      "version": "1.60.0"
+    },
+    {
+      "type": "library",
+      "version": "10.4.4"
+    },
+    {
+      "type": "library",
+      "version": "10.4.4"
+    },
+    {
+      "type": "library",
+      "version": "9.6.1"
+    },
+    {
+      "type": "library",
+      "version": "6.9.1"
+    },
+    {
+      "type": "library",
+      "version": "16.3.2"
+    },
+    {
+      "type": "library",
+      "version": "14.6.1"
+    },
+    {
+      "type": "library",
+      "version": "3.5.9"
+    },
+    {
+      "type": "library"
+    },
+    {
+      "type": "library"
+    },
+    {
+      "type": "library"
+    },
+    {
+      "type": "library"
+    },
+    {
+      "type": "library"
+    },
+    {
+      "type": "library"
+    },
+    {
+      "type": "library"
+    },
+    {
+      "type": "library"
+    },
+    {
+      "type": "library"
+    },
+    {
+      "type": "library"
+    },
+    {
+      "type": "library"
+    },
+    {
+      "type": "library"
+    },
+    {
+      "type": "library"
+    },
+    {
+      "type": "library"
+    },
+    {
+      "type": "library"
+    },
+    {
+      "type": "library"
+    },
+    {
+      "type": "library"
+    },
+    {
+      "type": "library"
+    },
+    {
+      "type": "library"
+    },
+    {
+      "type": "library"
+    },
+    {
+      "type": "library"
+    },
+    {
+      "type": "library"
+    },
+    {
+      "type": "library"
+    },
+    {
+      "type": "library"
+    },
+    {
+      "type": "library"
+    },
+    {
+      "type": "library"
+    },
+    {
+      "type": "library",
+      "version": "5.2.0"
+    },
+    {
+      "type": "library",
+      "version": "9.1.7"
+    },
+    {
+      "type": "library",
+      "version": "10.0.0"
+    },
+    {
+      "type": "library",
+      "version": "17.0.7"
+    },
+    {
+      "type": "library",
+      "version": "1.22.12"
+    },
+    {
+      "type": "library",
+      "version": "14.2.6"
+    },
+    {
+      "type": "library",
+      "version": "10.4.4"
+    },
+    {
+      "type": "library",
+      "version": "4.22.4"
+    },
+    {
+      "type": "library",
+      "version": "2.9.18"
+    },
+    {
+      "type": "library",
+      "version": "5.9.3"
+    },
+    {
+      "type": "library",
+      "version": "4.1.8"
+    }
+  ]
+}

@@ -23,6 +23,24 @@ type ModalContentProps = ComponentPropsWithoutRef<typeof Dialog.Content> &
     title?: string;
   };
 
+/**
+ * Composable modal dialog with Header, Body, Footer, and size variants.
+ *
+ * @example
+ * ```tsx
+ * <Modal>
+ *   <Modal.Trigger asChild>
+ *     <button type="button">Open modal</button>
+ *   </Modal.Trigger>
+ *   <Modal.Content size="md" title="Settings">
+ *     <Modal.Body>Your content here.</Modal.Body>
+ *     <Modal.Footer>
+ *       <Modal.Close />
+ *     </Modal.Footer>
+ *   </Modal.Content>
+ * </Modal>
+ * ```
+ */
 function ModalRoot(props: ModalRootProps) {
   return <Dialog.Root {...props} />;
 }

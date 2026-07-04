@@ -35,6 +35,28 @@ export interface CheckboxProps
   form?: string;
 }
 
+/**
+ * Accessible checkbox component with label, description, indeterminate state, and error handling.
+ *
+ * @example
+ * ```tsx
+ * <Checkbox
+ *   label="Accept terms"
+ *   checked={agreed}
+ *   onCheckedChange={setAgreed}
+ * />
+ * ```
+ *
+ * @example
+ * ```tsx
+ * <Checkbox
+ *   label="Select all"
+ *   indeterminate={someSelected}
+ *   checked={allSelected}
+ *   onCheckedChange={handleSelectAll}
+ * />
+ * ```
+ */
 export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
   (
     {

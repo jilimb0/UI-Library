@@ -1,6 +1,24 @@
 # Migration Guide
 
-This document covers breaking API changes introduced during the accessibility and API quality pass. It includes before/after examples and CLI codemod patterns for each change.
+This document covers API changes introduced during the accessibility and API quality pass. It includes before/after examples and CLI codemod patterns for each change.
+
+## Version compatibility
+
+| Package | Current version | Semver stage |
+|---------|----------------|--------------|
+| `core` | 0.4.0 | Stable — breaking changes not permitted |
+| `tokens` | 0.4.0 | Stable — breaking changes not permitted |
+| `icons` | 0.4.0 | Stable — breaking changes not permitted |
+| `primitives` | 0.3.0 | Stable — breaking changes not permitted |
+| `styles` | 0.3.0 | Stable — breaking changes not permitted |
+| `motion` | 0.3.0 | Stable — breaking changes not permitted |
+| `dnd` | 0.3.0 | Stable — breaking changes not permitted |
+| `behaviors` | 0.3.0 | Stable — breaking changes not permitted |
+| `utils` | 0.3.0 | Stable — breaking changes not permitted |
+
+**Semver policy:** Breaking changes are permitted in `0.1.x` and `0.2.x` releases but **not** in `0.3.x` or higher. All current packages are at `≥0.3.0`, meaning the public API is stable. No breaking changes have been introduced since `0.3.x` began.
+
+All entries below are **additive** (new props, new exports, new capabilities). Existing code continues to work without modification.
 
 ---
 

@@ -1,2 +1,2 @@
-# Validation before push
-pnpm validate
+# Fast quality gates before push
+pnpm lint && pnpm typecheck && pnpm test

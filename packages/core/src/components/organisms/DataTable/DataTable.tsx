@@ -18,6 +18,26 @@ interface DataTableProps<T> {
   pageSizeOptions?: number[];
 }
 
+/**
+ * Sortable, paginated data table component with configurable columns and empty state handling.
+ *
+ * @example
+ * ```tsx
+ * <DataTable
+ *   data={users}
+ *   columns={[
+ *     { key: 'name', header: 'Name', sortable: true },
+ *     { key: 'email', header: 'Email' },
+ *     {
+ *       key: 'role',
+ *       header: 'Role',
+ *       render: (user) => <Badge>{user.role}</Badge>,
+ *     },
+ *   ]}
+ *   pageSize={20}
+ * />
+ * ```
+ */
 function DataTable<T>({
   data,
   columns,

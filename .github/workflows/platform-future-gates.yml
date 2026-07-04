@@ -9,7 +9,7 @@ jobs:
     name: Schema And Registry Gates
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/setup-workspace
       - run: pnpm --filter @ui-construction-library/schema typecheck
       - run: pnpm --filter @ui-construction-library/schema test
@@ -20,7 +20,7 @@ jobs:
     name: Export Smoke Builds
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/setup-workspace
       - run: pnpm --filter @ui-construction-library/tokens build
       - run: pnpm --filter @ui-construction-library/schema build
@@ -33,7 +33,7 @@ jobs:
     name: Builder Quality Gates
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/setup-workspace
       - name: Build package dependencies
         run: pnpm build --filter='!@ui-app/*'

@@ -11,6 +11,29 @@ export interface InputProps
   errorMessage?: string;
 }
 
+/**
+ * Text input component with label, description, error state, and accessibility support.
+ *
+ * @example
+ * ```tsx
+ * <Input
+ *   label="Email"
+ *   type="email"
+ *   placeholder="you@example.com"
+ *   required
+ * />
+ * ```
+ *
+ * @example
+ * ```tsx
+ * <Input
+ *   label="Full name"
+ *   error
+ *   errorMessage="Name is required"
+ *   size="sm"
+ * />
+ * ```
+ */
 const Input = forwardRef<HTMLInputElement, InputProps>(
   (
     {

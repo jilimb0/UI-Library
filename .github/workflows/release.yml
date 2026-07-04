@@ -1,7 +1,6 @@
 name: Release
 
 env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
   HUSKY: 0
   # Uses npm Trusted Publisher (OIDC) — no NPM_TOKEN secret needed.
   # --provenance causes npm to exchange the GitHub OIDC token for auth automatically.
@@ -28,7 +27,7 @@ jobs:
       group: release-main
       cancel-in-progress: false
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           # Full history is required for changesets to compute correct version bumps.
           fetch-depth: 0
@@ -38,7 +37,7 @@ jobs:
 
       - uses: actions/setup-node@v5
         with:
-          node-version: 24
+          node-version: 22
           cache: pnpm
           registry-url: 'https://registry.npmjs.org'
 

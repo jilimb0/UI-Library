@@ -10,5 +10,5 @@
     "ignoreDeprecations": "6.0"
   },
   "include": ["src/**/*"],
-  "exclude": []
+  "exclude": ["src/__stories__"]
 }

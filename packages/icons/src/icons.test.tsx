@@ -177,3 +177,44 @@ describe('named exports', () => {
     expect(typeof UserIcon).toBe('function');
   });
 });
+
+// ── 6. Edge cases ─────────────────────────────────────────────────────────────
+
+describe('icon edge cases', () => {
+  it('renders with explicit aria-label for accessibility', () => {
+    const { container } = render(<SearchIcon aria-label="Search the site" />);
+    const svg = container.querySelector('svg');
+    expect(svg?.getAttribute('aria-label')).toBe('Search the site');
+  });
+
+  it('renders with width and height as numbers', () => {
+    const { container } = render(<SearchIcon width={32} height={32} />);
+    const svg = container.querySelector('svg');
+    expect(svg?.getAttribute('width')).toBe('32');
+    expect(svg?.getAttribute('height')).toBe('32');
+  });
+
+  it('renders with width and height as strings', () => {
+    const { container } = render(<SearchIcon width="2rem" height="2rem" />);
+    const svg = container.querySelector('svg');
+    expect(svg?.getAttribute('width')).toBe('2rem');
+    expect(svg?.getAttribute('height')).toBe('2rem');
+  });
+
+  it('renders with custom SVG props including fill and stroke', () => {
+    const { container } = render(
+      <SearchIcon fill="blue" stroke="red" strokeWidth="3" data-custom="test" />
+    );
+    const svg = container.querySelector('svg');
+    expect(svg?.getAttribute('fill')).toBe('blue');
+    expect(svg?.getAttribute('stroke')).toBe('red');
+    expect(svg?.getAttribute('stroke-width')).toBe('3');
+    expect(svg?.getAttribute('data-custom')).toBe('test');
+  });
+
+  it('overrides aria-hidden when explicitly passed', () => {
+    const { container } = render(<SearchIcon aria-hidden="false" />);
+    const svg = container.querySelector('svg');
+    expect(svg?.getAttribute('aria-hidden')).toBe('false');
+  });
+});

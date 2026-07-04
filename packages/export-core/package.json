@@ -1,6 +1,6 @@
 {
   "name": "@ui-construction-library/export-core",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -33,6 +33,7 @@
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^12.1.2",
+    "@vitest/coverage-v8": "^4.1.9",
     "rollup": "^4.34.8",
     "typescript": "^6.0.3",
     "vitest": "catalog:"

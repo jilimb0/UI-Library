@@ -5,28 +5,30 @@ Multi-framework UI component library and design system. Published as `@ui-constr
 ## Tech Stack
 | Layer | Technology |
 |-------|-----------|
-| Monorepo | pnpm + Turbo |
-| Language | TypeScript 5/6 |
-| UI | React 18 |
+| Monorepo | pnpm v11.7 + Turbo |
+| Language | TypeScript ^5.6.3 (6.x compatible) |
+| UI | React >=18.0.0 (18.x / 19.x compatible) |
 | Build | Rollup |
-| Tests | Vitest + happy-dom |
+| Tests | Vitest v4 |
 | Stories | Storybook 10 |
 | Styling | Tailwind CSS v4 |
 | E2E | Playwright |
-| Lint/Format | Biome 2 (lineWidth 80, single quotes) |
+| Lint/Format | Biome v2.4.15 (lineWidth 80, single quotes) |
 | Versioning | Changesets |
+| Runtime | Node >=22 |
 
 ## Structure
-**14 packages:** core, primitives, behaviors, icons, tokens, utils, dnd, motion, schema, styles, export-core, prompt-engine, registry, integrations
+**14 packages:** behaviors, core, dnd, export-core, icons, integrations, motion, primitives, prompt-engine, registry, schema, styles, tokens, utils
 **8 apps:** storybook, demo-showcase, docs, playground, builder, solid-dashboard, svelte-dashboard, vue-dashboard
 
 ## Commands
 - `pnpm dev` — Turbo parallel dev
 - `pnpm build` — Turbo orchestrated builds
-- `pnpm test` — all packages
+- `pnpm test` — all packages (Vitest)
 - `pnpm lint` / `pnpm format` — Biome
 - `pnpm typecheck` — Turbo typecheck
 - `pnpm storybook` — Storybook dev server
+- `pnpm validate` — full CI gate (slow; avoid in hooks)
 
 ## Conventions
 - Framework-agnostic (Solid, Svelte, Vue dashboards exist alongside React)

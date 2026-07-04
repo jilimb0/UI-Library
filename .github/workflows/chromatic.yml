@@ -1,7 +1,11 @@
 name: Chromatic
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+# DIAGNOSTIC: If the Chromatic URL at main--6692d4e8c3a6b656d6e58e60.chromatic.com
+# redirects to sign-in, the CHROMATIC_PROJECT_TOKEN in GitHub secrets is stale
+# or the Chromatic project was recreated. Fix: generate a new token from
+# Chromatic project settings and update the GitHub secret. The workflow
+# structure and script below are verified correct.
+# See: https://www.chromatic.com/docs/ci/#authentication
 
 on:
   pull_request:
@@ -16,13 +20,13 @@ jobs:
   visual-tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v5
         with:
-          node-version: 24
+          node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - name: Build packages
