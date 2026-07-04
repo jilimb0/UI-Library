@@ -86,26 +86,8 @@ export const AllIconsColored: StoryObj = {
 // Individual Icon Stories
 // ---------------------------------------------------------------------------
 
-const _IconMeta: Meta<typeof SearchIcon> = {
-  title: 'Icons/Individual',
-  component: SearchIcon,
-  tags: ['autodocs'],
-  argTypes: {
-    size: {
-      control: { type: 'number' },
-      description: 'Icon width/height in pixels',
-    },
-    color: {
-      control: { type: 'color' },
-      description: 'Icon color (uses currentColor by default)',
-    },
-  },
-};
-
-export const Search: StoryObj<typeof SearchIcon> = {
-  args: {
-    size: 24,
-  },
+export const Search: StoryObj = {
+  render: () => <SearchIcon width={24} height={24} />,
 };
 
 export const Heart: StoryObj<typeof HeartIcon> = {
