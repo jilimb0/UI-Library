@@ -2,8 +2,6 @@ name: Release
 
 env:
   HUSKY: 0
-  # Uses npm Trusted Publisher (OIDC) — no NPM_TOKEN secret needed.
-  # --provenance causes npm to exchange the GitHub OIDC token for auth automatically.
   NPM_PUBLISH_PROVENANCE: "true"
 
 on:
@@ -34,24 +32,13 @@ jobs:
         with:
           node-version: 22
           cache: pnpm
-          # Do NOT set registry-url here — setup-node writes
-          # //registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN} into ~/.npmrc
-          # which breaks OIDC provenance auth when NODE_AUTH_TOKEN is unset.
+          # Do NOT set registry-url — it writes NODE_AUTH_TOKEN placeholder
+          # into ~/.npmrc which breaks OIDC provenance when token is unset.
 
       - name: Pin npm version
         run: |
           sudo npm i -g npm@11.8.0
           npm -v
-
-      - name: Configure npm for OIDC provenance
-        run: |
-          # Write a clean .npmrc — no static token, just point to registry.
-          # npm publish --provenance exchanges the OIDC token automatically
-          # via ACTIONS_ID_TOKEN_REQUEST_URL / ACTIONS_ID_TOKEN_REQUEST_TOKEN.
-          printf 'registry=https://registry.npmjs.org/\n' > ~/.npmrc
-          echo "node: $(node -v), npm: $(npm -v)"
-          echo "OIDC URL present: ${ACTIONS_ID_TOKEN_REQUEST_URL:+yes}"
-          echo "OIDC TOKEN present: ${ACTIONS_ID_TOKEN_REQUEST_TOKEN:+yes}"
 
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
@@ -81,7 +68,20 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Publish directly (not through changesets/action) for full OIDC control
+      # Write clean .npmrc AFTER pnpm install (pnpm can overwrite ~/.npmrc).
+      # Also written into repo root so npm resolves it from CWD before ~/.npmrc.
+      # npm publish --provenance exchanges the OIDC token automatically —
+      # no static auth token needed or wanted.
+      - name: Configure npm for OIDC provenance
+        if: steps.check-publish.outputs.has_changesets == 'false'
+        run: |
+          printf 'registry=https://registry.npmjs.org/\n' > ~/.npmrc
+          printf 'registry=https://registry.npmjs.org/\n' > .npmrc
+          echo "OIDC URL present: ${ACTIONS_ID_TOKEN_REQUEST_URL:+yes}"
+          echo "OIDC TOKEN present: ${ACTIONS_ID_TOKEN_REQUEST_TOKEN:+yes}"
+          echo "~/.npmrc:"; cat ~/.npmrc
+          echo ".npmrc:"; cat .npmrc
+
       - name: Publish to npm
         if: steps.check-publish.outputs.has_changesets == 'false'
         run: node scripts/ci/ci-publish.mjs

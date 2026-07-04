@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 // ci-publish.mjs
-// Called by changesets/action `publish:` command.
 //
 // Why this script exists instead of `pnpm -r publish`:
 //   pnpm does NOT rewrite workspace:* / workspace:^ refs before publishing.
@@ -10,25 +9,22 @@
 //
 // This script:
 //   1. For each publishable package, temporarily rewrites workspace:* → ^semver
-//   2. Checks if the version is already published (idempotent — safe to retry)
-//   3. Publishes via `npm publish` with --provenance if NPM_PUBLISH_PROVENANCE=true
-//   4. Confirms the version appears on the registry (retry x5, 10 s backoff)
-//   5. Restores the original package.json content
+//   2. Writes a clean per-package .npmrc (registry only, no auth token) so
+//      npm resolves it from CWD before ~/.npmrc — prevents any stale token
+//      from interfering with OIDC provenance auth
+//   3. Checks if the version is already published (idempotent — safe to retry)
+//   4. Publishes via `npm publish` with --provenance (OIDC token exchange)
+//   5. Confirms the version appears on the registry (retry x5, 10 s backoff)
+//   6. Restores the original package.json content
 
 import { execSync } from 'node:child_process';
-import { readFileSync, writeFileSync, readdirSync, statSync } from 'node:fs';
+import { readFileSync, writeFileSync, unlinkSync, existsSync, readdirSync, statSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '..', '..');
 const LOG_FILE = `/tmp/ci-publish-${Date.now()}.log`;
-
-// Auth: this project uses npm Trusted Publisher (OIDC) — no NPM_TOKEN needed.
-// npm publish --provenance automatically exchanges the GitHub OIDC token for
-// a short-lived npm token via ACTIONS_ID_TOKEN_REQUEST_URL / REQUEST_TOKEN
-// which GitHub Actions injects into every child process env automatically.
-// Nothing to configure here.
 
 function log(msg) {
   const line = `[ci-publish] ${msg}`;
@@ -44,7 +40,6 @@ function writeJson(p, obj) {
   writeFileSync(p, JSON.stringify(obj, null, 2) + '\n', 'utf-8');
 }
 
-// Collect all publishable package.json paths
 function getPublishablePackages() {
   const results = [];
   const pkgsDir = resolve(root, 'packages');
@@ -56,7 +51,6 @@ function getPublishablePackages() {
         results.push({ path: pkgPath, dir: resolve(pkgsDir, entry), pkg });
       }
     } catch {}
-    // support packages/integrations/*/package.json
     const sub = resolve(pkgsDir, entry);
     if (statSync(sub).isDirectory()) {
       for (const sub2 of readdirSync(sub)) {
@@ -73,7 +67,6 @@ function getPublishablePackages() {
   return results;
 }
 
-// Build map of workspace package name → published version
 function buildWorkspaceVersionMap(packages) {
   const map = {};
   for (const { pkg } of packages) {
@@ -82,7 +75,6 @@ function buildWorkspaceVersionMap(packages) {
   return map;
 }
 
-// Rewrite workspace:* / workspace:^ in dep fields to ^semver
 function rewriteWorkspaceDeps(pkgObj, versionMap) {
   const fields = ['dependencies', 'devDependencies', 'peerDependencies', 'optionalDependencies'];
   const original = {};
@@ -104,7 +96,6 @@ function rewriteWorkspaceDeps(pkgObj, versionMap) {
   return { changed, original };
 }
 
-// Restore original dep values
 function restoreWorkspaceDeps(pkgObj, original) {
   for (const [field, deps] of Object.entries(original)) {
     if (!pkgObj[field]) continue;
@@ -114,7 +105,6 @@ function restoreWorkspaceDeps(pkgObj, original) {
   }
 }
 
-// Check if a version is already published (idempotent publish guard)
 function isAlreadyPublished(name, version) {
   try {
     const result = execSync(
@@ -127,7 +117,6 @@ function isAlreadyPublished(name, version) {
   }
 }
 
-// Confirm package appears on registry after publish (retry x5, 10 s backoff)
 function confirmPublished(name, version) {
   for (let i = 1; i <= 5; i++) {
     if (isAlreadyPublished(name, version)) {
@@ -142,22 +131,16 @@ function confirmPublished(name, version) {
   throw new Error(`${name}@${version} not confirmed on registry after 5 attempts`);
 }
 
-// ── Main ──────────────────────────────────────────────────────────────────────
+// ── Main ──────────────────────────────────────────────────────────────────────────────
 
 const packages = getPublishablePackages();
 const versionMap = buildWorkspaceVersionMap(packages);
 
-// Auth: OIDC trusted publisher via --provenance.
-// GitHub Actions injects ACTIONS_ID_TOKEN_REQUEST_URL and ACTIONS_ID_TOKEN_REQUEST_TOKEN
-// into every job with id-token: write. The --provenance flag triggers npm to exchange
-// these for a short-lived npm token automatically.
 const provenanceFlag = process.env.NPM_PUBLISH_PROVENANCE === 'true' ? '--provenance' : '';
 
 log(`publishing ${packages.length} package(s)`);
 log(`log file: ${LOG_FILE}`);
-if (provenanceFlag) {
-  log(`using OIDC provenance for auth`);
-}
+if (provenanceFlag) log(`using OIDC provenance for auth`);
 
 const errors = [];
 
@@ -166,13 +149,18 @@ for (const { path: pkgPath, dir, pkg } of packages) {
 
   log(`\n── ${name}@${version} ──`);
 
-  // Idempotency: skip if already published
   if (isAlreadyPublished(name, version)) {
     log(`  already published — skipping`);
     continue;
   }
 
-  // Rewrite workspace:* refs → ^semver
+  // Write clean .npmrc into the package dir so npm resolves it before ~/.npmrc.
+  // This prevents any stale NODE_AUTH_TOKEN placeholder from breaking OIDC.
+  const pkgNpmrc = resolve(dir, '.npmrc');
+  const hadNpmrc = existsSync(pkgNpmrc);
+  const originalNpmrc = hadNpmrc ? readFileSync(pkgNpmrc, 'utf-8') : null;
+  writeFileSync(pkgNpmrc, 'registry=https://registry.npmjs.org/\n', 'utf-8');
+
   const pkgObj = readJson(pkgPath);
   const { changed, original } = rewriteWorkspaceDeps(pkgObj, versionMap);
   if (changed) {
@@ -194,18 +182,23 @@ for (const { path: pkgPath, dir, pkg } of packages) {
       throw new Error(`npm publish failed:\n${detail || publishErr.message}`);
     }
 
-    // Confirm appearance on registry
     confirmPublished(name, version);
   } catch (err) {
     log(`  ❌ FAILED: ${err.message}`);
     errors.push({ name, version, error: err.message });
   } finally {
-    // Always restore original package.json
+    // Restore original package.json
     if (changed) {
       const restored = readJson(pkgPath);
       restoreWorkspaceDeps(restored, original);
       writeJson(pkgPath, restored);
       log(`  restored workspace:* refs in package.json`);
+    }
+    // Restore original .npmrc (or remove if we created it)
+    if (originalNpmrc !== null) {
+      writeFileSync(pkgNpmrc, originalNpmrc, 'utf-8');
+    } else {
+      try { unlinkSync(pkgNpmrc); } catch {}
     }
   }
 }
