@@ -28,6 +28,7 @@
     "check:boundaries": "node ./scripts/checks/check-package-boundaries.mjs",
     "check:public-surface": "node ./scripts/checks/check-public-surface.mjs",
     "check:api": "./scripts/checks/check-api-snapshot.sh",
+    "check:sync": "node ./scripts/checks/check-npm-sync.mjs",
     "update:api": "node scripts/checks/generate-api-snapshot.mjs > packages/core/api-snapshot.json",
     "check:published": "node ./scripts/checks/check-published-versions.js",
     "check:published:code": "node ./scripts/checks/check-published-code.js",
