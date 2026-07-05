@@ -1,16 +1,5 @@
 # @ui-construction-library/primitives
 
-## 0.5.0
-
-### Minor Changes
-
-- ea184fe: Minor bump — product readiness improvements: 200+ new tests, 59 new stories, coverage enforcement, bundle budgets, Node 22 support, SBOM, security audit.
-
-### Patch Changes
-
-- Updated dependencies [ea184fe]
-  - @ui-construction-library/behaviors@0.5.0
-
 <!-- AUTO-GENERATED — do not edit manually; run pnpm changelog:packages -->
 
 ## 0.4.0

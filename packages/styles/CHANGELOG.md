@@ -1,11 +1,5 @@
 # @ui-construction-library/styles
 
-## 0.5.0
-
-### Minor Changes
-
-- ea184fe: Minor bump — product readiness improvements: 200+ new tests, 59 new stories, coverage enforcement, bundle budgets, Node 22 support, SBOM, security audit.
-
 <!-- AUTO-GENERATED — do not edit manually; run pnpm changelog:packages -->
 
 ## 0.4.0

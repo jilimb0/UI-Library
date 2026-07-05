@@ -1,16 +1,5 @@
 # @ui-construction-library/motion
 
-## 0.5.0
-
-### Minor Changes
-
-- ea184fe: Minor bump — product readiness improvements: 200+ new tests, 59 new stories, coverage enforcement, bundle budgets, Node 22 support, SBOM, security audit.
-
-### Patch Changes
-
-- Updated dependencies [ea184fe]
-  - @ui-construction-library/core@0.5.0
-
 <!-- AUTO-GENERATED — do not edit manually; run pnpm changelog:packages -->
 
 ## 0.4.0
@@ -24,7 +13,7 @@
 
 - update CI and release workflows, enhance published version checks, and synchronize package versions ([8f523bf](../../commit/8f523bf))
 - update build scripts to include TypeScript declaration generation and improve package descriptions ([a42b53b](../../commit/a42b53b))
-- **packages:** use workspace:\* for all internal cross-package deps ([2eb897e](../../commit/2eb897e))
+- **packages:** use workspace:* for all internal cross-package deps ([2eb897e](../../commit/2eb897e))
 
 ### Refactoring
 
@@ -77,7 +66,7 @@
 
 - update CI and release workflows, enhance published version checks, and synchronize package versions ([8f523bf](../../commit/8f523bf))
 - update build scripts to include TypeScript declaration generation and improve package descriptions ([a42b53b](../../commit/a42b53b))
-- **packages:** use workspace:\* for all internal cross-package deps ([2eb897e](../../commit/2eb897e))
+- **packages:** use workspace:* for all internal cross-package deps ([2eb897e](../../commit/2eb897e))
 
 ### Refactoring
 
@@ -130,7 +119,7 @@
 
 - update CI and release workflows, enhance published version checks, and synchronize package versions ([8f523bf](../../commit/8f523bf))
 - update build scripts to include TypeScript declaration generation and improve package descriptions ([a42b53b](../../commit/a42b53b))
-- **packages:** use workspace:\* for all internal cross-package deps ([2eb897e](../../commit/2eb897e))
+- **packages:** use workspace:* for all internal cross-package deps ([2eb897e](../../commit/2eb897e))
 
 ### Refactoring
 

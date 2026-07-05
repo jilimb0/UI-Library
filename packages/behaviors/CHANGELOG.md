@@ -1,11 +1,5 @@
 # @ui-construction-library/behaviors
 
-## 0.5.0
-
-### Minor Changes
-
-- ea184fe: Minor bump — product readiness improvements: 200+ new tests, 59 new stories, coverage enforcement, bundle budgets, Node 22 support, SBOM, security audit.
-
 ## 0.3.0
 
 ### Minor Changes

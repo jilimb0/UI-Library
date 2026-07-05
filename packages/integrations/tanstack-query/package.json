@@ -1,6 +1,6 @@
 {
   "name": "@ui-construction-library/integration-tanstack-query",
-  "version": "0.6.0",
+  "version": "0.5.0",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
