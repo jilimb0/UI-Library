@@ -2,7 +2,7 @@ name: Release
 
 env:
   HUSKY: 0
-  NPM_PUBLISH_PROVENANCE: "false"
+  NPM_PUBLISH_PROVENANCE: "true"
 
 on:
   workflow_dispatch:
@@ -28,15 +28,16 @@ jobs:
 
       - uses: pnpm/action-setup@v4
 
-      # registry-url is intentionally omitted here.
-      # When registry-url is set, setup-node writes NODE_AUTH_TOKEN into the
-      # runner's .npmrc as a static _authToken. This overrides OIDC Trusted
-      # Publishing during the release job and causes 401/404 errors on npm
-      # publish. The release job uses OIDC directly (npm's built-in token
-      # exchange), so no pre-written _authToken is needed.
-      - uses: actions/setup-node@v6
+      # registry-url is required — setup-node writes
+      # //registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN} into ~/.npmrc
+      # which tells npm where the registry is for the OIDC token exchange.
+      # NODE_AUTH_TOKEN must NOT be set in the publish step below —
+      # setting it to GITHUB_TOKEN causes npm to use it as a bearer token
+      # instead of doing the OIDC exchange, resulting in 404.
+      - uses: actions/setup-node@v4
         with:
           node-version: 22
+          registry-url: 'https://registry.npmjs.org'
 
       # Pin npm AFTER setup-node so the OIDC-capable version handles publish.
       - name: Pin npm version
