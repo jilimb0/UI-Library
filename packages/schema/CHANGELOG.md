@@ -1,5 +1,11 @@
 # @ui-construction-library/schema
 
+## 0.3.0
+
+### Minor Changes
+
+- 8d83152: chore: V1 readiness — test hardening, Storybook coverage, bundle budgets, security
+
 <!-- AUTO-GENERATED — do not edit manually; run pnpm changelog:packages -->
 
 ## 0.3.0

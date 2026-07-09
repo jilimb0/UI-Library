@@ -1,5 +1,11 @@
 # @ui-construction-library/behaviors
 
+## 0.4.0
+
+### Minor Changes
+
+- 8d83152: chore: V1 readiness — test hardening, Storybook coverage, bundle budgets, security
+
 ## 0.3.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # @ui-construction-library/icons
 
+## 0.5.0
+
+### Minor Changes
+
+- 8d83152: chore: V1 readiness — test hardening, Storybook coverage, bundle budgets, security
+
 <!-- AUTO-GENERATED — do not edit manually; run pnpm changelog:packages -->
 
 ## 0.5.0
@@ -54,7 +60,7 @@
 
 ### Refactoring
 
-- rename packages from '@ui-lib/*' to '@ui-construction-library/*' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
+- rename packages from '@ui-lib/_' to '@ui-construction-library/_' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
 
 ### Chores
 
@@ -130,7 +136,7 @@
 
 ### Refactoring
 
-- rename packages from '@ui-lib/*' to '@ui-construction-library/*' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
+- rename packages from '@ui-lib/_' to '@ui-construction-library/_' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
 
 ### Chores
 
@@ -206,7 +212,7 @@
 
 ### Refactoring
 
-- rename packages from '@ui-lib/*' to '@ui-construction-library/*' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
+- rename packages from '@ui-lib/_' to '@ui-construction-library/_' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
 
 ### Chores
 
