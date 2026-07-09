@@ -2,7 +2,7 @@ name: Release
 
 env:
   HUSKY: 0
-  NPM_PUBLISH_PROVENANCE: "true"
+  NPM_PUBLISH_PROVENANCE: "false"
 
 on:
   workflow_dispatch:
