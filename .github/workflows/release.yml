@@ -69,6 +69,7 @@ jobs:
             echo "changesets exist — skipping publish"
           else
             echo "no changesets — publishing unpublished packages"
+            unset NODE_AUTH_TOKEN
             node scripts/ci/ci-publish.mjs
           fi
 
