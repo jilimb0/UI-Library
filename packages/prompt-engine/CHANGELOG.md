@@ -1,5 +1,17 @@
 # @ui-construction-library/prompt-engine
 
+## 0.3.0
+
+### Minor Changes
+
+- 8d83152: chore: V1 readiness — test hardening, Storybook coverage, bundle budgets, security
+
+### Patch Changes
+
+- Updated dependencies [8d83152]
+  - @ui-construction-library/registry@0.3.0
+  - @ui-construction-library/schema@0.3.0
+
 <!-- AUTO-GENERATED — do not edit manually; run pnpm changelog:packages -->
 
 ## 0.2.0
@@ -14,7 +26,7 @@
 - **packages:** add repository field to export-core and prompt-engine; bump prompt-engine to 0.1.3 ([610b19d](../../commit/610b19d))
 - update CI and release workflows, enhance published version checks, and synchronize package versions ([8f523bf](../../commit/8f523bf))
 - update build scripts to include TypeScript declaration generation and improve package descriptions ([a42b53b](../../commit/a42b53b))
-- **packages:** workspace:* for ALL remaining internal cross-package deps ([b7c5d5b](../../commit/b7c5d5b))
+- **packages:** workspace:\* for ALL remaining internal cross-package deps ([b7c5d5b](../../commit/b7c5d5b))
 
 ### Refactoring
 
@@ -73,7 +85,7 @@
 - **packages:** add repository field to export-core and prompt-engine; bump prompt-engine to 0.1.3 ([610b19d](../../commit/610b19d))
 - update CI and release workflows, enhance published version checks, and synchronize package versions ([8f523bf](../../commit/8f523bf))
 - update build scripts to include TypeScript declaration generation and improve package descriptions ([a42b53b](../../commit/a42b53b))
-- **packages:** workspace:* for ALL remaining internal cross-package deps ([b7c5d5b](../../commit/b7c5d5b))
+- **packages:** workspace:\* for ALL remaining internal cross-package deps ([b7c5d5b](../../commit/b7c5d5b))
 
 ### Refactoring
 

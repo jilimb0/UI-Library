@@ -1,5 +1,20 @@
 # @ui-construction-library/core
 
+## 0.5.0
+
+### Minor Changes
+
+- 8d83152: chore: V1 readiness — test hardening, Storybook coverage, bundle budgets, security
+
+### Patch Changes
+
+- Updated dependencies [8d83152]
+  - @ui-construction-library/behaviors@0.4.0
+  - @ui-construction-library/icons@0.5.0
+  - @ui-construction-library/primitives@0.4.0
+  - @ui-construction-library/tokens@0.5.0
+  - @ui-construction-library/utils@0.4.0
+
 <!-- AUTO-GENERATED — do not edit manually; run pnpm changelog:packages -->
 
 ## 0.4.0
@@ -35,7 +50,7 @@
 
 - update build scripts to include TypeScript declaration generation and improve package descriptions ([a42b53b](../../commit/a42b53b))
 - **core:** correct rootDir in tsconfig.json to match package.json types path ([36a5743](../../commit/36a5743))
-- **packages:** use workspace:* for all internal cross-package deps ([2eb897e](../../commit/2eb897e))
+- **packages:** use workspace:\* for all internal cross-package deps ([2eb897e](../../commit/2eb897e))
 
 ### Refactoring
 
@@ -110,7 +125,7 @@
 
 - enhance contributing guidelines and remove unnecessary files ([b8f186d](../../commit/b8f186d))
 - update README and workflows for improved structure and clarity ([790d046](../../commit/790d046))
-- rename packages from '@ui-lib/*' to '@ui-construction-library/*' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
+- rename packages from '@ui-lib/_' to '@ui-construction-library/_' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
 
 ### Chores
 
@@ -175,7 +190,7 @@
 
 - update build scripts to include TypeScript declaration generation and improve package descriptions ([a42b53b](../../commit/a42b53b))
 - **core:** correct rootDir in tsconfig.json to match package.json types path ([36a5743](../../commit/36a5743))
-- **packages:** use workspace:* for all internal cross-package deps ([2eb897e](../../commit/2eb897e))
+- **packages:** use workspace:\* for all internal cross-package deps ([2eb897e](../../commit/2eb897e))
 
 ### Refactoring
 
@@ -250,7 +265,7 @@
 
 - enhance contributing guidelines and remove unnecessary files ([b8f186d](../../commit/b8f186d))
 - update README and workflows for improved structure and clarity ([790d046](../../commit/790d046))
-- rename packages from '@ui-lib/*' to '@ui-construction-library/*' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
+- rename packages from '@ui-lib/_' to '@ui-construction-library/_' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
 
 ### Chores
 

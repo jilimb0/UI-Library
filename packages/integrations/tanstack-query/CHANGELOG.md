@@ -1,5 +1,12 @@
 # @ui-construction-library/integration-tanstack-query
 
+## 0.4.1
+
+### Patch Changes
+
+- Updated dependencies [8d83152]
+  - @ui-construction-library/core@0.5.0
+
 <!-- AUTO-GENERATED — do not edit manually; run pnpm changelog:packages -->
 
 ## 0.5.0
@@ -20,7 +27,7 @@
 ### Bug Fixes
 
 - update build scripts to include TypeScript declaration generation and improve package descriptions ([a42b53b](../../commit/a42b53b))
-- **packages:** use workspace:* for all internal cross-package deps ([2eb897e](../../commit/2eb897e))
+- **packages:** use workspace:\* for all internal cross-package deps ([2eb897e](../../commit/2eb897e))
 
 ### Chores
 
@@ -76,7 +83,7 @@
 
 ### Refactoring
 
-- rename packages from '@ui-lib/*' to '@ui-construction-library/*' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
+- rename packages from '@ui-lib/_' to '@ui-construction-library/_' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
 
 ### Chores
 
@@ -108,7 +115,7 @@
 ### Bug Fixes
 
 - update build scripts to include TypeScript declaration generation and improve package descriptions ([a42b53b](../../commit/a42b53b))
-- **packages:** use workspace:* for all internal cross-package deps ([2eb897e](../../commit/2eb897e))
+- **packages:** use workspace:\* for all internal cross-package deps ([2eb897e](../../commit/2eb897e))
 
 ### Chores
 
@@ -164,7 +171,7 @@
 
 ### Refactoring
 
-- rename packages from '@ui-lib/*' to '@ui-construction-library/*' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
+- rename packages from '@ui-lib/_' to '@ui-construction-library/_' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
 
 ### Chores
 
@@ -196,7 +203,7 @@
 ### Bug Fixes
 
 - update build scripts to include TypeScript declaration generation and improve package descriptions ([a42b53b](../../commit/a42b53b))
-- **packages:** use workspace:* for all internal cross-package deps ([2eb897e](../../commit/2eb897e))
+- **packages:** use workspace:\* for all internal cross-package deps ([2eb897e](../../commit/2eb897e))
 
 ### Chores
 
@@ -252,7 +259,7 @@
 
 ### Refactoring
 
-- rename packages from '@ui-lib/*' to '@ui-construction-library/*' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
+- rename packages from '@ui-lib/_' to '@ui-construction-library/_' across the codebase, updating imports, paths, and configurations accordingly ([796d6ce](../../commit/796d6ce))
 
 ### Chores
 

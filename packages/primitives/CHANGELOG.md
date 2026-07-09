@@ -1,5 +1,16 @@
 # @ui-construction-library/primitives
 
+## 0.4.0
+
+### Minor Changes
+
+- 8d83152: chore: V1 readiness — test hardening, Storybook coverage, bundle budgets, security
+
+### Patch Changes
+
+- Updated dependencies [8d83152]
+  - @ui-construction-library/behaviors@0.4.0
+
 <!-- AUTO-GENERATED — do not edit manually; run pnpm changelog:packages -->
 
 ## 0.4.0

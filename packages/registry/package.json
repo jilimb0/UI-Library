@@ -1,6 +1,6 @@
 {
   "name": "@ui-construction-library/registry",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Internal component registry for @ui-construction-library tooling — not for direct consumer use.",
   "keywords": [
     "internal",
