@@ -39,7 +39,11 @@ jobs:
           node-version: 22
           registry-url: 'https://registry.npmjs.org'
 
-      # Use default npm from runner (no pin) — npm 10+ includes full OIDC provenance support
+      # Pin npm AFTER setup-node so the OIDC-capable version handles publish.
+      - name: Pin npm version
+        run: |
+          sudo npm i -g npm@11.8.0
+          npm -v
 
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
