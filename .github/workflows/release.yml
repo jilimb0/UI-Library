@@ -34,7 +34,7 @@ jobs:
       # NODE_AUTH_TOKEN must NOT be set in the publish step below —
       # setting it to GITHUB_TOKEN causes npm to use it as a bearer token
       # instead of doing the OIDC exchange, resulting in 404.
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           registry-url: 'https://registry.npmjs.org'
