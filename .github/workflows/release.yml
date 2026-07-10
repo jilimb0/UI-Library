@@ -36,7 +36,7 @@ jobs:
       # instead of doing the OIDC exchange, resulting in 404.
       - uses: actions/setup-node@v5
         with:
-          node-version: 22
+          node-version: 24
           registry-url: 'https://registry.npmjs.org'
 
       # Pin npm AFTER setup-node so the OIDC-capable version handles publish.
