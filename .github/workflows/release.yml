@@ -64,8 +64,6 @@ jobs:
       # Checked separately because changesets/action only runs publish on version commits,
       # which prevents retrying after a transient publish failure.
       - name: Publish to npm
-        env:
-          NODE_AUTH_TOKEN: ""
         run: |
           if ls .changeset/*.md >/dev/null 2>&1; then
             echo "changesets exist — skipping publish"
