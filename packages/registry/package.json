@@ -1,7 +1,7 @@
 {
   "name": "@ui-construction-library/registry",
   "version": "0.3.0",
-  "description": "Internal component registry for @ui-construction-library tooling — not for direct consumer use.",
+  "description": "Internal component registry for @ui-construction-library tooling \u2014 not for direct consumer use.",
   "keywords": [
     "internal",
     "tooling"
@@ -45,5 +45,8 @@
       "require": "./dist/index.js",
       "default": "./dist/index.esm.js"
     }
+  },
+  "engines": {
+    "node": ">=26.0.0"
   }
 }

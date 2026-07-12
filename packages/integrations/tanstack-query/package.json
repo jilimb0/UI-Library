@@ -38,7 +38,7 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "description": "TanStack Query integration for @ui-construction-library — query-backed data components.",
+  "description": "TanStack Query integration for @ui-construction-library \u2014 query-backed data components.",
   "keywords": [
     "tanstack-query",
     "react-query",
@@ -55,5 +55,8 @@
   "files": [
     "dist",
     "README.md"
-  ]
+  ],
+  "engines": {
+    "node": ">=26.0.0"
+  }
 }

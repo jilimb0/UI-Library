@@ -41,7 +41,7 @@
     "typescript": "^6.0.3",
     "vitest": "catalog:"
   },
-  "description": "Internal schema definitions for @ui-construction-library tooling — not for direct consumer use.",
+  "description": "Internal schema definitions for @ui-construction-library tooling \u2014 not for direct consumer use.",
   "ui-construction": {
     "surface": "internal",
     "mode": "platform"
@@ -49,5 +49,8 @@
   "keywords": [
     "internal",
     "tooling"
-  ]
+  ],
+  "engines": {
+    "node": ">=26.0.0"
+  }
 }

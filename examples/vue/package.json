@@ -14,5 +14,8 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.0",
     "vite": "catalog:"
+  },
+  "engines": {
+    "node": ">=26.0.0"
   }
 }

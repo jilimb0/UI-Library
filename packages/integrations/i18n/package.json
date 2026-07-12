@@ -34,7 +34,7 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "description": "i18next integration for @ui-construction-library — locale-aware component wrappers.",
+  "description": "i18next integration for @ui-construction-library \u2014 locale-aware component wrappers.",
   "keywords": [
     "i18n",
     "i18next",
@@ -51,5 +51,8 @@
   "files": [
     "dist",
     "README.md"
-  ]
+  ],
+  "engines": {
+    "node": ">=26.0.0"
+  }
 }

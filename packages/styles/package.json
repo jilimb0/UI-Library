@@ -41,7 +41,7 @@
     "typescript": "^6.0.3",
     "vitest": "catalog:"
   },
-  "description": "Universal CSS layer for @ui-construction-library — reset, utilities, and component classes built on design tokens.",
+  "description": "Universal CSS layer for @ui-construction-library \u2014 reset, utilities, and component classes built on design tokens.",
   "ui-construction": {
     "surface": "public",
     "mode": "library"
@@ -51,5 +51,8 @@
     "design-system",
     "styles",
     "utilities"
-  ]
+  ],
+  "engines": {
+    "node": ">=26.0.0"
+  }
 }

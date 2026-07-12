@@ -38,7 +38,7 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "description": "TanStack Router integration for @ui-construction-library — router-bound navigation components.",
+  "description": "TanStack Router integration for @ui-construction-library \u2014 router-bound navigation components.",
   "keywords": [
     "tanstack-router",
     "routing",
@@ -54,5 +54,8 @@
   "files": [
     "dist",
     "README.md"
-  ]
+  ],
+  "engines": {
+    "node": ">=26.0.0"
+  }
 }

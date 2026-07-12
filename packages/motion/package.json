@@ -56,7 +56,7 @@
   },
   "license": "MIT",
   "type": "module",
-  "description": "Optional motion extension for @ui-construction-library — FadeIn, SlideIn, Bounce and animated wrappers.",
+  "description": "Optional motion extension for @ui-construction-library \u2014 FadeIn, SlideIn, Bounce and animated wrappers.",
   "keywords": [
     "animation",
     "motion",
@@ -68,5 +68,8 @@
     "url": "git+https://github.com/jilimb0/UI-Library.git",
     "directory": "packages/motion"
   },
-  "homepage": "https://github.com/jilimb0/UI-Library#readme"
+  "homepage": "https://github.com/jilimb0/UI-Library#readme",
+  "engines": {
+    "node": ">=26.0.0"
+  }
 }

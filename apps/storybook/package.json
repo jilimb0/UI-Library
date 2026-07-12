@@ -28,5 +28,8 @@
     "tailwindcss": "catalog:",
     "typescript": "^6.0.3",
     "vite": "catalog:"
+  },
+  "engines": {
+    "node": ">=26.0.0"
   }
 }

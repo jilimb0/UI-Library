@@ -42,9 +42,12 @@
     "typescript": "^6.0.3",
     "vitest": "catalog:"
   },
-  "description": "Core export logic for @ui-construction-library — export project analysis and rendering.",
+  "description": "Core export logic for @ui-construction-library \u2014 export project analysis and rendering.",
   "ui-construction": {
     "surface": "internal",
     "mode": "platform"
+  },
+  "engines": {
+    "node": ">=26.0.0"
   }
 }
