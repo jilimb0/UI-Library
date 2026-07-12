@@ -35,6 +35,12 @@ playwright-report/
 .qoder/
 .plans/
 
+# Scratch files (experimental/throwaway)
+scratch/
+
+# Supabase local setup (not used in CI)
+supabase/
+
 # Stale build artifacts that should never be committed
 packages/primitives/src/**/*.js
 packages/primitives/src/**/*.d.ts

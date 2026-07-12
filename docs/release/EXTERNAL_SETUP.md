@@ -45,6 +45,18 @@ npm token create --type=automation
 
 Use token value as `NPM_TOKEN` in GitHub secrets.
 
+## Chromatic
+
+### Token Setup
+1. Go to [Chromatic](https://www.chromatic.com) → project settings
+2. Copy `CHROMATIC_PROJECT_TOKEN`
+3. Add to GitHub repo: Settings → Secrets and variables → Actions → New repository secret
+   - Name: `CHROMATIC_PROJECT_TOKEN`
+   - Value: paste the token
+
+### Troubleshooting
+If Chromatic redirects to sign-in on the PR check, the token is stale. Generate a new one.
+
 ## Verification Checklist
 
 - [ ] `Release` workflow can publish packages
