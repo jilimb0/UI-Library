@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "typecheck": "tsc --noEmit",
     "lint": "oxlint",
+    "test": "vitest run --config ../../vitest.config.ts --passWithNoTests src",
     "preview": "vite preview"
   },
   "dependencies": {
