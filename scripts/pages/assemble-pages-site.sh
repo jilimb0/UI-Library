@@ -26,10 +26,13 @@ DEMO_BASE_PATH="/${REPO_NAME}/" pnpm --filter @ui-app/demo-showcase build
 echo "[assemble] builder..."
 BUILDER_BASE_PATH="/${REPO_NAME}/builder/" pnpm --filter @ui-app/builder build
 
+SHOWCASE_BASE_PATH="/${REPO_NAME}/showcase/" pnpm --filter showcase build
+
 cp -R ./apps/demo-showcase/dist/. "${SITE_DIR}/"
 cp -R ./apps/docs/dist/. "${SITE_DIR}/docs/"
 cp -R ./apps/storybook/storybook-static/. "${SITE_DIR}/storybook/"
 cp -R ./apps/builder/dist/. "${SITE_DIR}/builder/"
+cp -R ./apps/showcase/dist/. "${SITE_DIR}/showcase/"
 
 cat >"${PAGES_DIR}/serve.json" <<EOF
 {
