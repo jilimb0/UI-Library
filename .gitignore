@@ -32,6 +32,8 @@ playwright-report/
 # Playwright screenshot snapshots
 **/*.spec.ts-snapshots/
 
+.next/
+
 .qoder/
 .plans/
 

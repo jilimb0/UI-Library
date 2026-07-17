@@ -9,7 +9,6 @@
     "sourceMap": true,
     "noEmit": false,
     "allowArbitraryExtensions": true,
-    "ignoreDeprecations": "6.0",
     "paths": {
       "@/*": ["./src/*"]
     }
