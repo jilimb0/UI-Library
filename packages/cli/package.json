@@ -18,6 +18,7 @@
     "build": "tsc -p tsconfig.json",
     "dev": "tsx src/index.ts",
     "typecheck": "tsc --noEmit",
+    "test": "echo 'no tests'",
     "lint": "biome check src"
   },
   "dependencies": {

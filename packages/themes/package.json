@@ -27,6 +27,7 @@
   ],
   "scripts": {
     "build": "node scripts/build-css.js",
+    "typecheck": "tsc --noEmit",
     "test": "node scripts/test-css.js",
     "lint": "biome check src",
     "lint:fix": "biome check --write src"

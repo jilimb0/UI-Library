@@ -109,6 +109,18 @@
       "role": "platform-generation",
       "mode": "platform",
       "recommended": false
+    },
+    "@ui-construction-library/themes": {
+      "surface": "public",
+      "role": "foundational",
+      "mode": "library",
+      "recommended": true
+    },
+    "@ui-construction-library/cli": {
+      "surface": "public",
+      "role": "tooling",
+      "mode": "cli",
+      "recommended": false
     }
   },
   "libraryApps": [
