@@ -1,0 +1,228 @@
+/* ==========================================================================
+   @ui-construction-library/themes — Neutral Theme
+   ==========================================================================
+   A grayscale/monochrome theme variant — desaturated brand colors, neutral
+   surfaces, and subdued feedback tones. Ideal for content-focused interfaces,
+   documentation sites, or apps where brand color would be distracting.
+
+   Usage:
+     <link rel="stylesheet" href="@ui-construction-library/themes/theme-neutral.css">
+     <html data-theme="neutral">
+   ========================================================================== */
+
+[data-theme="neutral"] {
+  /* ------------------------------------------------------------------------
+     Surfaces
+     ------------------------------------------------------------------------ */
+  --ucl-color-background: #fafaf9;
+  --ucl-color-foreground: #1c1917;
+  --ucl-color-card: #ffffff;
+  --ucl-color-card-foreground: #1c1917;
+  --ucl-color-popover: #ffffff;
+  --ucl-color-popover-foreground: #1c1917;
+
+  --ucl-color-muted: #f5f5f4;
+  --ucl-color-muted-foreground: #78716c;
+  --ucl-color-accent: #f5f5f4;
+  --ucl-color-accent-foreground: #1c1917;
+  --ucl-color-border: #e7e5e4;
+  --ucl-color-input: #e7e5e4;
+  --ucl-color-ring: #a8a29e;
+
+  /* ------------------------------------------------------------------------
+     Brand & Feedback (Desaturated)
+     ------------------------------------------------------------------------ */
+  --ucl-color-primary: #57534e;
+  --ucl-color-primary-foreground: #fafaf9;
+  --ucl-color-secondary: #a8a29e;
+  --ucl-color-secondary-foreground: #fafaf9;
+  --ucl-color-success: #84cc16;
+  --ucl-color-success-foreground: #fafaf9;
+  --ucl-color-warning: #d97706;
+  --ucl-color-warning-foreground: #fafaf9;
+  --ucl-color-error: #ef4444;
+  --ucl-color-error-foreground: #fafaf9;
+  --ucl-color-info: #0ea5e9;
+  --ucl-color-info-foreground: #fafaf9;
+
+  /* ------------------------------------------------------------------------
+     Semantic Aliases
+     ------------------------------------------------------------------------ */
+  --ucl-background: var(--ucl-color-background);
+  --ucl-foreground: var(--ucl-color-foreground);
+  --ucl-card: var(--ucl-color-card);
+  --ucl-card-foreground: var(--ucl-color-card-foreground);
+  --ucl-popover: var(--ucl-color-popover);
+  --ucl-popover-foreground: var(--ucl-color-popover-foreground);
+  --ucl-muted: var(--ucl-color-muted);
+  --ucl-muted-foreground: var(--ucl-color-muted-foreground);
+  --ucl-accent: var(--ucl-color-accent);
+  --ucl-accent-foreground: var(--ucl-color-accent-foreground);
+  --ucl-border: var(--ucl-color-border);
+  --ucl-input: var(--ucl-color-input);
+  --ucl-ring: var(--ucl-color-ring);
+  --ucl-primary: var(--ucl-color-primary);
+  --ucl-primary-foreground: var(--ucl-color-primary-foreground);
+  --ucl-secondary: var(--ucl-color-secondary);
+  --ucl-secondary-foreground: var(--ucl-color-secondary-foreground);
+  --ucl-success: var(--ucl-color-success);
+  --ucl-success-foreground: var(--ucl-color-success-foreground);
+  --ucl-warning: var(--ucl-color-warning);
+  --ucl-warning-foreground: var(--ucl-color-warning-foreground);
+  --ucl-error: var(--ucl-color-error);
+  --ucl-error-foreground: var(--ucl-color-error-foreground);
+  --ucl-info: var(--ucl-color-info);
+  --ucl-info-foreground: var(--ucl-color-info-foreground);
+
+  /* ------------------------------------------------------------------------
+     Typography
+     ------------------------------------------------------------------------ */
+  --ucl-font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --ucl-font-serif: 'Source Serif 4', ui-serif, Georgia, Cambria, 'Times New Roman', serif;
+  --ucl-font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+
+  /* Fluid type scale */
+  --ucl-text-xs: clamp(0.75rem, 0.72rem + 0.12vw, 0.875rem);
+  --ucl-text-sm: clamp(0.875rem, 0.84rem + 0.16vw, 1rem);
+  --ucl-text-base: clamp(1rem, 0.96rem + 0.22vw, 1.125rem);
+  --ucl-text-lg: clamp(1.125rem, 1.04rem + 0.36vw, 1.375rem);
+  --ucl-text-xl: clamp(1.25rem, 1.08rem + 0.72vw, 1.75rem);
+  --ucl-text-2xl: clamp(1.5rem, 1.18rem + 1.24vw, 2.375rem);
+  --ucl-text-3xl: clamp(1.875rem, 1.28rem + 2.1vw, 3rem);
+  --ucl-text-4xl: clamp(2.25rem, 1.4rem + 3vw, 4rem);
+  --ucl-text-5xl: clamp(3rem, 1.8rem + 4vw, 5rem);
+  --ucl-text-6xl: clamp(3.75rem, 2.4rem + 4.8vw, 6rem);
+
+  /* ------------------------------------------------------------------------
+     Spacing
+     ------------------------------------------------------------------------ */
+  --ucl-spacing-0: 0px;
+  --ucl-spacing-0-5: 0.125rem;
+  --ucl-spacing-1: 0.25rem;
+  --ucl-spacing-1-5: 0.375rem;
+  --ucl-spacing-2: 0.5rem;
+  --ucl-spacing-2-5: 0.625rem;
+  --ucl-spacing-3: 0.75rem;
+  --ucl-spacing-3-5: 0.875rem;
+  --ucl-spacing-4: 1rem;
+  --ucl-spacing-5: 1.25rem;
+  --ucl-spacing-6: 1.5rem;
+  --ucl-spacing-7: 1.75rem;
+  --ucl-spacing-8: 2rem;
+  --ucl-spacing-9: 2.25rem;
+  --ucl-spacing-10: 2.5rem;
+  --ucl-spacing-11: 2.75rem;
+  --ucl-spacing-12: 3rem;
+  --ucl-spacing-14: 3.5rem;
+  --ucl-spacing-16: 4rem;
+  --ucl-spacing-20: 5rem;
+  --ucl-spacing-24: 6rem;
+  --ucl-spacing-28: 7rem;
+  --ucl-spacing-32: 8rem;
+  --ucl-spacing-36: 9rem;
+  --ucl-spacing-40: 10rem;
+  --ucl-spacing-44: 11rem;
+  --ucl-spacing-48: 12rem;
+  --ucl-spacing-56: 14rem;
+  --ucl-spacing-64: 16rem;
+
+  /* ------------------------------------------------------------------------
+     Radii
+     ------------------------------------------------------------------------ */
+  --ucl-radius-none: 0px;
+  --ucl-radius-sm: 2px;
+  --ucl-radius-md: 4px;
+  --ucl-radius-lg: 8px;
+  --ucl-radius-xl: 12px;
+  --ucl-radius-2xl: 16px;
+  --ucl-radius-full: 9999px;
+
+  /* ------------------------------------------------------------------------
+     Shadows
+     ------------------------------------------------------------------------ */
+  --ucl-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+  --ucl-shadow-md: 0 1px 3px 0 rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.06);
+  --ucl-shadow-lg: 0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+  --ucl-shadow-xl: 0 10px 15px -3px rgba(0, 0, 0, 0.06), 0 4px 6px -4px rgba(0, 0, 0, 0.06);
+
+  /* ------------------------------------------------------------------------
+     Backward-Compatible Aliases (unprefixed)
+     ------------------------------------------------------------------------ */
+  --background: var(--ucl-background);
+  --foreground: var(--ucl-foreground);
+  --muted: var(--ucl-muted);
+  --muted-foreground: var(--ucl-muted-foreground);
+  --border: var(--ucl-border);
+  --input: var(--ucl-input);
+  --ring: var(--ucl-ring);
+  --primary: var(--ucl-primary);
+  --primary-foreground: var(--ucl-primary-foreground);
+  --secondary: var(--ucl-secondary);
+  --secondary-foreground: var(--ucl-secondary-foreground);
+  --success: var(--ucl-success);
+  --success-foreground: var(--ucl-success-foreground);
+  --warning: var(--ucl-warning);
+  --warning-foreground: var(--ucl-warning-foreground);
+  --error: var(--ucl-error);
+  --error-foreground: var(--ucl-error-foreground);
+  --info: var(--ucl-info);
+  --info-foreground: var(--ucl-info-foreground);
+  --card: var(--ucl-card);
+  --card-foreground: var(--ucl-card-foreground);
+  --popover: var(--ucl-popover);
+  --popover-foreground: var(--ucl-popover-foreground);
+  --accent: var(--ucl-accent);
+  --accent-foreground: var(--ucl-accent-foreground);
+  --font-sans: var(--ucl-font-sans);
+  --font-serif: var(--ucl-font-serif);
+  --font-mono: var(--ucl-font-mono);
+  --text-xs: var(--ucl-text-xs);
+  --text-sm: var(--ucl-text-sm);
+  --text-base: var(--ucl-text-base);
+  --text-lg: var(--ucl-text-lg);
+  --text-xl: var(--ucl-text-xl);
+  --text-2xl: var(--ucl-text-2xl);
+  --text-3xl: var(--ucl-text-3xl);
+  --text-4xl: var(--ucl-text-4xl);
+  --text-5xl: var(--ucl-text-5xl);
+  --text-6xl: var(--ucl-text-6xl);
+  --spacing-0: var(--ucl-spacing-0);
+  --spacing-0-5: var(--ucl-spacing-0-5);
+  --spacing-1: var(--ucl-spacing-1);
+  --spacing-1-5: var(--ucl-spacing-1-5);
+  --spacing-2: var(--ucl-spacing-2);
+  --spacing-2-5: var(--ucl-spacing-2-5);
+  --spacing-3: var(--ucl-spacing-3);
+  --spacing-3-5: var(--ucl-spacing-3-5);
+  --spacing-4: var(--ucl-spacing-4);
+  --spacing-5: var(--ucl-spacing-5);
+  --spacing-6: var(--ucl-spacing-6);
+  --spacing-7: var(--ucl-spacing-7);
+  --spacing-8: var(--ucl-spacing-8);
+  --spacing-9: var(--ucl-spacing-9);
+  --spacing-10: var(--ucl-spacing-10);
+  --spacing-11: var(--ucl-spacing-11);
+  --spacing-12: var(--ucl-spacing-12);
+  --spacing-14: var(--ucl-spacing-14);
+  --spacing-16: var(--ucl-spacing-16);
+  --spacing-20: var(--ucl-spacing-20);
+  --spacing-24: var(--ucl-spacing-24);
+  --spacing-28: var(--ucl-spacing-28);
+  --spacing-32: var(--ucl-spacing-32);
+  --spacing-36: var(--ucl-spacing-36);
+  --spacing-40: var(--ucl-spacing-40);
+  --spacing-44: var(--ucl-spacing-44);
+  --spacing-48: var(--ucl-spacing-48);
+  --spacing-56: var(--ucl-spacing-56);
+  --spacing-64: var(--ucl-spacing-64);
+  --radius-sm: var(--ucl-radius-sm);
+  --radius-md: var(--ucl-radius-md);
+  --radius-lg: var(--ucl-radius-lg);
+  --radius-xl: var(--ucl-radius-xl);
+  --radius-2xl: var(--ucl-radius-2xl);
+  --radius-full: var(--ucl-radius-full);
+  --shadow-sm: var(--ucl-shadow-sm);
+  --shadow-md: var(--ucl-shadow-md);
+  --shadow-lg: var(--ucl-shadow-lg);
+  --shadow-xl: var(--ucl-shadow-xl);
+}

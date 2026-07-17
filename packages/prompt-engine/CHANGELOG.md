@@ -1,5 +1,12 @@
 # @ui-construction-library/prompt-engine
 
+## 0.3.1
+
+### Patch Changes
+
+- Updated dependencies
+  - @ui-construction-library/registry@0.3.1
+
 ## 0.3.0
 
 ### Minor Changes

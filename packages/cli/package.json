@@ -1,0 +1,47 @@
+{
+  "name": "@ui-construction-library/cli",
+  "version": "0.2.0",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "description": "CLI tool for @ui-construction-library — init projects, browse components, list themes, and explore docs.",
+  "bin": {
+    "ucl": "./dist/index.js"
+  },
+  "type": "module",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check src"
+  },
+  "dependencies": {
+    "@ui-construction-library/registry": "workspace:*",
+    "@ui-construction-library/themes": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.2",
+    "typescript": "^6.0.3"
+  },
+  "license": "MIT",
+  "keywords": [
+    "cli",
+    "ui-library",
+    "design-system",
+    "tooling"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jilimb0/UI-Library.git",
+    "directory": "packages/cli"
+  },
+  "homepage": "https://github.com/jilimb0/UI-Library#readme",
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

@@ -1,6 +1,6 @@
 {
   "name": "@ui-construction-library/react-hook-form",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
@@ -41,7 +41,7 @@
   },
   "license": "MIT",
   "type": "module",
-  "description": "React Hook Form adapter layer for @ui-construction-library \u2014 typed field bindings and validation wiring.",
+  "description": "React Hook Form adapter layer for @ui-construction-library — typed field bindings and validation wiring.",
   "keywords": [
     "react-hook-form",
     "forms",

@@ -1,0 +1,53 @@
+{
+  "name": "@ui-construction-library/themes",
+  "version": "0.2.0",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "description": "Standalone CSS theme files for @ui-construction-library — light, dark, and neutral color schemes.",
+  "main": "dist/index.css",
+  "module": "dist/index.css",
+  "style": "dist/index.css",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "exports": {
+    ".": "./dist/index.css",
+    "./theme-light.css": "./dist/theme-light.css",
+    "./theme-dark.css": "./dist/theme-dark.css",
+    "./theme-neutral.css": "./dist/theme-neutral.css",
+    "./light": "./dist/theme-light.css",
+    "./dark": "./dist/theme-dark.css",
+    "./neutral": "./dist/theme-neutral.css"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "scripts": {
+    "build": "node scripts/build-css.js",
+    "test": "node scripts/test-css.js",
+    "lint": "biome check src",
+    "lint:fix": "biome check --write src"
+  },
+  "license": "MIT",
+  "type": "module",
+  "keywords": [
+    "css",
+    "themes",
+    "design-system",
+    "dark-mode",
+    "light-mode",
+    "neutral"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jilimb0/UI-Library.git",
+    "directory": "packages/themes"
+  },
+  "homepage": "https://github.com/jilimb0/UI-Library#readme",
+  "engines": {
+    "node": ">=26.0.0"
+  }
+}

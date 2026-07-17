@@ -59,6 +59,9 @@
       ],
       "@ui-construction-library/prompt-engine": [
         "packages/prompt-engine/src/index.ts"
+      ],
+      "@ui-construction-library/themes": [
+        "packages/themes/src/index.css"
       ]
     }
   },

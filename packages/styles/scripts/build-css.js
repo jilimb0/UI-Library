@@ -243,18 +243,26 @@ const header = `/* =============================================================
 const separator =
   '\n\n/* ======================================================================== */\n\n';
 
+const layerPrelude = `@layer uicl-reset, uicl-base, uicl-components;
+
+`;
+
 const finalCss = [
+  layerPrelude,
   header,
-  '/* ── Base Layer ── */',
+  '@layer uicl-reset {',
   baseCss,
+  '}',
   separator,
-  '/* ── Motion Layer ── */',
+  '/* ── Motion Layer (unlayered) ── */',
   motionCss,
   separator,
+  '@layer uicl-components {',
   '/* ── Component Layer (ucl- prefixed) ── */',
   prefixedComponents,
+  '}',
   separator,
-  '/* ── Utilities Layer ── */',
+  '/* ── Utilities Layer (unlayered, highest specificity) ── */',
   utilitiesCss,
 ].join('\n');
 
@@ -271,3 +279,8 @@ const totalLines = finalCss.split('\n').length;
 console.log(
   `✓ dist/styles.css written (${totalLines} lines, ~${uclClasses} ucl- class references)`
 );
+
+// Copy layers.css standalone file
+const layersCss = readFileSync(resolve(root, 'src/layers.css'), 'utf-8');
+writeFileSync(resolve(distDir, 'layers.css'), layersCss, 'utf-8');
+console.log('✓ dist/layers.css written');

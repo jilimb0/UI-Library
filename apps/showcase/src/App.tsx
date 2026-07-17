@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import './App.css';
 
 const PACKAGES = [
   {
@@ -23,6 +24,12 @@ const PACKAGES = [
     name: '@ui-construction-library/styles',
     version: '0.4.0',
     desc: 'Universal CSS layer — reset, utilities, preflights',
+    category: 'foundations',
+  },
+  {
+    name: '@ui-construction-library/themes',
+    version: '0.1.0',
+    desc: 'Standalone CSS theme files — dark, light, and neutral color schemes',
     category: 'foundations',
   },
   {
@@ -135,36 +142,11 @@ function App() {
   };
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        background: '#0d1117',
-        color: '#c9d1d9',
-        fontFamily:
-          '-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif',
-      }}
-    >
-      <header
-        style={{
-          borderBottom: '1px solid #30363d',
-          padding: '3rem 2rem 2rem',
-          textAlign: 'center',
-        }}
-      >
-        <h1
-          style={{
-            fontSize: '2.5rem',
-            fontWeight: 700,
-            color: '#f0f6fc',
-            margin: 0,
-          }}
-        >
-          UI Construction Library
-        </h1>
-        <p
-          style={{ fontSize: '1.1rem', color: '#8b949e', marginTop: '0.5rem' }}
-        >
-          A modular, integration-first React UI component ecosystem — 18
+    <div className="app-shell">
+      <header className="app-header">
+        <h1>UI Construction Library</h1>
+        <p className="section-subtitle">
+          A modular, integration-first React UI component ecosystem — 19
           packages, 240+ tests, 2,150 mutants
         </p>
         <div
@@ -177,195 +159,61 @@ function App() {
           }}
         >
           {[
-            { value: '18', label: 'Packages' },
+            { value: '19', label: 'Packages' },
             { value: '240+', label: 'Tests' },
             { value: '99.7%', label: 'Mutation Score' },
             { value: '15k+', label: 'Files' },
           ].map((s) => (
-            <div key={s.label} style={{ textAlign: 'center' }}>
-              <div
-                style={{
-                  fontSize: '1.5rem',
-                  fontWeight: 700,
-                  color: '#58a6ff',
-                }}
-              >
-                {s.value}
-              </div>
-              <div
-                style={{
-                  fontSize: '0.75rem',
-                  color: '#8b949e',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.05em',
-                }}
-              >
-                {s.label}
-              </div>
+            <div className="stat-item" key={s.label}>
+              <div className="stat-value">{s.value}</div>
+              <div className="stat-label">{s.label}</div>
             </div>
           ))}
         </div>
       </header>
 
-      <main style={{ maxWidth: 960, margin: '0 auto', padding: '2rem' }}>
-        <section style={{ marginBottom: '3rem' }}>
-          <h2
-            style={{
-              color: '#f0f6fc',
-              fontSize: '1.3rem',
-              marginBottom: '0.5rem',
-            }}
-          >
-            Getting Started
-          </h2>
-          <div
-            style={{
-              background: '#161b22',
-              border: '1px solid #30363d',
-              borderRadius: 8,
-              padding: '1.5rem',
-            }}
-          >
-            <pre style={{ margin: 0, fontSize: '0.85rem', color: '#8b949e' }}>
-              {`npm install @ui-construction-library/core @ui-construction-library/tokens @ui-construction-library/styles
+      <main className="main-content">
+        <section className="section">
+          <h2 className="section-title">Getting Started</h2>
+          <div className="code-block">
+            <pre>{`npm install @ui-construction-library/core @ui-construction-library/tokens @ui-construction-library/themes
 
 import { Button, Card, Dialog } from '@ui-construction-library/core'
-import { theme } from '@ui-construction-library/tokens'
-import '@ui-construction-library/styles/preflight.css'`}
-            </pre>
+import '@ui-construction-library/themes/theme-dark.css'`}</pre>
           </div>
         </section>
 
-        <section>
-          <h2
-            style={{
-              color: '#f0f6fc',
-              fontSize: '1.3rem',
-              marginBottom: '1rem',
-            }}
-          >
-            Packages
-          </h2>
-          <div
-            style={{
-              display: 'flex',
-              gap: '0.5rem',
-              flexWrap: 'wrap',
-              marginBottom: '1.5rem',
-            }}
-          >
+        <section className="section">
+          <h2 className="section-title">Packages</h2>
+          <div className="cat-filters">
             {CATEGORIES.map((cat) => (
               <button
                 key={cat.id}
                 type="button"
+                className={`cat-btn${filter === cat.id ? ' cat-btn--active' : ''}`}
                 onClick={() => setFilter(cat.id)}
-                style={{
-                  padding: '0.4rem 1rem',
-                  borderRadius: 20,
-                  border: `1px solid ${filter === cat.id ? '#58a6ff' : '#30363d'}`,
-                  background: filter === cat.id ? '#1f6feb22' : 'transparent',
-                  color: filter === cat.id ? '#58a6ff' : '#8b949e',
-                  cursor: 'pointer',
-                  fontSize: '0.85rem',
-                  fontWeight: filter === cat.id ? 600 : 400,
-                }}
               >
                 {cat.label}
               </button>
             ))}
           </div>
 
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-              gap: '1rem',
-            }}
-          >
+          <div className="pkg-grid">
             {filtered.map((p) => (
-              <div
-                key={p.name}
-                style={{
-                  background: '#161b22',
-                  border: '1px solid #30363d',
-                  borderRadius: 8,
-                  padding: '1.25rem',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '0.5rem',
-                }}
-              >
+              <div key={p.name} className="pkg-card">
                 <div>
-                  <div
-                    style={{
-                      color: '#58a6ff',
-                      fontWeight: 600,
-                      fontSize: '0.85rem',
-                      fontFamily: 'monospace',
-                    }}
-                  >
-                    {p.name}
-                  </div>
-                  <div style={{ color: '#8b949e', fontSize: '0.75rem' }}>
-                    v{p.version}
-                  </div>
+                  <div className="pkg-name">{p.name}</div>
+                  <div className="pkg-version">v{p.version}</div>
                 </div>
-                <p
-                  style={{
-                    color: '#c9d1d9',
-                    fontSize: '0.85rem',
-                    margin: 0,
-                    lineHeight: 1.4,
-                  }}
-                >
-                  {p.desc}
-                </p>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    marginTop: 'auto',
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: '0.7rem',
-                      padding: '0.15rem 0.5rem',
-                      borderRadius: 12,
-                      background:
-                        p.category === 'integrations'
-                          ? '#1f6feb33'
-                          : p.category === 'extensions'
-                            ? '#3fb95033'
-                            : p.category === 'tools'
-                              ? '#d2992233'
-                              : '#8b949e33',
-                      color:
-                        p.category === 'integrations'
-                          ? '#58a6ff'
-                          : p.category === 'extensions'
-                            ? '#3fb950'
-                            : p.category === 'tools'
-                              ? '#d29922'
-                              : '#8b949e',
-                      textTransform: 'capitalize',
-                    }}
-                  >
+                <p className="pkg-desc">{p.desc}</p>
+                <div className="pkg-footer">
+                  <span className={`pkg-category pkg-category--${p.category}`}>
                     {p.category}
                   </span>
                   <button
                     type="button"
+                    className={`install-btn${copied === p.name ? ' install-btn--copied' : ''}`}
                     onClick={() => copyInstall(p.name)}
-                    style={{
-                      padding: '0.3rem 0.75rem',
-                      borderRadius: 6,
-                      border: '1px solid #30363d',
-                      background: 'transparent',
-                      color: copied === p.name ? '#3fb950' : '#8b949e',
-                      cursor: 'pointer',
-                      fontSize: '0.75rem',
-                    }}
                   >
                     {copied === p.name ? 'Copied!' : 'npm install'}
                   </button>
@@ -375,23 +223,9 @@ import '@ui-construction-library/styles/preflight.css'`}
           </div>
         </section>
 
-        <section style={{ marginTop: '3rem' }}>
-          <h2
-            style={{
-              color: '#f0f6fc',
-              fontSize: '1.3rem',
-              marginBottom: '1rem',
-            }}
-          >
-            Interactive Examples
-          </h2>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-              gap: '1rem',
-            }}
-          >
+        <section className="section">
+          <h2 className="section-title">Interactive Examples</h2>
+          <div className="example-grid">
             <ExampleCard
               title="Button"
               desc="Primary, secondary, ghost, danger variants. Loading state, icon support."
@@ -419,29 +253,12 @@ import '@ui-construction-library/styles/preflight.css'`}
           </div>
         </section>
 
-        <footer
-          style={{
-            textAlign: 'center',
-            padding: '3rem 0 2rem',
-            borderTop: '1px solid #30363d',
-            marginTop: '3rem',
-            color: '#8b949e',
-            fontSize: '0.85rem',
-          }}
-        >
-          <p style={{ margin: 0 }}>
-            UI Construction Library —{' '}
-            <a
-              href="https://github.com/jilimb0/UI-Library"
-              style={{ color: '#58a6ff' }}
-            >
-              GitHub
-            </a>
+        <footer className="app-footer">
+          <p>
+            UI Construction Library —
+            <a href="https://github.com/jilimb0/UI-Library"> GitHub</a>
             {' · '}
-            <a
-              href="https://www.npmjs.com/search?q=%40ui-construction-library"
-              style={{ color: '#58a6ff' }}
-            >
+            <a href="https://www.npmjs.com/search?q=%40ui-construction-library">
               npm
             </a>
             {' · v0.5.0'}
@@ -454,34 +271,9 @@ import '@ui-construction-library/styles/preflight.css'`}
 
 function ExampleCard({ title, desc }: { title: string; desc: string }) {
   return (
-    <div
-      style={{
-        background: '#161b22',
-        border: '1px solid #30363d',
-        borderRadius: 8,
-        padding: '1.25rem',
-      }}
-    >
-      <div
-        style={{
-          color: '#f0f6fc',
-          fontWeight: 600,
-          fontSize: '0.9rem',
-          marginBottom: '0.5rem',
-        }}
-      >
-        {title}
-      </div>
-      <p
-        style={{
-          color: '#8b949e',
-          fontSize: '0.8rem',
-          margin: 0,
-          lineHeight: 1.4,
-        }}
-      >
-        {desc}
-      </p>
+    <div className="example-card">
+      <div className="example-card-title">{title}</div>
+      <p className="example-card-desc">{desc}</p>
     </div>
   );
 }

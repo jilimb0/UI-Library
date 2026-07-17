@@ -1,0 +1,15 @@
+/* ==========================================================================
+   @ui-construction-library/themes — Entry Point
+   ==========================================================================
+   Imports all theme variants. Consumers can also import individual themes:
+     - @ui-construction-library/themes/theme-light.css
+     - @ui-construction-library/themes/theme-dark.css
+     - @ui-construction-library/themes/theme-neutral.css
+
+   Apply a theme by setting the `data-theme` attribute on the root element:
+     <html data-theme="dark">
+   ========================================================================== */
+
+@import './theme-light.css';
+@import './theme-dark.css';
+@import './theme-neutral.css';

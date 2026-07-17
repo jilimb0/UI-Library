@@ -9,6 +9,7 @@ export interface InputProps
   description?: string;
   error?: boolean;
   errorMessage?: string;
+  suffix?: React.ReactNode;
 }
 
 /**
@@ -48,6 +49,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       style,
       disabled,
       required,
+      suffix,
       ...props
     },
     ref
@@ -80,22 +82,42 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             {label}
           </label>
         )}
-        <input
-          {...inputAttrs}
-          aria-required={required || undefined}
-          aria-describedby={error && errorMessage ? errorId : descriptionId}
-          aria-invalid={error || undefined}
-          id={inputId}
-          type={type}
-          className={cn(
-            inputClassName,
-            size === 'sm' && 'ucl-input--sm',
-            size === 'lg' && 'ucl-input--lg',
-            className
+        <div style={{ position: 'relative' }}>
+          <input
+            {...inputAttrs}
+            aria-required={required || undefined}
+            aria-describedby={error && errorMessage ? errorId : descriptionId}
+            aria-invalid={error || undefined}
+            id={inputId}
+            type={type}
+            className={cn(
+              inputClassName,
+              size === 'sm' && 'ucl-input--sm',
+              size === 'lg' && 'ucl-input--lg',
+              suffix && 'ucl-input--with-suffix',
+              className
+            )}
+            ref={ref}
+            style={suffix ? { paddingRight: '2.5rem' } : undefined}
+            {...props}
+          />
+          {suffix && (
+            <div
+              style={{
+                position: 'absolute',
+                right: '0.75rem',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                display: 'flex',
+                alignItems: 'center',
+                pointerEvents: 'auto',
+                lineHeight: 0,
+              }}
+            >
+              {suffix}
+            </div>
           )}
-          ref={ref}
-          {...props}
-        />
+        </div>
         {description && !error && (
           <div id={descriptionId} className="ucl-field-hint">
             {description}

@@ -1,6 +1,6 @@
 {
   "name": "@ui-construction-library/integration-tanstack-router",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
@@ -38,7 +38,7 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "description": "TanStack Router integration for @ui-construction-library \u2014 router-bound navigation components.",
+  "description": "TanStack Router integration for @ui-construction-library — router-bound navigation components.",
   "keywords": [
     "tanstack-router",
     "routing",

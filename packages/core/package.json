@@ -1,11 +1,11 @@
 {
   "name": "@ui-construction-library/core",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
-  "description": "Primary React UI component library \u2014 atoms, molecules, organisms and templates for product surfaces.",
+  "description": "Primary React UI component library — atoms, molecules, organisms and templates for product surfaces.",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
@@ -22,14 +22,109 @@
     },
     "./styles.css": "./dist/styles.css",
     "./styles": "./dist/styles.css",
-    "./experimental": "./dist/experimental/index.js"
+    "./experimental": "./dist/experimental/index.js",
+    "./Button": {
+      "import": "./dist/subpath/Button.js",
+      "require": "./dist/subpath/Button.cjs",
+      "types": "./dist/subpath/Button.d.ts"
+    },
+    "./Badge": {
+      "import": "./dist/subpath/Badge.js",
+      "require": "./dist/subpath/Badge.cjs",
+      "types": "./dist/subpath/Badge.d.ts"
+    },
+    "./Card": {
+      "import": "./dist/subpath/Card.js",
+      "require": "./dist/subpath/Card.cjs",
+      "types": "./dist/subpath/Card.d.ts"
+    },
+    "./Dialog": {
+      "import": "./dist/subpath/Dialog.js",
+      "require": "./dist/subpath/Dialog.cjs",
+      "types": "./dist/subpath/Dialog.d.ts"
+    },
+    "./Input": {
+      "import": "./dist/subpath/Input.js",
+      "require": "./dist/subpath/Input.cjs",
+      "types": "./dist/subpath/Input.d.ts"
+    },
+    "./Select": {
+      "import": "./dist/subpath/Select.js",
+      "require": "./dist/subpath/Select.cjs",
+      "types": "./dist/subpath/Select.d.ts"
+    },
+    "./Switch": {
+      "import": "./dist/subpath/Switch.js",
+      "require": "./dist/subpath/Switch.cjs",
+      "types": "./dist/subpath/Switch.d.ts"
+    },
+    "./Toast": {
+      "import": "./dist/subpath/Toast.js",
+      "require": "./dist/subpath/Toast.cjs",
+      "types": "./dist/subpath/Toast.d.ts"
+    },
+    "./Tooltip": {
+      "import": "./dist/subpath/Tooltip.js",
+      "require": "./dist/subpath/Tooltip.cjs",
+      "types": "./dist/subpath/Tooltip.d.ts"
+    },
+    "./Popover": {
+      "import": "./dist/subpath/Popover.js",
+      "require": "./dist/subpath/Popover.cjs",
+      "types": "./dist/subpath/Popover.d.ts"
+    },
+    "./Dropdown": {
+      "import": "./dist/subpath/Dropdown.js",
+      "require": "./dist/subpath/Dropdown.cjs",
+      "types": "./dist/subpath/Dropdown.d.ts"
+    },
+    "./Modal": {
+      "import": "./dist/subpath/Modal.js",
+      "require": "./dist/subpath/Modal.cjs",
+      "types": "./dist/subpath/Modal.d.ts"
+    },
+    "./Alert": {
+      "import": "./dist/subpath/Alert.js",
+      "require": "./dist/subpath/Alert.cjs",
+      "types": "./dist/subpath/Alert.d.ts"
+    },
+    "./Checkbox": {
+      "import": "./dist/subpath/Checkbox.js",
+      "require": "./dist/subpath/Checkbox.cjs",
+      "types": "./dist/subpath/Checkbox.d.ts"
+    },
+    "./Text": {
+      "import": "./dist/subpath/Text.js",
+      "require": "./dist/subpath/Text.cjs",
+      "types": "./dist/subpath/Text.d.ts"
+    },
+    "./Heading": {
+      "import": "./dist/subpath/Heading.js",
+      "require": "./dist/subpath/Heading.cjs",
+      "types": "./dist/subpath/Heading.d.ts"
+    },
+    "./Avatar": {
+      "import": "./dist/subpath/Avatar.js",
+      "require": "./dist/subpath/Avatar.cjs",
+      "types": "./dist/subpath/Avatar.d.ts"
+    },
+    "./Spinner": {
+      "import": "./dist/subpath/Spinner.js",
+      "require": "./dist/subpath/Spinner.cjs",
+      "types": "./dist/subpath/Spinner.d.ts"
+    },
+    "./Skeleton": {
+      "import": "./dist/subpath/Skeleton.js",
+      "require": "./dist/subpath/Skeleton.cjs",
+      "types": "./dist/subpath/Skeleton.d.ts"
+    }
   },
   "sideEffects": [
     "*.css",
     "**/*.css"
   ],
   "scripts": {
-    "build": "rollup -c && tsc -p tsconfig.json --emitDeclarationOnly --declarationMap",
+    "build": "rollup -c && tsc -p tsconfig.json --emitDeclarationOnly --declarationMap && node scripts/generate-subpath-entries.js",
     "lint": "biome check src",
     "lint:fix": "biome check --write src",
     "test": "vitest run --config ./vitest.config.ts src",

@@ -1,5 +1,12 @@
 # @ui-construction-library/react-hook-form
 
+## 0.4.2
+
+### Patch Changes
+
+- Updated dependencies
+  - @ui-construction-library/core@0.6.0
+
 ## 0.4.1
 
 ### Patch Changes
