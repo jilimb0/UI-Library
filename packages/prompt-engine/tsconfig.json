@@ -8,10 +8,11 @@
     "declarationMap": true,
     "sourceMap": false,
     "noEmit": false,
+    "baseUrl": ".",
     "ignoreDeprecations": "6.0",
     "types": ["vitest/globals"],
     "paths": {
-      "@ui-construction-library/schema": ["packages/schema/src/index.ts"]
+      "@ui-construction-library/schema": ["../schema/src/index.ts"]
     }
   },
   "include": ["src/**/*"],
