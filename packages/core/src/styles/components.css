@@ -15,13 +15,13 @@
   white-space: nowrap;
   cursor: pointer;
   transition:
-    opacity 0.15s ease;
-}
-
     background-color 0.15s ease,
     border-color 0.15s ease,
     color 0.15s ease,
     box-shadow 0.15s ease,
+    opacity 0.15s ease;
+}
+
 .ucl-button:focus-visible, .button:focus-visible {
   outline: 2px solid var(--ring);
   outline-offset: 2px;
@@ -145,10 +145,10 @@
   font-size: 0.875rem;
   line-height: 1.25rem;
   transition:
+    border-color 0.15s ease,
     box-shadow 0.15s ease;
 }
 
-    border-color 0.15s ease,
 .ucl-input, .input {
   min-height: 2.25rem;
 }
@@ -1052,6 +1052,36 @@ label,
   padding: 0.25rem 0;
 }
 
+/* Dialog */
+.dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background-color: rgb(0 0 0 / 0.4);
+  backdrop-filter: blur(1px);
+}
+
+.dialog-content {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 50;
+  width: min(calc(100% - 2rem), 32rem);
+  max-height: calc(100vh - 2rem);
+  overflow: auto;
+  transform: translate(-50%, -50%);
+  background-color: var(--card);
+  color: var(--card-foreground);
+  border-radius: calc(var(--radius, 2px) + 2px);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border);
+}
+
+.dialog-trigger {
+  cursor: pointer;
+}
+
 /* Sidebar */
 .sidebar {
   display: flex;
@@ -1772,6 +1802,7 @@ label,
   gap: 1rem;
 }
 
+.ucl-hidden,
 .hidden {
   display: none !important;
 }
