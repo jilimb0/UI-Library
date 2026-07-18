@@ -82,7 +82,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             {label}
           </label>
         )}
-        <div style={{ position: 'relative' }}>
+        <div style={{ position: 'relative', width: '100%' }}>
           <input
             {...inputAttrs}
             aria-required={required || undefined}
