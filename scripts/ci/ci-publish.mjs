@@ -103,12 +103,16 @@ function restoreWorkspaceDeps(pkgObj, original) {
 }
 
 function isAlreadyPublished(name, version) {
+  // Check via the public npm registry API — doesn't need auth for public packages.
+  // npm view can fail with E404 when the CI's GITHUB_TOKEN lacks permissions
+  // on packages published under restricted org scopes.
   try {
+    const url = `https://registry.npmjs.org/${name.replace('/', '%2f')}/${version}`;
     const result = execSync(
-      `npm view "${name}@${version}" version --registry https://registry.npmjs.org 2>/dev/null`,
-      { encoding: 'utf-8' }
+      `curl -sf "${url}" 2>/dev/null`,
+      { encoding: 'utf-8', timeout: 10000 }
     ).trim();
-    return result === version;
+    return result.length > 0;
   } catch {
     return false;
   }
