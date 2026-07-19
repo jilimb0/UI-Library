@@ -107,7 +107,7 @@ function isAlreadyPublished(name, version) {
   // npm view can fail with E404 when the CI's GITHUB_TOKEN lacks permissions
   // on packages published under restricted org scopes.
   try {
-    const url = `https://registry.npmjs.org/${name.replace('/', '%2f')}/${version}`;
+    const url = `https://registry.npmjs.org/${name.replaceAll('/', '%2f')}/${version}`;
     const result = execSync(
       `curl -sf "${url}" 2>/dev/null`,
       { encoding: 'utf-8', timeout: 10000 }
