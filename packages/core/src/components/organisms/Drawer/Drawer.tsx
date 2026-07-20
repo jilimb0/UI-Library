@@ -1,9 +1,10 @@
 import { Dialog } from '@ui-construction-library/primitives';
-import type { CSSProperties, ReactNode } from 'react';
+import type { ComponentPropsWithoutRef, CSSProperties, ReactNode } from 'react';
 import { cn } from '../../../utils/cn';
 
 export interface DrawerProps {
-  open: boolean;
+  open?: boolean;
+  defaultOpen?: boolean;
   onOpenChange: (open: boolean) => void;
   side?: 'left' | 'right' | 'bottom';
   title?: ReactNode;
@@ -13,8 +14,9 @@ export interface DrawerProps {
   style?: CSSProperties;
 }
 
-export function Drawer({
+function DrawerRoot({
   open,
+  defaultOpen,
   onOpenChange,
   side = 'right',
   title,
@@ -24,9 +26,13 @@ export function Drawer({
   style,
 }: DrawerProps) {
   return (
-    <Dialog.Root open={open} onOpenChange={onOpenChange}>
+    <Dialog.Root
+      open={open}
+      defaultOpen={defaultOpen}
+      onOpenChange={onOpenChange}
+    >
       <Dialog.Portal>
-        <Dialog.Overlay className="modal-backdrop" />
+        <Dialog.Overlay className="drawer-backdrop" />
         <Dialog.Content
           className={cn(
             'drawer-content',
@@ -50,9 +56,19 @@ export function Drawer({
             </div>
           )}
 
-          <div>{children}</div>
+          {children}
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>
   );
 }
+
+function DrawerClose(props: ComponentPropsWithoutRef<typeof Dialog.Close>) {
+  return <Dialog.Close {...props} />;
+}
+
+export const Drawer = Object.assign(DrawerRoot, {
+  Close: DrawerClose,
+  Title: Dialog.Title,
+  Description: Dialog.Description,
+});

@@ -59,18 +59,6 @@ while (declMatch !== null) {
 }
 
 // Filter to likely component names (PascalCase with few exceptions)
-const componentExports = [...namedExports].filter(
-  (name) =>
-    // Components are typically PascalCase and not utility types/hooks
-    /^[A-Z]/.test(name) &&
-    !name.startsWith('use') &&
-    !name.endsWith('Props') &&
-    !name.endsWith('Type') &&
-    !name.endsWith('Variant') &&
-    !name.endsWith('Options') &&
-    name !== 'ThemeProvider' &&
-    name !== 'ThemeContext'
-);
 
 // Also include explicitly known major components that might not be top-level exports
 const knownComponents = [
@@ -136,6 +124,15 @@ const knownComponents = [
   'AppShell',
   'Menu',
   'Nav',
+  'KpiCard',
+  'KpiGrid',
+  'Stack',
+  'Cluster',
+  'ErrorBoundary',
+  'FloatingLabelInput',
+  'CoachMark',
+  'PageTip',
+  'ToastProvider',
 ];
 
 // Intersect with known components

@@ -1,4 +1,7 @@
-import { createDialogBehavior } from '@ui-construction-library/behaviors';
+import {
+  createDialogBehavior,
+  lockBodyScroll,
+} from '@ui-construction-library/behaviors';
 import {
   type ButtonHTMLAttributes,
   cloneElement,
@@ -157,6 +160,7 @@ const Overlay = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
       <div
         ref={ref}
         role="presentation"
+        aria-hidden="true"
         {...behavior.overlayAttrs}
         tabIndex={-1}
         onClick={() => setOpen(false)}
@@ -184,6 +188,12 @@ const Content = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
       if (!node) return;
       return trapFocus(node, () => setOpen(false));
     }, [setOpen]);
+
+    useEffect(() => {
+      if (!open) return;
+      const cleanup = lockBodyScroll();
+      return () => cleanup();
+    }, [open]);
 
     return (
       <div

@@ -6,6 +6,7 @@ export interface SidebarItem {
   label: string;
   icon?: ReactNode;
   badge?: string | number;
+  href?: string;
   onClick?: () => void;
   active?: boolean;
 }
@@ -66,28 +67,50 @@ export function Sidebar({
               <div className="sidebar__group-label">{group.label}</div>
             ) : null}
 
-            <div className="stack-vertical" style={{ gap: '0.25rem' }}>
-              {group.items.map((item) => (
-                <button
-                  key={item.key}
-                  type="button"
-                  onClick={item.onClick}
-                  className={cn(
-                    'sidebar__item',
-                    item.active && 'sidebar__item--active'
-                  )}
-                >
-                  {item.icon ? (
-                    <span className="mr-2 inline-flex">{item.icon}</span>
-                  ) : null}
-                  {!collapsed ? (
-                    <span className="flex-1 text-left">{item.label}</span>
-                  ) : null}
-                  {!collapsed && hasBadges && item.badge !== undefined ? (
-                    <span className="sidebar__badge">{item.badge}</span>
-                  ) : null}
-                </button>
-              ))}
+            <div className="sidebar__items">
+              {group.items.map((item) =>
+                item.href ? (
+                  <a
+                    key={item.key}
+                    href={item.href}
+                    onClick={item.onClick}
+                    className={cn(
+                      'sidebar__item',
+                      item.active && 'sidebar__item--active'
+                    )}
+                  >
+                    {item.icon ? (
+                      <span className="sidebar__item-icon">{item.icon}</span>
+                    ) : null}
+                    {!collapsed ? (
+                      <span className="flex-1 text-left">{item.label}</span>
+                    ) : null}
+                    {!collapsed && hasBadges && item.badge !== undefined ? (
+                      <span className="sidebar__badge">{item.badge}</span>
+                    ) : null}
+                  </a>
+                ) : (
+                  <button
+                    key={item.key}
+                    type="button"
+                    onClick={item.onClick}
+                    className={cn(
+                      'sidebar__item',
+                      item.active && 'sidebar__item--active'
+                    )}
+                  >
+                    {item.icon ? (
+                      <span className="sidebar__item-icon">{item.icon}</span>
+                    ) : null}
+                    {!collapsed ? (
+                      <span className="flex-1 text-left">{item.label}</span>
+                    ) : null}
+                    {!collapsed && hasBadges && item.badge !== undefined ? (
+                      <span className="sidebar__badge">{item.badge}</span>
+                    ) : null}
+                  </button>
+                )
+              )}
             </div>
           </div>
         ))}

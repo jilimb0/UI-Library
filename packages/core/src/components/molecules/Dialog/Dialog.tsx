@@ -41,7 +41,7 @@ export function Dialog({
       </PrimitiveDialog.Trigger>
     ) : (
       <PrimitiveDialog.Trigger>
-        <button type="button">{trigger}</button>
+        <span>{trigger}</span>
       </PrimitiveDialog.Trigger>
     )
   ) : null;

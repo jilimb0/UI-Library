@@ -19,11 +19,9 @@ export function AuthLayout({
   return (
     <div className={cn('layout-auth', className)}>
       <div className="auth-card">
-        {logo ? <div className="empty-state__action">{logo}</div> : null}
-        {title ? <h1 className="empty-state__title">{title}</h1> : null}
-        {subtitle ? (
-          <p className="empty-state__description">{subtitle}</p>
-        ) : null}
+        {logo ? <div className="auth-card__logo">{logo}</div> : null}
+        {title ? <h1 className="auth-card__title">{title}</h1> : null}
+        {subtitle ? <p className="auth-card__description">{subtitle}</p> : null}
         <div className="form-stack">{children}</div>
       </div>
     </div>

@@ -11,6 +11,7 @@ const textVariants = cva('text', {
       base: '',
       lg: 'text--lg',
       xl: 'text--xl',
+      overline: 'text--overline',
     },
     weight: {
       normal: '',

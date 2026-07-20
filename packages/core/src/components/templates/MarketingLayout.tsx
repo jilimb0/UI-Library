@@ -18,7 +18,7 @@ export function MarketingLayout({
     <div className={cn('layout-shell', className)}>
       {header ? <header className="layout-header">{header}</header> : null}
       <main className="layout-main">{children}</main>
-      {footer ? <footer className="layout-header">{footer}</footer> : null}
+      {footer ? <footer className="layout-footer">{footer}</footer> : null}
     </div>
   );
 }

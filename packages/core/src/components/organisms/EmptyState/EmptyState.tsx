@@ -19,7 +19,7 @@ export function EmptyState({
   style,
 }: EmptyStateProps) {
   return (
-    <div className={cn('empty-state', className)} style={style}>
+    <div className={cn('empty-state', className)} style={style} role="status">
       {icon ? <div className="empty-state__icon">{icon}</div> : null}
       <h3 className="empty-state__title">{title}</h3>
       {description ? (

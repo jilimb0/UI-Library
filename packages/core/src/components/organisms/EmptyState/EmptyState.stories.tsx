@@ -18,3 +18,17 @@ export const Default: Story = {
     action: <Button>Create item</Button>,
   },
 };
+
+export const Minimal: Story = {
+  args: {
+    title: 'No data available',
+  },
+};
+
+export const WithIcon: Story = {
+  args: {
+    icon: <span>🔍</span>,
+    title: 'Search results',
+    description: 'No results match your query.',
+  },
+};

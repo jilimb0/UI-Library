@@ -18,6 +18,7 @@ import { BatteryChargingIcon } from './icons/BatteryChargingIcon';
 import { BatteryIcon } from './icons/BatteryIcon';
 import { BellIcon } from './icons/BellIcon';
 import { BellOffIcon } from './icons/BellOffIcon';
+import { BitbucketIcon } from './icons/BitbucketIcon';
 import { BlocksIcon } from './icons/BlocksIcon';
 import { BluetoothIcon } from './icons/BluetoothIcon';
 import { BookmarkCheckIcon } from './icons/BookmarkCheckIcon';
@@ -141,6 +142,7 @@ import { ImportIcon } from './icons/ImportIcon';
 import { InboxIcon } from './icons/InboxIcon';
 import { IndianRupeeIcon } from './icons/IndianRupeeIcon';
 import { InfoIcon } from './icons/InfoIcon';
+import { IntegrationsIcon } from './icons/IntegrationsIcon';
 import { KanbanIcon } from './icons/KanbanIcon';
 import { KeyIcon } from './icons/KeyIcon';
 import { LaptopIcon } from './icons/LaptopIcon';
@@ -206,6 +208,7 @@ import { PlusIcon } from './icons/PlusIcon';
 import { PoundSterlingIcon } from './icons/PoundSterlingIcon';
 import { PulseIcon } from './icons/PulseIcon';
 import { QrCodeIcon } from './icons/QrCodeIcon';
+import { RadarIcon } from './icons/RadarIcon';
 import { RadioIcon } from './icons/RadioIcon';
 import { ReceiptIcon } from './icons/ReceiptIcon';
 import { ReceiptTextIcon } from './icons/ReceiptTextIcon';
@@ -467,6 +470,9 @@ export type IconName =
   | 'figma'
   | 'chrome'
   | 'safari'
+  | 'bitbucket'
+  | 'integrations'
+  | 'radar'
   | 'cloud'
   | 'cloud-off'
   | 'cloud-upload'
@@ -767,6 +773,9 @@ export const iconRegistry: Record<IconName, ComponentType<IconProps>> = {
   figma: FigmaIcon,
   chrome: ChromeIcon,
   safari: SafariIcon,
+  bitbucket: BitbucketIcon,
+  integrations: IntegrationsIcon,
+  radar: RadarIcon,
   cloud: CloudIcon,
   'cloud-off': CloudOffIcon,
   'cloud-upload': CloudUploadIcon,
@@ -923,6 +932,7 @@ export {
   BatteryIcon,
   BellIcon,
   BellOffIcon,
+  BitbucketIcon,
   BlocksIcon,
   BluetoothIcon,
   BookmarkCheckIcon,
@@ -1046,6 +1056,7 @@ export {
   InboxIcon,
   IndianRupeeIcon,
   InfoIcon,
+  IntegrationsIcon,
   KanbanIcon,
   KeyIcon,
   LaptopIcon,
@@ -1111,6 +1122,7 @@ export {
   PoundSterlingIcon,
   PulseIcon,
   QrCodeIcon,
+  RadarIcon,
   RadioIcon,
   ReceiptIcon,
   ReceiptTextIcon,

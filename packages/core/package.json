@@ -117,6 +117,51 @@
       "import": "./dist/subpath/Skeleton.js",
       "require": "./dist/subpath/Skeleton.cjs",
       "types": "./dist/subpath/Skeleton.d.ts"
+    },
+    "./KpiCard": {
+      "import": "./dist/subpath/KpiCard.js",
+      "require": "./dist/subpath/KpiCard.cjs",
+      "types": "./dist/subpath/KpiCard.d.ts"
+    },
+    "./KpiGrid": {
+      "import": "./dist/subpath/KpiGrid.js",
+      "require": "./dist/subpath/KpiGrid.cjs",
+      "types": "./dist/subpath/KpiGrid.d.ts"
+    },
+    "./Stack": {
+      "import": "./dist/subpath/Stack.js",
+      "require": "./dist/subpath/Stack.cjs",
+      "types": "./dist/subpath/Stack.d.ts"
+    },
+    "./Cluster": {
+      "import": "./dist/subpath/Cluster.js",
+      "require": "./dist/subpath/Cluster.cjs",
+      "types": "./dist/subpath/Cluster.d.ts"
+    },
+    "./ErrorBoundary": {
+      "import": "./dist/subpath/ErrorBoundary.js",
+      "require": "./dist/subpath/ErrorBoundary.cjs",
+      "types": "./dist/subpath/ErrorBoundary.d.ts"
+    },
+    "./FloatingLabelInput": {
+      "import": "./dist/subpath/FloatingLabelInput.js",
+      "require": "./dist/subpath/FloatingLabelInput.cjs",
+      "types": "./dist/subpath/FloatingLabelInput.d.ts"
+    },
+    "./CoachMark": {
+      "import": "./dist/subpath/CoachMark.js",
+      "require": "./dist/subpath/CoachMark.cjs",
+      "types": "./dist/subpath/CoachMark.d.ts"
+    },
+    "./PageTip": {
+      "import": "./dist/subpath/PageTip.js",
+      "require": "./dist/subpath/PageTip.cjs",
+      "types": "./dist/subpath/PageTip.d.ts"
+    },
+    "./ToastProvider": {
+      "import": "./dist/subpath/ToastProvider.js",
+      "require": "./dist/subpath/ToastProvider.cjs",
+      "types": "./dist/subpath/ToastProvider.d.ts"
     }
   },
   "sideEffects": [

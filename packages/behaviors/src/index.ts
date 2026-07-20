@@ -29,12 +29,13 @@ export type { DialogBehaviorOptions } from './dialog';
 export { createDialogBehavior } from './dialog';
 export type { FieldBehaviorOptions } from './field';
 export { createFieldBehavior } from './field';
-// Focus trap (DOM utility — requires HTMLElement)
+// Focus trap & scroll lock (DOM utilities — require HTMLElement)
 export { getFocusableElements, trapFocus } from './focusTrap';
 export type { MenuBehaviorOptions, MenuItemBehaviorOptions } from './menu';
 export { createMenuBehavior, createMenuItemBehavior } from './menu';
 export type { PopoverBehaviorOptions } from './popover';
 export { createPopoverBehavior } from './popover';
+export { lockBodyScroll } from './scrollLock';
 export type {
   SelectBehaviorOptions,
   SelectOptionBehaviorOptions,

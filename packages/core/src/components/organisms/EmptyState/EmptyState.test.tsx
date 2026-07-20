@@ -18,4 +18,9 @@ describe('EmptyState', () => {
     expect(screen.getByText('Try again later')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Refresh' })).toBeInTheDocument();
   });
+
+  it('has status role', () => {
+    render(<EmptyState title="Test" />);
+    expect(screen.getByRole('status')).toBeInTheDocument();
+  });
 });

@@ -1,8 +1,7 @@
 import { render, screen } from '@testing-library/react';
+import { axe } from 'jest-axe';
 import { describe, expect, it } from 'vitest';
 import { Navigation } from './Navigation';
-import '@testing-library/jest-dom';
-import { axe } from 'jest-axe';
 
 describe('Navigation component', () => {
   it('renders without crashing', () => {

@@ -21,7 +21,11 @@ export function trapFocus(container: HTMLElement, onEscape?: () => void) {
   const focusables = getFocusableElements(container);
   const first = focusables[0];
   const last = focusables[focusables.length - 1];
-  first?.focus();
+
+  // Only auto-focus if nothing inside the container already has focus
+  if (!container.contains(document.activeElement)) {
+    first?.focus();
+  }
 
   const onKeyDown = (event: KeyboardEvent) => {
     if (event.key === 'Escape') {
