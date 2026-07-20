@@ -1,5 +1,18 @@
 # @ui-construction-library/core
 
+## 0.7.0
+
+### Minor Changes
+
+- b25e0df: feat: add ToastProvider/useToast, KpiCard/KpiGrid, Stack/Cluster layout, ErrorBoundary, FloatingLabelInput, CoachMark, PageTip, brand icons (Bitbucket, Radar, Integrations); fix body scroll lock, aria-hidden on overlays, missing PageHeader/TopNav CSS, template bugs, focus trap re-focus, CommandPalette keyboard nav, Drawer sub-components, Toast animations and tests; add template tests and stories; export subpath entries for new components
+
+### Patch Changes
+
+- Updated dependencies [b25e0df]
+  - @ui-construction-library/behaviors@0.4.1
+  - @ui-construction-library/icons@0.5.1
+  - @ui-construction-library/primitives@0.4.1
+
 ## 0.6.0
 
 ### Minor Changes

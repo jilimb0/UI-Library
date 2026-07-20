@@ -1,6 +1,6 @@
 {
   "name": "@ui-construction-library/behaviors",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
@@ -34,7 +34,7 @@
   },
   "license": "MIT",
   "type": "module",
-  "description": "Framework-agnostic behavior layer for @ui-construction-library \u2014 pure JS state machines, ARIA attributes, and interaction logic.",
+  "description": "Framework-agnostic behavior layer for @ui-construction-library — pure JS state machines, ARIA attributes, and interaction logic.",
   "keywords": [
     "behaviors",
     "state-machine",

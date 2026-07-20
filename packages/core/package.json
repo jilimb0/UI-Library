@@ -1,6 +1,6 @@
 {
   "name": "@ui-construction-library/core",
-  "version": "0.6.2",
+  "version": "0.7.0",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"

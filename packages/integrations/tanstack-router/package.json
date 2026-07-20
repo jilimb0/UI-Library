@@ -1,6 +1,6 @@
 {
   "name": "@ui-construction-library/integration-tanstack-router",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
