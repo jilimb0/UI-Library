@@ -48,6 +48,13 @@ export const ErrorVariant: Story = {
   },
 };
 
+export const InfoVariant: Story = {
+  args: {
+    children: 'Info',
+    variant: 'info',
+  },
+};
+
 export const AllVariants: Story = {
   render: () => (
     <div className="flex gap-2">
@@ -55,6 +62,7 @@ export const AllVariants: Story = {
       <Badge variant="success">Success</Badge>
       <Badge variant="warning">Warning</Badge>
       <Badge variant="error">Error</Badge>
+      <Badge variant="info">Info</Badge>
     </div>
   ),
 };

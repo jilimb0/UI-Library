@@ -44,8 +44,15 @@ export const Warning: Story = {
 
 export const ErrorVariant: Story = {
   args: {
-    children: 'Error: Something went wrong',
+    children: 'Error',
     variant: 'error',
+  },
+};
+
+export const InfoVariant: Story = {
+  args: {
+    children: 'Info',
+    variant: 'info',
   },
 };
 
