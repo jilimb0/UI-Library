@@ -18,7 +18,8 @@ P0) reproduced via `pnpm build` in `packages/tokens` on `main`.
 ## P0 — bugs (break real consumers)
 
 ### P0-1 `tokens.css` dark layer ships light values
-- **Status:** in-progress (fix applied in working tree, tests green, uncommitted)
+- **Status:** done (2026-09-14) — fixed, merged upstream as PR #30, published
+  in `tokens@0.5.1` (verified on npm: dark block carries `#09090b`).
 - **Evidence:** generated `tokens.css`: `--color-background: #ffffff` inside
   `:root:not([data-theme]), [data-theme="dark"]` (was line ~745). Browser
   repro: `data-theme="dark"` + only `ucl.css` linked → white page.
