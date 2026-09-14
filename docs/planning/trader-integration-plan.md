@@ -167,3 +167,4 @@ P0) reproduced via `pnpm build` in `packages/tokens` on `main`.
 | 2026-09-14 | P0-1 | Upstream merged as PR #30 + versioned in #31 (`tokens@0.5.1` published with the fix) — verified on npm | — |
 | 2026-09-14 | meta | Old branch `fix/tokens-dark-layer` superseded: remaining work (utilities/variants/tables) cherry-picked as `09fa7d8` onto fresh `feat/ui-utilities-variants` from `origin/main` to avoid duplicating merged commits | — |
 | 2026-09-14 | P2-3/P2-1 | Verified a11y already implemented in behaviors/primitives (corrected report); added variant stories; core tsc clean; Switch/Tabs/a11y suites green | — |
+| 2026-09-14 | meta | Deleted superseded branch `fix/tokens-dark-layer` locally + on origin (all content preserved: fix+plan on `main` via PR #30, rest on `feat/ui-utilities-variants`) | — |
