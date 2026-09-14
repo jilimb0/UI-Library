@@ -2,7 +2,7 @@ import { forwardRef, type HTMLAttributes } from 'react';
 import { cn } from '../../../utils/cn';
 
 export interface AlertProps extends HTMLAttributes<HTMLDivElement> {
-  variant?: 'default' | 'success' | 'warning' | 'error';
+  variant?: 'default' | 'success' | 'warning' | 'error' | 'info';
 }
 
 const alertVariants = {
@@ -10,6 +10,7 @@ const alertVariants = {
   success: 'alert--success',
   warning: 'alert--warning',
   error: 'alert--error',
+  info: 'alert--info',
 };
 
 export const Alert = forwardRef<HTMLDivElement, AlertProps>(
