@@ -125,9 +125,9 @@ P0) reproduced via `pnpm build` in `packages/tokens` on `main`.
 - **Proposal:** aria parity for interactive components.
 
 ### P2-4 Version lockstep lets a broken package through
-- **Status:** blocked on publish (2026-09-14) — `core` still resolves
-  `tokens@^0.5.0`; range can only be narrowed after `tokens@0.5.1` ships
-  (changeset for the fix is in this branch).
+- **Status:** done (2026-09-14) — resolved upstream by `core@0.7.1`, whose
+  dependency range is now `tokens@^0.5.1`, excluding the broken `0.5.0`.
+  Verified against the published package. No code change needed on our side.
 - **Status:** todo
 - **Evidence:** `core@0.7.0 → tokens@^0.5.0` resolves the buggy tokens; core's
   own dark fallbacks mask it until you link `tokens.css`.
