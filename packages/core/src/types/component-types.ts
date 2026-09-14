@@ -10,7 +10,16 @@ import type { modalContentVariants } from '../components/organisms/Modal/Modal';
 export type ComponentSize = 'sm' | 'md' | 'lg';
 
 // Button component props types
-export type ButtonVariant = 'default' | 'secondary' | 'destructive' | 'ghost';
+export type ButtonVariant =
+  | 'default'
+  | 'secondary'
+  | 'destructive'
+  | 'ghost'
+  | 'outline'
+  | 'link'
+  | 'success'
+  | 'warning'
+  | 'info';
 export type ButtonSize = 'sm' | 'md' | 'lg';
 export interface ButtonBehaviorOptions {
   variant?: ButtonVariant;

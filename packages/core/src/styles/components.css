@@ -69,6 +69,33 @@
   opacity: 0.9;
 }
 
+.ucl-button--success, .button--success {
+  background-color: var(--success);
+  color: var(--success-foreground);
+}
+
+.ucl-button--success:hover, .button--success:hover {
+  opacity: 0.9;
+}
+
+.ucl-button--warning, .button--warning {
+  background-color: var(--warning);
+  color: var(--warning-foreground);
+}
+
+.ucl-button--warning:hover, .button--warning:hover {
+  opacity: 0.9;
+}
+
+.ucl-button--info, .button--info {
+  background-color: var(--info);
+  color: var(--info-foreground);
+}
+
+.ucl-button--info:hover, .button--info:hover {
+  opacity: 0.9;
+}
+
 .ucl-button--outline, .button--outline {
   background-color: var(--background);
   color: var(--foreground);
@@ -247,6 +274,12 @@
   border-color: color-mix(in srgb, var(--error) 20%, transparent);
 }
 
+.badge--info {
+  background-color: color-mix(in srgb, var(--info) 8%, transparent);
+  color: var(--info);
+  border-color: color-mix(in srgb, var(--info) 20%, transparent);
+}
+
 .tag {
   display: inline-flex;
   align-items: center;
@@ -297,6 +330,10 @@
   border-left: 3px solid var(--error);
 }
 
+.alert--info {
+  border-left: 3px solid var(--info);
+}
+
 .table {
   width: 100%;
   min-width: 100%;
@@ -329,6 +366,21 @@
 
 .table tbody tr:hover td {
   background-color: color-mix(in srgb, var(--muted) 50%, transparent);
+}
+
+.table--striped tbody tr:nth-child(even) td {
+  background-color: color-mix(in srgb, var(--muted) 35%, transparent);
+}
+
+.table--compact th,
+.table--compact td {
+  padding: 0.375rem 0.75rem;
+}
+
+.table-sticky-header thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 .pagination-btn {

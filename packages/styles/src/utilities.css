@@ -39,6 +39,7 @@
 .ucl-cluster--sm { gap: var(--ucl-spacing-2, 0.5rem); }
 .ucl-cluster--md { gap: var(--ucl-spacing-3, 0.75rem); }
 .ucl-cluster--lg { gap: var(--ucl-spacing-4, 1rem); }
+.ucl-cluster--between { justify-content: space-between; }
 
 /* Padding utilities */
 .ucl-p-0 { padding: 0; }
@@ -115,6 +116,7 @@
 .ucl-text-success { color: var(--ucl-success); }
 .ucl-text-warning { color: var(--ucl-warning); }
 .ucl-text-error { color: var(--ucl-error); }
+.ucl-text-info { color: var(--ucl-info); }
 
 /* --------------------------------------------------------------------------
    5. Surface Utilities
@@ -135,6 +137,12 @@
   border: 0;
   border-top: 1px solid var(--ucl-border);
 }
+
+/* --------------------------------------------------------------------------
+   6. Layout Helpers
+   -------------------------------------------------------------------------- */
+.ucl-sticky-top { position: sticky; top: 0; }
+.ucl-w-full { width: 100%; }
 
 /* Backward-compat unprefixed aliases */
 .stack-vertical { display: flex; flex-direction: column; gap: 1rem; }
