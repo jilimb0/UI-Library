@@ -1,5 +1,11 @@
 # @ui-construction-library/dnd
 
+## 0.4.3
+
+### Patch Changes
+
+- @ui-construction-library/core@0.7.1
+
 ## 0.4.2
 
 ### Patch Changes

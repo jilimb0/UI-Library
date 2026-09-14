@@ -1,5 +1,12 @@
 # @ui-construction-library/core
 
+## 0.7.1
+
+### Patch Changes
+
+- Updated dependencies [b62d972]
+  - @ui-construction-library/tokens@0.5.1
+
 ## 0.7.0
 
 ### Minor Changes
