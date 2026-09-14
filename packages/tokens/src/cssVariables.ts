@@ -20,6 +20,11 @@ import { typography } from './typography';
 export type ThemeName = 'light' | 'dark';
 
 export interface Theme {
+  /**
+   * @deprecated Kept for backward compatibility (ThemeProvider passes the
+   * active mode). Values are now always emitted per-mode; this field no
+   * longer selects values for both layers.
+   */
   mode?: ThemeName;
   colors?: Partial<ColorTokens>;
   semantic?: Partial<SemanticColors>;
@@ -64,7 +69,10 @@ function flattenTokenObject(
 }
 
 export function generateCSSVariables(theme: Theme = {}): string {
-  const mode = theme.mode ?? 'light';
+  // NOTE: both theme layers are always emitted with their own values.
+  // `theme.mode` is accepted for backward compatibility (ThemeProvider passes
+  // the active mode) but no longer selects values for both layers — that was
+  // the bug that shipped light values into the dark block.
   const mergedScales: ColorTokens = {
     primary: { ...colors.primary, ...(theme.colors?.primary ?? {}) },
     neutral: { ...colors.neutral, ...(theme.colors?.neutral ?? {}) },
@@ -74,9 +82,14 @@ export function generateCSSVariables(theme: Theme = {}): string {
     info: { ...colors.info, ...(theme.colors?.info ?? {}) },
   };
 
-  const semanticBase =
-    mode === 'dark' ? semanticDarkColors : semanticLightColors;
-  const semantic = { ...semanticBase, ...(theme.semantic ?? {}) };
+  const lightSemantic: SemanticColors = {
+    ...semanticLightColors,
+    ...(theme.semantic ?? {}),
+  };
+  const darkSemantic: SemanticColors = {
+    ...semanticDarkColors,
+    ...(theme.semantic ?? {}),
+  };
 
   const rootLines: string[] = [];
 
@@ -91,34 +104,40 @@ export function generateCSSVariables(theme: Theme = {}): string {
     }
   );
 
-  (Object.keys(semantic) as Array<keyof SemanticColors>).forEach(
-    (semanticName) => {
-      const semanticValue = semantic[semanticName];
-      if (typeof semanticValue === 'string') {
-        rootLines.push(
-          toCSSVarLines(`color-${String(semanticName)}`, semanticValue)
-        );
-        rootLines.push(toCSSVarLines(String(semanticName), semanticValue));
-      } else if (semanticName === 'intent' && semanticValue) {
-        const intentObj = semanticValue as SemanticColors['intent'];
-        (Object.keys(intentObj) as Array<keyof typeof intentObj>).forEach(
-          (intentName) => {
-            const states = intentObj[intentName];
-            (Object.keys(states) as Array<keyof typeof states>).forEach(
-              (stateName) => {
-                rootLines.push(
-                  toCSSVarLines(
-                    `intent-${String(intentName)}-${String(stateName)}`,
-                    states[stateName]
-                  )
-                );
-              }
-            );
-          }
-        );
+  const flattenSemantic = (sem: SemanticColors): string[] => {
+    const lines: string[] = [];
+    (Object.keys(sem) as Array<keyof SemanticColors>).forEach(
+      (semanticName) => {
+        const semanticValue = sem[semanticName];
+        if (typeof semanticValue === 'string') {
+          lines.push(
+            toCSSVarLines(`color-${String(semanticName)}`, semanticValue)
+          );
+          lines.push(toCSSVarLines(String(semanticName), semanticValue));
+        } else if (semanticName === 'intent' && semanticValue) {
+          const intentObj = semanticValue as SemanticColors['intent'];
+          (Object.keys(intentObj) as Array<keyof typeof intentObj>).forEach(
+            (intentName) => {
+              const states = intentObj[intentName];
+              (Object.keys(states) as Array<keyof typeof states>).forEach(
+                (stateName) => {
+                  lines.push(
+                    toCSSVarLines(
+                      `intent-${String(intentName)}-${String(stateName)}`,
+                      states[stateName]
+                    )
+                  );
+                }
+              );
+            }
+          );
+        }
       }
-    }
-  );
+    );
+    return lines;
+  };
+  const lightSemanticLines = flattenSemantic(lightSemantic);
+  const darkSemanticLines = flattenSemantic(darkSemantic);
 
   Object.entries(spacing).forEach(([k, value]) => {
     const safeKey = k.replace('.', '-');
@@ -179,30 +198,34 @@ export function generateCSSVariables(theme: Theme = {}): string {
     toCSSVarLines(k.startsWith('--') ? k.slice(2) : k, v)
   );
 
-  // Component tokens
-  const modeComponentTokens =
-    mode === 'dark' ? componentDarkTokens : componentLightTokens;
-  const mergedComponents = {
-    ...modeComponentTokens,
+  // Component tokens (per mode — same single-mode trap as semantic above)
+  const flattenComponents = (merged: ComponentTokens): string[] => {
+    const lines: string[] = [];
+    (Object.keys(merged) as Array<keyof ComponentTokens>).forEach(
+      (componentName) => {
+        const tokenGroup = merged[componentName];
+        flattenTokenObject(
+          tokenGroup as unknown as Record<string, unknown>,
+          String(componentName),
+          lines
+        );
+      }
+    );
+    return lines;
+  };
+  const lightComponentLines = flattenComponents({
+    ...componentLightTokens,
     ...theme.components,
-  } as ComponentTokens;
-
-  const componentLines: string[] = [];
-  (Object.keys(mergedComponents) as Array<keyof ComponentTokens>).forEach(
-    (componentName) => {
-      const tokenGroup = mergedComponents[componentName];
-      flattenTokenObject(
-        tokenGroup as unknown as Record<string, unknown>,
-        String(componentName),
-        componentLines
-      );
-    }
-  );
+  } as ComponentTokens);
+  const darkComponentLines = flattenComponents({
+    ...componentDarkTokens,
+    ...theme.components,
+  } as ComponentTokens);
 
   return [
-    toThemeLayerForRoot('light', rootLines),
-    toThemeLayer('light', [...componentLines, ...overrideLines]),
-    toThemeLayerForRoot('dark', rootLines),
-    toThemeLayer('dark', [...componentLines, ...overrideLines]),
+    toThemeLayerForRoot('light', [...rootLines, ...lightSemanticLines]),
+    toThemeLayer('light', [...lightComponentLines, ...overrideLines]),
+    toThemeLayerForRoot('dark', [...rootLines, ...darkSemanticLines]),
+    toThemeLayer('dark', [...darkComponentLines, ...overrideLines]),
   ].join('\n\n');
 }
