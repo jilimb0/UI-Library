@@ -1,5 +1,12 @@
 # @ui-construction-library/primitives
 
+## 0.4.2
+
+### Patch Changes
+
+- Updated dependencies [933635a]
+  - @ui-construction-library/behaviors@0.5.0
+
 ## 0.4.1
 
 ### Patch Changes

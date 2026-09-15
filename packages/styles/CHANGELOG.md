@@ -1,5 +1,13 @@
 # @ui-construction-library/styles
 
+## 0.6.0
+
+### Minor Changes
+
+- 933635a: Add layout utilities (`.ucl-cluster--between`, `.ucl-sticky-top`,
+  `.ucl-w-full`) and `.ucl-text-info` for feature parity with the rest of the
+  text-color scale. No breaking changes.
+
 ## 0.5.0
 
 ### Minor Changes

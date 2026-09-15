@@ -1,5 +1,15 @@
 # @ui-construction-library/behaviors
 
+## 0.5.0
+
+### Minor Changes
+
+- 933635a: Add `success`/`warning`/`info` button variants (CSS + behavior mapping +
+  types), `info` badge/alert variants, and table modifiers
+  (`.table--striped`, `.table--compact`, `.table-sticky-header`). Also widens
+  core `ButtonVariant` with the previously missing `outline`/`link` members to
+  match CSS and behaviors.
+
 ## 0.4.1
 
 ### Patch Changes
