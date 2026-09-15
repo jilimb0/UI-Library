@@ -1,5 +1,12 @@
 # @ui-construction-library/dnd
 
+## 0.4.4
+
+### Patch Changes
+
+- Updated dependencies [933635a]
+  - @ui-construction-library/core@0.8.0
+
 ## 0.4.3
 
 ### Patch Changes
