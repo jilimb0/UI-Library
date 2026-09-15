@@ -68,6 +68,30 @@ export const Destructive: Story = {
   },
 };
 
+export const Success: Story = {
+  args: {
+    children: 'Success',
+    variant: 'success',
+    size: 'default',
+  },
+};
+
+export const Warning: Story = {
+  args: {
+    children: 'Warning',
+    variant: 'warning',
+    size: 'default',
+  },
+};
+
+export const Info: Story = {
+  args: {
+    children: 'Info',
+    variant: 'info',
+    size: 'default',
+  },
+};
+
 export const Disabled: Story = {
   args: {
     children: 'Disabled',

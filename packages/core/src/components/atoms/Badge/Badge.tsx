@@ -9,6 +9,7 @@ const badgeVariants = cva('badge', {
       success: 'badge--success',
       warning: 'badge--warning',
       error: 'badge--error',
+      info: 'badge--info',
     },
   },
   defaultVariants: {

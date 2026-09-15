@@ -68,6 +68,15 @@ describe('createButtonBehavior', () => {
     expect(className).toBe('ucl-button ucl-button--destructive ucl-button--lg');
   });
 
+  it.each([
+    ['success', 'ucl-button ucl-button--success'],
+    ['warning', 'ucl-button ucl-button--warning'],
+    ['info', 'ucl-button ucl-button--info'],
+  ] as const)('maps the %s variant to its class', (variant, cls) => {
+    const { className } = createButtonBehavior({ variant });
+    expect(className).toBe(cls);
+  });
+
   it('prevents click when disabled', () => {
     const handler = { onClick: (_e?: Event) => {} };
     const spy = vi.spyOn(handler, 'onClick');

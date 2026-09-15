@@ -14,4 +14,15 @@ describe('Alert component', () => {
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
+
+  it.each([
+    ['default', 'alert--default'],
+    ['success', 'alert--success'],
+    ['warning', 'alert--warning'],
+    ['error', 'alert--error'],
+    ['info', 'alert--info'],
+  ] as const)('applies the %s variant class', (variant, cls) => {
+    const { container } = render(<Alert variant={variant}>X</Alert>);
+    expect(container.firstChild).toHaveClass(cls);
+  });
 });

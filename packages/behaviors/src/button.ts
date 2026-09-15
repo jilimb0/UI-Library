@@ -10,7 +10,10 @@ export type ButtonVariant =
   | 'outline'
   | 'secondary'
   | 'ghost'
-  | 'link';
+  | 'link'
+  | 'success'
+  | 'warning'
+  | 'info';
 export type ButtonSize = 'default' | 'sm' | 'lg' | 'icon';
 
 export interface ButtonBehaviorOptions {

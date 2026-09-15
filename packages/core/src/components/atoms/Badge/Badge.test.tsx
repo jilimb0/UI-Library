@@ -14,4 +14,15 @@ describe('Badge', () => {
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
+
+  it.each([
+    ['default', 'badge--default'],
+    ['success', 'badge--success'],
+    ['warning', 'badge--warning'],
+    ['error', 'badge--error'],
+    ['info', 'badge--info'],
+  ] as const)('applies the %s variant class', (variant, cls) => {
+    const { container } = render(<Badge variant={variant}>X</Badge>);
+    expect(container.firstChild).toHaveClass(cls);
+  });
 });
