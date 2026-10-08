@@ -1,5 +1,6 @@
 export type { AuthLayoutProps } from './AuthLayout';
 export { AuthLayout } from './AuthLayout';
+export * from './AuthShell';
 export type { DashboardLayoutProps } from './DashboardLayout';
 export { DashboardLayout } from './DashboardLayout';
 export type { DocsLayoutProps } from './DocsLayout';

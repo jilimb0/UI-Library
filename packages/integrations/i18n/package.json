@@ -1,6 +1,6 @@
 {
   "name": "@ui-construction-library/integration-i18n",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
@@ -34,7 +34,7 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "description": "i18next integration for @ui-construction-library \u2014 locale-aware component wrappers.",
+  "description": "i18next integration for @ui-construction-library — locale-aware component wrappers.",
   "keywords": [
     "i18n",
     "i18next",

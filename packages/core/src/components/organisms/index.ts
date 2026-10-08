@@ -11,6 +11,7 @@ export * from './KpiCard';
 export * from './Modal';
 export * from './Navigation';
 export * from './PageHeader';
+export * from './PricingTable';
 export * from './Sidebar';
 export * from './Table';
 export * from './Timeline';

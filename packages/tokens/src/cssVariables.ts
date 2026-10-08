@@ -1,5 +1,6 @@
 import { borderRadius } from './borders';
 import {
+  brandIndigo,
   type ColorTokens,
   colors,
   type SemanticColors,
@@ -74,6 +75,7 @@ export function generateCSSVariables(theme: Theme = {}): string {
   // the active mode) but no longer selects values for both layers — that was
   // the bug that shipped light values into the dark block.
   const mergedScales: ColorTokens = {
+    brand: { ...brandIndigo, ...(theme.colors?.brand ?? {}) },
     primary: { ...colors.primary, ...(theme.colors?.primary ?? {}) },
     neutral: { ...colors.neutral, ...(theme.colors?.neutral ?? {}) },
     success: { ...colors.success, ...(theme.colors?.success ?? {}) },
@@ -96,11 +98,13 @@ export function generateCSSVariables(theme: Theme = {}): string {
   (Object.keys(mergedScales) as Array<keyof ColorTokens>).forEach(
     (scaleName) => {
       const scale = mergedScales[scaleName];
-      Object.entries(scale).forEach(([tone, value]) => {
-        rootLines.push(
-          toCSSVarLines(`color-${String(scaleName)}-${tone}`, value)
-        );
-      });
+      if (scale) {
+        Object.entries(scale).forEach(([tone, value]) => {
+          rootLines.push(
+            toCSSVarLines(`color-${String(scaleName)}-${tone}`, value)
+          );
+        });
+      }
     }
   );
 
@@ -193,6 +197,13 @@ export function generateCSSVariables(theme: Theme = {}): string {
   Object.entries(shadows).forEach(([k, value]) => {
     rootLines.push(toCSSVarLines(`shadow-${k}`, value));
   });
+
+  rootLines.push(toCSSVarLines('brand-accent', '#6C7BFF'));
+  rootLines.push(toCSSVarLines('glass-card-bg', 'rgba(18, 21, 31, 0.75)'));
+  rootLines.push(toCSSVarLines('glass-card-backdrop', 'blur(16px)'));
+  rootLines.push(
+    toCSSVarLines('glass-card-border', '1px solid rgba(108, 123, 255, 0.12)')
+  );
 
   const overrideLines = Object.entries(theme.overrides ?? {}).map(([k, v]) =>
     toCSSVarLines(k.startsWith('--') ? k.slice(2) : k, v)
