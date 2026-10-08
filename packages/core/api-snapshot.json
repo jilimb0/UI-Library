@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-20T20:53:36.777Z",
+  "generatedAt": "2026-10-08T11:42:52.385Z",
   "package": "@ui-construction-library/core",
   "barrelExports": [
     "./components",
@@ -48,6 +48,7 @@
     "molecules/Field",
     "molecules/FileUpload",
     "molecules/MenuItem",
+    "molecules/NotificationItem",
     "molecules/OTPInput",
     "molecules/PageTip",
     "molecules/Pagination",
@@ -72,11 +73,13 @@
     "organisms/Modal",
     "organisms/Navigation",
     "organisms/PageHeader",
+    "organisms/PricingTable",
     "organisms/Sidebar",
     "organisms/Table",
     "organisms/Tabs",
     "organisms/Timeline",
     "organisms/TopNav",
-    "organisms/TreeView"
+    "organisms/TreeView",
+    "templates/AuthShell"
   ]
 }
