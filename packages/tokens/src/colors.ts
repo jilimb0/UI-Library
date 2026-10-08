@@ -43,9 +43,30 @@ export interface ColorTokens {
   error: ColorScale;
   warning: ColorScale;
   info: ColorScale;
+  brand?: ColorScale;
 }
 
+export const brandIndigo: ColorScale = {
+  50: '#f0f2ff',
+  100: '#e0e4ff',
+  200: '#c7ceff',
+  300: '#a3adff',
+  400: '#828fff',
+  500: '#6C7BFF',
+  600: '#525fe6',
+  700: '#404bc7',
+  800: '#343da3',
+  900: '#2c3385',
+};
+
+export const glassCard = {
+  background: 'rgba(18, 21, 31, 0.75)',
+  backdropFilter: 'blur(16px)',
+  border: '1px solid rgba(108, 123, 255, 0.12)',
+};
+
 export const colors: ColorTokens = {
+  brand: brandIndigo,
   primary: {
     50: '#f5f3ff',
     100: '#ede9fe',

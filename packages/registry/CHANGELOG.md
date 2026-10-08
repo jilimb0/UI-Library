@@ -1,5 +1,64 @@
 # @ui-construction-library/registry
 
+<!-- AUTO-GENERATED — do not edit manually; run pnpm changelog:packages -->
+
+## 0.4.0
+
+### Features
+
+- minor release v0.6.0 ([501d00c](../../commit/501d00c))
+- add scripts for assembling and serving pages site ([2285993](../../commit/2285993))
+- add build artifacts and restructure package exports ([60aff9d](../../commit/60aff9d))
+
+### Bug Fixes
+
+- add rootDir to registry tsconfig for proper declaration output ([8b4e4dd](../../commit/8b4e4dd))
+- update tsconfig files to ignore deprecations and adjust package.json types paths ([b9ae216](../../commit/b9ae216))
+- **packages:** add repository field to schema, styles, registry ([8a4c567](../../commit/8a4c567))
+- update CI and release workflows, enhance published version checks, and synchronize package versions ([8f523bf](../../commit/8f523bf))
+- update build scripts to include TypeScript declaration generation and improve package descriptions ([a42b53b](../../commit/a42b53b))
+
+### Refactoring
+
+- reorganize package architecture and consolidate documentation ([4b17086](../../commit/4b17086))
+
+### Chores
+
+- update node engine to >=26, add .nvmrc ([c6dc0fa](../../commit/c6dc0fa))
+- version packages ([aea9238](../../commit/aea9238))
+- V1 release preparation — full product readiness ([1fa252e](../../commit/1fa252e))
+- version packages (#25) ([ca1e0be](../../commit/ca1e0be))
+- version packages ([6c3a3c6](../../commit/6c3a3c6))
+- update changelogs and dependencies across packages ([b989aeb](../../commit/b989aeb))
+- update changelogs across all packages with recent release notes ([d1f72fa](../../commit/d1f72fa))
+
+### Other
+
+- registry v0.3.2 — fix type declarations ([768b96d](../../commit/768b96d))
+- Add public internal surface guardrails (#21) ([8e364a3](../../commit/8e364a3))
+
+## 0.1.2 — 2026-05-30
+
+### Features
+
+- enhance workspace with hygiene checks and script validation ([49f16b2](../../commit/49f16b2))
+- add scripts for checking published code and generating changelogs ([2bd5166](../../commit/2bd5166))
+
+### Chores
+
+- consolidate release documentation and update changelogs ([df9320c](../../commit/df9320c))
+
+## 0.1.0 — 2026-05-30
+
+### Features
+
+- enhance testing setup and coverage ([f37b8eb](../../commit/f37b8eb))
+- **schema, registry, styles:** add schema package with JSON schemas and validation helpers ([262a914](../../commit/262a914))
+
+---
+
+# @ui-construction-library/registry
+
 ## 0.3.1
 
 ### Patch Changes

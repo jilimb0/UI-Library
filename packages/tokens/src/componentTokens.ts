@@ -163,21 +163,44 @@ export const inputDarkTokens: InputTokens = {
 // ---------------------------------------------------------------------------
 
 export interface CardTokens {
-  bg: { default: string; raised: string };
+  bg: { default: string; raised: string; glass?: string };
   border: string;
   shadow: string;
+  glass?: {
+    bg: string;
+    backdropFilter: string;
+    border: string;
+  };
 }
 
 export const cardLightTokens: CardTokens = {
-  bg: { default: '#ffffff', raised: '#fafafa' },
+  bg: {
+    default: '#ffffff',
+    raised: '#fafafa',
+    glass: 'rgba(255, 255, 255, 0.75)',
+  },
   border: '#e4e4e7',
   shadow: '0 1px 3px rgba(0,0,0,0.08)',
+  glass: {
+    bg: 'rgba(255, 255, 255, 0.75)',
+    backdropFilter: 'blur(16px)',
+    border: '1px solid rgba(108, 123, 255, 0.12)',
+  },
 };
 
 export const cardDarkTokens: CardTokens = {
-  bg: { default: '#09090b', raised: '#18181b' },
+  bg: {
+    default: '#09090b',
+    raised: '#18181b',
+    glass: 'rgba(18, 21, 31, 0.75)',
+  },
   border: '#27272a',
   shadow: '0 1px 3px rgba(0,0,0,0.3)',
+  glass: {
+    bg: 'rgba(18, 21, 31, 0.75)',
+    backdropFilter: 'blur(16px)',
+    border: '1px solid rgba(108, 123, 255, 0.12)',
+  },
 };
 
 // ---------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 {
   "name": "@ui-construction-library/integration-next",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
@@ -37,7 +37,7 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "description": "Next.js App Router integration for @ui-construction-library \u2014 SSR-safe providers and navigation wrappers.",
+  "description": "Next.js App Router integration for @ui-construction-library — SSR-safe providers and navigation wrappers.",
   "keywords": [
     "nextjs",
     "app-router",

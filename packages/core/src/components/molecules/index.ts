@@ -13,6 +13,7 @@ export * from './Dropdown';
 export * from './Field';
 export * from './FileUpload';
 export * from './MenuItem';
+export * from './NotificationItem';
 export * from './OTPInput';
 export type { PageTipProps } from './PageTip';
 export { PageTip } from './PageTip';

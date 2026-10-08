@@ -44,4 +44,18 @@ describe('generateCSSVariables', () => {
     expect(css).toContain('--ucl-color-surface: #fefefe');
     expect(css).toContain('--color-surface: #fefefe');
   });
+
+  it('emits canonical border radii scale and glassCard tokens', () => {
+    const css = generateCSSVariables();
+    expect(css).toContain('--ucl-radius-lg: 12px');
+    expect(css).toContain('--radius-lg: 12px');
+    expect(css).toContain('--ucl-radius-xl: 16px');
+    expect(css).toContain('--ucl-radius-2xl: 20px');
+    expect(css).toContain('--ucl-brand-accent: #6C7BFF');
+    expect(css).toContain('--ucl-glass-card-bg: rgba(18, 21, 31, 0.75)');
+    expect(css).toContain('--ucl-glass-card-backdrop: blur(16px)');
+    expect(css).toContain(
+      '--ucl-glass-card-border: 1px solid rgba(108, 123, 255, 0.12)'
+    );
+  });
 });
