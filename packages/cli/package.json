@@ -7,7 +7,7 @@
   },
   "description": "CLI tool for @ui-construction-library — init projects, browse components, list themes, and explore docs.",
   "bin": {
-    "ucl": "./dist/index.js"
+    "ucl": "dist/index.js"
   },
   "type": "module",
   "sideEffects": false,
