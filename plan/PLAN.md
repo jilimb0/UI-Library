@@ -66,5 +66,5 @@
 ### Спринт 3: Реализация Pro-блоков `AuthShell`, `KpiCard` / `StatCard` и `NotificationItem`
 - [x] Реализовать `AuthShell` с поддержкой OAuth кнопок
 - [x] Реализовать `StatCard` и `NotificationItem`
-- [ ] Опубликовать новую версию `@ui-construction-library/core`
+- [x] Опубликовать новую версию `@ui-construction-library/core`
 
