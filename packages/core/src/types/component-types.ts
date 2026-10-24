@@ -20,7 +20,7 @@ export type ButtonVariant =
   | 'success'
   | 'warning'
   | 'info';
-export type ButtonSize = 'sm' | 'md' | 'lg';
+export type ButtonSize = 'sm' | 'md' | 'lg' | 'icon';
 export interface ButtonBehaviorOptions {
   variant?: ButtonVariant;
   size?: ButtonSize;

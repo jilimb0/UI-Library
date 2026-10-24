@@ -1,0 +1,59 @@
+{
+  "id": "FEAT-002",
+  "type": "feat",
+  "description": "Update components.css to consume --ucl-* component-state tokens (replacing opacity hacks and hardcoded semantic vars), fix ButtonSize mismatch between behaviors/src/button.ts and core/src/types/component-types.ts. Depends on FEAT-001 artifacts being built.",
+  "status": "completed",
+  "steps": [
+    "Read packages/core/src/styles/components.css and packages/tokens/dist/w3c/tokens.css to confirm new --ucl-* token names are available before editing CSS.",
+
+    "BUTTONS — Replace 5 opacity:0.9 hover hacks and hardcoded semantic vars. For .ucl-button--default/.button--default: change background-color to var(--ucl-button-primary-default, var(--primary)) and color to var(--ucl-button-primary-fg, var(--primary-foreground)). Replace '.ucl-button--default:hover { opacity: 0.9; }' with '.ucl-button--default:hover:not(:disabled), .button--default:hover:not(:disabled) { background-color: var(--ucl-button-primary-hover, var(--primary)); }'. Add :active rule with --ucl-button-primary-active. Add :focus-visible with --ucl-button-primary-focus. Add :disabled rule with --ucl-button-primary-disabled. Apply same token-per-state pattern to --secondary (token group: button.secondary.*), --ghost (button.ghost.*), --outline (button.outline.*). For --destructive, --success, --warning, --info: replace 'opacity: 0.9' on hover with 'filter: brightness(0.88)' and add :active with 'filter: brightness(0.80)' — these four variants have no dedicated component-tier tokens yet.",
+
+    "INPUT/SELECT/TEXTAREA — In the base combined rule, replace 'border: 1px solid var(--input)' with 'border: 1px solid var(--ucl-input-border-default, var(--input))' and 'background-color: var(--background)' with 'background-color: var(--ucl-input-bg-default, var(--background))' and 'color: var(--foreground)' with 'color: var(--ucl-input-fg, var(--foreground))'. Add new hover rule (currently absent): '.ucl-input:hover:not(:disabled):not(:focus), ...' with border-color: var(--ucl-input-border-hover, var(--border)). Replace focus rule: border-color to var(--ucl-input-border-focus, var(--ring)), box-shadow to 0 0 0 1px var(--ucl-input-ring, var(--ring)). Replace error rule: border-color to var(--ucl-input-border-error, var(--error)). Replace placeholder rule: color to var(--ucl-input-placeholder, var(--muted-foreground)). Replace disabled rule: add background-color: var(--ucl-input-bg-disabled, var(--muted)) and border-color: var(--ucl-input-border-disabled, var(--border)), change opacity from 0.5 to 0.6.",
+
+    "CHECKBOX — Replace '.checkbox-box { border: 1px solid var(--input); background: var(--background); }' with border var(--ucl-checkbox-border-default, var(--input)) and background var(--ucl-checkbox-bg-unchecked, var(--background)). Add '.checkbox-box:hover:not(:disabled) { border-color: var(--ucl-checkbox-border-hover, var(--border)); }'. Replace '.checkbox-box:checked' to use border-color var(--ucl-checkbox-border-checked, var(--primary)) and background var(--ucl-checkbox-bg-checked, var(--primary)). Add disabled rule: background var(--ucl-checkbox-bg-disabled), border-color var(--ucl-checkbox-border-disabled), opacity 0.6, cursor not-allowed. Replace '.checkbox-box + svg { color: var(--primary-foreground); }' with color var(--ucl-checkbox-fg, var(--primary-foreground)).",
+
+    "RADIO — Replace '.radio-input { accent-color: var(--primary); }' with 'accent-color: var(--ucl-radio-accent, var(--primary));'.",
+
+    "SWITCH — Replace '.switch { background: var(--border); }' with 'background: var(--ucl-switch-track-off, var(--border))'. Replace '.switch[data-state=\"checked\"] { background: var(--primary); }' with 'background: var(--ucl-switch-track-on, var(--primary))'. Add '.switch:disabled, .switch[data-disabled] { background: var(--ucl-switch-track-disabled, var(--muted)); opacity: 0.6; cursor: not-allowed; }'. Replace '.switch-thumb { background: var(--card); }' with 'background: var(--ucl-switch-thumb, var(--card))'.",
+
+    "SLIDER — Replace '.slider__track { background: var(--muted); }' with var(--ucl-slider-track-bg, var(--muted)). Replace '.slider__range { background: var(--primary); }' with var(--ucl-slider-range-bg, var(--primary)). In .slider__thumb: replace 'border: 1px solid var(--primary)' with var(--ucl-slider-thumb-border, var(--primary)) and 'background: var(--card)' with var(--ucl-slider-thumb-bg, var(--card)). Add '.slider__thumb:hover { border-color: var(--ucl-slider-thumb-hover, var(--primary)); }'.",
+
+    "TABS — Replace '.tabs-list { background: var(--muted); }' with var(--ucl-tabs-list-bg, var(--muted)). In .tabs-trigger: add 'background: var(--ucl-tabs-trigger-default, transparent)' and replace 'color: var(--muted-foreground)' with var(--ucl-tabs-trigger-fg-default, var(--muted-foreground)). Add '.tabs-trigger:hover:not([data-state=\"active\"]) { background: var(--ucl-tabs-trigger-hover, var(--accent)); }'. In .tabs-trigger[data-state='active']: replace 'background: var(--card)' with var(--ucl-tabs-trigger-active, var(--card)) and 'color: var(--foreground)' with var(--ucl-tabs-trigger-fg-active, var(--foreground)).",
+
+    "ACCORDION — In .accordion-item: replace 'border-bottom: 1px solid var(--border)' with var(--ucl-accordion-border, var(--border)). In .accordion-trigger: add 'background: var(--ucl-accordion-trigger-default, transparent)' and replace 'color: var(--foreground)' with var(--ucl-accordion-trigger-fg, var(--foreground)). Add '.accordion-trigger:hover { background: var(--ucl-accordion-trigger-hover, var(--accent)); }'. In .accordion-content: replace 'color: var(--muted-foreground)' with var(--ucl-accordion-content-fg, var(--muted-foreground)).",
+
+    "PAGINATION — In .pagination-btn: replace 'background-color: var(--background)' with var(--ucl-pagination-btn-bg, var(--background)), 'color: var(--foreground)' with var(--ucl-pagination-btn-fg, var(--foreground)), 'border: 1px solid var(--border)' with var(--ucl-pagination-btn-border, var(--border)). In hover rule: replace 'background-color: var(--accent)' with var(--ucl-pagination-btn-bg-hover, var(--accent)). In .pagination-btn--active: replace 'border-color: var(--primary)' with var(--ucl-pagination-btn-bg-active), 'background-color: var(--primary)' with var(--ucl-pagination-btn-bg-active, var(--primary)), 'color: var(--primary-foreground)' with var(--ucl-pagination-btn-fg-active, var(--primary-foreground)).",
+
+    "TOOLTIP — In .tooltip-bubble: replace 'background: var(--foreground)' with var(--ucl-tooltip-bg, var(--foreground)) and 'color: var(--background)' with var(--ucl-tooltip-fg, var(--background)). Add 'border: 1px solid var(--ucl-tooltip-border, transparent)'.",
+
+    "DROPDOWN — In .dropdown-trigger: replace 'background-color: var(--background)' with var(--ucl-dropdown-trigger-bg, var(--background)) and 'border: 1px solid var(--border)' with var(--ucl-dropdown-trigger-border, var(--border)). Add '.dropdown-trigger:hover:not(:disabled) { background-color: var(--ucl-dropdown-trigger-bg-hover, var(--accent)); }'. In .dropdown-menu: replace 'background-color: var(--popover)' with var(--ucl-dropdown-menu-bg, var(--popover)). In .dropdown-menu__item: add 'background-color: var(--ucl-dropdown-item-bg-default, transparent)' and replace default color with var(--ucl-dropdown-item-fg, var(--foreground)). In hover/focus rule: replace 'background-color: var(--accent)' with var(--ucl-dropdown-item-bg-hover, var(--accent)) and color with var(--ucl-dropdown-item-fg). In .dropdown-menu__item--active: replace 'background-color: var(--primary)' with var(--ucl-dropdown-item-bg-active) and 'color: var(--primary-foreground)' with var(--ucl-dropdown-item-fg-active). In .dropdown-menu__item--destructive: replace 'color: var(--error)' with var(--ucl-dropdown-item-fg-destructive, var(--error)) and hover background with var(--ucl-dropdown-item-bg-destructive-hover, color-mix(in srgb, var(--error) 10%, transparent)).",
+
+    "BUTTON SIZE FIX — In packages/behaviors/src/button.ts: change ButtonSize type from 'default' | 'sm' | 'lg' | 'icon' to 'sm' | 'md' | 'lg' | 'icon'. Change the className cx() guard from 'size !== \"default\"' to 'size !== \"md\"'. In packages/core/src/types/component-types.ts: change ButtonSize from 'sm' | 'md' | 'lg' to 'sm' | 'md' | 'lg' | 'icon'. In packages/core/src/styles/components.css: after the .ucl-button--icon rule, add '.ucl-button--md, .button--md { /* md is the base size — no size overrides */ }' as a no-op rule so the class is valid CSS.",
+
+    "Run pnpm --filter @ui-construction-library/behaviors test — all tests must pass. The test file uses 'size: \"lg\"' (valid) and 'variant: \"destructive\"' (valid); no test uses 'size: \"default\"' so no test changes are needed.",
+    "Run pnpm --filter @ui-construction-library/core test — all tests must pass.",
+    "Run pnpm --filter @ui-construction-library/core typecheck and pnpm --filter @ui-construction-library/behaviors typecheck — both must exit 0.",
+    "Stage all changed files and commit: git add packages/tokens/src/tokens.w3c.json packages/tokens/src/tokens.runtime.generated.ts packages/tokens/dist/w3c/ packages/core/src/styles/components.css packages/core/src/types/component-types.ts packages/behaviors/src/button.ts && git commit -m 'feat(tokens,core,behaviors): Ф3 — component-state tokens wired to components\n\n- Add checkbox, radio, slider, tabs, accordion, pagination, tooltip,\n  dropdown component-state token groups to tokens.w3c.json (light+dark)\n- Rebuild W3C artifacts\n- Replace opacity:0.9 hover hacks with --ucl-button-* state tokens\n- Wire all new --ucl-* tokens into components.css with semantic fallbacks\n- Fix ButtonSize: behaviors (sm|md|lg|icon) aligned with core types\n\nBREAKING CHANGE: ButtonSize \"default\" removed; use \"md\"'"
+  ],
+  "acceptance_criteria": [
+    "packages/core/src/styles/components.css has no remaining 'opacity: 0.9' rules (grep must return 0 results for that exact pattern).",
+    ".ucl-button--default:hover sets background-color via var(--ucl-button-primary-hover, ...) not opacity.",
+    "packages/behaviors/src/button.ts exports ButtonSize as 'sm' | 'md' | 'lg' | 'icon'.",
+    "packages/core/src/types/component-types.ts exports ButtonSize as 'sm' | 'md' | 'lg' | 'icon'.",
+    "pnpm --filter @ui-construction-library/behaviors test exits 0.",
+    "pnpm --filter @ui-construction-library/core test exits 0.",
+    "pnpm --filter @ui-construction-library/core typecheck exits 0.",
+    "pnpm --filter @ui-construction-library/behaviors typecheck exits 0."
+  ],
+  "verification": [
+    "grep 'opacity: 0.9' packages/core/src/styles/components.css  (must return 0 results)",
+    "grep 'ucl-button-primary-hover' packages/core/src/styles/components.css  (must find match)",
+    "grep 'ucl-checkbox-border-checked\\|ucl-tabs-trigger-active\\|ucl-tooltip-bg' packages/core/src/styles/components.css  (must find matches)",
+    "pnpm --filter @ui-construction-library/behaviors test",
+    "pnpm --filter @ui-construction-library/core test",
+    "pnpm --filter @ui-construction-library/core typecheck",
+    "pnpm --filter @ui-construction-library/behaviors typecheck"
+  ],
+  "blocked_reason": null,
+  "findings": "grep 'opacity: 0.9' packages/core/src/styles/components.css → 0 matches (acceptance criterion met)"
+}

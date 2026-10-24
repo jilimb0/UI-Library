@@ -14,7 +14,7 @@ export type ButtonVariant =
   | 'success'
   | 'warning'
   | 'info';
-export type ButtonSize = 'default' | 'sm' | 'lg' | 'icon';
+export type ButtonSize = 'sm' | 'md' | 'lg' | 'icon';
 
 export interface ButtonBehaviorOptions {
   disabled?: boolean;
@@ -28,13 +28,13 @@ export function createButtonBehavior(opts?: ButtonBehaviorOptions) {
   const disabled = opts?.disabled || opts?.loading || false;
   const loading = opts?.loading || false;
   const variant = opts?.variant ?? 'default';
-  const size = opts?.size ?? 'default';
+  const size = opts?.size ?? 'md';
   const onClick = opts?.onClick;
 
   const className = cx(
     'ucl-button',
     `ucl-button--${variant}`,
-    size !== 'default' && `ucl-button--${size}`
+    size !== 'md' && `ucl-button--${size}`
   );
 
   return {
