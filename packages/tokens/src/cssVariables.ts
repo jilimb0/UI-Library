@@ -16,10 +16,17 @@ import { motion } from './motion';
 import { opacity } from './opacity';
 import { shadows } from './shadows';
 import { spacing } from './spacing';
-import { generateThemeCSS } from './tokens.runtime.generated';
+import type { ThemeName } from './tokens.runtime.generated';
 import { typography } from './typography';
 
-export type ThemeName = 'light' | 'dark';
+// ThemeName was previously exported here as 'light' | 'dark'.
+// It is now the open type ThemeName = string from the runtime module
+// (tokens.runtime.generated.ts). Do not re-add it here — doing so
+// would cause a duplicate-identifier conflict in the package barrel.
+//
+// generateThemeCSS is exported directly from the package barrel
+// (tokens/src/index.ts) from the runtime module. Do not re-export it
+// here — the barrel handles it with an explicit named export.
 
 export interface Theme {
   /**
@@ -33,8 +40,6 @@ export interface Theme {
   components?: Partial<ComponentTokens>;
   overrides?: Record<string, string>;
 }
-
-export { generateThemeCSS };
 
 /**
  * Emit a CSS custom property line with the canonical `--ucl-` prefix.
@@ -76,6 +81,14 @@ function flattenTokenObject(
  * @deprecated Use generateThemeCSS from @ui-construction-library/tokens
  *   for custom themes. generateCSSVariables will be removed in a future
  *   major release once the W3C pipeline emits all token categories.
+ *
+ * NOTE: This function intentionally does NOT delegate to BASE_CSS.
+ * It runs its own full emission pipeline that includes the legacy token
+ * set (spacing aliases, typography, motion, brand-accent, glass-card,
+ * non-prefixed `--name` backward-compat aliases, etc.) which is absent
+ * from BASE_CSS. The two outputs are therefore NOT interchangeable.
+ * Use BASE_CSS / LIGHT_CSS / DARK_CSS from the W3C pipeline for new code;
+ * keep generateCSSVariables() only for backward-compatible consumer paths.
  */
 export function generateCSSVariables(theme: Theme = {}): string {
   // NOTE: both theme layers are always emitted with their own values.
@@ -217,7 +230,7 @@ export function generateCSSVariables(theme: Theme = {}): string {
     toCSSVarLines(k.startsWith('--') ? k.slice(2) : k, v)
   );
 
-  // Component tokens (per mode — same single-mode trap as semantic above)
+  // Component tokens (per mode)
   const flattenComponents = (merged: ComponentTokens): string[] => {
     const lines: string[] = [];
     (Object.keys(merged) as Array<keyof ComponentTokens>).forEach(

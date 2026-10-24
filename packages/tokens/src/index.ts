@@ -8,9 +8,15 @@ export * from './opacity';
 export * from './shadows';
 export * from './spacing';
 export { componentTokens, rawTokens, semanticTokens } from './tokens.raw';
+export type {
+  BrandOverride,
+  SemanticOverride,
+  ThemeName,
+} from './tokens.runtime.generated';
 export {
   BASE_CSS,
   DARK_CSS,
+  generateThemeCSS,
   LIGHT_CSS,
   ROOT_CSS,
 } from './tokens.runtime.generated';

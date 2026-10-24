@@ -5,7 +5,7 @@ import {
 
 export type { ThemeContextValue, ThemeProviderProps } from './ThemeProvider';
 
-export const THEME_STORAGE_KEY = 'ui-library-theme';
+export const THEME_STORAGE_KEY = 'ucl-theme';
 
 export function useTheme(): ThemeContextValue {
   return useThemeContext();

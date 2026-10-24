@@ -18,6 +18,7 @@ const THEME_STYLE_TAG_ID = 'ucl-theme';
 export type ThemeName = string;
 
 export interface BrandTokens {
+  brand?: Record<string, Record<string, string>>;
   semantic?: Record<string, string>;
   component?: Record<string, Record<string, string>>;
 }
