@@ -1,32 +1,29 @@
-import {
-  colors,
-  semanticDarkColors,
-  semanticLightColors,
-} from '@ui-construction-library/tokens';
+/**
+ * Theme constants for @ui-construction-library/core.
+ * The canonical token source is packages/tokens/src/tokens.w3c.json.
+ */
 
-export type ThemeMode = 'light' | 'dark';
-export type LibraryThemeColors = typeof colors;
-export type LibraryThemeSemantic = typeof semanticLightColors;
+export type ThemeName = string;
+export type BuiltinTheme = 'light' | 'dark';
+export const BUILTIN_THEMES = ['light', 'dark'] as const;
 
-export interface ThemeDefinition {
-  mode: ThemeMode;
-  colors: LibraryThemeColors;
-  semantic: LibraryThemeSemantic;
-}
+/** @deprecated Use ThemeName from ThemeProvider instead. */
+export type ThemeMode = ThemeName;
 
-export const lightTheme: ThemeDefinition = {
-  mode: 'light',
-  colors,
-  semantic: semanticLightColors,
-};
+/**
+ * @deprecated Kept for compile-time compatibility.
+ * Use ThemeProvider themes prop.
+ */
+export const lightTheme = { mode: 'light' as BuiltinTheme } as const;
 
-export const darkTheme: ThemeDefinition = {
-  mode: 'dark',
-  colors,
-  semantic: semanticDarkColors,
-};
+/**
+ * @deprecated Kept for compile-time compatibility.
+ * Use ThemeProvider themes prop.
+ */
+export const darkTheme = { mode: 'dark' as BuiltinTheme } as const;
 
-export const themes: Record<ThemeMode, ThemeDefinition> = {
+/** @deprecated Use BUILTIN_THEMES instead. */
+export const themes = {
   light: lightTheme,
   dark: darkTheme,
-};
+} as const;

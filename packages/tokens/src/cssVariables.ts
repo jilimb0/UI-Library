@@ -16,6 +16,7 @@ import { motion } from './motion';
 import { opacity } from './opacity';
 import { shadows } from './shadows';
 import { spacing } from './spacing';
+import { generateThemeCSS } from './tokens.runtime.generated';
 import { typography } from './typography';
 
 export type ThemeName = 'light' | 'dark';
@@ -32,6 +33,8 @@ export interface Theme {
   components?: Partial<ComponentTokens>;
   overrides?: Record<string, string>;
 }
+
+export { generateThemeCSS };
 
 /**
  * Emit a CSS custom property line with the canonical `--ucl-` prefix.
@@ -69,6 +72,11 @@ function flattenTokenObject(
   }
 }
 
+/**
+ * @deprecated Use generateThemeCSS from @ui-construction-library/tokens
+ *   for custom themes. generateCSSVariables will be removed in a future
+ *   major release once the W3C pipeline emits all token categories.
+ */
 export function generateCSSVariables(theme: Theme = {}): string {
   // NOTE: both theme layers are always emitted with their own values.
   // `theme.mode` is accepted for backward compatibility (ThemeProvider passes

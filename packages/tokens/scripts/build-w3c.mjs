@@ -179,6 +179,113 @@ writeFileSync(
   'utf-8'
 );
 
+// ---------------------------------------------------------------------------
+// Runtime module — packages/tokens/src/tokens.runtime.generated.ts
+// ---------------------------------------------------------------------------
+
+const runtimeOutPath = resolve(
+  rootDir,
+  'src',
+  'tokens.runtime.generated.ts'
+);
+
+// Emit the LIGHT_CSS / DARK_CSS / ROOT_CSS blocks as standalone strings.
+const lightCSSBlock = block(
+  ':root:not([data-theme]), [data-theme="light"]',
+  lightEntries
+);
+const darkCSSBlock = block('[data-theme="dark"]', darkEntries);
+const rootCSSBlock = block(':root', rootEntries);
+
+// Serialize lightEntries for use as a baseline inside generateThemeCSS.
+const lightEntriesJSON = JSON.stringify(
+  lightEntries.map((e) => ({ name: e.name, value: e.value })),
+  null,
+  2
+);
+
+const runtimeTs =
+  '/* AUTO-GENERATED from tokens.w3c.json — do not edit.           */\n' +
+  '/* Re-generate: node packages/tokens/scripts/build-w3c.mjs       */\n' +
+  '\n' +
+  'export const BASE_CSS: string =\n' +
+  '  ' +
+  JSON.stringify(css) +
+  ';\n' +
+  '\n' +
+  'export const LIGHT_CSS: string =\n' +
+  '  ' +
+  JSON.stringify(lightCSSBlock) +
+  ';\n' +
+  '\n' +
+  'export const DARK_CSS: string =\n' +
+  '  ' +
+  JSON.stringify(darkCSSBlock) +
+  ';\n' +
+  '\n' +
+  'export const ROOT_CSS: string =\n' +
+  '  ' +
+  JSON.stringify(rootCSSBlock) +
+  ';\n' +
+  '\n' +
+  'export const designTokens = ' +
+  JSON.stringify(resolved, null, 2) +
+  ' as const;\n' +
+  '\n' +
+  'export type ThemeName = string;\n' +
+  'export type BrandOverride = Record<string, Record<string, string>>;\n' +
+  'export type SemanticOverride = Record<string, string>;\n' +
+  '\n' +
+  'const _LIGHT_ENTRIES: Array<{ name: string; value: string }> =\n' +
+  lightEntriesJSON +
+  ';\n' +
+  '\n' +
+  'export function generateThemeCSS(opts: {\n' +
+  '  name: string;\n' +
+  '  brand?: BrandOverride;\n' +
+  '  semantic?: SemanticOverride;\n' +
+  '  component?: Record<string, Record<string, string>>;\n' +
+  '}): string {\n' +
+  '  const lines: string[] = [];\n' +
+  '  // Baseline: all light semantic + component entries.\n' +
+  '  for (const entry of _LIGHT_ENTRIES) {\n' +
+  '    lines.push(\'  --ucl-\' + entry.name + \': \' + entry.value + \';\');\n' +
+  '  }\n' +
+  '  // Brand overrides: Record<scaleName, Record<tone, value>>\n' +
+  '  if (opts.brand) {\n' +
+  '    for (const [scaleName, tones] of Object.entries(opts.brand)) {\n' +
+  '      for (const [tone, value] of Object.entries(tones)) {\n' +
+  '        lines.push(\'  --ucl-color-\' + scaleName + \'-\' + tone + \': \' + value + \';\');\n' +
+  '      }\n' +
+  '    }\n' +
+  '  }\n' +
+  '  // Semantic overrides: Record<varName, value>\n' +
+  '  if (opts.semantic) {\n' +
+  '    for (const [varName, value] of Object.entries(opts.semantic)) {\n' +
+  '      lines.push(\'  --ucl-\' + varName + \': \' + value + \';\');\n' +
+  '    }\n' +
+  '  }\n' +
+  '  // Component overrides: Record<componentName, Record<tokenName, value>>\n' +
+  '  if (opts.component) {\n' +
+  '    for (const [componentName, tokens] of Object.entries(opts.component)) {\n' +
+  '      for (const [tokenName, value] of Object.entries(tokens)) {\n' +
+  '        lines.push(\n' +
+  '          \'  --ucl-\' + componentName + \'-\' + tokenName + \': \' + value + \';\'\n' +
+  '        );\n' +
+  '      }\n' +
+  '    }\n' +
+  '  }\n' +
+  // Use string concatenation in the emitted function to avoid backtick
+  // escaping issues: build the selector via concatenation, not template lit.
+  '  const selector = \'[data-theme="\' + opts.name + \'"]\' + \' {\';\n' +
+  '  return selector + \'\\n\' + lines.join(\'\\n\') + \'\\n}\';\n' +
+  '}\n';
+
+writeFileSync(runtimeOutPath, runtimeTs, 'utf-8');
+
 console.log(
   `✓ W3C tokens → dist/w3c/ (${rootEntries.length} root, ${lightEntries.length} light, ${darkEntries.length} dark)`
+);
+console.log(
+  `✓ runtime module → src/tokens.runtime.generated.ts`
 );
