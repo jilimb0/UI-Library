@@ -1,0 +1,35 @@
+{
+  "id": "FEAT-001",
+  "type": "feat",
+  "description": "Add 8 new component-state token groups (checkbox, radio, slider, tabs, accordion, pagination, tooltip, dropdown) to tokens.w3c.json under color.component.light and color.component.dark, then rebuild all W3C token artifacts.",
+  "status": "completed",
+  "steps": [
+    "Read packages/tokens/src/tokens.w3c.json to confirm current component.light/dark structure (button, input, card, badge, select, switch).",
+    "Add 'checkbox' group to color.component.light with keys: bg.unchecked (#ffffff), bg.checked ({color.primitive.neutral.700}), bg.disabled ({color.primitive.neutral.100}), border.default ({color.primitive.neutral.300}), border.hover ({color.primitive.neutral.400}), border.checked ({color.primitive.neutral.700}), border.disabled ({color.primitive.neutral.300}), fg (#ffffff). Mirror in color.component.dark with dark values: bg.unchecked (#161618), bg.checked ({color.primitive.neutral.100}), bg.disabled (#1d1d1f), border.default (rgba(255,255,255,0.10)), border.hover (rgba(255,255,255,0.22)), border.checked ({color.primitive.neutral.100}), border.disabled (rgba(255,255,255,0.10)), fg ({color.primitive.neutral.700}).",
+    "Add 'radio' group to color.component.light: accent ({color.primitive.neutral.700}), border.default ({color.primitive.neutral.300}), border.hover ({color.primitive.neutral.400}), border.disabled ({color.primitive.neutral.300}). Dark: accent ({color.primitive.neutral.100}), border.default (rgba(255,255,255,0.10)), border.hover (rgba(255,255,255,0.22)), border.disabled (rgba(255,255,255,0.10)).",
+    "Add 'slider' group to color.component.light: track.bg ({color.primitive.neutral.200}), range.bg ({color.primitive.neutral.700}), thumb.bg (#ffffff), thumb.border ({color.primitive.neutral.700}), thumb.hover ({color.primitive.neutral.900}), thumb.disabled ({color.primitive.neutral.300}). Dark: track.bg ({color.primitive.neutral.600}), range.bg ({color.primitive.neutral.100}), thumb.bg (#161618), thumb.border ({color.primitive.neutral.100}), thumb.hover (#ffffff), thumb.disabled ({color.primitive.neutral.600}).",
+    "Add 'tabs' group to color.component.light: list.bg ({color.primitive.neutral.100}), trigger.default (transparent), trigger.hover ({color.primitive.neutral.200}), trigger.active (#ffffff), trigger.fg.default ({color.primitive.neutral.500}), trigger.fg.active ({color.primitive.neutral.700}). Dark: list.bg (#1d1d1f), trigger.default (transparent), trigger.hover (#2a2a2c), trigger.active (#161618), trigger.fg.default ({color.primitive.neutral.400}), trigger.fg.active ({color.primitive.neutral.100}).",
+    "Add 'accordion' group to color.component.light: trigger.default (transparent), trigger.hover ({color.primitive.neutral.100}), trigger.fg ({color.primitive.neutral.700}), content.fg ({color.primitive.neutral.500}), border ({color.primitive.neutral.300}). Dark: trigger.default (transparent), trigger.hover (#1d1d1f), trigger.fg ({color.primitive.neutral.100}), content.fg ({color.primitive.neutral.400}), border (rgba(255,255,255,0.10)).",
+    "Add 'pagination' group to color.component.light: btn.bg (#ffffff), btn.bg.hover ({color.primitive.neutral.100}), btn.bg.active ({color.primitive.neutral.700}), btn.border ({color.primitive.neutral.300}), btn.fg ({color.primitive.neutral.700}), btn.fg.active (#ffffff). Dark: btn.bg (#161618), btn.bg.hover (#1d1d1f), btn.bg.active ({color.primitive.neutral.100}), btn.border (rgba(255,255,255,0.10)), btn.fg ({color.primitive.neutral.100}), btn.fg.active ({color.primitive.neutral.700}).",
+    "Add 'tooltip' group to color.component.light: bg ({color.primitive.neutral.700}), fg (#ffffff), border (transparent). Dark: bg ({color.primitive.neutral.100}), fg ({color.primitive.neutral.700}), border (transparent).",
+    "Add 'dropdown' group to color.component.light: menu.bg (#ffffff), item.bg.default (transparent), item.bg.hover ({color.primitive.neutral.100}), item.bg.active ({color.primitive.neutral.700}), item.fg ({color.primitive.neutral.700}), item.fg.active (#ffffff), item.fg.destructive ({color.primitive.error.500}), item.bg.destructive.hover ({color.primitive.error.50}), trigger.border ({color.primitive.neutral.300}), trigger.bg (#ffffff), trigger.bg.hover ({color.primitive.neutral.100}). Dark: menu.bg (#161618), item.bg.default (transparent), item.bg.hover (#1d1d1f), item.bg.active ({color.primitive.neutral.100}), item.fg ({color.primitive.neutral.100}), item.fg.active ({color.primitive.neutral.700}), item.fg.destructive (#e05858), item.bg.destructive.hover (#2a0c0c), trigger.border (rgba(255,255,255,0.10)), trigger.bg (#161618), trigger.bg.hover (#1d1d1f).",
+    "Run 'node packages/tokens/scripts/build-w3c.mjs' from workspace root to regenerate dist/w3c/tokens.css, dist/w3c/tokens.ts, dist/w3c/tokens.resolved.json, and src/tokens.runtime.generated.ts. Confirm the script exits 0 and the light/dark entry count increased by ~40+ tokens.",
+    "Confirm packages/tokens/dist/w3c/tokens.css contains --ucl-checkbox-bg-checked, --ucl-tabs-trigger-active, --ucl-tooltip-bg, --ucl-dropdown-item-bg-hover in both light and dark blocks.",
+    "Run 'pnpm --filter @ui-construction-library/tokens test' to confirm all existing tests pass."
+  ],
+  "acceptance_criteria": [
+    "packages/tokens/src/tokens.w3c.json contains checkbox, radio, slider, tabs, accordion, pagination, tooltip, dropdown groups under both color.component.light and color.component.dark.",
+    "Running 'node packages/tokens/scripts/build-w3c.mjs' exits 0 without errors.",
+    "packages/tokens/dist/w3c/tokens.css contains '--ucl-checkbox-bg-checked' in the light block and '--ucl-checkbox-bg-checked' in the dark block with different resolved values.",
+    "packages/tokens/src/tokens.runtime.generated.ts is regenerated and includes the new token names in the _LIGHT_ENTRIES array.",
+    "All references in new token paths resolve without circular alias errors (build exits 0).",
+    "pnpm --filter @ui-construction-library/tokens test exits 0."
+  ],
+  "verification": [
+    "node packages/tokens/scripts/build-w3c.mjs  (from workspace root — must exit 0)",
+    "grep 'ucl-checkbox-bg-checked\\|ucl-tabs-trigger-active\\|ucl-tooltip-bg\\|ucl-dropdown-item-bg-hover' packages/tokens/dist/w3c/tokens.css  (must find matches in both light and dark blocks)",
+    "pnpm --filter @ui-construction-library/tokens test"
+  ],
+  "blocked_reason": null,
+  "findings": "build-w3c.mjs output: 128 root, 163 light, 163 dark entries. All 4 tokens tests passed."
+}
