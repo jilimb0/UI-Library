@@ -24,7 +24,10 @@
     "./css": "./dist/tokens.css",
     "./json": "./dist/tokens.raw.json",
     "./semantic": "./dist/tokens.semantic.json",
-    "./component": "./dist/tokens.component.json"
+    "./component": "./dist/tokens.component.json",
+    "./w3c/css": "./dist/w3c/tokens.css",
+    "./w3c/json": "./dist/w3c/tokens.w3c.json",
+    "./w3c/resolved": "./dist/w3c/tokens.resolved.json"
   },
   "files": [
     "dist",
@@ -33,8 +36,9 @@
     "scripts"
   ],
   "scripts": {
-    "build": "rollup -c && node scripts/build-tokens.js && tsc -p tsconfig.json --emitDeclarationOnly --declarationMap",
+    "build": "rollup -c && node scripts/build-tokens.js && node scripts/build-w3c.mjs && tsc -p tsconfig.json --emitDeclarationOnly --declarationMap",
     "build:tokens": "node scripts/build-tokens.js",
+    "build:w3c": "node scripts/build-w3c.mjs",
     "test": "vitest run --config ./vitest.config.ts",
     "typecheck": "tsc --noEmit",
     "lint": "biome check src"
