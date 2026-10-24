@@ -143,13 +143,13 @@
 .ucl-button--outline, .button--outline {
   background-color: var(--ucl-button-outline-default, var(--background));
   color: var(--ucl-button-outline-fg, var(--foreground));
-  border-color: var(--input);
+  border-color: var(--ucl-input-border-default, var(--input));
 }
 
 .ucl-button--outline:hover:not(:disabled),
 .button--outline:hover:not(:disabled) {
   background-color: var(--ucl-button-outline-hover, var(--accent));
-  border-color: var(--border);
+  border-color: var(--ucl-input-border-hover, var(--border));
 }
 
 .ucl-button--outline:active:not(:disabled),
