@@ -37,16 +37,32 @@ export interface ThemeContextValue {
 
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
-function getStoredTheme(): ThemeName | null {
+/**
+ * Validate and return a stored theme name only if it is a known
+ * builtin ('light' | 'dark') or a key in the supplied custom themes
+ * map. Rejects any unknown or corrupted value to prevent untrusted
+ * strings from reaching data-theme attributes and CSS selectors.
+ */
+function getStoredTheme(
+  customThemes?: Record<string, BrandTokens>
+): ThemeName | null {
   if (typeof window === 'undefined') {
     return null;
   }
   const stored = window.localStorage.getItem(THEME_STORAGE_KEY);
-  return stored ?? null;
+  if (!stored) return null;
+  const known =
+    stored === 'light' ||
+    stored === 'dark' ||
+    (customThemes !== undefined && Object.hasOwn(customThemes, stored));
+  return known ? stored : null;
 }
 
-function getInitialTheme(defaultTheme: ThemeName): ThemeName {
-  return getStoredTheme() ?? defaultTheme;
+function getInitialTheme(
+  defaultTheme: ThemeName,
+  customThemes?: Record<string, BrandTokens>
+): ThemeName {
+  return getStoredTheme(customThemes) ?? defaultTheme;
 }
 
 function ensureThemeStyleTag(): HTMLStyleElement | null {
@@ -74,6 +90,11 @@ function resolveThemeCSS(
   if (brandTokens) {
     return generateThemeCSS({ name: themeName, ...brandTokens });
   }
+  console.warn(
+    `[UCL] ThemeProvider: unknown theme "${themeName}". ` +
+      'Add it to the themes prop or use a builtin ' +
+      '("light" | "dark"). Falling back to "light".'
+  );
   return LIGHT_CSS;
 }
 
@@ -106,7 +127,7 @@ const ThemeProvider: FC<ThemeProviderProps> = ({
   children,
 }) => {
   const [theme, setTheme] = useState<ThemeName>(() =>
-    getInitialTheme(defaultTheme)
+    getInitialTheme(defaultTheme, themes)
   );
 
   const resolvedTheme = controlledTheme ?? theme;
