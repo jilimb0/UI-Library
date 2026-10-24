@@ -9,7 +9,7 @@ function ThemeConsumer() {
 
 describe('ThemeProvider', () => {
   it('uses the default theme when there is no stored preference', () => {
-    window.localStorage.removeItem('ui-library-theme');
+    window.localStorage.removeItem('ucl-theme');
 
     render(
       <ThemeProvider defaultTheme="dark">
@@ -19,13 +19,13 @@ describe('ThemeProvider', () => {
 
     expect(screen.getByTestId('theme-value').textContent).toBe('dark');
     expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
-    expect(
-      document.getElementById('ui-lib-theme-variables')?.textContent
-    ).toContain('--color-background:');
+    expect(document.getElementById('ucl-theme')?.textContent).toContain(
+      '--ucl-color-background:'
+    );
   });
 
   it('prefers the stored theme over the default theme', () => {
-    window.localStorage.setItem('ui-library-theme', 'dark');
+    window.localStorage.setItem('ucl-theme', 'dark');
 
     render(
       <ThemeProvider defaultTheme="light">
@@ -39,7 +39,7 @@ describe('ThemeProvider', () => {
 
   it('does not persist controlled theme updates to localStorage', () => {
     const setItemSpy = vi.spyOn(window.localStorage, 'setItem');
-    window.localStorage.removeItem('ui-library-theme');
+    window.localStorage.removeItem('ucl-theme');
 
     render(
       <ThemeProvider theme="dark">
@@ -48,7 +48,7 @@ describe('ThemeProvider', () => {
     );
 
     expect(screen.getByTestId('theme-value').textContent).toBe('dark');
-    expect(setItemSpy).not.toHaveBeenCalledWith('ui-library-theme', 'dark');
+    expect(setItemSpy).not.toHaveBeenCalledWith('ucl-theme', 'dark');
 
     setItemSpy.mockRestore();
   });
