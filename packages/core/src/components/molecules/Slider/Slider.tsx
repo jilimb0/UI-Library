@@ -4,10 +4,11 @@ import {
   Thumb as SliderThumb,
   Track as SliderTrack,
 } from '@ui-construction-library/primitives';
-import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../../utils/cn';
+import { tv, type VariantProps } from '../../../utils/variants';
 
-export const sliderVariants = cva('slider', {
+export const sliderVariants = tv({
+  base: 'slider',
   variants: {
     size: {
       sm: 'slider--sm',

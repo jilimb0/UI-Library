@@ -1,8 +1,9 @@
-import { cva, type VariantProps } from 'class-variance-authority';
 import { forwardRef, type TextareaHTMLAttributes, useId } from 'react';
 import { cn } from '../../../utils/cn';
+import { tv, type VariantProps } from '../../../utils/variants';
 
-const textareaVariants = cva('textarea input', {
+const textareaVariants = tv({
+  base: 'textarea input',
   variants: {
     size: {
       default: '',

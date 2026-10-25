@@ -1,6 +1,5 @@
 import { ChevronDownIcon } from '@ui-construction-library/icons';
 import { useControllableState } from '@ui-construction-library/primitives';
-import { cva, type VariantProps } from 'class-variance-authority';
 import {
   forwardRef,
   type ReactNode,
@@ -11,8 +10,10 @@ import {
   useState,
 } from 'react';
 import { cn } from '../../../utils/cn';
+import { tv, type VariantProps } from '../../../utils/variants';
 
-export const dropdownVariants = cva('dropdown', {
+export const dropdownVariants = tv({
+  base: 'dropdown',
   variants: {
     size: {
       sm: 'dropdown--sm',

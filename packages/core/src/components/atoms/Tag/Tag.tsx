@@ -1,4 +1,3 @@
-import { cva, type VariantProps } from 'class-variance-authority';
 import {
   type ButtonHTMLAttributes,
   forwardRef,
@@ -6,8 +5,10 @@ import {
   type ReactNode,
 } from 'react';
 import { cn } from '../../../utils/cn';
+import { tv, type VariantProps } from '../../../utils/variants';
 
-const tagVariants = cva('tag', {
+const tagVariants = tv({
+  base: 'tag',
   variants: {
     variant: {
       neutral: '',

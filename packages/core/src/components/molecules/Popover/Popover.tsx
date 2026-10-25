@@ -1,9 +1,10 @@
 import { Popover as PrimitivePopover } from '@ui-construction-library/primitives';
-import { cva, type VariantProps } from 'class-variance-authority';
 import type { ReactNode } from 'react';
 import { cn } from '../../../utils/cn';
+import { tv, type VariantProps } from '../../../utils/variants';
 
-export const popoverContentVariants = cva('popover', {
+export const popoverContentVariants = tv({
+  base: 'popover',
   variants: {
     size: {
       sm: 'popover--sm',

@@ -1,8 +1,9 @@
-import { cva, type VariantProps } from 'class-variance-authority';
 import { type ElementType, forwardRef, type HTMLAttributes } from 'react';
 import { cn } from '../../../utils/cn';
+import { tv, type VariantProps } from '../../../utils/variants';
 
-const textVariants = cva('text', {
+const textVariants = tv({
+  base: 'text',
   variants: {
     size: {
       xs: 'text--xs',

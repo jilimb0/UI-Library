@@ -1,9 +1,10 @@
 import { Dialog } from '@ui-construction-library/primitives';
-import { cva, type VariantProps } from 'class-variance-authority';
 import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 import { cn } from '../../../utils/cn';
+import { tv, type VariantProps } from '../../../utils/variants';
 
-export const modalContentVariants = cva('modal-content focus:outline-none', {
+export const modalContentVariants = tv({
+  base: 'modal-content focus:outline-none',
   variants: {
     size: {
       sm: 'modal-content--sm',
