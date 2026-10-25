@@ -121,7 +121,7 @@ function block(selector, items) {
 
 const css = [
   '/* AUTO-GENERATED from tokens.w3c.json — do not edit. */',
-  `/* Source of truth: @ui-construction-library/tokens/src/tokens.w3c.json */`,
+  '/* Source of truth: tokens.w3c.json */',
   `/* Single ${prefix} prefix. Non-color + primitive scales live in :root;`,
   '   semantic + component-state are scoped to [data-theme]. */',
   '',

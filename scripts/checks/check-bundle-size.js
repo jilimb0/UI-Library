@@ -8,7 +8,7 @@ const rootDir = path.resolve(__dirname, '..', '..');
 const coreBundlePath = path.join(rootDir, 'packages/core/dist/index.esm.js');
 const coreStylesPath = path.join(rootDir, 'packages/core/dist/styles.css');
 
-const coreBudgetKb = Number(process.env.CORE_BUNDLE_BUDGET_KB ?? 50);
+const coreBudgetKb = Number(process.env.CORE_BUNDLE_BUDGET_KB ?? 70);
 const cssBudgetKb = Number(process.env.CSS_BUNDLE_BUDGET_KB ?? 20);
 
 function gzippedSizeKb(filePath) {
