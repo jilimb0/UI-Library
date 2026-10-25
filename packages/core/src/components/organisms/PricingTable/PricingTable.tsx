@@ -52,7 +52,9 @@ export function PricingTable({
             <h2 className="text-3xl font-bold tracking-tight mb-2">{title}</h2>
           )}
           {subtitle && (
-            <p className="text-muted-foreground text-lg">{subtitle}</p>
+            <p className="text-lg" style={{ color: 'var(--muted-foreground)' }}>
+              {subtitle}
+            </p>
           )}
         </div>
       )}
@@ -61,12 +63,14 @@ export function PricingTable({
       <div className="ucl-pricing-table__toggle-container flex justify-center items-center gap-3 mb-10">
         <button
           type="button"
-          className={cn(
-            'text-sm font-medium cursor-pointer bg-transparent border-0 p-0',
-            billingCycle === 'monthly'
-              ? 'text-foreground font-semibold'
-              : 'text-muted-foreground'
-          )}
+          className="text-sm font-medium cursor-pointer bg-transparent border-0 p-0"
+          style={{
+            color:
+              billingCycle === 'monthly'
+                ? 'var(--foreground)'
+                : 'var(--muted-foreground)',
+            fontWeight: billingCycle === 'monthly' ? 600 : 400,
+          }}
           onClick={() => setBillingCycle('monthly')}
         >
           Monthly
@@ -75,10 +79,11 @@ export function PricingTable({
           type="button"
           role="switch"
           aria-checked={billingCycle === 'annual'}
-          className={cn(
-            'relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out',
-            billingCycle === 'annual' ? 'bg-primary' : 'bg-muted'
-          )}
+          className="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out"
+          style={{
+            backgroundColor:
+              billingCycle === 'annual' ? 'var(--primary)' : 'var(--muted)',
+          }}
           onClick={() =>
             setBillingCycle((prev) =>
               prev === 'monthly' ? 'annual' : 'monthly'
@@ -87,9 +92,10 @@ export function PricingTable({
         >
           <span
             className={cn(
-              'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-background shadow-lg ring-0 transition duration-200 ease-in-out',
+              'pointer-events-none inline-block h-5 w-5 transform rounded-full shadow-lg ring-0 transition duration-200 ease-in-out',
               billingCycle === 'annual' ? 'translate-x-5' : 'translate-x-0'
             )}
+            style={{ backgroundColor: 'var(--background)' }}
           />
         </button>
         <button
@@ -98,12 +104,14 @@ export function PricingTable({
           onClick={() => setBillingCycle('annual')}
         >
           <span
-            className={cn(
-              'text-sm font-medium',
-              billingCycle === 'annual'
-                ? 'text-foreground font-semibold'
-                : 'text-muted-foreground'
-            )}
+            className="text-sm font-medium"
+            style={{
+              color:
+                billingCycle === 'annual'
+                  ? 'var(--foreground)'
+                  : 'var(--muted-foreground)',
+              fontWeight: billingCycle === 'annual' ? 600 : 400,
+            }}
           >
             Annual
           </span>
@@ -153,7 +161,10 @@ export function PricingTable({
               <div>
                 <h3 className="text-xl font-bold mb-2">{plan.name}</h3>
                 {plan.description && (
-                  <p className="text-sm text-muted-foreground mb-6">
+                  <p
+                    className="text-sm mb-6"
+                    style={{ color: 'var(--muted-foreground)' }}
+                  >
                     {plan.description}
                   </p>
                 )}
@@ -163,12 +174,18 @@ export function PricingTable({
                     {currency}
                     {price}
                   </span>
-                  <span className="text-sm text-muted-foreground font-medium">
+                  <span
+                    className="text-sm font-medium"
+                    style={{ color: 'var(--muted-foreground)' }}
+                  >
                     {displayPeriod}
                   </span>
                 </div>
 
-                <div className="border-t border-[rgba(108,123,255,0.12)] my-6" />
+                <div
+                  className="my-6"
+                  style={{ borderTop: '1px solid var(--border)' }}
+                />
 
                 <ul className="space-y-3 mb-8 text-sm">
                   {plan.features.map((feature) => (
@@ -207,10 +224,10 @@ export function PricingTable({
                     className={cn(
                       'w-full py-3 px-4 rounded-xl font-medium text-sm transition-all duration-150 cursor-pointer shadow-sm',
                       plan.ctaVariant === 'gradient' || isFeatured
-                        ? 'bg-gradient-to-r from-[#6C7BFF] to-[#828FFF] text-white hover:opacity-95 shadow-[0_4px_14px_rgba(108,123,255,0.3)]'
+                        ? 'pricing-cta--gradient'
                         : plan.ctaVariant === 'outline'
-                          ? 'border border-[rgba(108,123,255,0.3)] text-foreground hover:bg-[rgba(108,123,255,0.06)]'
-                          : 'bg-primary text-primary-foreground hover:bg-primary/90'
+                          ? 'pricing-cta--outline'
+                          : 'pricing-cta--primary'
                     )}
                   >
                     {plan.ctaText ?? 'Get Started'}

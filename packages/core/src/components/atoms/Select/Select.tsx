@@ -111,13 +111,14 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             ))}
           </select>
           <span
-            className="pointer-events-none text-muted-foreground"
+            className="pointer-events-none"
             style={{
               position: 'absolute',
               top: 0,
               bottom: 0,
               right: '0.5rem',
               display: 'flex',
+              color: 'var(--muted-foreground)',
               alignItems: 'center',
             }}
           >

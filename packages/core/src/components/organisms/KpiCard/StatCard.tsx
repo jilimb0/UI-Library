@@ -63,22 +63,33 @@ export function StatCard({
           ? 'bg-[rgba(18,21,31,0.75)] backdrop-blur-[16px] border border-[rgba(108,123,255,0.12)] hover:border-[rgba(108,123,255,0.28)] shadow-sm'
           : variant !== 'default'
             ? `kpi-card--${variant}`
-            : 'bg-card border border-border shadow-sm',
+            : 'ucl-stat-card--default',
         onClick && 'cursor-pointer hover:scale-[1.01]',
         className
       )}
     >
       <div className="flex items-center justify-between gap-2 mb-3">
-        <span className="text-xs font-medium text-muted-foreground tracking-wide uppercase">
+        <span
+          className="text-xs font-medium tracking-wide uppercase"
+          style={{ color: 'var(--muted-foreground)' }}
+        >
           {label}
         </span>
         {icon ? (
-          <div className="text-muted-foreground shrink-0">{icon}</div>
+          <div
+            className="shrink-0"
+            style={{ color: 'var(--muted-foreground)' }}
+          >
+            {icon}
+          </div>
         ) : null}
       </div>
 
       <div className="flex items-baseline gap-3 my-1">
-        <span className="text-3xl font-extrabold tracking-tight text-foreground">
+        <span
+          className="text-3xl font-extrabold tracking-tight"
+          style={{ color: 'var(--foreground)' }}
+        >
           {value}
         </span>
 
@@ -102,7 +113,10 @@ export function StatCard({
       </div>
 
       {(subtext || tooltip) && (
-        <div className="text-xs text-muted-foreground mt-2 flex items-center justify-between">
+        <div
+          className="text-xs mt-2 flex items-center justify-between"
+          style={{ color: 'var(--muted-foreground)' }}
+        >
           {subtext && <span>{subtext}</span>}
           {tooltip && !subtext && <span>{tooltip}</span>}
         </div>

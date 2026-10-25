@@ -113,9 +113,10 @@ export function AuthShell({
   return (
     <div
       className={cn(
-        'ucl-auth-shell min-h-screen w-full flex flex-col lg:flex-row bg-background',
+        'ucl-auth-shell min-h-screen w-full flex flex-col lg:flex-row',
         className
       )}
+      style={{ backgroundColor: 'var(--background)' }}
     >
       {/* Left Branding Panel */}
       <div className="ucl-auth-shell__brand relative hidden lg:flex lg:w-1/2 flex-col justify-between p-12 bg-[rgba(18,21,31,0.95)] text-white overflow-hidden border-r border-[rgba(108,123,255,0.12)]">
@@ -164,12 +165,20 @@ export function AuthShell({
           <div className="text-center space-y-2">
             <div className="lg:hidden flex justify-center mb-6">{logo}</div>
             {title && (
-              <h2 className="text-3xl font-bold tracking-tight text-foreground">
+              <h2
+                className="text-3xl font-bold tracking-tight"
+                style={{ color: 'var(--foreground)' }}
+              >
                 {title}
               </h2>
             )}
             {subtitle && (
-              <p className="text-sm text-muted-foreground">{subtitle}</p>
+              <p
+                className="text-sm"
+                style={{ color: 'var(--muted-foreground)' }}
+              >
+                {subtitle}
+              </p>
             )}
           </div>
 
@@ -182,7 +191,12 @@ export function AuthShell({
                     key={provider.name}
                     type="button"
                     onClick={provider.onClick}
-                    className="w-full inline-flex items-center justify-center gap-3 py-2.5 px-4 rounded-xl border border-[rgba(108,123,255,0.18)] bg-[rgba(18,21,31,0.5)] hover:bg-[rgba(108,123,255,0.08)] text-foreground text-sm font-medium transition-all duration-150 cursor-pointer shadow-sm"
+                    className="w-full inline-flex items-center justify-center gap-3 py-2.5 px-4 rounded-xl border text-sm font-medium transition-all duration-150 cursor-pointer shadow-sm"
+                    style={{
+                      borderColor: 'var(--border)',
+                      backgroundColor: 'var(--card)',
+                      color: 'var(--foreground)',
+                    }}
                   >
                     {provider.icon ?? <DefaultOAuthIcon name={provider.name} />}
                     <span>
@@ -195,10 +209,19 @@ export function AuthShell({
 
               <div className="relative my-6">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-border" />
+                  <div
+                    className="w-full"
+                    style={{ borderTop: '1px solid var(--border)' }}
+                  />
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-background px-3 text-muted-foreground">
+                  <span
+                    className="px-3"
+                    style={{
+                      backgroundColor: 'var(--background)',
+                      color: 'var(--muted-foreground)',
+                    }}
+                  >
                     or continue with email
                   </span>
                 </div>
@@ -211,7 +234,10 @@ export function AuthShell({
 
           {/* Footer Link */}
           {footer && (
-            <div className="text-center text-sm text-muted-foreground pt-2">
+            <div
+              className="text-center text-sm pt-2"
+              style={{ color: 'var(--muted-foreground)' }}
+            >
               {footer}
             </div>
           )}

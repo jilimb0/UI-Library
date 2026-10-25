@@ -88,17 +88,26 @@ export function NotificationItem({
               {entityName}
             </span>
           )}
-          <span className="text-xs text-muted-foreground whitespace-nowrap ml-auto">
+          <span
+            className="text-xs whitespace-nowrap ml-auto"
+            style={{ color: 'var(--muted-foreground)' }}
+          >
             {timestamp}
           </span>
         </div>
 
-        <div className="text-sm font-medium text-foreground leading-snug">
+        <div
+          className="text-sm font-medium leading-snug"
+          style={{ color: 'var(--foreground)' }}
+        >
           {title}
         </div>
 
         {description && (
-          <div className="text-xs text-muted-foreground mt-1 line-clamp-2 leading-relaxed">
+          <div
+            className="text-xs mt-1 line-clamp-2 leading-relaxed"
+            style={{ color: 'var(--muted-foreground)' }}
+          >
             {description}
           </div>
         )}

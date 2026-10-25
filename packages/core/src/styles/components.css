@@ -342,6 +342,35 @@
   padding: 1.5rem;
 }
 
+.ucl-stat-card--default {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Pricing CTA variants — work without Tailwind */
+.pricing-cta--primary {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+.pricing-cta--primary:hover {
+  background-color: var(--ucl-button-primary-hover, var(--primary));
+}
+.pricing-cta--outline {
+  border: 1px solid var(--border);
+  color: var(--foreground);
+}
+.pricing-cta--outline:hover {
+  background-color: var(--accent);
+}
+.pricing-cta--gradient {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+.pricing-cta--gradient:hover {
+  opacity: 0.95;
+}
+
 .badge {
   display: inline-flex;
   align-items: center;
