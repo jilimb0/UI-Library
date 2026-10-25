@@ -1,3 +1,12 @@
+/**
+ * @deprecated Use `@import "@ui-construction-library/tokens/w3c/tailwind"`
+ * (the generated `@theme` CSS bridge) instead. This preset maps raw hex
+ * values which break runtime theme switching. The new `@theme` CSS maps
+ * Tailwind utilities to `--ucl-*` CSS variables that follow themes.
+ *
+ * Kept for backward compatibility with consumers using a v3-style
+ * `tailwind.config.js` presets array.
+ */
 import {
   borderRadius,
   colors,

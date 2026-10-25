@@ -26,6 +26,7 @@
     "./semantic": "./dist/tokens.semantic.json",
     "./component": "./dist/tokens.component.json",
     "./w3c/css": "./dist/w3c/tokens.css",
+    "./w3c/tailwind": "./dist/w3c/tailwind-theme.css",
     "./w3c/json": "./dist/w3c/tokens.w3c.json",
     "./w3c/resolved": "./dist/w3c/tokens.resolved.json"
   },

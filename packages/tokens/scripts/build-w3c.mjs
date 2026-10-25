@@ -283,9 +283,54 @@ const runtimeTs =
 
 writeFileSync(runtimeOutPath, runtimeTs, 'utf-8');
 
+// ---------------------------------------------------------------------------
+// Tailwind v4 @theme bridge — dist/w3c/tailwind-theme.css
+// Maps Tailwind theme namespace (--color-*, --spacing-*, --radius-*, etc.)
+// to --ucl-* CSS variables so utilities like bg-primary, text-muted-foreground
+// resolve and follow runtime theme switching.
+// ---------------------------------------------------------------------------
+
+const twLines = [];
+
+// Root entries (primitives): map --ucl-<name> → --<name> (Tailwind namespace)
+for (const e of rootEntries) {
+  twLines.push(`  --${e.name}: var(--ucl-${e.name});`);
+}
+
+// Light entries (semantic + intent): only color-* and intent-* (skip
+// component-state tokens — they're CSS-only, not Tailwind utilities)
+for (const e of lightEntries) {
+  if (e.name.startsWith('color-')) {
+    twLines.push(`  --${e.name}: var(--ucl-${e.name});`);
+  } else if (e.name.startsWith('intent-')) {
+    twLines.push(`  --color-${e.name}: var(--ucl-${e.name});`);
+  }
+}
+
+const tailwindThemeCss = [
+  '/* AUTO-GENERATED from tokens.w3c.json — do not edit. */',
+  '/* Tailwind v4 @theme bridge: maps Tailwind utilities to --ucl- CSS vars. */',
+  '/* Import after `@import "tailwindcss"` to activate bg-primary, */',
+  '/* text-muted-foreground, border-border, etc. that follow runtime themes. */',
+  '',
+  '@theme {',
+  ...twLines,
+  '}',
+  '',
+].join('\n');
+
+writeFileSync(
+  resolve(outDir, 'tailwind-theme.css'),
+  tailwindThemeCss + '\n',
+  'utf-8'
+);
+
 console.log(
   `✓ W3C tokens → dist/w3c/ (${rootEntries.length} root, ${lightEntries.length} light, ${darkEntries.length} dark)`
 );
 console.log(
   `✓ runtime module → src/tokens.runtime.generated.ts`
+);
+console.log(
+  `✓ tailwind theme → dist/w3c/tailwind-theme.css (${twLines.length} mappings)`
 );
