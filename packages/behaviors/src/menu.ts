@@ -5,12 +5,17 @@
 export interface MenuBehaviorOptions {
   open?: boolean;
   onClose?: () => void;
-  /** ID of the menu element. */
   menuId?: string;
-  /** ID of the trigger element. */
   triggerId?: string;
-  /** ID of the label element. */
   labelId?: string;
+  /** Navigate to next menu item (APG ArrowDown). */
+  onNextItem?: () => void;
+  /** Navigate to previous menu item (APG ArrowUp). */
+  onPrevItem?: () => void;
+  /** Focus first menu item (APG Home). */
+  onFirstItem?: () => void;
+  /** Focus last menu item (APG End). */
+  onLastItem?: () => void;
 }
 
 export function createMenuBehavior(opts?: MenuBehaviorOptions) {
@@ -29,6 +34,7 @@ export function createMenuBehavior(opts?: MenuBehaviorOptions) {
       role: 'menu' as const,
       'aria-labelledby': opts?.labelId ?? opts?.triggerId,
       'data-state': open ? ('open' as const) : ('closed' as const),
+      tabIndex: -1,
     },
     menuClassName: 'ucl-menu',
     handlers: {
@@ -36,6 +42,18 @@ export function createMenuBehavior(opts?: MenuBehaviorOptions) {
         if (e.key === 'Escape') {
           e.preventDefault();
           opts?.onClose?.();
+        } else if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          opts?.onNextItem?.();
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          opts?.onPrevItem?.();
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          opts?.onFirstItem?.();
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          opts?.onLastItem?.();
         }
       },
     },
@@ -45,20 +63,22 @@ export function createMenuBehavior(opts?: MenuBehaviorOptions) {
 export interface MenuItemBehaviorOptions {
   disabled?: boolean;
   onClick?: () => void;
-  /** For checkbox/radio menu items. */
   checked?: boolean;
+  /** Whether this item is the active (focused) item for roving tabindex. */
+  isActive?: boolean;
 }
 
 export function createMenuItemBehavior(opts?: MenuItemBehaviorOptions) {
   const disabled = opts?.disabled || false;
   const checked = opts?.checked;
+  const isActive = opts?.isActive ?? false;
 
   return {
     itemAttrs: {
       role: 'menuitem' as const,
       'aria-disabled': disabled || undefined,
       'aria-checked': checked !== undefined ? checked : undefined,
-      tabIndex: disabled ? -1 : 0,
+      tabIndex: disabled ? -1 : isActive ? 0 : -1,
       'data-disabled': disabled || undefined,
       'data-checked':
         checked !== undefined ? (checked ? 'true' : 'false') : undefined,

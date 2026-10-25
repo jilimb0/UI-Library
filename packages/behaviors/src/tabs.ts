@@ -13,6 +13,12 @@ export interface TabTriggerBehaviorOptions {
   onNext?: () => void;
   /** Callback to focus previous tab. */
   onPrev?: () => void;
+  /** Callback to focus the first tab (APG Home key). */
+  onFirst?: () => void;
+  /** Callback to focus the last tab (APG End key). */
+  onLast?: () => void;
+  /** ID of the associated tabpanel (for aria-controls). */
+  panelId?: string;
 }
 
 export function createTabTriggerBehavior(opts: TabTriggerBehaviorOptions) {
@@ -22,6 +28,7 @@ export function createTabTriggerBehavior(opts: TabTriggerBehaviorOptions) {
     triggerAttrs: {
       role: 'tab' as const,
       'aria-selected': active,
+      'aria-controls': opts.panelId,
       'data-state': active ? ('active' as const) : ('inactive' as const),
       tabIndex: active ? 0 : -1,
     },
@@ -39,10 +46,10 @@ export function createTabTriggerBehavior(opts: TabTriggerBehaviorOptions) {
           opts.onPrev?.();
         } else if (e.key === 'Home') {
           e.preventDefault();
-          opts.onPrev?.();
+          opts.onFirst?.();
         } else if (e.key === 'End') {
           e.preventDefault();
-          opts.onNext?.();
+          opts.onLast?.();
         }
       },
     },

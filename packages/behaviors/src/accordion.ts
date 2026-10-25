@@ -9,6 +9,14 @@ export interface AccordionTriggerBehaviorOptions {
   onToggle?: () => void;
   /** ID of the content panel this trigger controls. */
   contentId?: string;
+  /** Focus next accordion header (APG ArrowDown). */
+  onNext?: () => void;
+  /** Focus previous accordion header (APG ArrowUp). */
+  onPrev?: () => void;
+  /** Focus first accordion header (APG Home). */
+  onFirst?: () => void;
+  /** Focus last accordion header (APG End). */
+  onLast?: () => void;
 }
 
 export function createAccordionTriggerBehavior(
@@ -29,6 +37,18 @@ export function createAccordionTriggerBehavior(
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
           opts.onToggle?.();
+        } else if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          opts.onNext?.();
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          opts.onPrev?.();
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          opts.onFirst?.();
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          opts.onLast?.();
         }
       },
     },

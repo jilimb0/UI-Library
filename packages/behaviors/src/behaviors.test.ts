@@ -803,12 +803,17 @@ describe('createMenuBehavior', () => {
 });
 
 describe('createMenuItemBehavior', () => {
-  it('returns default state', () => {
+  it('returns default state (roving tabindex: inactive)', () => {
     const { itemAttrs, itemClassName, handlers } = createMenuItemBehavior();
     expect(itemAttrs.role).toBe('menuitem');
-    expect(itemAttrs.tabIndex).toBe(0);
+    expect(itemAttrs.tabIndex).toBe(-1);
     expect(itemClassName).toBe('ucl-menu-item ');
     expect(handlers.onClick).toBeDefined();
+  });
+
+  it('returns active state (roving tabindex: active)', () => {
+    const { itemAttrs } = createMenuItemBehavior({ isActive: true });
+    expect(itemAttrs.tabIndex).toBe(0);
   });
 
   it('returns disabled state', () => {
