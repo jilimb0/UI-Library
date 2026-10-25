@@ -1,24 +1,32 @@
 import { forwardRef, type HTMLAttributes } from 'react';
-import { cn } from '../../../utils/cn';
+import { cn, tv, type VariantProps } from '../../../utils/cn';
 
-export interface AlertProps extends HTMLAttributes<HTMLDivElement> {
-  variant?: 'default' | 'success' | 'warning' | 'error' | 'info';
-}
+const alertVariants = tv({
+  base: 'alert',
+  variants: {
+    variant: {
+      default: 'alert--default',
+      success: 'alert--success',
+      warning: 'alert--warning',
+      error: 'alert--error',
+      info: 'alert--info',
+    },
+  },
+  defaultVariants: { variant: 'default' },
+});
 
-const alertVariants = {
-  default: 'alert--default',
-  success: 'alert--success',
-  warning: 'alert--warning',
-  error: 'alert--error',
-  info: 'alert--info',
-};
+type AlertVariants = VariantProps<typeof alertVariants>;
+
+export interface AlertProps
+  extends HTMLAttributes<HTMLDivElement>,
+    AlertVariants {}
 
 export const Alert = forwardRef<HTMLDivElement, AlertProps>(
   ({ variant = 'default', className, style, ...props }, ref) => {
     return (
       <div
         ref={ref}
-        className={cn('alert', alertVariants[variant], className)}
+        className={cn(alertVariants({ variant }), className)}
         style={style}
         {...props}
       />
@@ -27,3 +35,5 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(
 );
 
 Alert.displayName = 'Alert';
+
+export { alertVariants };

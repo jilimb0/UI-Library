@@ -1,13 +1,39 @@
 import { forwardRef, type HTMLAttributes, useCallback, useEffect } from 'react';
-import { cn } from '../../../utils/cn';
+import { cn, tv, type VariantProps } from '../../../utils/cn';
 
-export interface ToastProps extends HTMLAttributes<HTMLDivElement> {
+const toastVariants = tv({
+  slots: {
+    root: 'toast',
+    body: 'toast__body',
+    close: 'toast__close',
+  },
+  variants: {
+    variant: {
+      default: { root: '' },
+      success: { root: 'toast--success' },
+      warning: { root: 'toast--warning' },
+      error: { root: 'toast--error' },
+      info: { root: 'toast--info' },
+    },
+  },
+  defaultVariants: { variant: 'default' },
+});
+
+type ToastVariants = VariantProps<typeof toastVariants>;
+
+export interface ToastProps
+  extends HTMLAttributes<HTMLDivElement>,
+    ToastVariants {
   /** Auto-dismiss duration in ms. Set to `0` to disable auto-dismiss. */
   duration?: number;
-  /** Visual variant matching semantic intent. */
-  variant?: 'default' | 'success' | 'warning' | 'error' | 'info';
   /** Callback invoked when the toast should be dismissed. */
   onClose?: () => void;
+  /** Override class names for individual slots. */
+  classNames?: {
+    root?: string;
+    body?: string;
+    close?: string;
+  };
 }
 
 const Toast = forwardRef<HTMLDivElement, ToastProps>(
@@ -19,6 +45,7 @@ const Toast = forwardRef<HTMLDivElement, ToastProps>(
       style,
       children,
       onClose,
+      classNames: slotClassNames,
       ...props
     },
     ref
@@ -33,24 +60,22 @@ const Toast = forwardRef<HTMLDivElement, ToastProps>(
       return () => clearTimeout(timer);
     }, [duration, handleClose]);
 
+    const slots = toastVariants({ variant });
+
     return (
       <div
         ref={ref}
         role="status"
         aria-live="polite"
-        className={cn(
-          'toast',
-          variant !== 'default' && `toast--${variant}`,
-          className
-        )}
+        className={cn(slots.root(), slotClassNames?.root, className)}
         style={style}
         {...props}
       >
-        <div className="toast__body">{children}</div>
+        <div className={cn(slots.body(), slotClassNames?.body)}>{children}</div>
         {onClose && (
           <button
             type="button"
-            className="toast__close"
+            className={cn(slots.close(), slotClassNames?.close)}
             aria-label="Dismiss"
             onClick={handleClose}
           >
@@ -64,4 +89,4 @@ const Toast = forwardRef<HTMLDivElement, ToastProps>(
 
 Toast.displayName = 'Toast';
 
-export { Toast };
+export { Toast, toastVariants };

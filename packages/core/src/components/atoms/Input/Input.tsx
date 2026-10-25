@@ -10,6 +10,14 @@ export interface InputProps
   error?: boolean;
   errorMessage?: string;
   suffix?: React.ReactNode;
+  /** Override class names for individual slots. */
+  classNames?: {
+    root?: string;
+    label?: string;
+    input?: string;
+    description?: string;
+    error?: string;
+  };
 }
 
 /**
@@ -50,6 +58,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       disabled,
       required,
       suffix,
+      classNames: slotClassNames,
       ...props
     },
     ref
@@ -78,7 +87,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div style={style}>
         {label && (
-          <label {...labelAttrs} htmlFor={inputId} className={labelClassName}>
+          <label
+            {...labelAttrs}
+            htmlFor={inputId}
+            className={cn(labelClassName, slotClassNames?.label)}
+          >
             {label}
           </label>
         )}
@@ -95,6 +108,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               size === 'sm' && 'ucl-input--sm',
               size === 'lg' && 'ucl-input--lg',
               suffix && 'ucl-input--with-suffix',
+              slotClassNames?.input,
               className
             )}
             ref={ref}
@@ -119,12 +133,19 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           )}
         </div>
         {description && !error && (
-          <div id={descriptionId} className="ucl-field-hint">
+          <div
+            id={descriptionId}
+            className={cn('ucl-field-hint', slotClassNames?.description)}
+          >
             {description}
           </div>
         )}
         {error && errorMessage && (
-          <div {...errorAttrs} className={errorClassName} aria-live="polite">
+          <div
+            {...errorAttrs}
+            className={cn(errorClassName, slotClassNames?.error)}
+            aria-live="polite"
+          >
             {errorMessage}
           </div>
         )}
