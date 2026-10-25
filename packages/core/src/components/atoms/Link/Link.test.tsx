@@ -9,6 +9,17 @@ describe('Link', () => {
     expect(screen.getByText('Example')).toBeInTheDocument();
   });
 
+  it('supports asChild rendering child element with link classes', () => {
+    render(
+      <Link asChild>
+        <span data-testid="custom-link">Router Link</span>
+      </Link>
+    );
+    const el = screen.getByTestId('custom-link');
+    expect(el).toHaveClass('link');
+    expect(el.tagName).toBe('SPAN');
+  });
+
   it('has no accessibility violations', async () => {
     const { container } = render(<Link>Example</Link>);
     const results = await axe(container);

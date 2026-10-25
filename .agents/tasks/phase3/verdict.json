@@ -1,0 +1,7 @@
+{
+  "verdict": "CHANGES_REQUESTED",
+  "findings": [
+    "Outline button border-color not tokenized: .ucl-button--outline base rule uses bare `border-color: var(--input)` and its hover uses bare `border-color: var(--border)` instead of `var(--ucl-input-border-default, var(--input))` and `var(--ucl-input-border-hover, var(--border))` as specified in the Ф3 plan. The tokens exist and are already consumed by the <input> rules at lines 260 and 316 of components.css — this is a confirmed omission in the outline button section only (components.css lines 146 and 152)."
+  ],
+  "reviewDoc": ".agents/tasks/phase3/2026-10-24-130455-review.md"
+}

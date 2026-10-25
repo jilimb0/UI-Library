@@ -9,6 +9,19 @@ describe('MenuItem component', () => {
     expect(screen.getByText('Example')).toBeInTheDocument();
   });
 
+  it('supports asChild pattern', () => {
+    render(
+      <MenuItem asChild active>
+        <a href="/profile" data-testid="menu-item-child">
+          Profile
+        </a>
+      </MenuItem>
+    );
+    const el = screen.getByTestId('menu-item-child');
+    expect(el).toHaveClass('dropdown-menu__item--active');
+    expect(el.tagName).toBe('A');
+  });
+
   it('has no accessibility violations', async () => {
     const { container } = render(<MenuItem>Example</MenuItem>);
     const results = await axe(container);

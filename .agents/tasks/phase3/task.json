@@ -1,0 +1,7 @@
+{
+  "task_id": "task-phase3-component-state-tokens",
+  "task_description": "Ф3: Add component-state token groups to tokens.w3c.json for 8 new components, rebuild W3C artifacts, update components.css to consume --ucl-* state tokens replacing opacity hacks, fix ButtonSize mismatch between behaviors and core.",
+  "status": "pending",
+  "feature_order": ["FEAT-001", "FEAT-002"],
+  "blocked_reason": null
+}

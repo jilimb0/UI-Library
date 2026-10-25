@@ -18,13 +18,16 @@ export interface SwitchProps {
   checked?: boolean;
   defaultChecked?: boolean;
   onCheckedChange?: (checked: boolean) => void;
-  /** Native form name */
   name?: string;
-  /** Native form value */
   value?: string;
-  /** Native form association */
   form?: string;
   required?: boolean;
+  /** Override class names for individual slots. */
+  classNames?: {
+    root?: string;
+    label?: string;
+    description?: string;
+  };
 }
 
 /**
@@ -60,6 +63,7 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
       value,
       form,
       required,
+      classNames: slotClassNames,
     },
     ref
   ) => {
@@ -142,11 +146,18 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
         {(label || description) && (
           <label
             htmlFor={switchId}
-            className="ucl-control-stack ucl-field-label"
+            className={cn(
+              'ucl-control-stack ucl-field-label',
+              slotClassNames?.label
+            )}
           >
             {label}
             {description ? (
-              <span className="ucl-field-hint">{description}</span>
+              <span
+                className={cn('ucl-field-hint', slotClassNames?.description)}
+              >
+                {description}
+              </span>
             ) : null}
           </label>
         )}

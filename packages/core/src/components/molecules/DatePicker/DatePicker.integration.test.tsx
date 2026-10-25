@@ -30,7 +30,8 @@ describe('DatePicker Integration Tests', () => {
 
   it('renders days of week headers', () => {
     renderDatePicker();
-    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    // Headers show 2-char abbreviations (APG: use abbr attribute for full name)
+    const days = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
     days.forEach((day) => {
       expect(screen.getByText(day)).toBeInTheDocument();
     });
@@ -60,7 +61,7 @@ describe('DatePicker Integration Tests', () => {
     const user = userEvent.setup();
     const { onChange } = renderDatePicker();
 
-    const dateCells = screen.getAllByRole('cell');
+    const dateCells = screen.getAllByRole('gridcell');
 
     // Pick a day that is guaranteed to be in the current month
     const day15 = dateCells.find(

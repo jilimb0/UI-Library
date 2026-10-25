@@ -2,6 +2,13 @@
 
 <!-- AUTO-GENERATED — do not edit manually; run pnpm changelog:packages -->
 
+## 0.5.1
+
+### Patch Changes
+
+- Updated dependencies
+  - @ui-construction-library/core@0.10.0
+
 ## 0.5.0
 
 ### Features

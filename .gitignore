@@ -39,6 +39,7 @@ playwright-report/
 
 # Scratch files (experimental/throwaway)
 scratch/
+.kiro/
 
 # Supabase local setup (not used in CI)
 supabase/

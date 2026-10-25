@@ -98,6 +98,26 @@ const DatePicker: FC<DatePickerProps> = ({
             onChange(day);
           }
           return;
+        case 'Home':
+          e.preventDefault();
+          // Move to first day of week
+          nextDay = startOfWeek(day);
+          break;
+        case 'End':
+          e.preventDefault();
+          // Move to last day of week
+          nextDay = endOfWeek(day);
+          break;
+        case 'PageUp':
+          e.preventDefault();
+          // Previous month
+          nextDay = addMonths(day, -1);
+          break;
+        case 'PageDown':
+          e.preventDefault();
+          // Next month
+          nextDay = addMonths(day, 1);
+          break;
         default:
           return;
       }
@@ -143,12 +163,15 @@ const DatePicker: FC<DatePickerProps> = ({
       days.push(
         <td
           key={dateStr}
+          // biome-ignore lint/a11y/noNoninteractiveElementToInteractiveRole: APG grid pattern requires role="gridcell" on td
+          role="gridcell"
           tabIndex={
             isSelected || (!selectedDate && isSameDay(cloneDay, new Date()))
               ? 0
               : -1
           }
           aria-disabled={isDayDisabled || undefined}
+          aria-selected={isSelected}
           data-date={dateStr}
           className={cn(
             'date-picker__day',
@@ -184,7 +207,7 @@ const DatePicker: FC<DatePickerProps> = ({
         >
           ←
         </button>
-        <span aria-live="polite">
+        <span aria-live="polite" aria-atomic="true">
           {formatCalendar(currentMonth, 'MMMM yyyy')}
         </span>
         <button
@@ -196,12 +219,13 @@ const DatePicker: FC<DatePickerProps> = ({
           →
         </button>
       </div>
-      <table className="date-picker__table" aria-label={label}>
+      {/* biome-ignore lint/a11y/noNoninteractiveElementToInteractiveRole: APG grid pattern requires role="grid" on table */}
+      <table className="date-picker__table" role="grid" aria-label={label}>
         <thead>
           <tr>
             {WEEKDAYS.map((dayName) => (
-              <th key={dayName} scope="col" abbr={dayName}>
-                {dayName}
+              <th key={dayName} scope="col" abbr={dayName} aria-label={dayName}>
+                {dayName.slice(0, 2)}
               </th>
             ))}
           </tr>

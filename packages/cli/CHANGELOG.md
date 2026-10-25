@@ -1,5 +1,31 @@
 # @ui-construction-library/cli
 
+## 0.4.0
+
+### Minor Changes
+
+- ### Design System & Component Library Minor Release (Mono Luxe)
+  
+  - **core**:
+    - Add `asChild` composition pattern via internal `Slot` utility on atoms & molecules: `Button`, `Badge`, `Link`, `Tag`, `Heading`, `Text`, `Card`, `MenuItem`.
+    - Add `classNames` slots prop to customize internal parts on `Checkbox`, `Switch`, `TextArea`, `Toast`, `Input`, `Alert`.
+    - Full W3C ARIA APG compliance and roving tabindex keyboard navigation on `TreeView` (`role="tree"`, `role="treeitem"`, `role="group"`, `defaultExpanded`, Arrow keys, Home/End, Enter/Space) and `DatePicker` (`role="grid"`, `role="gridcell"`, `aria-selected`).
+    - Overhaul `ComboBox` for APG 3.8 compliance (`role="combobox"`, `role="listbox"`, `role="option"`, `aria-activedescendant`, Home/End/Escape keys).
+    - Migrate component variants engine to `tailwind-variants` (`tv()`).
+    - Introduce `ThemeProvider` supporting custom `BrandTokens` and runtime dynamic theme switching.
+  
+  - **tokens**:
+    - Full W3C Design Tokens source (`tokens.w3c.json`) with multi-brand generator and runtime CSS generator (`generateThemeCSS`).
+    - Tailwind v4 `@theme` integration bridge mapping utilities to `--ucl-*` CSS custom properties.
+    - Add Style Dictionary export configuration (`style-dictionary.config.mjs`) for cross-platform tokens.
+  
+  - **behaviors** & **primitives**:
+    - W3C APG keyboard navigation and ARIA callbacks wired across Tabs, Accordion, Menu, and ContextMenu.
+  
+  - **cli**:
+    - Add `tokens` command with `--filter` flag and ThemeProvider / W3C token override guide.
+    - Update `init` AI guidance for Mono Luxe tokens and slot conventions.
+
 ## 0.2.0
 
 ### Minor Changes

@@ -122,7 +122,9 @@ export const MultibrandLego: StoryObj = {
             'color-ring': primary,
           },
           component: {
-            'button-primary-default': primary,
+            button: {
+              'primary-default': primary,
+            },
           },
         },
       ])
@@ -165,8 +167,10 @@ export const RuntimeSwitch: StoryObj = {
               'color-ring': '#9b00ff',
             },
             component: {
-              'button-primary-default': '#9b00ff',
-              'button-primary-hover': '#7a00cc',
+              button: {
+                'primary-default': '#9b00ff',
+                'primary-hover': '#7a00cc',
+              },
             },
           },
         }}

@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { printHelp, runCommand } from './commands/index.js';
+import { version } from './version.js';
 
 const args = process.argv.slice(2);
 
@@ -10,7 +11,7 @@ if (args.length === 0 || args[0] === '--help' || args[0] === '-h') {
 }
 
 if (args[0] === '--version' || args[0] === '-v') {
-  console.log('@ui-construction-library/cli v0.1.0');
+  console.log(`@ui-construction-library/cli v${version}`);
   process.exit(0);
 }
 

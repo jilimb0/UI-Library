@@ -27,4 +27,17 @@ describe('Tag', () => {
 
     expect(onRemove).toHaveBeenCalledTimes(1);
   });
+
+  it('supports asChild pattern', () => {
+    render(
+      <Tag asChild variant="warning">
+        <a href="/tags/1" data-testid="custom-tag">
+          Tag Link
+        </a>
+      </Tag>
+    );
+    const el = screen.getByTestId('custom-tag');
+    expect(el).toHaveClass('tag');
+    expect(el.tagName).toBe('A');
+  });
 });

@@ -25,23 +25,51 @@ export interface TextAreaProps
   extends TextareaHTMLAttributes<HTMLTextAreaElement>,
     VariantProps<typeof textareaVariants> {
   label?: string;
+  /** Override class names for individual slots. */
+  classNames?: {
+    root?: string;
+    label?: string;
+    textarea?: string;
+  };
 }
 
 const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
-  ({ className, size, variant, label, id, style, ...props }, ref) => {
+  (
+    {
+      className,
+      size,
+      variant,
+      label,
+      id,
+      style,
+      classNames: slotClassNames,
+      ...props
+    },
+    ref
+  ) => {
     const generatedId = useId();
     const fieldId = id ?? generatedId;
 
     return (
-      <div className="flex w-full flex-col gap-1" style={style}>
+      <div
+        className={cn('flex w-full flex-col gap-1', slotClassNames?.root)}
+        style={style}
+      >
         {label ? (
-          <label htmlFor={fieldId} className="field-label">
+          <label
+            htmlFor={fieldId}
+            className={cn('field-label', slotClassNames?.label)}
+          >
             {label}
           </label>
         ) : null}
         <textarea
           id={fieldId}
-          className={cn(textareaVariants({ size, variant, className }))}
+          className={cn(
+            textareaVariants({ size, variant }),
+            slotClassNames?.textarea,
+            className
+          )}
           ref={ref}
           {...props}
         />

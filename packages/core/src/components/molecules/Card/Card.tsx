@@ -1,5 +1,6 @@
 import { forwardRef, type HTMLAttributes } from 'react';
 import { cn, tv } from '../../../utils/cn';
+import { Slot } from '../../../utils/slot';
 
 const cardVariants = tv({
   base: 'card',
@@ -23,14 +24,41 @@ export interface CardProps extends HTMLAttributes<HTMLDivElement> {
   elevation?: 'flat' | 'raised' | 'glass';
   /** Whether the card is interactive (clickable). */
   interactive?: boolean;
+  /** Render as a child element (Slot pattern). */
+  asChild?: boolean;
 }
 
 const Card = forwardRef<HTMLDivElement, CardProps>(
-  ({ className, style, elevation = 'flat', interactive, ...props }, ref) => {
+  (
+    {
+      className,
+      style,
+      elevation = 'flat',
+      interactive,
+      asChild = false,
+      ...props
+    },
+    ref
+  ) => {
+    const cardClass = cn(cardVariants({ elevation, interactive, className }));
+
+    if (asChild) {
+      return (
+        <Slot
+          ref={ref as React.Ref<HTMLElement>}
+          className={cardClass}
+          style={style}
+          data-elevation={elevation}
+          data-interactive={interactive || undefined}
+          {...(props as React.HTMLAttributes<HTMLElement>)}
+        />
+      );
+    }
+
     return (
       <div
         ref={ref}
-        className={cn(cardVariants({ elevation, interactive, className }))}
+        className={cardClass}
         style={style}
         data-elevation={elevation}
         data-interactive={interactive || undefined}

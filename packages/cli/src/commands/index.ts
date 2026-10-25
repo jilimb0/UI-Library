@@ -1,3 +1,4 @@
+import { version } from '../version.js';
 import { componentCommand } from './component.js';
 import { docsCommand } from './docs.js';
 import { initCommand } from './init.js';
@@ -7,7 +8,7 @@ import { tokensCommand } from './tokens.js';
 export function printHelp(): void {
   console.log(`
 ╔══════════════════════════════════════════╗
-║  @ui-construction-library/cli  v0.1.0   ║
+║  @ui-construction-library/cli  v${version.padEnd(8)} ║
 ╚══════════════════════════════════════════╝
 
 Usage: npx ucl <command> [options]

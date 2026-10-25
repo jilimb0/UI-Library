@@ -33,6 +33,12 @@ export interface CheckboxProps
   value?: string;
   /** Native form association */
   form?: string;
+  /** Override class names for individual slots. */
+  classNames?: {
+    label?: string;
+    description?: string;
+    error?: string;
+  };
 }
 
 /**
@@ -74,6 +80,7 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
       name,
       value,
       form,
+      classNames: slotClassNames,
       ...props
     },
     ref
@@ -199,18 +206,25 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
               <label
                 htmlFor={checkboxId}
                 id={labelId}
-                className="ucl-field-label"
+                className={cn('ucl-field-label', slotClassNames?.label)}
               >
                 {label}
               </label>
             ) : null}
             {description ? (
-              <p id={descriptionId} className="ucl-field-hint">
+              <p
+                id={descriptionId}
+                className={cn('ucl-field-hint', slotClassNames?.description)}
+              >
                 {description}
               </p>
             ) : null}
             {error && errorMessage ? (
-              <p id={errorId} className="ucl-field-error" aria-live="polite">
+              <p
+                id={errorId}
+                className={cn('ucl-field-error', slotClassNames?.error)}
+                aria-live="polite"
+              >
                 {errorMessage}
               </p>
             ) : null}

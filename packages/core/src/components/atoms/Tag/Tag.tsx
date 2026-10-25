@@ -5,6 +5,7 @@ import {
   type ReactNode,
 } from 'react';
 import { cn } from '../../../utils/cn';
+import { Slot } from '../../../utils/slot';
 import { tv, type VariantProps } from '../../../utils/variants';
 
 const tagVariants = tv({
@@ -38,6 +39,8 @@ export interface TagProps
   icon?: ReactNode;
   onRemove?: ButtonHTMLAttributes<HTMLButtonElement>['onClick'];
   removeLabel?: string;
+  /** Render as a child element (Slot pattern). */
+  asChild?: boolean;
 }
 
 const Tag = forwardRef<HTMLSpanElement, TagProps>(
@@ -51,22 +54,33 @@ const Tag = forwardRef<HTMLSpanElement, TagProps>(
       icon,
       onRemove,
       removeLabel = 'Remove',
+      asChild = false,
       ...props
     },
     ref
   ) => {
+    const tagClass = cn(
+      tagVariants({
+        variant,
+        size: size ?? (legacySize === 'md' ? 'md' : undefined),
+      }),
+      className
+    );
+
+    if (asChild) {
+      return (
+        <Slot
+          ref={ref as React.Ref<HTMLElement>}
+          className={tagClass}
+          {...(props as React.HTMLAttributes<HTMLElement>)}
+        >
+          {children}
+        </Slot>
+      );
+    }
+
     return (
-      <span
-        ref={ref}
-        className={cn(
-          tagVariants({
-            variant,
-            size: size ?? (legacySize === 'md' ? 'md' : undefined),
-          }),
-          className
-        )}
-        {...props}
-      >
+      <span ref={ref} className={tagClass} {...props}>
         {icon ? <span className="button__icon">{icon}</span> : null}
         <span>{children}</span>
         {onRemove ? (

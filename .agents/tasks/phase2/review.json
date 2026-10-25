@@ -1,0 +1,30 @@
+{
+  "verdict": "CHANGES_REQUESTED",
+  "findings": [
+    {
+      "id": "duplicate-ThemeName-export",
+      "severity": "blocking",
+      "confidence": "confirmed",
+      "summary": "ThemeName is exported twice from packages/core/src/themes/index.ts — explicitly from ThemeProvider.tsx and implicitly via export * from './themes'. TypeScript 5.x raises a duplicate-export compile error (TS2308). Fix: remove export type ThemeName = string from themes.ts."
+    },
+    {
+      "id": "unvalidated-localStorage-to-data-theme",
+      "severity": "blocking",
+      "confidence": "confirmed",
+      "summary": "getStoredTheme() returns any localStorage string without validation. The value reaches document.documentElement.setAttribute('data-theme', ...) and is concatenated into a CSS selector string inside generateThemeCSS, which is written to a style tag via textContent. A corrupted or crafted value can produce malformed CSS. Fix: validate against BUILTIN_THEMES + Object.keys(themes) before accepting; fall back to defaultTheme on mismatch."
+    },
+    {
+      "id": "silent-fallback-unknown-theme",
+      "severity": "non-blocking",
+      "confidence": "confirmed",
+      "summary": "When a ThemeName does not match any builtin or registered custom theme, resolveThemeCSS silently returns LIGHT_CSS with no developer-facing signal. Fix: add a console.warn or an optional onUnknownTheme callback prop so configuration gaps are surfaced at runtime."
+    },
+    {
+      "id": "stale-light-entries-baseline",
+      "severity": "non-blocking",
+      "confidence": "confirmed",
+      "summary": "_LIGHT_ENTRIES is a build-time snapshot. If build-w3c.mjs is re-run without rebuilding core, custom theme baselines will silently lag behind token changes. Recommend adding a turbo task dependency or a contributor note."
+    }
+  ],
+  "reviewDoc": "/Users/jilimbo/Documents/Personal/core-infra/UI-Library/.agents/tasks/phase2/review.md"
+}
