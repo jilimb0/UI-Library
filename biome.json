@@ -22,7 +22,8 @@
       "!packages/core/src/**/*.d.ts",
       "!packages/primitives/src/**/*.js",
       "!packages/primitives/src/**/*.d.ts",
-      "!scratch"
+      "!scratch",
+      "!**/*.generated.ts"
     ]
   },
   "formatter": {
