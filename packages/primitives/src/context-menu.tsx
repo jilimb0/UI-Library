@@ -133,6 +133,12 @@ const Content = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
           e.preventDefault();
           const prevIndex = (currentIndex - 1 + items.length) % items.length;
           items[prevIndex]?.focus();
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          items[0]?.focus();
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          items[items.length - 1]?.focus();
         }
       };
       window.addEventListener('click', close);
@@ -172,7 +178,7 @@ const Item = forwardRef<
     <div
       ref={ref}
       role="menuitem"
-      tabIndex={0}
+      tabIndex={-1}
       onClick={(e) => {
         onClick?.(e);
         onSelect?.();
