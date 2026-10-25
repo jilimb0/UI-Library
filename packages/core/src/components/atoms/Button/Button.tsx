@@ -6,14 +6,46 @@ import {
   forwardRef,
   type ReactNode,
 } from 'react';
-import type {
-  ButtonBehaviorOptions,
-  ButtonSize,
-  ButtonVariant,
-} from '../../../types/component-types';
-import { cn } from '../../../utils/cn';
+import type { ButtonBehaviorOptions } from '../../../types/component-types';
+import { cn, tv, type VariantProps } from '../../../utils/cn';
 
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+const buttonVariants = tv({
+  base: 'ucl-button',
+  variants: {
+    variant: {
+      default: 'ucl-button--default',
+      secondary: 'ucl-button--secondary',
+      destructive: 'ucl-button--destructive',
+      ghost: 'ucl-button--ghost',
+      outline: 'ucl-button--outline',
+      link: 'ucl-button--link',
+      success: 'ucl-button--success',
+      warning: 'ucl-button--warning',
+      info: 'ucl-button--info',
+    },
+    size: {
+      sm: 'ucl-button--sm',
+      md: 'ucl-button--md',
+      lg: 'ucl-button--lg',
+      icon: 'ucl-button--icon',
+    },
+  },
+  defaultVariants: {
+    variant: 'default',
+    size: 'md',
+  },
+  compoundVariants: [
+    {
+      variant: 'destructive',
+      size: 'icon',
+      class: 'ucl-button--destructive-icon',
+    },
+  ],
+});
+
+export interface ButtonProps
+  extends ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
   as?: ElementType;
   /** When `as="a"`, pass the link target. */
   href?: string;
@@ -22,8 +54,6 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   loading?: boolean;
   leftIcon?: ReactNode;
   rightIcon?: ReactNode;
-  variant?: ButtonVariant;
-  size?: ButtonSize;
 }
 
 /**
@@ -68,11 +98,7 @@ const Button = forwardRef<HTMLElement, ButtonProps>(
     },
     ref
   ) => {
-    const {
-      attrs,
-      className: behaviorClassName,
-      handlers,
-    } = createButtonBehavior({
+    const { attrs, handlers } = createButtonBehavior({
       variant,
       size,
       loading,
@@ -86,7 +112,7 @@ const Button = forwardRef<HTMLElement, ButtonProps>(
         ref={ref}
         {...attrs}
         {...handlers}
-        className={cn(behaviorClassName, className)}
+        className={cn(buttonVariants({ variant, size, className }))}
         style={style}
         {...(props as ComponentPropsWithoutRef<typeof Component>)}
       >
@@ -101,4 +127,4 @@ const Button = forwardRef<HTMLElement, ButtonProps>(
 
 Button.displayName = 'Button';
 
-export { Button };
+export { Button, buttonVariants };

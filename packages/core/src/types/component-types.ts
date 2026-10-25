@@ -1,26 +1,19 @@
 import type { VariantProps } from 'class-variance-authority';
+import type { VariantProps as TvVariantProps } from 'tailwind-variants';
 import type { badgeVariants } from '../components/atoms/Badge/Badge';
+import type { buttonVariants } from '../components/atoms/Button/Button';
 import type { textVariants } from '../components/atoms/Text/Text';
 import type { textareaVariants } from '../components/atoms/TextArea/TextArea';
 import type { dropdownVariants } from '../components/molecules/Dropdown/Dropdown';
 import type { popoverContentVariants } from '../components/molecules/Popover/Popover';
 import type { modalContentVariants } from '../components/organisms/Modal/Modal';
 
-// Common component sizes
-export type ComponentSize = 'sm' | 'md' | 'lg';
+// Shared base props and common component sizes
+export type { ComponentSize, UCLComponentProps } from './component-props';
 
 // Button component props types
-export type ButtonVariant =
-  | 'default'
-  | 'secondary'
-  | 'destructive'
-  | 'ghost'
-  | 'outline'
-  | 'link'
-  | 'success'
-  | 'warning'
-  | 'info';
-export type ButtonSize = 'sm' | 'md' | 'lg' | 'icon';
+export type ButtonVariant = TvVariantProps<typeof buttonVariants>['variant'];
+export type ButtonSize = TvVariantProps<typeof buttonVariants>['size'];
 export interface ButtonBehaviorOptions {
   variant?: ButtonVariant;
   size?: ButtonSize;
@@ -40,7 +33,7 @@ export type TextSize = VariantProps<typeof textVariants>['size'];
 export type TextWeight = VariantProps<typeof textVariants>['weight'];
 
 // Badge component props types
-export type BadgeVariant = VariantProps<typeof badgeVariants>['variant'];
+export type BadgeVariant = TvVariantProps<typeof badgeVariants>['variant'];
 
 // TextArea component props types
 export type TextAreaVariant = VariantProps<typeof textareaVariants>['variant'];

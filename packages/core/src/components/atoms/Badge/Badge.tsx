@@ -1,8 +1,9 @@
-import { cva, type VariantProps } from 'class-variance-authority';
 import { forwardRef, type HTMLAttributes } from 'react';
 import { cn } from '../../../utils/cn';
+import { tv, type VariantProps } from '../../../utils/variants';
 
-const badgeVariants = cva('badge', {
+const badgeVariants = tv({
+  base: 'badge',
   variants: {
     variant: {
       default: 'badge--default',
@@ -17,9 +18,11 @@ const badgeVariants = cva('badge', {
   },
 });
 
+type BadgeVariants = VariantProps<typeof badgeVariants>;
+
 export interface BadgeProps
   extends HTMLAttributes<HTMLSpanElement>,
-    VariantProps<typeof badgeVariants> {}
+    BadgeVariants {}
 
 const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
   ({ className, variant, style, ...props }, ref) => {

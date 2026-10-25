@@ -200,6 +200,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.0.0",
     "tailwind-merge": "^2.5.5",
+    "tailwind-variants": "catalog:",
     "zod": "^3.24.1"
   },
   "devDependencies": {

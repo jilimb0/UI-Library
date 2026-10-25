@@ -1,9 +1,9 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-export { cva, type VariantProps } from 'class-variance-authority';
 export { type ClassValue, clsx } from 'clsx';
 export { twMerge } from 'tailwind-merge';
+export { tv, type VariantProps } from './variants';
 
 /**
  * Merge className with Tailwind CSS classes
