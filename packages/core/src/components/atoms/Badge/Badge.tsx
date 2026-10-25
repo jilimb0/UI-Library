@@ -1,5 +1,6 @@
 import { forwardRef, type HTMLAttributes } from 'react';
 import { cn } from '../../../utils/cn';
+import { Slot } from '../../../utils/slot';
 import { tv, type VariantProps } from '../../../utils/variants';
 
 const badgeVariants = tv({
@@ -22,14 +23,31 @@ type BadgeVariants = VariantProps<typeof badgeVariants>;
 
 export interface BadgeProps
   extends HTMLAttributes<HTMLSpanElement>,
-    BadgeVariants {}
+    BadgeVariants {
+  /** Render as a child element (Slot pattern — merges props onto child). */
+  asChild?: boolean;
+}
 
 const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
-  ({ className, variant, style, ...props }, ref) => {
+  ({ className, variant, style, asChild = false, ...props }, ref) => {
+    const badgeClass = cn(badgeVariants({ variant, className }));
+
+    if (asChild) {
+      return (
+        <Slot
+          ref={ref as React.Ref<HTMLElement>}
+          className={badgeClass}
+          style={style}
+          data-variant={variant}
+          {...(props as React.HTMLAttributes<HTMLElement>)}
+        />
+      );
+    }
+
     return (
       <span
         ref={ref}
-        className={cn(badgeVariants({ variant, className }))}
+        className={badgeClass}
         style={style}
         data-variant={variant}
         {...props}

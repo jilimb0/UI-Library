@@ -8,6 +8,7 @@ import {
 } from 'react';
 import type { ButtonBehaviorOptions } from '../../../types/component-types';
 import { cn, tv, type VariantProps } from '../../../utils/cn';
+import { Slot } from '../../../utils/slot';
 
 const buttonVariants = tv({
   base: 'ucl-button',
@@ -47,6 +48,8 @@ export interface ButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   as?: ElementType;
+  /** Render as a child element (Slot pattern — merges props onto child). */
+  asChild?: boolean;
   /** When `as="a"`, pass the link target. */
   href?: string;
   target?: string;
@@ -84,6 +87,7 @@ const Button = forwardRef<HTMLElement, ButtonProps>(
   (
     {
       as,
+      asChild = false,
       className,
       variant,
       size,
@@ -105,6 +109,25 @@ const Button = forwardRef<HTMLElement, ButtonProps>(
       disabled,
       onClick,
     } satisfies ButtonBehaviorOptions);
+
+    const buttonClass = cn(buttonVariants({ variant, size, className }));
+
+    // asChild: merge button behaviour onto the child element via Slottable
+    if (asChild) {
+      return (
+        <Slot
+          ref={ref as React.Ref<HTMLElement>}
+          className={buttonClass}
+          style={style}
+          {...(attrs as React.HTMLAttributes<HTMLElement>)}
+          {...(handlers as React.HTMLAttributes<HTMLElement>)}
+          {...(props as React.HTMLAttributes<HTMLElement>)}
+        >
+          {children}
+        </Slot>
+      );
+    }
+
     const Component = (as ?? 'button') as ElementType;
 
     return (
@@ -112,7 +135,7 @@ const Button = forwardRef<HTMLElement, ButtonProps>(
         ref={ref}
         {...attrs}
         {...handlers}
-        className={cn(buttonVariants({ variant, size, className }))}
+        className={buttonClass}
         style={style}
         {...(props as ComponentPropsWithoutRef<typeof Component>)}
       >
