@@ -2,6 +2,7 @@ import { componentCommand } from './component.js';
 import { docsCommand } from './docs.js';
 import { initCommand } from './init.js';
 import { themeCommand } from './theme.js';
+import { tokensCommand } from './tokens.js';
 
 export function printHelp(): void {
   console.log(`
@@ -17,6 +18,8 @@ Commands:
   docs                    List documentation topics
   theme --list            List available themes
   theme <name>            Copy theme CSS to current directory
+  tokens                  Show design token architecture and override guide
+  tokens prefix           Show canonical CSS variable prefix
 
 Options:
   --help, -h              Show this help
@@ -24,7 +27,7 @@ Options:
 `);
 }
 
-const COMMANDS = ['init', 'component', 'docs', 'theme'] as const;
+const COMMANDS = ['init', 'component', 'docs', 'theme', 'tokens'] as const;
 type Command = (typeof COMMANDS)[number];
 
 export async function runCommand(
@@ -49,6 +52,9 @@ export async function runCommand(
       break;
     case 'theme':
       await themeCommand(args);
+      break;
+    case 'tokens':
+      await tokensCommand(args);
       break;
   }
 }

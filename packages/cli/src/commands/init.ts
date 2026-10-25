@@ -3,24 +3,39 @@ import { resolve } from 'node:path';
 
 const THEMES = ['dark', 'light', 'neutral'] as const;
 const AI_CONFIG_TEMPLATE = `description: |
-  You are working with @ui-construction-library — a React 19 UI component library.
+  You are working with @ui-construction-library — a React UI component library.
   Import components from '@ui-construction-library/core' and theme CSS from '@ui-construction-library/themes'.
 
   ## Imports
   - Components: \`import { Button, Card, Dialog } from '@ui-construction-library/core'\`
   - Theme CSS: \`import '@ui-construction-library/themes/theme-{theme}.css'\`
   - Styles: \`import '@ui-construction-library/styles/styles.css'\`
-  - Individual components: \`import { Button } from '@ui-construction-library/core/Button'\`
 
-  ## Theming
-  - Set \`data-theme="dark|light|neutral"\` on the root <html> element.
-  - Use \`--ucl-*\` CSS custom properties for colors, spacing, typography.
-  - All CSS variables are scoped under the \`[data-theme="..."]\` selector.
+  ## Theming (ThemeProvider)
+  - Wrap the app in \`<ThemeProvider defaultTheme="{theme}">\`
+  - Switch theme: \`const { setTheme } = useTheme(); setTheme('dark')\`
+  - Custom brand theme:
+    \`\`\`tsx
+    <ThemeProvider themes={{ 'brand-x': { semantic: { 'color-primary': '#0066cc' }, component: { 'button-primary-default': '#0066cc' } } }}>
+    \`\`\`
+  - All CSS variables use the \`--ucl-\` prefix (e.g. \`--ucl-color-primary\`).
+  - Tailwind v4 bridge: \`@import "@ui-construction-library/tokens/w3c/tailwind"\` enables \`bg-primary\`, \`text-muted-foreground\` etc.
 
   ## Component Patterns
-  - Every component accepts: className, variant (solid|outline|ghost), size (sm|md|lg), tone (primary|secondary|success|warning|error|info).
-  - Use \`aria-label\` for icon-only buttons.
-  - All interactive elements are keyboard-accessible and focusable.
+  - Every component accepts: className, variant, size.
+  - asChild prop: \`<Button asChild><a href="/page">Link</a></Button>\`
+  - Slot-level classNames: \`<Input classNames={{ label: 'font-bold', input: 'border-2' }} />\`
+  - All interactive elements are keyboard-accessible (WAI-ARIA APG).
+
+  ## Token tiers
+  - Tier 1 primitive: \`--ucl-color-neutral-700\`, \`--ucl-radius-md\`, \`--ucl-shadow-sm\`
+  - Tier 2 semantic: \`--ucl-color-primary\`, \`--ucl-color-background\`, \`--ucl-color-muted-foreground\`
+  - Tier 3 component-state: \`--ucl-button-primary-hover\`, \`--ucl-input-border-focus\`
+
+  ## W3C Design Tokens
+  - Source JSON: \`@ui-construction-library/tokens/w3c/json\`
+  - CSS vars: \`@ui-construction-library/tokens/w3c/css\`
+  - Resolved JSON: \`@ui-construction-library/tokens/w3c/resolved\`
 `;
 
 type InitOptions = {
