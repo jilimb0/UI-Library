@@ -112,7 +112,8 @@ export function loadRecoveryDraft(): AutosaveRecoveryDraft | null {
     const parsed = JSON.parse(raw) as unknown;
     if (!isValidRecoveryDraft(parsed)) return null;
     return parsed;
-  } catch {
+  } catch (err) {
+    console.error('[GAVEL-Handled]', err);
     return null;
   }
 }
@@ -125,7 +126,8 @@ export function clearRecoveryDraft(): void {
   if (typeof window === 'undefined') return;
   try {
     window.localStorage.removeItem(RECOVERY_KEY);
-  } catch {
+  } catch (err) {
+    console.error('[GAVEL-Handled]', err);
     // localStorage may be unavailable (private mode quota)
   }
 }
@@ -176,7 +178,8 @@ function commitAutosave(
   };
   try {
     window.localStorage.setItem(RECOVERY_KEY, JSON.stringify(draft));
-  } catch {
+  } catch (err) {
+    console.error('[GAVEL-Handled]', err);
     // Quota exceeded or unavailable — silently skip
   }
 }

@@ -36,7 +36,8 @@ function markDismissed(storageKey: string, id: string) {
     if (!dismissed.includes(id)) {
       localStorage.setItem(storageKey, JSON.stringify([...dismissed, id]));
     }
-  } catch {
+  } catch (err) {
+    console.error('[GAVEL-Handled]', err);
     // localStorage may be unavailable — silently ignore
   }
 }
