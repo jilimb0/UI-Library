@@ -59,3 +59,6 @@ packages/tokens/src/tokens.runtime.generated.ts
 
 # Gavel artifacts & backups
 .gavel/
+
+# Local AI agent temporary artefacts
+.ai/artefacts/
