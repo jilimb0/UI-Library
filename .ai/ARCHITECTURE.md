@@ -19,3 +19,6 @@ UI-Library — Comprehensive accessible headless and styled design system for Te
 - Inbound requests are validated at perimeter boundaries using strict schemas.
 - Outbound third-party calls must employ timeouts, retries with backoff, and circuit breakers.
 - Zero secrets or unredacted customer PII in logs or storage snapshots.
+
+## 5. Active ADRs
+- **[ADR-0001](.ai/adr/0001-wai-aria-tokens-and-stdio-mcp-snapshot.md)** (`packages/core/**`, `packages/tokens/**`, `scripts/**`): Mandatory WAI-ARIA compliance, `typeof window !== 'undefined'` SSR guards, `packages/tokens` single source of truth, and snapshot-backed `stdio` MCP server (`scripts/mcp-server.mjs`).
