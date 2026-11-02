@@ -45,7 +45,11 @@ export function PricingTable({
   );
 
   return (
-    <div className={cn('ucl-pricing-table', className)}>
+    <div
+      className={cn('ucl-pricing-table', className)}
+      data-testid="ucl-pricing-table"
+      data-analytics-id="funnel_pricing_table"
+    >
       {(title || subtitle) && (
         <div className="ucl-pricing-table__header text-center mb-8">
           {title && (
@@ -63,6 +67,8 @@ export function PricingTable({
       <div className="ucl-pricing-table__toggle-container flex justify-center items-center gap-3 mb-10">
         <button
           type="button"
+          data-analytics-id="funnel_pricing_cycle_monthly"
+          data-testid="pricing-cycle-monthly"
           className="text-sm font-medium cursor-pointer bg-transparent border-0 p-0"
           style={{
             color:
@@ -79,6 +85,8 @@ export function PricingTable({
           type="button"
           role="switch"
           aria-checked={billingCycle === 'annual'}
+          data-analytics-id="funnel_pricing_cycle_annual_toggle"
+          data-testid="pricing-cycle-toggle"
           className="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out"
           style={{
             backgroundColor:
@@ -217,6 +225,8 @@ export function PricingTable({
                 {plan.ctaSlot ?? (
                   <button
                     type="button"
+                    data-analytics-id={`funnel_pricing_plan_${plan.id}`}
+                    data-testid={`pricing-plan-cta-${plan.id}`}
                     onClick={() => {
                       plan.onSelect?.(billingCycle);
                       onPlanSelect?.(plan, billingCycle);

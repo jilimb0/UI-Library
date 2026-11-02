@@ -37,9 +37,7 @@ export const Default: Story = {
   render: (args) => <DatePickerWrapper {...args} />,
   args: {
     selectedDate: null,
-    onChange: (date: Date) => {
-      console.log('Selected date:', date);
-    },
+    onChange: (_date: Date) => {},
   },
 };
 
@@ -47,9 +45,7 @@ export const WithInitialDate: Story = {
   render: (args) => <DatePickerWrapper {...args} />,
   args: {
     selectedDate: new Date(),
-    onChange: (date: Date) => {
-      console.log('Selected date:', date);
-    },
+    onChange: (_date: Date) => {},
   },
 };
 
@@ -58,9 +54,7 @@ export const WithTimezone: Story = {
   args: {
     selectedDate: null,
     timezone: 'UTC',
-    onChange: (date: Date) => {
-      console.log('Selected date:', date);
-    },
+    onChange: (_date: Date) => {},
   },
 };
 

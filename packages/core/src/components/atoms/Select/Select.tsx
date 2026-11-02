@@ -20,6 +20,7 @@ export interface SelectProps
   errorMessage?: string;
   /** Custom icon rendered as the dropdown arrow. Defaults to ChevronDownIcon. */
   icon?: ReactNode;
+  'data-testid'?: string;
 }
 
 /**
@@ -58,6 +59,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
       onChange,
       icon,
       disabled,
+      'data-testid': testId = 'ucl-select',
       ...props
     },
     ref
@@ -101,6 +103,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             onChange={handleChange}
             data-size={size}
             data-error={error || undefined}
+            data-testid={testId}
             disabled={disabled}
             {...props}
           >

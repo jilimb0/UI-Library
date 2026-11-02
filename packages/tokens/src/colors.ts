@@ -18,14 +18,23 @@ export type SemanticColors = {
   mutedForeground: string;
   border: string;
   primary: string;
+  primaryForeground?: string;
   secondary: string;
+  secondaryForeground?: string;
   success: string;
+  successForeground?: string;
   warning: string;
+  warningForeground?: string;
   error: string;
+  errorForeground?: string;
   info: string;
+  infoForeground?: string;
   card: string;
+  cardForeground?: string;
   accent: string;
+  accentForeground?: string;
   popover: string;
+  popoverForeground?: string;
   ring: string;
   input: string;
   intent: {
@@ -148,14 +157,23 @@ export const semanticLightColors: SemanticColors = {
   mutedForeground: '#71717a',
   border: '#e4e4e7',
   primary: '#7c3aed',
+  primaryForeground: '#ffffff',
   secondary: '#71717a',
+  secondaryForeground: '#ffffff',
   success: '#10b981',
+  successForeground: '#ffffff',
   warning: '#f59e0b',
+  warningForeground: '#ffffff',
   error: '#ef4444',
+  errorForeground: '#ffffff',
   info: '#3b82f6',
+  infoForeground: '#ffffff',
   card: '#ffffff',
+  cardForeground: '#09090b',
   accent: '#f4f4f5',
+  accentForeground: '#09090b',
   popover: '#ffffff',
+  popoverForeground: '#09090b',
   ring: '#7c3aed',
   input: '#e4e4e7',
   intent: {
@@ -173,14 +191,23 @@ export const semanticDarkColors: SemanticColors = {
   mutedForeground: '#a1a1aa',
   border: '#27272a',
   primary: '#a78bfa',
+  primaryForeground: '#09090b',
   secondary: '#a1a1aa',
+  secondaryForeground: '#fafafa',
   success: '#10b981',
+  successForeground: '#09090b',
   warning: '#f59e0b',
+  warningForeground: '#09090b',
   error: '#ef4444',
+  errorForeground: '#fafafa',
   info: '#3b82f6',
+  infoForeground: '#fafafa',
   card: '#09090b',
+  cardForeground: '#fafafa',
   accent: '#18181b',
+  accentForeground: '#fafafa',
   popover: '#09090b',
+  popoverForeground: '#fafafa',
   ring: '#a78bfa',
   input: '#27272a',
   intent: {

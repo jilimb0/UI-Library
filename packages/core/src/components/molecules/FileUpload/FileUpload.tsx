@@ -44,7 +44,11 @@ export function FileUpload({
   };
 
   return (
-    <div className={cn('stack-vertical', className)} style={style}>
+    <div
+      className={cn('stack-vertical', className)}
+      data-testid="ucl-file-upload"
+      style={style}
+    >
       <label
         onDragOver={(e) => {
           e.preventDefault();
@@ -61,6 +65,7 @@ export function FileUpload({
         <input
           className="hidden"
           type="file"
+          data-testid="ucl-file-upload-input"
           multiple={multiple}
           accept={accept}
           onChange={(e) => applyFiles(e.target.files)}

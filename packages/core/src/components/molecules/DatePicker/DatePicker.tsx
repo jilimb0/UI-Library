@@ -194,6 +194,7 @@ const DatePicker: FC<DatePickerProps> = ({
   return (
     <fieldset
       className={cn('date-picker', className)}
+      data-testid="ucl-date-picker"
       style={style}
       disabled={disabled}
     >

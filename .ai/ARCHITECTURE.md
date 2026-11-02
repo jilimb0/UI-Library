@@ -22,3 +22,4 @@ UI-Library — Comprehensive accessible headless and styled design system for Te
 
 ## 5. Active ADRs
 - **[ADR-0001](.ai/adr/0001-wai-aria-tokens-and-stdio-mcp-snapshot.md)** (`packages/core/**`, `packages/tokens/**`, `scripts/**`): Mandatory WAI-ARIA compliance, `typeof window !== 'undefined'` SSR guards, `packages/tokens` single source of truth, and snapshot-backed `stdio` MCP server (`scripts/mcp-server.mjs`).
+- **[ADR-0002](.ai/adr/0002-resilience-rate-limiting-and-privacy-telemetry.md)** (`packages/utils/**`, `packages/tokens/**`, `packages/core/**`, `apps/**`): Sliding window rate limiting, privacy-first telemetry with strict PII scrubbing, stable funnel selectors, and first-class `*-foreground` token parity with neutral theme support.

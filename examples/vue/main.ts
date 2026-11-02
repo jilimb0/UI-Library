@@ -14,9 +14,7 @@ const app = createApp({
     </div>
   `,
   methods: {
-    log(label: string) {
-      console.log('Vue button clicked:', label);
-    },
+    log(_label: string) {},
   },
 });
 

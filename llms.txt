@@ -1,0 +1,16 @@
+# llms.txt
+
+UI Construction Library (jilimb0.github.io/UI-Library) — Enterprise Design System
+
+UI Construction Library (jilimb0.github.io/UI-Library) is a high-performance, accessible enterprise Design System and React component library adhering to WAI-ARIA standards and Appllama kinematics.
+
+## Key Features
+
+- **Strict A11y & SSR Compliance**: Fully keyboard navigable with WAI-ARIA roles and SSR guards.
+- **Physics-Based Kinematics**: Purposeful, spring-based motion profiles honoring `prefers-reduced-motion`.
+- **Theme Engine**: Semantic design tokens, automatic dark/light mode detection, and zero runtime CSS bloat.
+
+## Links
+
+- [Component Showcase](https://jilimb0.github.io/UI-Library/)
+- [GitHub Repository](https://github.com/jilimb0/UI-Library)

@@ -43,3 +43,25 @@ export { formatRelative } from './date/relative';
 
 // ── Internal number utilities ─────────────────────────────────────────────────
 export { random } from './number/random';
+
+// ── Security & Resilience utilities ──────────────────────────────────────────
+export {
+  createAuthLimiter,
+  createHeavyAiLimiter,
+  createStandardApiLimiter,
+  type RateLimiterOptions,
+  type RateLimitResult,
+  SlidingWindowRateLimiter,
+} from './security/rateLimiter';
+
+// ── Telemetry & Analytics ───────────────────────────────────────────────────
+export {
+  initTelemetry,
+  redactPII,
+  type TelemetryEvent,
+  type TelemetryOptions,
+  telemetry,
+  trackEvent,
+  trackFunnelStep,
+  trackPageView,
+} from './telemetry/index';

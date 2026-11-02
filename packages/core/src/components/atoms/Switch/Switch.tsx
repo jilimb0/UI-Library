@@ -134,6 +134,7 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
           id={switchId}
           ref={ref}
           type="button"
+          data-testid="ucl-switch"
           className={cn(rootClassName, className)}
           aria-disabled={disabled || undefined}
           {...rootAttrs}

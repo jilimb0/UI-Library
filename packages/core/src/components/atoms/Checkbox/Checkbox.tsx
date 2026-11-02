@@ -39,6 +39,7 @@ export interface CheckboxProps
     description?: string;
     error?: string;
   };
+  'data-testid'?: string;
 }
 
 /**
@@ -81,6 +82,7 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
       value,
       form,
       classNames: slotClassNames,
+      'data-testid': testId = 'ucl-checkbox',
       ...props
     },
     ref
@@ -190,6 +192,7 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
               }
             }}
             onClick={(event) => handleCheckedChange(!checked, event)}
+            data-testid={testId}
             {...props}
           />
 

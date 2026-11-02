@@ -30,12 +30,12 @@ _Goal: Cover 90% of common UI patterns_
 
 | Item | Status | Notes |
 |------|--------|-------|
-| Date picker component | 🟡 | MVP exists, needs polish |
-| File upload / dropzone | 🟡 | RFC stage |
-| Sidebar navigation template | ⚪ | |
-| Settings page template | ⚪ | |
-| Auth flow template (login/signup) | ⚪ | |
-| CRUD list page template | ⚪ | |
+| Date picker component | 🟢 | Shipped with WAI-ARIA grid calendar |
+| File upload / dropzone | 🟢 | Shipped with drag-and-drop & size limit |
+| Sidebar navigation template | 🟢 | Shipped (`SidebarLayout`) |
+| Settings page template | ⚪ | In backlog |
+| Auth flow template (login/signup) | 🟢 | Shipped (`AuthShell`, `AuthLayout`) |
+| CRUD list page template | ⚪ | In backlog |
 
 ## Phase: Developer Experience
 

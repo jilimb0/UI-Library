@@ -57,6 +57,7 @@ export interface ButtonProps
   loading?: boolean;
   leftIcon?: ReactNode;
   rightIcon?: ReactNode;
+  'data-testid'?: string;
 }
 
 /**
@@ -98,6 +99,7 @@ const Button = forwardRef<HTMLElement, ButtonProps>(
       style,
       children,
       onClick,
+      'data-testid': testId = 'ucl-button',
       ...props
     },
     ref
@@ -117,6 +119,7 @@ const Button = forwardRef<HTMLElement, ButtonProps>(
       return (
         <Slot
           ref={ref as React.Ref<HTMLElement>}
+          data-testid={testId}
           className={buttonClass}
           style={style}
           {...(attrs as React.HTMLAttributes<HTMLElement>)}
@@ -133,6 +136,7 @@ const Button = forwardRef<HTMLElement, ButtonProps>(
     return (
       <Component
         ref={ref}
+        data-testid={testId}
         {...attrs}
         {...handlers}
         className={buttonClass}

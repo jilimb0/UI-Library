@@ -18,6 +18,7 @@ export interface InputProps
     description?: string;
     error?: string;
   };
+  'data-testid'?: string;
 }
 
 /**
@@ -59,6 +60,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       required,
       suffix,
       classNames: slotClassNames,
+      'data-testid': testId = 'ucl-input',
       ...props
     },
     ref
@@ -112,6 +114,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               className
             )}
             ref={ref}
+            data-testid={testId}
             style={suffix ? { paddingRight: '2.5rem' } : undefined}
             {...props}
           />

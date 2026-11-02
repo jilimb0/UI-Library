@@ -117,6 +117,8 @@ export function AuthShell({
         className
       )}
       style={{ backgroundColor: 'var(--background)' }}
+      data-testid="ucl-auth-shell"
+      data-analytics-id="funnel_auth_shell"
     >
       {/* Left Branding Panel */}
       <div className="ucl-auth-shell__brand relative hidden lg:flex lg:w-1/2 flex-col justify-between p-12 bg-[rgba(18,21,31,0.95)] text-white overflow-hidden border-r border-[rgba(108,123,255,0.12)]">
@@ -190,6 +192,8 @@ export function AuthShell({
                   <button
                     key={provider.name}
                     type="button"
+                    data-analytics-id={`funnel_oauth_${provider.name}`}
+                    data-testid={`oauth-button-${provider.name}`}
                     onClick={provider.onClick}
                     className="w-full inline-flex items-center justify-center gap-3 py-2.5 px-4 rounded-xl border text-sm font-medium transition-all duration-150 cursor-pointer shadow-sm"
                     style={{

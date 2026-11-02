@@ -27,9 +27,7 @@ buttons.forEach(({ id, variant, size, disabled, loading }) => {
     size,
     disabled,
     loading,
-    onClick: (e) => {
-      console.log(`Button ${id} clicked`, e);
-    },
+    onClick: (_e) => {},
   });
 
   Object.entries(attrs).forEach(([k, v]) => {

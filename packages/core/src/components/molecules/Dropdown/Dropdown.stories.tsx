@@ -48,9 +48,7 @@ export const WithOnChange: Story = {
   args: {
     items: mockItems,
     placeholder: 'Select an option',
-    onChange: (value) => {
-      console.log('Selected:', value);
-    },
+    onChange: (_value) => {},
   },
 };
 

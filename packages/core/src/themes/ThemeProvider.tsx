@@ -15,6 +15,36 @@ import {
 const THEME_STORAGE_KEY = 'ucl-theme';
 const THEME_STYLE_TAG_ID = 'ucl-theme';
 
+export const NEUTRAL_CSS = `
+[data-theme="neutral"] {
+  --ucl-color-background: #fafaf9;
+  --ucl-color-foreground: #1c1917;
+  --ucl-color-card: #ffffff;
+  --ucl-color-card-foreground: #1c1917;
+  --ucl-color-popover: #ffffff;
+  --ucl-color-popover-foreground: #1c1917;
+  --ucl-color-muted: #f5f5f4;
+  --ucl-color-muted-foreground: #78716c;
+  --ucl-color-accent: #f5f5f4;
+  --ucl-color-accent-foreground: #1c1917;
+  --ucl-color-border: #e7e5e4;
+  --ucl-color-input: #e7e5e4;
+  --ucl-color-ring: #a8a29e;
+  --ucl-color-primary: #57534e;
+  --ucl-color-primary-foreground: #fafaf9;
+  --ucl-color-secondary: #a8a29e;
+  --ucl-color-secondary-foreground: #fafaf9;
+  --ucl-color-success: #84cc16;
+  --ucl-color-success-foreground: #fafaf9;
+  --ucl-color-warning: #d97706;
+  --ucl-color-warning-foreground: #fafaf9;
+  --ucl-color-error: #ef4444;
+  --ucl-color-error-foreground: #fafaf9;
+  --ucl-color-info: #0ea5e9;
+  --ucl-color-info-foreground: #fafaf9;
+}
+`;
+
 export type ThemeName = string;
 
 export interface BrandTokens {
@@ -54,6 +84,7 @@ function getStoredTheme(
   const known =
     stored === 'light' ||
     stored === 'dark' ||
+    stored === 'neutral' ||
     (customThemes !== undefined && Object.hasOwn(customThemes, stored));
   return known ? stored : null;
 }
@@ -86,6 +117,7 @@ function resolveThemeCSS(
 ): string {
   if (themeName === 'light') return LIGHT_CSS;
   if (themeName === 'dark') return DARK_CSS;
+  if (themeName === 'neutral') return NEUTRAL_CSS;
   const brandTokens = themes?.[themeName];
   if (brandTokens) {
     return generateThemeCSS({ name: themeName, ...brandTokens });
@@ -93,7 +125,7 @@ function resolveThemeCSS(
   console.warn(
     `[UCL] ThemeProvider: unknown theme "${themeName}". ` +
       'Add it to the themes prop or use a builtin ' +
-      '("light" | "dark"). Falling back to "light".'
+      '("light" | "dark" | "neutral"). Falling back to "light".'
   );
   return LIGHT_CSS;
 }
