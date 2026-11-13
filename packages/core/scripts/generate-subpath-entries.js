@@ -133,6 +133,8 @@ const knownComponents = [
   'CoachMark',
   'PageTip',
   'ToastProvider',
+  'AgentControlRoom',
+  'SourceLineageDrawer',
 ];
 
 // Intersect with known components

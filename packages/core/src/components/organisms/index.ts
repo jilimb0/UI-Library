@@ -13,6 +13,7 @@ export * from './Navigation';
 export * from './PageHeader';
 export * from './PricingTable';
 export * from './Sidebar';
+export * from './SourceLineageDrawer';
 export * from './Table';
 export * from './Timeline';
 export * from './TopNav';

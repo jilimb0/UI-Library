@@ -35,7 +35,7 @@ export const validateComponent = <T>(
     return {
       success: false,
       parsedData: null,
-      errors: (error as z.ZodError).errors,
+      errors: (error as z.ZodError).issues,
     };
   }
 };

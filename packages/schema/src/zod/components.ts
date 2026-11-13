@@ -28,7 +28,7 @@ export const ButtonPropsSchema = z.object({
   leftIcon: z.any().optional(),
   rightIcon: z.any().optional(),
   className: z.string().optional(),
-  onClick: z.function().args(z.any()).returns(z.void()).optional(),
+  onClick: z.function({ input: [z.any()], output: z.void() }).optional(),
 });
 
 /** Input props schema (matches core InputProps + behaviors FieldBehaviorOptions) */
@@ -68,7 +68,9 @@ export const SwitchPropsSchema = z.object({
   disabled: z.boolean().optional(),
   checked: z.boolean().optional(),
   defaultChecked: z.boolean().optional(),
-  onCheckedChange: z.function().args(z.boolean()).returns(z.void()).optional(),
+  onCheckedChange: z
+    .function({ input: [z.boolean()], output: z.void() })
+    .optional(),
   className: z.string().optional(),
 });
 
@@ -81,7 +83,9 @@ export const CheckboxPropsSchema = z.object({
   indeterminate: z.boolean().optional(),
   size: z.enum(['sm', 'default', 'md', 'lg']).optional(),
   checked: z.boolean().optional(),
-  onCheckedChange: z.function().args(z.boolean()).returns(z.void()).optional(),
+  onCheckedChange: z
+    .function({ input: [z.boolean()], output: z.void() })
+    .optional(),
   className: z.string().optional(),
 });
 
@@ -89,9 +93,11 @@ export const CheckboxPropsSchema = z.object({
 export const TabTriggerPropsSchema = z.object({
   value: z.string(),
   tabValue: z.string(),
-  onValueChange: z.function().args(z.string()).returns(z.void()).optional(),
-  onNext: z.function().returns(z.void()).optional(),
-  onPrev: z.function().returns(z.void()).optional(),
+  onValueChange: z
+    .function({ input: [z.string()], output: z.void() })
+    .optional(),
+  onNext: z.function({ output: z.void() }).optional(),
+  onPrev: z.function({ output: z.void() }).optional(),
 });
 
 /** Tooltip props schema (core level) */
@@ -110,7 +116,9 @@ export const PopoverPropsSchema = z.object({
   sideOffset: z.number().optional().default(8),
   open: z.boolean().optional(),
   defaultOpen: z.boolean().optional(),
-  onOpenChange: z.function().args(z.boolean()).returns(z.void()).optional(),
+  onOpenChange: z
+    .function({ input: [z.boolean()], output: z.void() })
+    .optional(),
   size: z.enum(['sm', 'md', 'lg']).optional().default('md'),
   className: z.string().optional(),
 });
@@ -119,11 +127,11 @@ export const PopoverPropsSchema = z.object({
 export const SliderPropsSchema = z.object({
   value: z.array(z.number()).optional(),
   defaultValue: z.array(z.number()).optional(),
-  onChange: z.function().args(z.array(z.number())).returns(z.void()).optional(),
+  onChange: z
+    .function({ input: [z.array(z.number())], output: z.void() })
+    .optional(),
   onValueChange: z
-    .function()
-    .args(z.array(z.number()))
-    .returns(z.void())
+    .function({ input: [z.array(z.number())], output: z.void() })
     .optional(),
   min: z.number().optional().default(0),
   max: z.number().optional().default(100),
@@ -140,7 +148,9 @@ export const SliderPropsSchema = z.object({
 export const DialogPropsSchema = z.object({
   open: z.boolean().optional(),
   defaultOpen: z.boolean().optional(),
-  onOpenChange: z.function().args(z.boolean()).returns(z.void()).optional(),
+  onOpenChange: z
+    .function({ input: [z.boolean()], output: z.void() })
+    .optional(),
   className: z.string().optional(),
 });
 
@@ -148,7 +158,9 @@ export const DialogPropsSchema = z.object({
 export const TabsPropsSchema = z.object({
   value: z.string().optional(),
   defaultValue: z.string().optional(),
-  onValueChange: z.function().args(z.string()).returns(z.void()).optional(),
+  onValueChange: z
+    .function({ input: [z.string()], output: z.void() })
+    .optional(),
   className: z.string().optional(),
 });
 
@@ -159,9 +171,10 @@ export const AccordionPropsSchema = z.object({
   defaultValue: z.union([z.string(), z.array(z.string())]).optional(),
   value: z.union([z.string(), z.array(z.string())]).optional(),
   onValueChange: z
-    .function()
-    .args(z.union([z.string(), z.array(z.string())]))
-    .returns(z.void())
+    .function({
+      input: [z.union([z.string(), z.array(z.string())])],
+      output: z.void(),
+    })
     .optional(),
   className: z.string().optional(),
 });
@@ -188,6 +201,6 @@ export function validateProps<T>(
   if (result.success) return { valid: true, data: result.data };
   return {
     valid: false,
-    errors: result.error.errors.map((e) => `${e.path.join('.')}: ${e.message}`),
+    errors: result.error.issues.map((e) => `${e.path.join('.')}: ${e.message}`),
   };
 }

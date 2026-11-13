@@ -89,3 +89,20 @@ test('uilibrary-mcp: retrieves gold kit recipe for telegram-theme', async () => 
   assert.ok(snippet.includes('TelegramAdaptiveApp'));
   assert.ok(snippet.includes('ThemeProvider'));
 });
+
+test('uilibrary-mcp: retrieves gold kit recipe for source-lineage-drawer', async () => {
+  const res = await handleMcpJsonRpcRequest({
+    jsonrpc: '2.0',
+    id: 6,
+    method: 'tools/call',
+    params: {
+      name: 'uilibrary_get_gold_kit_recipe',
+      arguments: { recipe: 'source-lineage-drawer' },
+    },
+  });
+
+  assert.equal(res.error, undefined);
+  const snippet = res.result.content[0].text;
+  assert.ok(snippet.includes('SourceLineageDrawer'));
+  assert.ok(snippet.includes('FundamentalLineageCitation'));
+});

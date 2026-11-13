@@ -1,5 +1,6 @@
 export * from './Bounce';
 export * from './FadeIn';
+export * from './HandoffPulse';
 export * from './MotionComponents';
 export {
   MotionDiv,

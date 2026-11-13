@@ -162,6 +162,31 @@
       "import": "./dist/subpath/ToastProvider.js",
       "require": "./dist/subpath/ToastProvider.cjs",
       "types": "./dist/subpath/ToastProvider.d.ts"
+    },
+    "./DataTable": {
+      "import": "./dist/subpath/DataTable.js",
+      "require": "./dist/subpath/DataTable.cjs",
+      "types": "./dist/subpath/DataTable.d.ts"
+    },
+    "./Drawer": {
+      "import": "./dist/subpath/Drawer.js",
+      "require": "./dist/subpath/Drawer.cjs",
+      "types": "./dist/subpath/Drawer.d.ts"
+    },
+    "./TreeView": {
+      "import": "./dist/subpath/TreeView.js",
+      "require": "./dist/subpath/TreeView.cjs",
+      "types": "./dist/subpath/TreeView.d.ts"
+    },
+    "./AgentControlRoom": {
+      "import": "./dist/subpath/AgentControlRoom.js",
+      "require": "./dist/subpath/AgentControlRoom.cjs",
+      "types": "./dist/subpath/AgentControlRoom.d.ts"
+    },
+    "./SourceLineageDrawer": {
+      "import": "./dist/subpath/SourceLineageDrawer.js",
+      "require": "./dist/subpath/SourceLineageDrawer.cjs",
+      "types": "./dist/subpath/SourceLineageDrawer.d.ts"
     }
   },
   "sideEffects": [
@@ -201,7 +226,7 @@
     "clsx": "^2.0.0",
     "tailwind-merge": "^2.5.5",
     "tailwind-variants": "catalog:",
-    "zod": "^3.24.1"
+    "zod": "^4.6.6"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^29.0.2",
@@ -216,7 +241,7 @@
     "@testing-library/user-event": "^14.6.1",
     "@types/jest-axe": "^3.5.9",
     "@types/react": "catalog:",
-    "happy-dom": "^20.8.9",
+    "happy-dom": "^21.0.4",
     "jest-axe": "^10.0.0",
     "rollup": "^4.34.8",
     "rollup-plugin-peer-deps-external": "^2.2.4",

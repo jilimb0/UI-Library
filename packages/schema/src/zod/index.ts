@@ -1,4 +1,26 @@
 export {
+  type AgentNodeTelemetry,
+  AgentNodeTelemetrySchema,
+  type AgentStepStatus,
+  AgentStepStatusSchema,
+  type ApprovalChannel,
+  ApprovalChannelSchema,
+  type ApprovalDecisionInput,
+  ApprovalDecisionInputSchema,
+  type ApprovalGateItem,
+  ApprovalGateItemSchema,
+  type ApprovalRiskLevel,
+  ApprovalRiskLevelSchema,
+  type CircuitState,
+  CircuitStateSchema,
+  type HandoffSummary,
+  HandoffSummarySchema,
+  type SpanType,
+  SpanTypeSchema,
+  type TraceSpanItem,
+  TraceSpanItemSchema,
+} from './agent-control-room.schema';
+export {
   type AccordionProps,
   AccordionPropsSchema,
   type ButtonProps,
@@ -25,6 +47,13 @@ export {
   TooltipPropsSchema,
   validateProps,
 } from './components';
+export {
+  type FundamentalLineageCitation,
+  type FundamentalLineageCitationInput,
+  FundamentalLineageCitationSchema,
+  type LineageFormType,
+  LineageFormTypeSchema,
+} from './lineage.schema';
 export {
   type ColorTokens,
   ColorTokensSchema,

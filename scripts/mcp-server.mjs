@@ -76,6 +76,8 @@ export const UI_LIBRARY_MCP_TOOLS = [
             'form-with-field',
             'data-table-pagination',
             'auth-shell',
+            'agent-control-room',
+            'source-lineage-drawer',
             'all',
           ],
           description: 'Recipe identifier to load',
@@ -278,6 +280,55 @@ export function LoginPage() {
         <Button variant="default" fullWidth>Continue</Button>
       </Stack>
     </AuthShell>
+  );
+}`,
+  'agent-control-room': `// Agent Control Room Orchestration & CAS Approval Gate Recipe
+import { useState } from 'react';
+import { AgentControlRoom, type AgentNodeTelemetry, type ApprovalDecisionInput, type ApprovalGateItem, type TraceSpanItem } from '@ui-construction-library/core';
+
+export function PipelineControlRoomView({ runId }: { runId: string }) {
+  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
+
+  const handleDecideGate = async (decision: ApprovalDecisionInput) => {
+    // Atomic Compare-And-Swap (expectedVersion + idempotencyKey)
+    await fetch(\`/api/agent-runs/\${runId}/gates/\${decision.gateId}/decide\`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(decision),
+    });
+  };
+
+  return (
+    <AgentControlRoom
+      runId={runId}
+      nodes={[]}
+      spans={[]}
+      pendingGates={[]}
+      selectedNodeId={selectedNodeId}
+      onSelectNode={setSelectedNodeId}
+      onDecideGate={handleDecideGate}
+    />
+  );
+}`,
+  'source-lineage-drawer': `// Source Lineage Drawer Recipe for SEC/XBRL Provenance Inspection
+import { useState } from 'react';
+import { Button, SourceLineageDrawer, type FundamentalLineageCitation } from '@ui-construction-library/core';
+
+export function MetricLineageInspector({ citation }: { citation: FundamentalLineageCitation }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <Button variant="ghost" size="sm" onClick={() => setOpen(true)}>
+        Inspect Source ({citation.accessionNumber})
+      </Button>
+      <SourceLineageDrawer
+        open={open}
+        onOpenChange={setOpen}
+        citation={citation}
+        side="right"
+      />
+    </>
   );
 }`,
 };
