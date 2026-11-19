@@ -72,4 +72,29 @@ describe('Telemetry & Analytics Module', () => {
     expect(events[1].properties.step).toBe('pricing_selected');
     expect(events[1].properties.email).toBe('[REDACTED_EMAIL]');
   });
+
+  it('redacts multiple emails and preserves trailing punctuation', () => {
+    expect(redactPII('Contact alice@company.org.')).toBe(
+      'Contact [REDACTED_EMAIL].'
+    );
+    expect(redactPII('a@b.co and c.d+1@sub.domain.org')).toBe(
+      '[REDACTED_EMAIL] and [REDACTED_EMAIL]'
+    );
+  });
+
+  it('does not redact invalid @ tokens', () => {
+    expect(redactPII('hello @ world')).toBe('hello @ world');
+    expect(redactPII('foo@bar')).toBe('foo@bar');
+    expect(redactPII('foo@.com')).toBe('foo@.com');
+    expect(redactPII('@example.com')).toBe('@example.com');
+  });
+
+  it('redacts in linear time without ReDoS on adversarial inputs', () => {
+    const start = performance.now();
+    const percents = '%'.repeat(100_000);
+    const dots = `a@${'.'.repeat(50_000)}`;
+    expect(redactPII(percents)).toBe(percents);
+    expect(redactPII(dots)).toBe(dots);
+    expect(performance.now() - start).toBeLessThan(100);
+  });
 });

@@ -1,6 +1,6 @@
 {
   "name": "@ui-construction-library/core",
-  "version": "0.10.0",
+  "version": "0.10.1",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
@@ -225,7 +225,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.0.0",
     "tailwind-merge": "^2.5.5",
-    "tailwind-variants": "catalog:",
+    "tailwind-variants": "^3.1.0",
     "zod": "^4.6.6"
   },
   "devDependencies": {

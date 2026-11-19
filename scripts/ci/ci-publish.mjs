@@ -7,6 +7,7 @@
 //
 // This script:
 //   1. For each publishable package, temporarily rewrites workspace:* -> ^semver
+//      and catalog: -> version range from pnpm-workspace.yaml
 //   2. Checks if the version is already published (idempotent)
 //   3. Publishes via `npm publish --provenance` (OIDC Trusted Publisher auth)
 //   4. Confirms the version appears on the registry (retry x5, 10s backoff)
@@ -19,9 +20,15 @@
 // exchange is done transparently by npm via the Actions token env vars.
 
 import { execSync } from 'node:child_process';
-import { readFileSync, writeFileSync, readdirSync, statSync } from 'node:fs';
-import { resolve, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import {
+  existsSync,
+  readdirSync,
+  readFileSync,
+  statSync,
+  writeFileSync,
+} from 'node:fs';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '..', '..');
@@ -74,20 +81,98 @@ function buildWorkspaceVersionMap(packages) {
   return map;
 }
 
-function rewriteWorkspaceDeps(pkgObj, versionMap) {
-  const fields = ['dependencies', 'devDependencies', 'peerDependencies', 'optionalDependencies'];
+function stripQuotes(value) {
+  const trimmed = value.trim();
+  if (
+    (trimmed.startsWith("'") && trimmed.endsWith("'")) ||
+    (trimmed.startsWith('"') && trimmed.endsWith('"'))
+  ) {
+    return trimmed.slice(1, -1);
+  }
+  return trimmed;
+}
+
+export function parseCatalogFromWorkspaceYaml(yamlText) {
+  const catalog = {};
+  let inCatalog = false;
+
+  for (const line of yamlText.split('\n')) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) {
+      continue;
+    }
+
+    if (!inCatalog) {
+      if (/^catalog:\s*(?:#.*)?$/.test(trimmed)) {
+        inCatalog = true;
+      }
+      continue;
+    }
+
+    if (!/^\s/.test(line)) {
+      break;
+    }
+
+    const match = line.match(/^\s+(['"][^'"]+['"]|[^:\s][^:]*)\s*:\s*(.*)$/);
+    if (!match) {
+      continue;
+    }
+
+    const dep = stripQuotes(match[1]);
+    const rawVal = match[2].trim();
+    const quotedMatch = rawVal.match(/^(['"])(.*?)\1/);
+    const ver = quotedMatch
+      ? quotedMatch[2]
+      : rawVal.replace(/\s+#.*$/, '').trim();
+
+    if (dep && ver) {
+      catalog[dep] = ver;
+    }
+  }
+
+  return catalog;
+}
+
+export function loadCatalogMap(repoRoot = root) {
+  const wsPath = resolve(repoRoot, 'pnpm-workspace.yaml');
+  if (!existsSync(wsPath)) {
+    return {};
+  }
+  return parseCatalogFromWorkspaceYaml(readFileSync(wsPath, 'utf-8'));
+}
+
+export function rewritePublishDeps(pkgObj, versionMap, catalogMap = {}) {
+  const fields = [
+    'dependencies',
+    'devDependencies',
+    'peerDependencies',
+    'optionalDependencies',
+  ];
   const original = {};
   let changed = false;
+
   for (const field of fields) {
     if (!pkgObj[field]) continue;
     original[field] = {};
     for (const [dep, ver] of Object.entries(pkgObj[field])) {
       original[field][dep] = ver;
-      if (typeof ver === 'string' && ver.startsWith('workspace:')) {
+      if (typeof ver !== 'string') continue;
+
+      if (ver.startsWith('workspace:')) {
         const resolved = versionMap[dep];
         if (resolved) {
           pkgObj[field][dep] = `^${resolved}`;
           changed = true;
+        }
+      } else if (ver === 'catalog:') {
+        const resolved = catalogMap[dep];
+        if (resolved) {
+          pkgObj[field][dep] = resolved;
+          changed = true;
+        } else if (field !== 'devDependencies') {
+          throw new Error(
+            `Missing catalog version for ${dep} in ${pkgObj.name || 'package'} (${field})`
+          );
         }
       }
     }
@@ -95,10 +180,12 @@ function rewriteWorkspaceDeps(pkgObj, versionMap) {
   return { changed, original };
 }
 
-function restoreWorkspaceDeps(pkgObj, original) {
+export function restorePublishDeps(pkgObj, original) {
   for (const [field, deps] of Object.entries(original)) {
     if (!pkgObj[field]) continue;
-    for (const [dep, ver] of Object.entries(deps)) pkgObj[field][dep] = ver;
+    for (const [dep, ver] of Object.entries(deps)) {
+      pkgObj[field][dep] = ver;
+    }
   }
 }
 
@@ -135,56 +222,78 @@ function confirmPublished(name, version) {
 
 // ── Main ─────────────────────────────────────────────────────────────────────
 
-const packages = getPublishablePackages();
-const versionMap = buildWorkspaceVersionMap(packages);
-const provenanceFlag = process.env.NPM_PUBLISH_PROVENANCE === 'true' ? '--provenance' : '';
+function main() {
+  const packages = getPublishablePackages();
+  const versionMap = buildWorkspaceVersionMap(packages);
+  const catalogMap = loadCatalogMap(root);
+  const provenanceFlag =
+    process.env.NPM_PUBLISH_PROVENANCE === 'true' ? '--provenance' : '';
 
-log(`publishing ${packages.length} package(s)`);
-if (provenanceFlag) log('OIDC provenance enabled');
+  log(`publishing ${packages.length} package(s)`);
+  if (provenanceFlag) log('OIDC provenance enabled');
 
-const errors = [];
+  const errors = [];
 
-for (const { path: pkgPath, dir, pkg } of packages) {
-  const { name, version } = pkg;
-  log(`\n── ${name}@${version} ──`);
+  for (const { path: pkgPath, dir, pkg } of packages) {
+    const { name, version } = pkg;
+    log(`\n── ${name}@${version} ──`);
 
-  if (isAlreadyPublished(name, version)) {
-    log('  already published — skipping');
-    continue;
-  }
+    if (isAlreadyPublished(name, version)) {
+      log('  already published — skipping');
+      continue;
+    }
 
-  const pkgObj = readJson(pkgPath);
-  const { changed, original } = rewriteWorkspaceDeps(pkgObj, versionMap);
-  if (changed) {
-    log('  rewriting workspace:* deps -> semver');
-    writeJson(pkgPath, pkgObj);
-  }
-
-  try {
-    const cmd = `npm publish --access public ${provenanceFlag}`.trim();
-    log(`  $ ${cmd}`);
-    const out = execSync(cmd, { cwd: dir, stdio: ['ignore', 'pipe', 'pipe'], encoding: 'utf-8' });
-    log(out.trim());
-    confirmPublished(name, version);
-  } catch (err) {
-    const detail = [err.stderr, err.stdout].filter(Boolean).map(s => s.trim()).join('\n');
-    const msg = detail || err.message;
-    log(`  ❌ FAILED: ${msg}`);
-    errors.push({ name, version, error: msg });
-  } finally {
+    const pkgObj = readJson(pkgPath);
+    const { changed, original } = rewritePublishDeps(
+      pkgObj,
+      versionMap,
+      catalogMap
+    );
     if (changed) {
-      const restored = readJson(pkgPath);
-      restoreWorkspaceDeps(restored, original);
-      writeJson(pkgPath, restored);
-      log('  restored workspace:* refs');
+      log('  rewriting workspace:* and catalog: deps -> semver');
+      writeJson(pkgPath, pkgObj);
+    }
+
+    try {
+      const cmd = `npm publish --access public ${provenanceFlag}`.trim();
+      log(`  $ ${cmd}`);
+      const out = execSync(cmd, {
+        cwd: dir,
+        stdio: ['ignore', 'pipe', 'pipe'],
+        encoding: 'utf-8',
+      });
+      log(out.trim());
+      confirmPublished(name, version);
+    } catch (err) {
+      const detail = [err.stderr, err.stdout]
+        .filter(Boolean)
+        .map((s) => s.trim())
+        .join('\n');
+      const msg = detail || err.message;
+      log(`  ❌ FAILED: ${msg}`);
+      errors.push({ name, version, error: msg });
+    } finally {
+      if (changed) {
+        const restored = readJson(pkgPath);
+        restorePublishDeps(restored, original);
+        writeJson(pkgPath, restored);
+        log('  restored workspace:* and catalog: refs');
+      }
     }
   }
+
+  if (errors.length > 0) {
+    log(`\n❌ ${errors.length} package(s) failed:`);
+    for (const e of errors) log(`  ${e.name}@${e.version}: ${e.error}`);
+    process.exit(1);
+  }
+
+  log('\n✅ all packages published successfully');
 }
 
-if (errors.length > 0) {
-  log(`\n❌ ${errors.length} package(s) failed:`);
-  for (const e of errors) log(`  ${e.name}@${e.version}: ${e.error}`);
-  process.exit(1);
+if (
+  process.argv[1] &&
+  import.meta.url === pathToFileURL(resolve(process.argv[1])).href
+) {
+  main();
 }
-
-log('\n✅ all packages published successfully');

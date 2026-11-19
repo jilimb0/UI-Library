@@ -2,6 +2,12 @@
 
 <!-- AUTO-GENERATED — do not edit manually; run pnpm changelog:packages -->
 
+## 0.5.1
+
+### Patch Changes
+
+- fix(telemetry): replace polynomial email regex with linear-time scanner in `redactPII` to eliminate ReDoS
+
 ## 0.5.0
 
 ### Features

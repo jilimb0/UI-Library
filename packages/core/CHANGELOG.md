@@ -2,6 +2,12 @@
 
 <!-- AUTO-GENERATED — do not edit manually; run pnpm changelog:packages -->
 
+## 0.10.1
+
+### Patch Changes
+
+- fix: replace `tailwind-variants` `catalog:` protocol with `^3.1.0` so published manifests resolve cleanly outside pnpm workspaces
+
 ## 0.10.0
 
 ### Minor Changes

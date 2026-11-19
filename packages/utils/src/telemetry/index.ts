@@ -25,7 +25,6 @@ export interface TelemetryOptions {
   onEvent?: (event: TelemetryEvent) => void;
 }
 
-const EMAIL_REGEX = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
 const TOKEN_REGEX =
   /(bearer\s+[a-zA-Z0-9._-]+|ghp_[a-zA-Z0-9]+|eyJ[a-zA-Z0-9_-]+)/gi;
 const SENSITIVE_KEYS = new Set([
@@ -45,14 +44,125 @@ const SENSITIVE_KEYS = new Set([
   'cvv',
 ]);
 
+function isAsciiLetter(code: number): boolean {
+  return (code >= 65 && code <= 90) || (code >= 97 && code <= 122);
+}
+
+function isAsciiDigit(code: number): boolean {
+  return code >= 48 && code <= 57;
+}
+
+function isLocalEmailChar(code: number): boolean {
+  return (
+    isAsciiLetter(code) ||
+    isAsciiDigit(code) ||
+    code === 46 || // .
+    code === 95 || // _
+    code === 37 || // %
+    code === 43 || // +
+    code === 45 // -
+  );
+}
+
+function isDomainEmailChar(code: number): boolean {
+  return (
+    isAsciiLetter(code) ||
+    isAsciiDigit(code) ||
+    code === 46 || // .
+    code === 45 // -
+  );
+}
+
+function isValidDomain(domain: string): boolean {
+  const parts = domain.split('.');
+  if (parts.length < 2) {
+    return false;
+  }
+  for (const part of parts) {
+    if (part.length === 0) {
+      return false;
+    }
+  }
+  const tld = parts[parts.length - 1];
+  if (tld.length < 2) {
+    return false;
+  }
+  for (let i = 0; i < tld.length; i++) {
+    if (!isAsciiLetter(tld.charCodeAt(i))) {
+      return false;
+    }
+  }
+  return true;
+}
+
+/**
+ * Redacts email addresses in deterministic O(n) linear time to avoid ReDoS.
+ */
+function redactEmails(input: string): string {
+  if (!input.includes('@')) {
+    return input;
+  }
+
+  let out = '';
+  let cursor = 0;
+  let searchFrom = 0;
+
+  while (searchFrom < input.length) {
+    const at = input.indexOf('@', searchFrom);
+    if (at === -1) {
+      break;
+    }
+
+    let localStart = at;
+    while (
+      localStart > cursor &&
+      isLocalEmailChar(input.charCodeAt(localStart - 1))
+    ) {
+      localStart--;
+    }
+
+    let domainEnd = at + 1;
+    while (
+      domainEnd < input.length &&
+      isDomainEmailChar(input.charCodeAt(domainEnd))
+    ) {
+      domainEnd++;
+    }
+    while (domainEnd > at + 1 && input.charCodeAt(domainEnd - 1) === 46) {
+      domainEnd--;
+    }
+
+    const hasLocal = localStart < at;
+    const hasDomain = domainEnd > at + 1;
+    if (
+      hasLocal &&
+      hasDomain &&
+      isValidDomain(input.slice(at + 1, domainEnd))
+    ) {
+      out += input.slice(cursor, localStart);
+      out += '[REDACTED_EMAIL]';
+      cursor = domainEnd;
+      searchFrom = domainEnd;
+    } else {
+      searchFrom = at + 1;
+    }
+  }
+
+  if (cursor === 0) {
+    return input;
+  }
+  return out + input.slice(cursor);
+}
+
 /**
  * Recursively redacts PII and sensitive parameters from event payloads.
  */
 export function redactPII<T>(value: T): T {
   if (typeof value === 'string') {
-    return value
-      .replace(EMAIL_REGEX, '[REDACTED_EMAIL]')
-      .replace(TOKEN_REGEX, '[REDACTED_TOKEN]') as unknown as T;
+    return redactEmails(value).replace(
+      TOKEN_REGEX,
+      '[REDACTED_TOKEN]'
+    ) as unknown as T;
   }
 
   if (Array.isArray(value)) {
