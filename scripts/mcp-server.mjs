@@ -78,6 +78,8 @@ export const UI_LIBRARY_MCP_TOOLS = [
             'auth-shell',
             'agent-control-room',
             'source-lineage-drawer',
+            'terminal-workspace',
+            'widget-link-cockpit',
             'all',
           ],
           description: 'Recipe identifier to load',
@@ -329,6 +331,119 @@ export function MetricLineageInspector({ citation }: { citation: FundamentalLine
         side="right"
       />
     </>
+  );
+}`,
+  'terminal-workspace': `// Keyboard-First Terminal Workspace Recipe (CommandPalette + TilingWorkspace + WidgetLinkBus)
+import { useState } from 'react';
+import {
+  CommandPalette,
+  LinkedPanel,
+  type ParsedTerminalCommand,
+  SynchronizedChartGrid,
+  TilingWorkspace,
+  useGlobalCommandShortcut,
+  useWidgetLinkGroup,
+  WidgetLinkProvider,
+} from '@ui-construction-library/core';
+
+export function TerminalWorkspaceShell() {
+  const [paletteOpen, setPaletteOpen] = useState(false);
+  useGlobalCommandShortcut({ onOpen: () => setPaletteOpen(true) });
+
+  return (
+    <WidgetLinkProvider>
+      <TerminalDeck paletteOpen={paletteOpen} setPaletteOpen={setPaletteOpen} />
+    </WidgetLinkProvider>
+  );
+}
+
+function TerminalDeck({
+  paletteOpen,
+  setPaletteOpen,
+}: {
+  paletteOpen: boolean;
+  setPaletteOpen: (open: boolean) => void;
+}) {
+  const { publishEntity } = useWidgetLinkGroup('green');
+
+  const handleCommand = (parsed: ParsedTerminalCommand) => {
+    if (parsed.mode === 'mnemonic' && parsed.subject) {
+      publishEntity({
+        symbol: parsed.subject,
+        entityType: 'ticker',
+        sourceWidgetId: 'command-bar',
+      });
+    }
+  };
+
+  return (
+    <>
+      <CommandPalette
+        open={paletteOpen}
+        onOpenChange={setPaletteOpen}
+        shortcutHint="Mod+K"
+        onExecuteCommand={handleCommand}
+        groups={[]}
+      />
+      <TilingWorkspace
+        workspaceId="main-desk"
+        preset="1+2"
+        tiles={[
+          {
+            id: 'charts',
+            title: 'Multi-Domain Charts',
+            linkGroup: 'green',
+            render: () => <SynchronizedChartGrid panels={[]} />,
+          },
+          {
+            id: 'tear-sheet',
+            title: 'Entity Tear Sheet',
+            linkGroup: 'green',
+            render: () => (
+              <LinkedPanel widgetId="des" title="DES" defaultGroup="green">
+                <div>Linked Security View</div>
+              </LinkedPanel>
+            ),
+          },
+        ]}
+      />
+    </>
+  );
+}`,
+  'widget-link-cockpit': `// Color-Coded WidgetLinkBus & SynchronizedChartGrid Cockpit Recipe
+import {
+  LinkedPanel,
+  SynchronizedChartGrid,
+  type SynchronizedChartPanelData,
+  useWidgetLinkPublisher,
+  WidgetLinkProvider,
+} from '@ui-construction-library/core';
+
+export function WidgetLinkCockpit({ panels }: { panels: SynchronizedChartPanelData[] }) {
+  return (
+    <WidgetLinkProvider>
+      <CockpitBody panels={panels} />
+    </WidgetLinkProvider>
+  );
+}
+
+function CockpitBody({ panels }: { panels: SynchronizedChartPanelData[] }) {
+  const publishGreen = useWidgetLinkPublisher('green', 'cockpit-watchlist');
+
+  return (
+    <div style={{ display: 'grid', gap: '0.75rem' }}>
+      <LinkedPanel widgetId="watchlist" title="Watchlist" defaultGroup="green">
+        <button
+          type="button"
+          onClick={() => publishGreen({ symbol: 'AAPL', entityType: 'ticker', timeframe: '1D' })}
+        >
+          Select AAPL
+        </button>
+      </LinkedPanel>
+      <LinkedPanel widgetId="chart-grid" title="Synchronized Series" defaultGroup="green">
+        <SynchronizedChartGrid panels={panels} />
+      </LinkedPanel>
+    </div>
   );
 }`,
 };

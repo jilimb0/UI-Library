@@ -106,3 +106,55 @@ test('uilibrary-mcp: retrieves gold kit recipe for source-lineage-drawer', async
   assert.ok(snippet.includes('SourceLineageDrawer'));
   assert.ok(snippet.includes('FundamentalLineageCitation'));
 });
+
+test('uilibrary-mcp: retrieves gold kit recipe for terminal-workspace', async () => {
+  const recipeTool = UI_LIBRARY_MCP_TOOLS.find(
+    (t) => t.name === 'uilibrary_get_gold_kit_recipe'
+  );
+  assert.ok(
+    recipeTool.inputSchema.properties.recipe.enum.includes('terminal-workspace')
+  );
+
+  const res = await handleMcpJsonRpcRequest({
+    jsonrpc: '2.0',
+    id: 7,
+    method: 'tools/call',
+    params: {
+      name: 'uilibrary_get_gold_kit_recipe',
+      arguments: { recipe: 'terminal-workspace' },
+    },
+  });
+
+  assert.equal(res.error, undefined);
+  assert.notEqual(res.result.isError, true);
+  const snippet = res.result.content[0].text;
+  assert.ok(snippet.includes('TilingWorkspace'));
+  assert.ok(snippet.includes('CommandPalette'));
+  assert.ok(snippet.includes('useGlobalCommandShortcut'));
+});
+
+test('uilibrary-mcp: retrieves gold kit recipe for widget-link-cockpit', async () => {
+  const recipeTool = UI_LIBRARY_MCP_TOOLS.find(
+    (t) => t.name === 'uilibrary_get_gold_kit_recipe'
+  );
+  assert.ok(
+    recipeTool.inputSchema.properties.recipe.enum.includes('widget-link-cockpit')
+  );
+
+  const res = await handleMcpJsonRpcRequest({
+    jsonrpc: '2.0',
+    id: 8,
+    method: 'tools/call',
+    params: {
+      name: 'uilibrary_get_gold_kit_recipe',
+      arguments: { recipe: 'widget-link-cockpit' },
+    },
+  });
+
+  assert.equal(res.error, undefined);
+  assert.notEqual(res.result.isError, true);
+  const snippet = res.result.content[0].text;
+  assert.ok(snippet.includes('WidgetLinkProvider'));
+  assert.ok(snippet.includes('LinkedPanel'));
+  assert.ok(snippet.includes('SynchronizedChartGrid'));
+});

@@ -34,7 +34,7 @@ export default [
         outputToFilesystem: true,
         exclude: ['**/*.test.ts', '**/*.test.tsx', '**/*.stories.tsx'],
       }),
-      postcss({ extract: 'styles.css', minimize: false }),
+      postcss({ extract: 'styles.css', minimize: false, config: false }),
       terser(),
     ],
   },

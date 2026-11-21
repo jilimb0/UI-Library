@@ -187,6 +187,26 @@
       "import": "./dist/subpath/SourceLineageDrawer.js",
       "require": "./dist/subpath/SourceLineageDrawer.cjs",
       "types": "./dist/subpath/SourceLineageDrawer.d.ts"
+    },
+    "./WidgetLinkProvider": {
+      "import": "./dist/subpath/WidgetLinkProvider.js",
+      "require": "./dist/subpath/WidgetLinkProvider.cjs",
+      "types": "./dist/subpath/WidgetLinkProvider.d.ts"
+    },
+    "./LinkedPanel": {
+      "import": "./dist/subpath/LinkedPanel.js",
+      "require": "./dist/subpath/LinkedPanel.cjs",
+      "types": "./dist/subpath/LinkedPanel.d.ts"
+    },
+    "./TilingWorkspace": {
+      "import": "./dist/subpath/TilingWorkspace.js",
+      "require": "./dist/subpath/TilingWorkspace.cjs",
+      "types": "./dist/subpath/TilingWorkspace.d.ts"
+    },
+    "./SynchronizedChartGrid": {
+      "import": "./dist/subpath/SynchronizedChartGrid.js",
+      "require": "./dist/subpath/SynchronizedChartGrid.cjs",
+      "types": "./dist/subpath/SynchronizedChartGrid.d.ts"
     }
   },
   "sideEffects": [

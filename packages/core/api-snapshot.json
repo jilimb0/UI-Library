@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-11T05:13:16.660Z",
+  "generatedAt": "2026-11-21T09:17:58.304Z",
   "package": "@ui-construction-library/core",
   "barrelExports": [
     "./components",
@@ -76,11 +76,14 @@
     "organisms/PricingTable",
     "organisms/Sidebar",
     "organisms/SourceLineageDrawer",
+    "organisms/SynchronizedChartGrid",
     "organisms/Table",
     "organisms/Tabs",
+    "organisms/TilingWorkspace",
     "organisms/Timeline",
     "organisms/TopNav",
     "organisms/TreeView",
+    "organisms/WidgetLinkBus",
     "templates/AgentControlRoom",
     "templates/AuthShell"
   ]

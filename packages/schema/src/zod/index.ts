@@ -61,3 +61,17 @@ export {
   ThemeSchema,
   validateTheme,
 } from './theme';
+export {
+  type ActiveWidgetColorGroup,
+  ActiveWidgetColorGroupSchema,
+  type LinkedEntityPayload,
+  LinkedEntityPayloadSchema,
+  type LinkedEntityType,
+  LinkedEntityTypeSchema,
+  type WidgetColorGroup,
+  WidgetColorGroupSchema,
+  type WidgetLinkBroadcastMessage,
+  WidgetLinkBroadcastMessageSchema,
+  type WidgetLinkGroups,
+  WidgetLinkGroupsSchema,
+} from './widget-link.schema';

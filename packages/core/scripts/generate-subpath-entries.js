@@ -135,6 +135,10 @@ const knownComponents = [
   'ToastProvider',
   'AgentControlRoom',
   'SourceLineageDrawer',
+  'WidgetLinkProvider',
+  'LinkedPanel',
+  'TilingWorkspace',
+  'SynchronizedChartGrid',
 ];
 
 // Intersect with known components
