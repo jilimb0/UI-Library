@@ -73,7 +73,7 @@ export function App() {
 
 ```ts
 // ✅ Components — always from core
-import { Button, Modal, DataTable } from '@ui-construction-library/core'
+import { Button, Modal, DataTable, ArchitectureFloorplan } from '@ui-construction-library/core'
 
 // ✅ Universal Core — tokens, styles, behaviors
 import { rawTokens, semanticTokens } from '@ui-construction-library/tokens'
@@ -98,6 +98,7 @@ See [ARCHITECTURE.md](./ARCHITECTURE.md) for the full dependency model and rules
 ## Entry points
 
 - **Demo showcase** — product-oriented live demo with ThemeProvider, integrations, hooks and motion
+- **ArchitectureFloorplan template** — `@ui-construction-library/core/ArchitectureFloorplan` multi-zoom topology template with Zod 4 contract (`architecture-floorplan.schema.ts`) and MCP recipe `architecture-floorplan`
 - **Documentation site** — install flow, category reference, package overview and adoption guidance
 - **Storybook** — component exploration and design-system stories
 

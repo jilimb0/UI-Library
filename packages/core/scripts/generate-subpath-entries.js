@@ -134,6 +134,7 @@ const knownComponents = [
   'PageTip',
   'ToastProvider',
   'AgentControlRoom',
+  'ArchitectureFloorplan',
   'SourceLineageDrawer',
   'WidgetLinkProvider',
   'LinkedPanel',

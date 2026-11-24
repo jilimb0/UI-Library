@@ -158,3 +158,28 @@ test('uilibrary-mcp: retrieves gold kit recipe for widget-link-cockpit', async (
   assert.ok(snippet.includes('LinkedPanel'));
   assert.ok(snippet.includes('SynchronizedChartGrid'));
 });
+
+test('uilibrary-mcp: retrieves gold kit recipe for architecture-floorplan', async () => {
+  const recipeTool = UI_LIBRARY_MCP_TOOLS.find(
+    (t) => t.name === 'uilibrary_get_gold_kit_recipe'
+  );
+  assert.ok(
+    recipeTool.inputSchema.properties.recipe.enum.includes('architecture-floorplan')
+  );
+
+  const res = await handleMcpJsonRpcRequest({
+    jsonrpc: '2.0',
+    id: 9,
+    method: 'tools/call',
+    params: {
+      name: 'uilibrary_get_gold_kit_recipe',
+      arguments: { recipe: 'architecture-floorplan' },
+    },
+  });
+
+  assert.equal(res.error, undefined);
+  assert.notEqual(res.result.isError, true);
+  const snippet = res.result.content[0].text;
+  assert.ok(snippet.includes('ArchitectureFloorplan'));
+  assert.ok(snippet.includes('offlineCacheKey'));
+});

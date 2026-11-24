@@ -1,4 +1,5 @@
 export * from './AgentControlRoom';
+export * from './ArchitectureFloorplan';
 export type { AuthLayoutProps } from './AuthLayout';
 export { AuthLayout } from './AuthLayout';
 export * from './AuthShell';

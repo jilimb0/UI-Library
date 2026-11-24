@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-21T09:17:58.304Z",
+  "generatedAt": "2026-11-24T05:06:36.060Z",
   "package": "@ui-construction-library/core",
   "barrelExports": [
     "./components",
@@ -85,6 +85,7 @@
     "organisms/TreeView",
     "organisms/WidgetLinkBus",
     "templates/AgentControlRoom",
+    "templates/ArchitectureFloorplan",
     "templates/AuthShell"
   ]
 }

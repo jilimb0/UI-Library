@@ -183,6 +183,11 @@
       "require": "./dist/subpath/AgentControlRoom.cjs",
       "types": "./dist/subpath/AgentControlRoom.d.ts"
     },
+    "./ArchitectureFloorplan": {
+      "import": "./dist/subpath/ArchitectureFloorplan.js",
+      "require": "./dist/subpath/ArchitectureFloorplan.cjs",
+      "types": "./dist/subpath/ArchitectureFloorplan.d.ts"
+    },
     "./SourceLineageDrawer": {
       "import": "./dist/subpath/SourceLineageDrawer.js",
       "require": "./dist/subpath/SourceLineageDrawer.cjs",

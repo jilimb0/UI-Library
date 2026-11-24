@@ -7,6 +7,7 @@ UI Construction Library (jilimb0.github.io/UI-Library) is a high-performance, ac
 ## Key Features
 
 - **Strict A11y & SSR Compliance**: Fully keyboard navigable with WAI-ARIA roles and SSR guards.
+- **ArchitectureFloorplan Template**: `@ui-construction-library/core/ArchitectureFloorplan` + Zod 4 `ArchitectureFloorplanSchema` + MCP `architecture-floorplan` recipe with integer-bps KPIs and IndexedDB zoom cache.
 - **Physics-Based Kinematics**: Purposeful, spring-based motion profiles honoring `prefers-reduced-motion`.
 - **Theme Engine**: Semantic design tokens, automatic dark/light mode detection, and zero runtime CSS bloat.
 

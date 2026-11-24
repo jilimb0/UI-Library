@@ -21,6 +21,22 @@ export {
   TraceSpanItemSchema,
 } from './agent-control-room.schema';
 export {
+  type ArchitectureFloorplan,
+  ArchitectureFloorplanSchema,
+  type FloorplanEdge,
+  type FloorplanEdgeKind,
+  FloorplanEdgeKindSchema,
+  FloorplanEdgeSchema,
+  type FloorplanFindingRef,
+  FloorplanFindingRefSchema,
+  type FloorplanNode,
+  type FloorplanNodeKind,
+  FloorplanNodeKindSchema,
+  FloorplanNodeSchema,
+  type GetFloorplanMcpInput,
+  GetFloorplanMcpInputSchema,
+} from './architecture-floorplan.schema';
+export {
   type AccordionProps,
   AccordionPropsSchema,
   type ButtonProps,

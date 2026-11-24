@@ -77,6 +77,7 @@ export const UI_LIBRARY_MCP_TOOLS = [
             'data-table-pagination',
             'auth-shell',
             'agent-control-room',
+            'architecture-floorplan',
             'source-lineage-drawer',
             'terminal-workspace',
             'widget-link-cockpit',
@@ -444,6 +445,21 @@ function CockpitBody({ panels }: { panels: SynchronizedChartPanelData[] }) {
         <SynchronizedChartGrid panels={panels} />
       </LinkedPanel>
     </div>
+  );
+}`,
+  'architecture-floorplan': `import { ArchitectureFloorplan, type ArchitectureFloorplanData } from '@ui-construction-library/core';
+
+export function EcosystemFloorplanPanel({ graph }: { graph: ArchitectureFloorplanData }) {
+  return (
+    <ArchitectureFloorplan
+      graph={graph}
+      viewMode="plain"
+      activeZoomNodeId={null}
+      highlightRecentWork
+      offlineCacheKey="ecosystem-floorplan-v1"
+      onNodeSelect={() => {}}
+      ariaLabel="Architecture Floorplan"
+    />
   );
 }`,
 };
