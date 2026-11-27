@@ -2,6 +2,7 @@ import {
   type ComponentPropsWithRef,
   type ElementType,
   forwardRef,
+  type ReactElement,
 } from 'react';
 
 /**
@@ -42,4 +43,6 @@ export const Box = forwardRef<HTMLElement, BoxProps<ElementType>>(function Box(
   };
 
   return <Component ref={ref} style={mergedStyle} {...props} />;
-}) as <C extends ElementType = 'div'>(props: BoxProps<C>) => JSX.Element;
+}) as <C extends ElementType = 'div'>(
+  props: BoxProps<C>
+) => ReactElement | null;

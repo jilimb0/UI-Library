@@ -45,7 +45,10 @@ function useSliderContext() {
  * </Slider.Root>
  * ```
  */
-export type SliderRootProps = HTMLAttributes<HTMLDivElement> & {
+export type SliderRootProps = Omit<
+  HTMLAttributes<HTMLDivElement>,
+  'defaultValue'
+> & {
   /** Initial value (controlled) */
   value?: number[];
   /** Initial value (uncontrolled) */

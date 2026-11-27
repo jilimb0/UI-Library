@@ -2,6 +2,7 @@ import {
   type ComponentPropsWithRef,
   type ElementType,
   forwardRef,
+  type ReactElement,
 } from 'react';
 
 /**
@@ -56,4 +57,6 @@ export const Grid = forwardRef<HTMLElement, GridProps<ElementType>>(
 
     return <Component ref={ref} style={mergedStyle} {...props} />;
   }
-) as <C extends ElementType = 'div'>(props: GridProps<C>) => JSX.Element;
+) as <C extends ElementType = 'div'>(
+  props: GridProps<C>
+) => ReactElement | null;

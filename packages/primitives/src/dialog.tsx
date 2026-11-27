@@ -74,7 +74,12 @@ const Trigger = forwardRef<
   const { open, setOpen } = useDialogContext();
   const behavior = createDialogBehavior({ open });
 
-  if (asChild && isValidElement(children)) {
+  if (
+    asChild &&
+    isValidElement<ButtonHTMLAttributes<HTMLButtonElement> & { ref?: unknown }>(
+      children
+    )
+  ) {
     return (
       <Slottable asChild>
         {cloneElement(children, {
@@ -113,7 +118,12 @@ const Close = forwardRef<
   HTMLAttributes<HTMLButtonElement> & { asChild?: boolean }
 >(function Close({ asChild, onClick, children, ...props }, ref) {
   const { setOpen } = useDialogContext();
-  if (asChild && isValidElement(children)) {
+  if (
+    asChild &&
+    isValidElement<ButtonHTMLAttributes<HTMLButtonElement> & { ref?: unknown }>(
+      children
+    )
+  ) {
     return (
       <Slottable asChild>
         {cloneElement(children, {

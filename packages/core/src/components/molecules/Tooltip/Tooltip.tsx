@@ -4,7 +4,6 @@ import {
   forwardRef,
   type HTMLAttributes,
   isValidElement,
-  type ReactElement,
   type ReactNode,
   useId,
   useState,
@@ -43,12 +42,16 @@ const Tooltip = forwardRef<HTMLElement, TooltipProps>(
       'aria-describedby': tooltipId,
     };
 
-    const triggerContent = isValidElement(children) ? (
-      cloneElement(children as ReactElement, {
+    const triggerContent = isValidElement<
+      { className?: string } & Record<string, unknown>
+    >(children) ? (
+      cloneElement(children, {
         ...triggerProps,
         ...handlers,
         className: cn(
-          (children as ReactElement).props.className,
+          typeof children.props.className === 'string'
+            ? children.props.className
+            : undefined,
           triggerClassName
         ),
         ref,

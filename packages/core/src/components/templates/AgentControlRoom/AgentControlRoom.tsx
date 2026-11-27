@@ -15,6 +15,13 @@ function formatMicros(micros: number): string {
   return `$${dollars}.${remainder.slice(0, 4)}`;
 }
 
+function formatBpsPercent(bps: number): string {
+  const safeBps = Math.max(0, Math.round(bps));
+  const whole = Math.floor(safeBps / 100);
+  const frac = String(safeBps % 100).padStart(2, '0');
+  return `${whole}.${frac}%`;
+}
+
 export function AgentControlRoom({
   runId,
   nodes,
@@ -196,10 +203,11 @@ export function AgentControlRoom({
           aria-live="assertive"
           aria-label="Human-in-the-loop Approval Required"
           style={{
-            border: '2px solid var(--ucl-color-warning, #f59e0b)',
-            borderRadius: '8px',
-            padding: '16px',
-            backgroundColor: 'var(--ucl-color-warning-subtle, #fef3c7)',
+            border: '2px solid var(--ucl-warning, #f59e0b)',
+            borderRadius: 'var(--ucl-radius-lg, 8px)',
+            padding: 'var(--ucl-spacing-4, 16px)',
+            backgroundColor: 'var(--ucl-muted, #fef3c7)',
+            color: 'var(--ucl-foreground, inherit)',
           }}
         >
           <h3 style={{ margin: '0 0 8px 0' }}>
@@ -210,7 +218,7 @@ export function AgentControlRoom({
               key={gate.id}
               style={{
                 marginBottom: '12px',
-                borderBottom: '1px solid #e5e7eb',
+                borderBottom: '1px solid var(--ucl-border, #e4e4e7)',
                 paddingBottom: '8px',
               }}
             >
@@ -221,10 +229,11 @@ export function AgentControlRoom({
               {gate.unifiedDiff && (
                 <pre
                   style={{
-                    background: '#1f2937',
-                    color: '#f3f4f6',
+                    background: 'var(--ucl-card, #18181b)',
+                    color: 'var(--ucl-card-foreground, #f4f4f5)',
+                    border: '1px solid var(--ucl-border, #e4e4e7)',
                     padding: '8px',
-                    borderRadius: '4px',
+                    borderRadius: 'var(--ucl-radius-md, 4px)',
                     overflow: 'auto',
                     fontSize: '12px',
                   }}
@@ -247,11 +256,11 @@ export function AgentControlRoom({
                     handleDecision(gate.id, gate.version, 'APPROVED')
                   }
                   style={{
-                    background: '#10b981',
-                    color: '#fff',
+                    background: 'var(--ucl-success, #10b981)',
+                    color: 'var(--ucl-success-foreground, #ffffff)',
                     border: 'none',
                     padding: '6px 12px',
-                    borderRadius: '4px',
+                    borderRadius: 'var(--ucl-radius-md, 4px)',
                     cursor: 'pointer',
                   }}
                 >
@@ -264,11 +273,11 @@ export function AgentControlRoom({
                     handleDecision(gate.id, gate.version, 'REJECTED')
                   }
                   style={{
-                    background: '#ef4444',
-                    color: '#fff',
+                    background: 'var(--ucl-error, #ef4444)',
+                    color: 'var(--ucl-error-foreground, #ffffff)',
                     border: 'none',
                     padding: '6px 12px',
-                    borderRadius: '4px',
+                    borderRadius: 'var(--ucl-radius-md, 4px)',
                     cursor: 'pointer',
                   }}
                 >
@@ -283,8 +292,10 @@ export function AgentControlRoom({
                   }
                   style={{
                     padding: '6px 8px',
-                    borderRadius: '4px',
-                    border: '1px solid #d1d5db',
+                    borderRadius: 'var(--ucl-radius-md, 4px)',
+                    border: '1px solid var(--ucl-input, #e4e4e7)',
+                    background: 'var(--ucl-background, #ffffff)',
+                    color: 'var(--ucl-foreground, #09090b)',
                     flex: 1,
                   }}
                 />
@@ -295,11 +306,11 @@ export function AgentControlRoom({
                     handleDecision(gate.id, gate.version, 'STEERED')
                   }
                   style={{
-                    background: '#3b82f6',
-                    color: '#fff',
+                    background: 'var(--ucl-primary, #7c3aed)',
+                    color: 'var(--ucl-primary-foreground, #ffffff)',
                     border: 'none',
                     padding: '6px 12px',
-                    borderRadius: '4px',
+                    borderRadius: 'var(--ucl-radius-md, 4px)',
                     cursor: 'pointer',
                   }}
                 >
@@ -322,9 +333,11 @@ export function AgentControlRoom({
         {/* Topology Tree */}
         <div
           style={{
-            border: '1px solid #e5e7eb',
-            borderRadius: '8px',
+            border: '1px solid var(--ucl-border, #e4e4e7)',
+            borderRadius: 'var(--ucl-radius-lg, 8px)',
             padding: '12px',
+            backgroundColor: 'var(--ucl-card, transparent)',
+            color: 'var(--ucl-card-foreground, inherit)',
           }}
         >
           <h4 style={{ margin: '0 0 8px 0' }}>Agent Topology</h4>
@@ -339,9 +352,11 @@ export function AgentControlRoom({
         {/* Trace Waterfall */}
         <div
           style={{
-            border: '1px solid #e5e7eb',
-            borderRadius: '8px',
+            border: '1px solid var(--ucl-border, #e4e4e7)',
+            borderRadius: 'var(--ucl-radius-lg, 8px)',
             padding: '12px',
+            backgroundColor: 'var(--ucl-card, transparent)',
+            color: 'var(--ucl-card-foreground, inherit)',
           }}
         >
           <h4 style={{ margin: '0 0 8px 0' }}>
@@ -393,7 +408,7 @@ export function AgentControlRoom({
             <div>
               <strong>Tokens Used:</strong> {selectedNode.tokensUsed} /{' '}
               {selectedNode.contextLimitTokens} (
-              {selectedNode.contextUsageBps / 100}%)
+              {formatBpsPercent(selectedNode.contextUsageBps)})
             </div>
             <div>
               <strong>Duration:</strong> {selectedNode.durationMs}ms
@@ -407,10 +422,10 @@ export function AgentControlRoom({
                 }}
                 style={{
                   padding: '8px 12px',
-                  background: '#3b82f6',
-                  color: '#fff',
+                  background: 'var(--ucl-primary, #7c3aed)',
+                  color: 'var(--ucl-primary-foreground, #ffffff)',
                   border: 'none',
-                  borderRadius: '4px',
+                  borderRadius: 'var(--ucl-radius-md, 4px)',
                 }}
               >
                 Retry Node
