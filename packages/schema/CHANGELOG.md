@@ -2,6 +2,12 @@
 
 <!-- AUTO-GENERATED — do not edit manually; run pnpm changelog:packages -->
 
+## 0.5.0
+
+### Minor Changes
+
+- fd648a1: Add `templates/ArchitectureFloorplan` (`@ui-construction-library/core/ArchitectureFloorplan`), Zod 4 `ArchitectureFloorplanSchema` contract, and `architecture-floorplan` MCP recipe (ADR-0005).
+
 ## 0.4.0
 
 ### Features

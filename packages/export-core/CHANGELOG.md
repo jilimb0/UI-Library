@@ -2,6 +2,13 @@
 
 <!-- AUTO-GENERATED — do not edit manually; run pnpm changelog:packages -->
 
+## 0.4.1
+
+### Patch Changes
+
+- Updated dependencies [fd648a1]
+  - @ui-construction-library/schema@0.5.0
+
 ## 0.4.0
 
 ### Features

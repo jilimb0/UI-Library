@@ -14,6 +14,12 @@
   - Add deterministic `[Subject] [Mnemonic] <GO>` and algebraic spread ratio (`A / B`, `A - B`) grammar parser (`commandGrammar.ts`) to `CommandPalette`.
   - Add 6-panel `TilingWorkspace` (`Alt+1..6` focus cycling) and pure-SVG `BigInt`-projected `SynchronizedChartGrid` across all 4 UI states with `@media (prefers-reduced-motion: reduce)`.
 
+## 0.11.0
+
+### Minor Changes
+
+- fd648a1: Add `templates/ArchitectureFloorplan` (`@ui-construction-library/core/ArchitectureFloorplan`), Zod 4 `ArchitectureFloorplanSchema` contract, and `architecture-floorplan` MCP recipe (ADR-0005).
+
 ## 0.10.1
 
 ### Patch Changes
