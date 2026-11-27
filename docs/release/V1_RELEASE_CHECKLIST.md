@@ -2,48 +2,48 @@
 
 This checklist tracks what's needed to promote `@ui-construction-library` from `0.x` (public preview) to `1.0.0` (stable).
 
-> **Status summary as of 2026-07-04:** 24 of 24 items complete (100%). All CHANGELOGs generated and reviewed. Major engineering work completed: version drift synced, Node engine lowered, coverage enforced, 200+ new tests written, 59 new stories, API snapshot generated, JSDoc examples added, bundle budgets set, security clean, changelogs verified. Remaining items are cross-browser E2E, Chromatic baseline, API surface freeze declaration, and post-launch tasks.
+> **Status summary as of 2026-11-26:** 19 of 24 pre-release items complete (79%). Current `@ui-construction-library/core` version is `0.10.1` across **20 workspace packages**. Remaining pre-release items: API surface freeze declaration for `1.0.0`, cross-browser E2E (Firefox CI hang & WebKit dialog/data-table visual diffs), Chromatic `1.0.0` baseline sign-off, integration kit `1.0.0` prerelease verification after `ADR-0004`/`ADR-0005`, and `1.0.0` changeset/CHANGELOG finalization (plus 4 post-launch tasks).
 
 ---
 
 ## API Stability
 
 - [x] All public packages at `≥0.3.x` with zero breaking changes in the last 3 minor releases
-  - *Verified: all 9 public packages at 0.3.0 or 0.4.0, semver policy documented*
-- [x] Public API surface is frozen — no planned breaking changes in the backlog
-  - *Confirmed: all 9 public packages at ≥0.3.0 where breaking changes are not permitted. Semver policy documented. API snapshot tracked in CI. No breaking changes in backlog.*
+  - *Verified: 20 workspace packages; `@ui-construction-library/core` is at `0.10.1`, `@ui-construction-library/tokens` at `0.7.0`, semver policy documented*
+- [ ] Public API surface is frozen for `1.0.0` — no planned breaking changes in the backlog
+  - *API snapshot tracked in CI (`api-snapshot.json`); formal `1.0.0` freeze sign-off pending post-`0.10.1` `ADR-0004`/`ADR-0005` additions*
 - [x] `api-snapshot.json` up to date and tracked in CI (`check:api`)
 - [x] Every public export has JSDoc with `@example` and `@deprecated` where applicable
-  - *10 key components documented: Button, Input, Select, Checkbox, Switch, Dialog, DataTable, Form, Modal, Table*
+  - *Key components documented: Button, Input, Select, Checkbox, Switch, Dialog, DataTable, Form, Modal, Table*
 
 ## Testing & Quality
 
 - [x] All packages pass `pnpm validate:platform` with zero failures
-  - *Verified: lint(0 errors), typecheck(40/40), build(26/26), test(40/40)*
+  - *Verified across 20 workspace packages: lint, typecheck, build, and tests*
 - [x] Coverage thresholds enforced at ≥80% (statements, branches, functions, lines)
   - *Root vitest.config.ts has 80% thresholds. export-core/prompt-engine have 60% baselines.*
 - [ ] Cross-browser E2E tests passing (chromium + firefox + webkit)
   - *31/32 Chromium tests pass; firefox hangs on CI (needs investigation), webkit has visual diffs in dialog and data-table stories*
-- [x] Chromatic visual regression baseline established and reviewed
-  - *CHROMATIC_PROJECT_TOKEN configured in GitHub secrets by user*
+- [ ] Chromatic visual regression baseline established and reviewed for `1.0.0`
+  - *CHROMATIC_PROJECT_TOKEN configured in GitHub secrets; final `1.0.0` baseline review pending `ADR-0004`/`ADR-0005` stories*
 - [x] Performance benchmarks recorded and no regressions from last `0.x` release
   - *22/22 tests pass across all 5 performance test files. Export-performance, bundle-size, render-performance, a11y-performance, memory-leaks all green.*
 - [x] Bundle size budgets documented in `tests/performance/bundle-size.test.ts`
-  - *All 9 packages have budgets and pass (core 150KB, tokens 50KB, primitives 30KB, icons 100KB, styles 20KB, motion 20KB, dnd 30KB, behaviors 20KB, utils 20KB)*
+  - *Core and foundational packages have budgets and pass (core 150KB, tokens 50KB, primitives 30KB, icons 100KB, styles 20KB, motion 20KB, dnd 30KB, behaviors 20KB, utils 20KB)*
 
 ## Documentation
 
 - [x] Every published package has a README on npm with install, quick start, and API overview
-  - *Verified: all 19 packages have README.md files*
+  - *Verified: all 20 workspace packages have README.md files*
 - [x] Migration guide from latest `0.x` to `1.0.0` is complete
-  - *Verified: 7 additive entries documented with before/after examples, codemod patterns, version compatibility table. All packages at ≥0.3.0 with zero breaking changes confirmed.*
+  - *Verified: additive entries documented with before/after examples, codemod patterns, version compatibility table (`core` at `0.10.1`).*
 - [x] `docs/migration/MIGRATION-GUIDE.md` includes all breaking changes since `0.1.0`
-  - *Audited: all 7 documented entries are additive. No breaking changes exist for current 0.3.x/0.4.x versions.*
+  - *Audited: documented entries are additive; no breaking changes in `0.10.1`.*
 - [x] Browser compatibility matrix is up to date in `docs/guides/compatibility-matrix.md`
 - [x] Storybook stories exist for all canonical components
-  - *59 new stories added: primitives(16), motion(10), icons(14), behaviors(19). All packages now have story coverage.*
-- [x] Integration kits (Vite, Next.js, RHF, TanStack) all verified with `1.0.0` prerelease
-  - *create-ucl-app CLI supports vite, next, minimal templates — all tested and working. Integration packages have 73 passing tests across Next.js, TanStack Query, TanStack Router, React Hook Form, i18n.*
+  - *Stories cover primitives, motion, icons, behaviors, plus `AgentControlRoom`, Terminal UI Kit (`ADR-0004`), and `ArchitectureFloorplan` (`ADR-0005`).*
+- [ ] Integration kits (Vite, Next.js, RHF, TanStack) all verified with `1.0.0` prerelease
+  - *`create-ucl-app` / `@ui-construction-library/cli` and 5 integration packages pass unit tests against `0.10.1`; final `1.0.0` prerelease smoke verification pending bump*
 
 ## Release Infrastructure
 
@@ -51,10 +51,10 @@ This checklist tracks what's needed to promote `@ui-construction-library` from `
   - *Configured in release.yml: NPM_PUBLISH_PROVENANCE=true*
 - [x] Canary release workflow works end-to-end
   - *Verified: publish-canary.sh has set -euo pipefail (error handling), preflight checks (release:preflight, check:deps, check:api), build, and publish. ci-publish.mjs has idempotent publish guard, workspace:* → semver rewriting, registry confirmation with retry, and proper error reporting. OIDC provenance supported via NPM_PUBLISH_PROVENANCE=true/env var.*
-- [x] Published smoke test passes for all packages
-  - *All 18 packages verified on npm via pnpm check:published. Published smoke workflow exists and is triggered by Release workflow.*
-- [x] CHANGELOG.md generated and reviewed for all packages
-  - *18 CHANGELOG.md files exist across all packages — generated via changesets and verified with content*
+- [ ] Published smoke test passes for all `1.0.0` packages
+  - *Existing `0.x` packages (including `core@0.10.1`) verified on npm via `pnpm check:published`; `1.0.0` published smoke workflow pending `1.0.0` release cut.*
+- [ ] CHANGELOG.md generated and reviewed for all packages (`1.0.0` release cut)
+  - *Changelogs exist across all 20 workspace packages (`core` at `0.10.1`); final `1.0.0` changeset version generation pending release cut*
 - [x] Release runbook (`docs/release/RELEASE_RUNBOOK.md`) updated with 1.0-specific steps
   - *RELEASE_RUNBOOK.md updated: pre-release checklist, Node 22 requirement, rollback procedure added.*
 
@@ -90,7 +90,7 @@ List known breaking changes here:
 
 | Item | Detail |
 |------|--------|
-| Per-package READMEs verified | All 19 packages confirmed with README.md |
+| Per-package READMEs verified | All 20 workspace packages confirmed with README.md |
 | Migration guide completeness | Verified: 7 entries, no breaking changes, ready for 1.0 |
 | Canary release workflow verified | `publish-canary.sh` and `ci-publish.mjs` reviewed — proper error handling, idempotent publish, OIDC support |
 | Firefox headless mode | Added `launchOptions.args: ['--headless']` to Playwright Firefox config |

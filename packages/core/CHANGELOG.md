@@ -2,6 +2,18 @@
 
 <!-- AUTO-GENERATED — do not edit manually; run pnpm changelog:packages -->
 
+## Unreleased (post-0.10.1)
+
+### Minor Changes
+
+- **ArchitectureFloorplan Template (`ADR-0005`):**
+  - Add `templates/ArchitectureFloorplan` (`@ui-construction-library/core/ArchitectureFloorplan`) rendering `gavel/floorplan@1` topology graphs on `--ucl-*` tokens with `Drawer`, `TreeView`, `KpiCard`, and `Timeline`.
+  - Include SSR-guarded IndexedDB zoom-state cache (`offlineCacheKey`), integer `bps` / `BigInt` micro-dollar formatting, 4 UI states (`Default`, `Loading`, `Empty`, `Error`), and `architecture-floorplan` MCP recipe.
+- **Terminal UI Kit (`ADR-0004`):**
+  - Add `WidgetLinkBus` (`WidgetLinkProvider`, `LinkedPanel`, `?g_<color>` URL sync, and SSR-guarded `BroadcastChannel('ucl-widget-link')`).
+  - Add deterministic `[Subject] [Mnemonic] <GO>` and algebraic spread ratio (`A / B`, `A - B`) grammar parser (`commandGrammar.ts`) to `CommandPalette`.
+  - Add 6-panel `TilingWorkspace` (`Alt+1..6` focus cycling) and pure-SVG `BigInt`-projected `SynchronizedChartGrid` across all 4 UI states with `@media (prefers-reduced-motion: reduce)`.
+
 ## 0.10.1
 
 ### Patch Changes

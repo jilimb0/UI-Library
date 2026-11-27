@@ -1,7 +1,10 @@
 # UI-Library — План трансформации в Terminal UI Kit (Bloomberg / Koyfin / Godel / OpenBB)
 
 > **Репозиторий:** `core-infra/ui-library` (`@ui-construction-library/core`, `@ui-construction-library/schema`, `@ui-construction-library/tokens`)  
-> **Статус плана:** Готов к исполнению (TDD-first)  
+> **Статус плана: ✅ РЕАЛИЗОВАНО В КОДЕ (2026-11-21 / 2026-11-24)**  
+> **Реализующие ADR и ключевые файлы:**  
+> - `ADR-0004` (`.ai/adr/0004-widget-link-bus-and-terminal-grammar.md`): `packages/core/src/components/organisms/WidgetLinkBus/WidgetLinkBus.tsx`, `packages/core/src/components/organisms/CommandPalette/commandGrammar.ts`, `packages/core/src/components/organisms/TilingWorkspace/TilingWorkspace.tsx`, `packages/core/src/components/organisms/SynchronizedChartGrid/SynchronizedChartGrid.tsx`, `packages/schema/src/zod/widget-link.schema.ts`  
+> - `ADR-0005` (`.ai/adr/0005-architecture-floorplan-template-and-schema-contract.md`): `packages/core/src/components/templates/ArchitectureFloorplan/ArchitectureFloorplan.tsx`, `packages/schema/src/zod/architecture-floorplan.schema.ts`, `scripts/mcp-server.mjs`  
 > **Связанные ADR (не нарушать):**  
 > - `.ai/adr/0001-wai-aria-tokens-and-stdio-mcp-snapshot.md` (WAI-ARIA, SSR-гарды `typeof window !== 'undefined'`, единый источник токенов `packages/tokens`, `api-snapshot.json` для `scripts/mcp-server.mjs`)  
 > - `.ai/adr/0002-resilience-rate-limiting-and-privacy-telemetry.md` (First-class `*-foreground` токены, privacy-scrubbed телеметрия)  
